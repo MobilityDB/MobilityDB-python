@@ -20,6 +20,12 @@ try:
     print(colVal.getValue())
     print("Start Instant:", colVal.startInstant(), "End Instant: ", colVal.endInstant())
 
+    # You can insert
+    cursor.execute('create table if not exists tpoint_test(tpoint tgeompoint)')
+    cursor.execute('insert into tpoint_test(tpoint) values(%s)' % colVal)
+    # Retrieve the results will be the same as above
+
+
     # Test the constructor of tgeompointinst. Now I am reading a string (Point can be text or wkb).
     # I can also define the structure as TGEOMPOINT[Point(1,2)@time] without the need for defining this inside a string
     t1 = TGEOMPOINTINST('point(1 1)@2019-09-09')
