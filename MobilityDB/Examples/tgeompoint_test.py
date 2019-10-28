@@ -30,6 +30,9 @@ try:
     print(t1.startInstant())
     print(t1.getTimestamp())
 
+    t2 = TGEOMPOINTS('{[point(1 1)@2019-09-09]}')
+    print(t2)
+
 except psycopg2.DatabaseError as e:
 
     print('Error {e}')

@@ -1,5 +1,5 @@
-from postgis import Point, LineString
 from MobilityDB.TimeTypes import *
+
 
 class TEMPORAL:
     BaseValueClass = None
@@ -74,3 +74,8 @@ class TEMPORAL:
             return self.SubClass.value[n - 1]
         else:
             raise Exception("ERROR: there is no value at this index")
+
+    def sequenceN(self, n):
+        if 0 <= n < self.SubClass.numSequences():
+            return self.SubClass.sequences[n]
+        raise Exception("ERROR: out of range")

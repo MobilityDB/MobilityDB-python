@@ -19,5 +19,5 @@ class TEMPORALINSTANTS:
     def endInstant(self):
         return self.value[len(self.value) - 1]
 
-    def getinstants(self):
+    def getInstants(self):
         return ', '.join('{}'.format(inst.value.__str__() + "@" + inst.time.__str__()) for inst in self.value)

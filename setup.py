@@ -15,12 +15,12 @@ setup(
     long_description=long_description,
     url='https://github.com/ULB-CoDE-WIT/MobilityDB-Python',
     download_url='',
-    install_requires=[  # I get to this in a second
+    install_requires=[
         'psycopg2-binary',
         'postgis',
         'bdateutil'
     ],
-    keywords=['MobilityDB', 'Python'],  # Keywords that define your package best
+    keywords=['MobilityDB', 'Python'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

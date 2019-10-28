@@ -3,8 +3,9 @@ from bdateutil.parser import parse
 
 
 class PERIOD:
-    __slots__ = ['lower', 'upper']
+    __slots__ = ['lower', 'upper', 'lower_inc', 'upper_inc']
 
+    # Missing arguments (lower_inc, upper_inc)
     def __init__(self, lower=None, upper=None):
         if isinstance(lower, str) and isinstance(upper, str):
             self.lower = parse(lower)
