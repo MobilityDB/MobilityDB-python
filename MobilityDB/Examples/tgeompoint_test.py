@@ -1,4 +1,3 @@
-import psycopg2
 from MobilityDB import *
 
 connectionObject = None

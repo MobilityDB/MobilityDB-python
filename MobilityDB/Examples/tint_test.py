@@ -1,4 +1,3 @@
-import psycopg2
 from MobilityDB import *
 
 connectionObject = None
@@ -13,8 +12,12 @@ try:
 
     cursor = connectionObject.cursor()
 
-    var1 = TINT('[10@2019-09-08, 20@2019-09-09, 20@2019-09-10]')
+    var1 = TINT('{10@2019-09-08, 20@2019-09-09, 20@2019-09-10}')
     print(var1.getValues())
+    print(var1.timespan())
+    print(var1.getType())
+    print(var1.startValue())
+    print(var1.instantN(1))
 
 
 except psycopg2.DatabaseError as e:

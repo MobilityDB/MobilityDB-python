@@ -14,8 +14,7 @@ Usage
 ------------ 
 1- Register MobilityDB extension in PostgreSQL driver:
 
-    import psycopg2
-    import MobilityDB
+    from MobilityDB import *
     connectionObject = psycopg2.connect(host='localhost', database='db', user='postgres', password='')
     MobilityDBRegister(connectionObject)
 

@@ -1,3 +1,4 @@
+import datetime
 from bdateutil.parser import parse
 
 
@@ -8,6 +9,9 @@ class PERIOD:
         if isinstance(lower, str) and isinstance(upper, str):
             self.lower = parse(lower)
             self.upper = parse(upper)
+        elif isinstance(lower, datetime.datetime) and isinstance(upper, datetime.datetime):
+            self.lower = lower
+            self.upper = upper
         else:
             raise Exception("ERROR:  Could not parse period value")
 

@@ -1,10 +1,11 @@
 from postgis import Point, LineString
-
+from MobilityDB.TimeTypes import *
 
 class TEMPORAL:
     BaseValueClass = None
     SubClass = None
 
+    # Accessor functions
     def getValue(self):
         if self.SubClass.Duration == 1:
             return self.SubClass.value
@@ -14,7 +15,7 @@ class TEMPORAL:
         if self.SubClass.Duration == 1:
             return self.SubClass.value
         elif self.SubClass.Duration == 2:
-            return self.SubClass.getValues()
+            return [inst.value for inst in self.SubClass.value]
         elif self.SubClass.Duration == 3:
             return self.SubClass.getDistinctValues(self.BaseValueClass)
 
@@ -22,6 +23,13 @@ class TEMPORAL:
         if self.SubClass.Duration == 1:
             return self.SubClass.time
         raise Exception("ERROR: Input must be a temporal instant")
+
+    def timespan(self):
+        if self.SubClass.Duration == 2:
+            return PERIOD(min(inst.time for inst in self.SubClass.value),
+                          max(inst.time for inst in self.SubClass.value))
+        if self.SubClass.Duration == 3:
+            return PERIOD(self.startInstant().time, self.endInstant().time)
 
     def startInstant(self):
         if self.SubClass.Duration == 1:
@@ -39,3 +47,30 @@ class TEMPORAL:
         else:
             raise Exception("ERROR:  Could not parse temporal value")
 
+    def startValue(self):
+        if self.SubClass.Duration == 1:
+            return self.SubClass.value
+        elif self.SubClass.Duration in [2, 3]:
+            return self.SubClass.startInstant().value
+
+    def endValue(self):
+        if self.SubClass.Duration == 1:
+            return self.SubClass.value
+        elif self.SubClass.Duration in [2, 3]:
+            return self.SubClass.endInstant().value
+
+    def getType(self):
+        if self.SubClass.Duration == 1:
+            return "Instant"
+        elif self.SubClass.Duration == 2:
+            return "InstantSet"
+        elif self.SubClass.Duration == 3:
+            return "Sequence"
+
+    def instantN(self, n):
+        if self.SubClass.Duration == 1 and n == 1:
+            return self.SubClass
+        elif self.SubClass.Duration in [2, 3] and 0 < n < self.SubClass.numInstants():
+            return self.SubClass.value[n - 1]
+        else:
+            raise Exception("ERROR: there is no value at this index")
