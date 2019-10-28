@@ -14,9 +14,9 @@ class TEMPORAL:
         if self.SubClass.Duration == 1:
             return self.SubClass.value
         elif self.SubClass.Duration == 2:
-            return self.SubClass.value
+            return self.SubClass.getValues()
         elif self.SubClass.Duration == 3:
-            return LineString([inst.value for inst in self.SubClass.value])
+            return self.SubClass.getDistinctValues(self.BaseValueClass)
 
     def getTimestamp(self):
         if self.SubClass.Duration == 1:

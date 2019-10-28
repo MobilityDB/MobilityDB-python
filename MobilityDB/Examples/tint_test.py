@@ -13,8 +13,8 @@ try:
 
     cursor = connectionObject.cursor()
 
-    var1 = TINT('{10@2019-09-08}')
-    print(var1.startInstant())
+    var1 = TINT('[10@2019-09-08, 20@2019-09-09, 20@2019-09-10]')
+    print(var1.getValues())
 
 
 except psycopg2.DatabaseError as e:

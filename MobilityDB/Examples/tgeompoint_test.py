@@ -28,7 +28,7 @@ try:
     # Test the constructor of tgeompointinst. Now I am reading a string (Point can be text or wkb).
     # I can also define the structure as TGEOMPOINT[Point(1,2)@time] without the need for defining this inside a string
     t1 = TGEOMPOINT('point(1 1)@2019-09-09')
-    print(t1)
+    print(t1.getValue())
     print(t1.getTimestamp())
 
 except psycopg2.DatabaseError as e:
