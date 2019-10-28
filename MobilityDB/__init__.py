@@ -8,4 +8,4 @@ from MobilityDB.MobilityDBConnection import MobilityDBRegister
 __all__ = ['MobilityDBRegister',
            'TGEOMPOINT', 'TGEOMPOINTINST', 'TGEOMPOINTI', 'TGEOMPOINTSEQ',
            'TINT', 'TINTINST', 'TINTI', 'TINTSEQ',
-           'PERIOD']
+           'PERIOD', 'TIMESTAMPSET']

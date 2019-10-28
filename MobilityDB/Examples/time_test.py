@@ -13,9 +13,11 @@ try:
 
     cursor = connectionObject.cursor()
 
-    t2 = PERIOD('2019-09-08', '2019-09-10')
-    print(t2)
+    t1 = PERIOD('2019-09-08', '2019-09-10')
+    print(t1)
 
+    t2 = TIMESTAMPSET('2019-09-08', '2019-09-10')
+    print(t2)
 
 except psycopg2.DatabaseError as e:
 
