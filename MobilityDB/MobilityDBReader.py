@@ -1,69 +1,71 @@
 from postgis.ewkb import Reader
 from bdateutil.parser import parse
 from postgis import Point
-
-
-class MobilityDBTyped(type):
-    types = {}
-
-    def __new__(mcs, name, bases, attrs, **kwargs):
-        cls = super().__new__(mcs, name, bases, attrs, **kwargs)
-        if hasattr(cls, 'TYPE'):
-            MobilityDBTyped.types[cls.TYPE] = cls
-        return cls
-
-    def __call__(cls, *args, **kwargs):
-        # Allow to pass an instance as first argument, for blind casting.
-        if args and isinstance(args[0], cls):
-            return args[0]
-        return super().__call__(*args, **kwargs)
+from MobilityDB.TemporalTypes.temporalinst import TEMPORALINST
+from MobilityDB.TemporalTypes.temporali import TEMPORALI
+from MobilityDB.TemporalTypes.temporalseq import TEMPORALSEQ
 
 
 # MobilityDBReader can read all the temporal types for all the base values based on the value of the data member
-# "VALUECLASS" that is defined inside every class.
+# "VALUECLASS" that is defined inside every class
 class MobilityDBReader(Reader):
 
     @classmethod
-    def readTemporalInst(cls, temporalClass_, valueStr=None):
+    def readTemporalType(cls, MainClass, value):
+        # Check the temporal type and read it
+        if '[' in value:
+            MainClass.SubClass = TEMPORALSEQ
+            return MobilityDBReader.readTemporalSeq(MainClass, TEMPORALSEQ, value)
+        elif '{' in value:
+            MainClass.SubClass = TEMPORALI
+            return MobilityDBReader.readTemporalI(MainClass, TEMPORALI, value)
+        else:
+            MainClass.SubClass = TEMPORALINST
+            return MobilityDBReader.readTemporalInst(MainClass, TEMPORALINST, value)
+
+    @classmethod
+    def readTemporalInst(cls, mainClass, temporalClass, valueStr=None):
+        value = None
         inst = valueStr.split('@')
-        if temporalClass_.VALUECLASS == Point:
+        if mainClass.BaseValueClass == Point:
             if '(' in inst[0] and ')' in inst[0]:
                 value = cls.readPointFromString(inst[0])
             else:
                 value = cls.from_hex(inst[0].strip())
-        elif temporalClass_.VALUECLASS == int:
+        elif mainClass.BaseValueClass == int:
             value = int(inst[0])
         time = parse(inst[1])
-        return temporalClass_(value, time)
+        return temporalClass(value, time)
 
     @classmethod
-    def readTemporalI(cls, temporalClass_, valueStr=None):
+    def readTemporalI(cls, mainClass, temporalClass, valueStr=None):
+        instants = None
         valueStr = valueStr.replace('{', '')
         valueStr = valueStr.replace('}', '')
         instantsList = valueStr.split(',')
-        instants = None
         # Parse every instant in the array
-        if temporalClass_.VALUECLASS == Point:
-            instants = [cls.readTemporalInst(MobilityDBTyped.types[1], instStr) for instStr in instantsList]
-        elif temporalClass_.VALUECLASS == int:
-            instants = [cls.readTemporalInst(MobilityDBTyped.types[5], instStr) for instStr in instantsList]
-        return temporalClass_(instants)
+        if mainClass.BaseValueClass == Point:
+            instants = [cls.readTemporalInst(mainClass, TEMPORALINST, instStr) for instStr in instantsList]
+        elif mainClass.BaseValueClass == int:
+            instants = [cls.readTemporalInst(mainClass, TEMPORALINST, instStr) for instStr in instantsList]
+        return temporalClass(instants)
 
     @classmethod
-    def readTemporalSeq(cls, temporalClass_, seqStr=None):
+    def readTemporalSeq(cls, mainClass, temporalClass, seqStr=None):
+        instants = None
         seqStr = seqStr.replace('[', '')
         seqStr = seqStr.replace(']', '')
         instantsList = seqStr.split(',')
-        instants = None
         # Parse every instant in the sequence
-        if temporalClass_.VALUECLASS == Point:
-            instants = [cls.readTemporalInst(MobilityDBTyped.types[1], instStr.strip()) for instStr in instantsList]
-        elif temporalClass_.VALUECLASS == int:
-            instants = [cls.readTemporalInst(MobilityDBTyped.types[5], instStr.strip()) for instStr in instantsList]
-        return temporalClass_(instants)
+        if mainClass.BaseValueClass == Point:
+            instants = [cls.readTemporalInst(mainClass, TEMPORALINST, instStr.strip()) for instStr in instantsList]
+        elif mainClass.BaseValueClass == int:
+            instants = [cls.readTemporalInst(mainClass, TEMPORALINST, instStr.strip()) for instStr in instantsList]
+        return temporalClass(instants)
 
     @classmethod
     def readPointFromString(cls, valueStr=None):
+        valueStr = valueStr.lower()
         valueStr = valueStr.replace("point(", "")
         valueStr = valueStr.replace(")", "")
         num = valueStr.split(" ")

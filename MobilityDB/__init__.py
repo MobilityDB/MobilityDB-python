@@ -2,9 +2,10 @@
 
 from MobilityDB.TemporalGeometry import *
 from MobilityDB.TemporalInteger import *
+from MobilityDB.TimeTypes import *
 from MobilityDB.MobilityDBConnection import MobilityDBRegister
-
 
 __all__ = ['MobilityDBRegister',
            'TGEOMPOINT', 'TGEOMPOINTINST', 'TGEOMPOINTI', 'TGEOMPOINTSEQ',
-           'TINT', 'TINTINST', 'TINTI', 'TINTSEQ']
+           'TINT', 'TINTINST', 'TINTI', 'TINTSEQ',
+           'PERIOD']

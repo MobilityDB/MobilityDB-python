@@ -1,23 +1,22 @@
-from MobilityDB.MobilityDBReader import MobilityDBTyped, MobilityDBReader
 from postgis import Point
+from MobilityDB.TemporalTypes.temporal import TEMPORAL
+from MobilityDB.MobilityDBReader import MobilityDBReader
 
 
-class TGEOMPOINT(object, metaclass=MobilityDBTyped):
+class TGEOMPOINT(TEMPORAL):
+    BaseValueClass = Point
 
-    VALUECLASS = Point
+    def __init__(self, value=None):
+        if isinstance(value, str):
+            self.SubClass = MobilityDBReader.readTemporalType(self.__class__, value)
+        else:
+            self.SubClass = value
 
     @staticmethod
     def read_from_cursor(value, cursor=None):
         if not value:
             return None
-        return TGEOMPOINT.CastTemporalTypes(value)
+        return TGEOMPOINT(MobilityDBReader.readTemporalType(TGEOMPOINT, value))
 
-    @classmethod
-    def CastTemporalTypes(cls, value):
-        # Check the temporal type and read it
-        if '[' in value:
-            return MobilityDBReader.readTemporalSeq(MobilityDBTyped.types[3], value)
-        elif '{' in value:
-            return MobilityDBReader.readTemporalI(MobilityDBTyped.types[2], value)
-        else:
-            return MobilityDBReader.readTemporalInst(MobilityDBTyped.types[1], value)
+    def __str__(self):
+        return self.__class__.__name__ + self.SubClass.__str__()

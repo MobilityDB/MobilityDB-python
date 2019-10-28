@@ -1,20 +1,21 @@
-from MobilityDB.MobilityDBReader import MobilityDBTyped, MobilityDBReader
+from MobilityDB.TemporalTypes.temporal import TEMPORAL
+from MobilityDB.MobilityDBReader import MobilityDBReader
 
 
-class TINT(object, metaclass=MobilityDBTyped):
+class TINT(TEMPORAL):
+    BaseValueClass = int
 
-    VALUECLASS = int
+    def __init__(self, value=None):
+        if isinstance(value, str):
+            self.SubClass = MobilityDBReader.readTemporalType(self.__class__, value)
+        else:
+            self.SubClass = value
 
     @staticmethod
     def read_from_cursor(value, cursor=None):
         if not value:
             return None
-        return TINT.CastTemporalTypes(value)
+        return TINT(MobilityDBReader.readTemporalType(TINT, value))
 
-    @classmethod
-    def CastTemporalTypes(cls, value):
-        # Check the temporal type and read it
-        if '[' in value:
-            return MobilityDBReader.readTemporalSeq(MobilityDBTyped.types[7], value)
-        else:
-            return MobilityDBReader.readTemporalInst(MobilityDBTyped.types[5], value)
+    def __str__(self):
+        return self.__class__.__name__ + self.SubClass.__str__()

@@ -15,6 +15,3 @@ def MobilityDBRegister(connection):
     oid = cursor.description[0][1]
     extensions.register_type(extensions.new_type((oid, ), "TGEOMPOINT", TGEOMPOINT.read_from_cursor))
 
-    cursor.execute("SELECT NULL::TINT")
-    oid = cursor.description[0][1]
-    extensions.register_type(extensions.new_type((oid,), "TINT", TINT.read_from_cursor))

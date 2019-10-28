@@ -1,12 +1,11 @@
-from MobilityDB.TemporalGeometry.tgeompoint import TGEOMPOINT
-from MobilityDB.Temporal.temporalseq import TEMPORALSEQ
-from postgis import LineString
+from .tgeompoint import TGEOMPOINT
+from MobilityDB.TemporalTypes.temporalseq import TEMPORALSEQ
 
 
 class TGEOMPOINTSEQ(TGEOMPOINT, TEMPORALSEQ):
 
-    TYPE = 3
-    MAINCLASS = TGEOMPOINT
+    def __init__(self, value=None):
+        super().__init__(value)
 
-    def getValue(self):
-        return LineString([inst.value for inst in self.instants])
+    def __str__(self):
+        return self.__class__.__bases__[0].__name__+self.SubClass.__str__()
