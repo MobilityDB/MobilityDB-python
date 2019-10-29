@@ -21,4 +21,4 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
             return new_list
 
     def __str__(self):
-        return "{}'[{}]'".format("(Sequence)", self.getInstants())
+        return "{}'[{}]'".format("", self.getInstants())

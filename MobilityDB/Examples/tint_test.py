@@ -21,7 +21,7 @@ try:
     """
 
     var1 = TINTS('{[10@2019-09-08, 20@2019-09-09], [20@2019-09-10]}')
-    print(var1.sequenceN(0))
+    print(var1)
 
 except psycopg2.DatabaseError as e:
 

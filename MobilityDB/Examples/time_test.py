@@ -18,6 +18,9 @@ try:
     t2 = TIMESTAMPSET('2019-09-08', '2019-09-10', '2019-09-11')
     print(t2)
 
+    #t3 = PERIODSET('{[2019-09-08, 2019-09-10], (2019-09-11)}')
+    #print(t3)
+
 except psycopg2.DatabaseError as e:
 
     print('Error {e}')

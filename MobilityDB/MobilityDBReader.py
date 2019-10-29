@@ -46,46 +46,30 @@ class MobilityDBReader(Reader):
         valueStr = valueStr.replace('}', '')
         instantsList = valueStr.split(',')
         # Parse every instant in the array
-        if mainClass.BaseValueClass == Point:
-            instants = [cls.readTemporalInst(mainClass, instStr) for instStr in instantsList]
-        elif mainClass.BaseValueClass == int:
-            instants = [cls.readTemporalInst(mainClass, instStr) for instStr in instantsList]
+        instants = [cls.readTemporalInst(mainClass, instStr) for instStr in instantsList]
         return TEMPORALI(instants)
 
     @classmethod
     def readTemporalSeq(cls, mainClass, seqStr=None):
-        instants = None
         seqStr = seqStr.replace('[', '')
         seqStr = seqStr.replace(']', '')
         instantsList = seqStr.split(',')
         # Parse every instant in the sequence
-        if mainClass.BaseValueClass == Point:
-            instants = [cls.readTemporalInst(mainClass, instStr.strip()) for instStr in instantsList]
-        elif mainClass.BaseValueClass == int:
-            instants = [cls.readTemporalInst(mainClass, instStr.strip()) for instStr in instantsList]
+        instants = [cls.readTemporalInst(mainClass, instStr.strip()) for instStr in instantsList]
         return TEMPORALSEQ(instants)
 
     @classmethod
     def readTemporalS(cls, mainClass, inputValue=None):
-        instants = None
         inputValue = inputValue.replace('{', '')
         inputValue = inputValue.replace('}', '')
         sequenceList = re.findall("(\[.+?\])+", inputValue)
-
         # Parse every sequence in the list
-        if mainClass.BaseValueClass == Point:
-            instants = [cls.readTemporalSeq(mainClass, seq.strip()) for seq in sequenceList]
-        elif mainClass.BaseValueClass == int:
-            instants = [cls.readTemporalSeq(mainClass, seq.strip()) for seq in sequenceList]
+        instants = [cls.readTemporalSeq(mainClass, seq.strip()) for seq in sequenceList]
         return TEMPORALS(instants)
 
     @classmethod
     def readPointFromString(cls, valueStr=None):
         valueStr = valueStr.lower()
-        valueStr = valueStr.replace("point(", "")
-        valueStr = valueStr.replace(")", "")
-        num = valueStr.split(" ")
-        if len(num) == 2:
-            return Point(num[0], num[1])
-        elif len(num) == 3:
-            return Point(num[0], num[1], num[3])
+        nums = re.findall("[-+]?[0-9]*\.?[0-9]+", valueStr)
+        return Point(nums)
+

@@ -1,5 +1,5 @@
 # MobilityDB-Python
-MobilityDB-Python is a python package that is used as an API to access MobilityDB. 
+MobilityDB-Python is a python package that is used as an API to access MobilityDB.
 
 Install
 ------------

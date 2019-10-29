@@ -9,4 +9,4 @@ class TEMPORALI(TEMPORALINSTANTS):
         return "InstantSet"
 
     def __str__(self):
-        return "{}'{{{}}}'".format("(InstantSet)", self.getinstants())
+        return "{}'{{{}}}'".format("", self.getinstants())
