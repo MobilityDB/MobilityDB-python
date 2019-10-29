@@ -29,8 +29,14 @@ Usage
     --TGEOMPOINT(SEQUENCE)'[POINT(1.0 2.0)@2019-09-08 00:00:00+02:00, POINT(0.0 2.0)@2019-09-09 00:00:00+02:00, POINT(1.0 1.0)@2019-09-10 00:00:00+02:00]'
     
     --Accessor functions
-    getValue()
-    getValues()
-    getTimestamp()
-    startInstant()
-    endInstant()
+    getValue(ttype)
+    getValues(ttype)
+    getTimestamp(ttype)
+    timespan(ttype)
+    startInstant(ttype)
+    endInstant(ttype)
+    startValue(ttype)
+    endValue(ttype)
+    instantsN(ttype, n)
+    getType(ttype)
+    

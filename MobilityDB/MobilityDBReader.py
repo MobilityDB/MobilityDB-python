@@ -14,19 +14,19 @@ class MobilityDBReader(Reader):
         # Check the temporal type and read it
         if '{' in value and '[' in value:
             MainClass.SubClass = TEMPORALS
-            return MobilityDBReader.readTemporalS(MainClass, TEMPORALS, value)
+            return MobilityDBReader.readTemporalS(MainClass, value)
         elif '[' in value:
             MainClass.SubClass = TEMPORALSEQ
-            return MobilityDBReader.readTemporalSeq(MainClass, TEMPORALSEQ, value)
+            return MobilityDBReader.readTemporalSeq(MainClass, value)
         elif '{' in value:
             MainClass.SubClass = TEMPORALI
-            return MobilityDBReader.readTemporalI(MainClass, TEMPORALI, value)
+            return MobilityDBReader.readTemporalI(MainClass, value)
         else:
             MainClass.SubClass = TEMPORALINST
-            return MobilityDBReader.readTemporalInst(MainClass, TEMPORALINST, value)
+            return MobilityDBReader.readTemporalInst(MainClass, value)
 
     @classmethod
-    def readTemporalInst(cls, mainClass, temporalClass, valueStr=None):
+    def readTemporalInst(cls, mainClass, valueStr=None):
         value = None
         inst = valueStr.split('@')
         if mainClass.BaseValueClass == Point:
@@ -37,36 +37,36 @@ class MobilityDBReader(Reader):
         elif mainClass.BaseValueClass == int:
             value = int(inst[0])
         time = parse(inst[1])
-        return temporalClass(value, time)
+        return TEMPORALINST(value, time)
 
     @classmethod
-    def readTemporalI(cls, mainClass, temporalClass, valueStr=None):
+    def readTemporalI(cls, mainClass, valueStr=None):
         instants = None
         valueStr = valueStr.replace('{', '')
         valueStr = valueStr.replace('}', '')
         instantsList = valueStr.split(',')
         # Parse every instant in the array
         if mainClass.BaseValueClass == Point:
-            instants = [cls.readTemporalInst(mainClass, TEMPORALINST, instStr) for instStr in instantsList]
+            instants = [cls.readTemporalInst(mainClass, instStr) for instStr in instantsList]
         elif mainClass.BaseValueClass == int:
-            instants = [cls.readTemporalInst(mainClass, TEMPORALINST, instStr) for instStr in instantsList]
-        return temporalClass(instants)
+            instants = [cls.readTemporalInst(mainClass, instStr) for instStr in instantsList]
+        return TEMPORALI(instants)
 
     @classmethod
-    def readTemporalSeq(cls, mainClass, temporalClass, seqStr=None):
+    def readTemporalSeq(cls, mainClass, seqStr=None):
         instants = None
         seqStr = seqStr.replace('[', '')
         seqStr = seqStr.replace(']', '')
         instantsList = seqStr.split(',')
         # Parse every instant in the sequence
         if mainClass.BaseValueClass == Point:
-            instants = [cls.readTemporalInst(mainClass, TEMPORALINST, instStr.strip()) for instStr in instantsList]
+            instants = [cls.readTemporalInst(mainClass, instStr.strip()) for instStr in instantsList]
         elif mainClass.BaseValueClass == int:
-            instants = [cls.readTemporalInst(mainClass, TEMPORALINST, instStr.strip()) for instStr in instantsList]
-        return temporalClass(instants)
+            instants = [cls.readTemporalInst(mainClass, instStr.strip()) for instStr in instantsList]
+        return TEMPORALSEQ(instants)
 
     @classmethod
-    def readTemporalS(cls, mainClass, temporalClass, inputValue=None):
+    def readTemporalS(cls, mainClass, inputValue=None):
         instants = None
         inputValue = inputValue.replace('{', '')
         inputValue = inputValue.replace('}', '')
@@ -74,10 +74,10 @@ class MobilityDBReader(Reader):
 
         # Parse every sequence in the list
         if mainClass.BaseValueClass == Point:
-            instants = [cls.readTemporalSeq(mainClass, TEMPORALSEQ, seq.strip()) for seq in sequenceList]
+            instants = [cls.readTemporalSeq(mainClass, seq.strip()) for seq in sequenceList]
         elif mainClass.BaseValueClass == int:
-            instants = [cls.readTemporalSeq(mainClass, TEMPORALSEQ, seq.strip()) for seq in sequenceList]
-        return temporalClass(instants)
+            instants = [cls.readTemporalSeq(mainClass, seq.strip()) for seq in sequenceList]
+        return TEMPORALS(instants)
 
     @classmethod
     def readPointFromString(cls, valueStr=None):
