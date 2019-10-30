@@ -9,3 +9,9 @@ __all__ = ['psycopg2', 'MobilityDBRegister',
            'TGEOMPOINT', 'TGEOMPOINTINST', 'TGEOMPOINTI', 'TGEOMPOINTSEQ', 'TGEOMPOINTS',
            'TINT', 'TINTINST', 'TINTI', 'TINTSEQ', 'TINTS',
            'PERIOD', 'TIMESTAMPSET', 'PERIODSET']
+
+try:
+    import pkg_resources
+except ImportError:  # pragma: no cover
+    pass
+

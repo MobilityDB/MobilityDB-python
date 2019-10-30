@@ -79,3 +79,8 @@ class TEMPORAL:
         if 0 <= n < self.SubClass.numSequences():
             return self.SubClass.sequences[n]
         raise Exception("ERROR: out of range")
+
+    # Comparison is missing
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return True
