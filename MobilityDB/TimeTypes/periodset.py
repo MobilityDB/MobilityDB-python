@@ -1,6 +1,7 @@
 from .period import PERIOD
 import re
 
+
 class PERIODSET:
     __slots__ = ['periodList']
 

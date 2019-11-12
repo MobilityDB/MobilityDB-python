@@ -1,10 +1,9 @@
-from postgis import Point
-from MobilityDB.TemporalTypes.temporal import TEMPORAL
+from MobilityDB.TemporalTypes import *
 from MobilityDB.MobilityDBReader import MobilityDBReader
 
 
-class TGEOMPOINT(TEMPORAL):
-    BaseValueClass = Point
+class TTEXT(TEMPORAL):
+    BaseValueClass = str
 
     def __init__(self, value=None):
         if isinstance(value, str):
@@ -16,10 +15,34 @@ class TGEOMPOINT(TEMPORAL):
     def read_from_cursor(value, cursor=None):
         if not value:
             return None
-        return TGEOMPOINT(MobilityDBReader.readTemporalType(TGEOMPOINT, value))
+        return TTEXT(MobilityDBReader.readTemporalType(TTEXT, value))
 
     def __str__(self):
         if len(self.__class__.__bases__) == 2:
             return self.__class__.__bases__[0].__name__ + self.SubClass.__str__()
         else:
             return self.__class__.__name__ + self.SubClass.__str__()
+
+
+class TTEXTINST(TTEXT, TEMPORALINST):
+
+    def __init__(self, value=None):
+        super().__init__(value)
+
+
+class TTEXTI(TTEXT, TEMPORALI):
+
+    def __init__(self, value=None):
+        super().__init__(value)
+
+
+class TTEXTSEQ(TTEXT, TEMPORALSEQ):
+
+    def __init__(self, value=None):
+        super().__init__(value)
+
+
+class TTEXTS(TTEXT, TEMPORALS):
+
+    def __init__(self, value=None):
+        super().__init__(value)

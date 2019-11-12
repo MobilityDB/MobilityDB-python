@@ -1,9 +1,9 @@
-from MobilityDB.TemporalTypes.temporal import TEMPORAL
+from MobilityDB.TemporalTypes import *
 from MobilityDB.MobilityDBReader import MobilityDBReader
 
 
-class TINT(TEMPORAL):
-    BaseValueClass = int
+class TFLOAT(TEMPORAL):
+    BaseValueClass = float
 
     def __init__(self, value=None):
         if isinstance(value, str):
@@ -15,10 +15,34 @@ class TINT(TEMPORAL):
     def read_from_cursor(value, cursor=None):
         if not value:
             return None
-        return TINT(MobilityDBReader.readTemporalType(TINT, value))
+        return TFLOAT(MobilityDBReader.readTemporalType(TFLOAT, value))
 
     def __str__(self):
         if len(self.__class__.__bases__) == 2:
             return self.__class__.__bases__[0].__name__ + self.SubClass.__str__()
         else:
             return self.__class__.__name__ + self.SubClass.__str__()
+
+
+class TFLOATINST(TFLOAT, TEMPORALINST):
+
+    def __init__(self, value=None):
+        super().__init__(value)
+
+
+class TFLOATI(TFLOAT, TEMPORALI):
+
+    def __init__(self, value=None):
+        super().__init__(value)
+
+
+class TFLOATSEQ(TFLOAT, TEMPORALSEQ):
+
+    def __init__(self, value=None):
+        super().__init__(value)
+
+
+class TFLOATS(TFLOAT, TEMPORALS):
+
+    def __init__(self, value=None):
+        super().__init__(value)
