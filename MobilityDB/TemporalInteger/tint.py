@@ -18,4 +18,7 @@ class TINT(TEMPORAL):
         return TINT(MobilityDBReader.readTemporalType(TINT, value))
 
     def __str__(self):
-        return self.__class__.__name__ + self.SubClass.__str__()
+        if len(self.__class__.__bases__) == 2:
+            return self.__class__.__bases__[0].__name__ + self.SubClass.__str__()
+        else:
+            return self.__class__.__name__ + self.SubClass.__str__()

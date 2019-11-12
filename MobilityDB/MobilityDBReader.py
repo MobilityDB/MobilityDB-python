@@ -36,6 +36,8 @@ class MobilityDBReader(Reader):
                 value = cls.from_hex(inst[0].strip())
         elif mainClass.BaseValueClass == int:
             value = int(inst[0])
+        elif mainClass.BaseValueClass == float:
+            value = float(inst[0])
         time = parse(inst[1])
         return TEMPORALINST(value, time)
 

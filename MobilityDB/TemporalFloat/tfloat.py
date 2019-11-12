@@ -1,10 +1,9 @@
-from postgis import Point
 from MobilityDB.TemporalTypes.temporal import TEMPORAL
 from MobilityDB.MobilityDBReader import MobilityDBReader
 
 
-class TGEOMPOINT(TEMPORAL):
-    BaseValueClass = Point
+class TFLOAT(TEMPORAL):
+    BaseValueClass = float
 
     def __init__(self, value=None):
         if isinstance(value, str):
@@ -16,7 +15,7 @@ class TGEOMPOINT(TEMPORAL):
     def read_from_cursor(value, cursor=None):
         if not value:
             return None
-        return TGEOMPOINT(MobilityDBReader.readTemporalType(TGEOMPOINT, value))
+        return TFLOAT(MobilityDBReader.readTemporalType(TFLOAT, value))
 
     def __str__(self):
         if len(self.__class__.__bases__) == 2:
