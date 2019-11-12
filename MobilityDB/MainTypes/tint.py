@@ -28,22 +28,34 @@ class TINT(TEMPORAL):
 class TINTINST(TINT, TEMPORALINST):
 
     def __init__(self, value=None):
-        super().__init__(value)
+        if MobilityDBReader.checkTemporalType(value) == TEMPORALINST:
+            super().__init__(value)
+        else:
+            raise Exception("ERROR: Input must be a temporal instant")
 
 
 class TINTI(TINT, TEMPORALI):
 
     def __init__(self, value=None):
-        super().__init__(value)
+        if MobilityDBReader.checkTemporalType(value) == TEMPORALI:
+            super().__init__(value)
+        else:
+            raise Exception("ERROR: Input must be a temporal instants")
 
 
 class TINTSEQ(TINT, TEMPORALSEQ):
 
     def __init__(self, value=None):
-        super().__init__(value)
+        if MobilityDBReader.checkTemporalType(value) == TEMPORALSEQ:
+            super().__init__(value)
+        else:
+            raise Exception("ERROR: Input must be a temporal sequence")
 
 
 class TINTS(TINT, TEMPORALS):
 
     def __init__(self, value=None):
-        super().__init__(value)
+        if MobilityDBReader.checkTemporalType(value) == TEMPORALS:
+            super().__init__(value)
+        else:
+            raise Exception("ERROR: Input must be a temporal sequences")

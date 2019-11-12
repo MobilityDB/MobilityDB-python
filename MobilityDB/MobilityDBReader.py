@@ -72,3 +72,14 @@ class MobilityDBReader(Reader):
         nums = re.findall("[-+]?[0-9]*\.?[0-9]+", valueStr)
         return Point(nums)
 
+    @classmethod
+    def checkTemporalType(cls, value):
+        # Check the temporal type and read it
+        if '{' in value and '[' in value:
+            return TEMPORALS
+        elif '[' in value:
+            return TEMPORALSEQ
+        elif '{' in value:
+            return TEMPORALI
+        else:
+            return TEMPORALINST

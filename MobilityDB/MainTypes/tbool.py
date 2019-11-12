@@ -27,22 +27,34 @@ class TBOOL(TEMPORAL):
 class TBOOLINST(TBOOL, TEMPORALINST):
 
     def __init__(self, value=None):
-        super().__init__(value)
+        if MobilityDBReader.checkTemporalType(value) == TEMPORALINST:
+            super().__init__(value)
+        else:
+            raise Exception("ERROR: Input must be a temporal instant")
 
 
 class TBOOLI(TBOOL, TEMPORALI):
 
     def __init__(self, value=None):
-        super().__init__(value)
+        if MobilityDBReader.checkTemporalType(value) == TEMPORALI:
+            super().__init__(value)
+        else:
+            raise Exception("ERROR: Input must be a temporal instants")
 
 
 class TBOOLSEQ(TBOOL, TEMPORALSEQ):
 
     def __init__(self, value=None):
-        super().__init__(value)
+        if MobilityDBReader.checkTemporalType(value) == TEMPORALSEQ:
+            super().__init__(value)
+        else:
+            raise Exception("ERROR: Input must be a temporal sequence")
 
 
 class TBOOLS(TBOOL, TEMPORALS):
 
     def __init__(self, value=None):
-        super().__init__(value)
+        if MobilityDBReader.checkTemporalType(value) == TEMPORALS:
+            super().__init__(value)
+        else:
+            raise Exception("ERROR: Input must be a temporal sequences")
