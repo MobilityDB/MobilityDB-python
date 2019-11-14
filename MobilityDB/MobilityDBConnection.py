@@ -44,3 +44,7 @@ def MobilityDBRegister(connection):
     cursor.execute("SELECT NULL::TTEXT")
     oid = cursor.description[0][1]
     extensions.register_type(extensions.new_type((oid,), "TTEXT", TTEXT.read_from_cursor))
+
+    cursor.execute("SELECT NULL::TBOX")
+    oid = cursor.description[0][1]
+    extensions.register_type(extensions.new_type((oid,), "TBOX", TBOX.read_from_cursor))

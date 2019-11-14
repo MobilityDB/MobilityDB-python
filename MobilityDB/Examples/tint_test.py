@@ -20,8 +20,14 @@ try:
     print(var1.instantN(1))
     """
 
-    var1 = TINT('[10@2019-09-08, 20@2019-09-09, 20@2019-09-10]')
-    print(var1)
+    #var1 = TINT('[10@2019-09-08, 20@2019-09-09, 20@2019-09-10]')
+    #print(var1)
+
+    var2 = TBOX((10, '2019-09-08 00:00:00+02'), (30, '2019-09-10 00:00:00+02'))
+    print(var2)
+    cursor.execute('SELECT c1::tbox from tintseq;')
+    colVal = cursor.fetchone()
+    print(colVal[0])
 
 except psycopg2.DatabaseError as e:
 
