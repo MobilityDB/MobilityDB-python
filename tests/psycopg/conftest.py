@@ -15,10 +15,11 @@ def pytest_configure():
     cur.execute('CREATE TABLE IF NOT EXISTS tbl_tfloat (tfloat_col tfloat NOT NULL)')
     cur.execute('CREATE TABLE IF NOT EXISTS tbl_tbool (tbool_col tbool NOT NULL)')
     cur.execute('CREATE TABLE IF NOT EXISTS tbl_ttext (ttext_col ttext NOT NULL)')
+    cur.execute('CREATE TABLE IF NOT EXISTS tbl_tbox (tbox_col tbox NOT NULL)')
 
 
 def pytest_unconfigure():
-    cur.execute('DROP TABLE tbl_tgeompoint, tbl_tgeogpoint, tbl_tint, tbl_tfloat, tbl_tbool, tbl_ttext')
+    cur.execute('DROP TABLE tbl_tgeompoint, tbl_tgeogpoint, tbl_tint, tbl_tfloat, tbl_tbool, tbl_ttext, tbl_tbox')
 
 
 @pytest.fixture
@@ -30,4 +31,5 @@ def cursor():
     cur.execute('TRUNCATE TABLE tbl_tfloat')
     cur.execute('TRUNCATE TABLE tbl_tbool')
     cur.execute('TRUNCATE TABLE tbl_ttext')
+    cur.execute('TRUNCATE TABLE tbl_tbox')
     return cur
