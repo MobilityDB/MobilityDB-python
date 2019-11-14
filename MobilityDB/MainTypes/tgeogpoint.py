@@ -1,9 +1,10 @@
+from postgis import Point
 from MobilityDB.TemporalTypes import *
 from MobilityDB.MobilityDBReader import MobilityDBReader
 
 
-class TFLOAT(TEMPORAL):
-    BaseValueClass = float
+class TGEOGPOINT(TEMPORAL):
+    BaseValueClass = Point
 
     def __init__(self, value=None):
         if isinstance(value, str):
@@ -15,10 +16,10 @@ class TFLOAT(TEMPORAL):
     def read_from_cursor(value, cursor=None):
         if not value:
             return None
-        return TFLOAT(MobilityDBReader.readTemporalType(TFLOAT, value))
+        return TGEOGPOINT(MobilityDBReader.readTemporalType(TGEOGPOINT, value))
 
 
-class TFLOATINST(TFLOAT, TEMPORALINST):
+class TGEOGPOINTINST(TGEOGPOINT, TEMPORALINST):
 
     def __init__(self, value=None):
         if MobilityDBReader.checkTemporalType(value) == TEMPORALINST:
@@ -27,7 +28,7 @@ class TFLOATINST(TFLOAT, TEMPORALINST):
             raise Exception("ERROR: Input must be a temporal instant")
 
 
-class TFLOATI(TFLOAT, TEMPORALI):
+class TGEOGPOINTI(TGEOGPOINT, TEMPORALI):
 
     def __init__(self, value=None):
         if MobilityDBReader.checkTemporalType(value) == TEMPORALI:
@@ -36,7 +37,7 @@ class TFLOATI(TFLOAT, TEMPORALI):
             raise Exception("ERROR: Input must be a temporal instants")
 
 
-class TFLOATSEQ(TFLOAT, TEMPORALSEQ):
+class TGEOGPOINTSEQ(TGEOGPOINT, TEMPORALSEQ):
 
     def __init__(self, value=None):
         if MobilityDBReader.checkTemporalType(value) == TEMPORALSEQ:
@@ -45,7 +46,7 @@ class TFLOATSEQ(TFLOAT, TEMPORALSEQ):
             raise Exception("ERROR: Input must be a temporal sequence")
 
 
-class TFLOATS(TFLOAT, TEMPORALS):
+class TGEOGPOINTS(TGEOGPOINT, TEMPORALS):
 
     def __init__(self, value=None):
         if MobilityDBReader.checkTemporalType(value) == TEMPORALS:

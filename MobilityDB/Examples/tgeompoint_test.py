@@ -4,18 +4,20 @@ connectionObject = None
 
 try:
     # Set the connection parameters to PostgreSQL
-    #connectionObject = psycopg2.connect(host='127.0.0.1', database='sf0_005', user='postgres', password='ulb')
-    #connectionObject.autocommit = True
+    connectionObject = psycopg2.connect(host='127.0.0.1', port=9000, database='sf0_005', user='postgres', password='ulb')
+    connectionObject.autocommit = True
 
     # Register MobilityDB data types
-    #MobilityDBRegister(connectionObject)
+    MobilityDBRegister(connectionObject)
 
-    #cursor = connectionObject.cursor()
+    cursor = connectionObject.cursor()
 
     # TGEOMPOINT(Sequence)
-    #cursor.execute('SELECT trip from trips;')
-    #colVal = cursor.fetchone()[0]
-    #print(colVal)
+    cursor.execute('SELECT trip::tgeogpoint from trips;')
+    colVal = cursor.fetchone()
+    print(colVal[0])
+    t = TGEOGPOINTSEQ('[POINT(-50.5168596804142 -28.210467256605625)@2007-05-29 21:17:36.245000+02:00, POINT(-50.5168596804142 -28.210467256605625)@2007-05-29 22:32:07.970000+02:00]')
+    print(t)
     #print("Start Instant:", colVal.startInstant(), "End Instant: ", colVal.endInstant())
 
     # You can insert

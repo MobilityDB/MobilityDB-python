@@ -6,6 +6,7 @@ from MobilityDB.MobilityDBConnection import MobilityDBRegister, MobilityDB
 
 __all__ = ['psycopg2', 'MobilityDBRegister',
            'TGEOMPOINT', 'TGEOMPOINTINST', 'TGEOMPOINTI', 'TGEOMPOINTSEQ', 'TGEOMPOINTS',
+            'TGEOGPOINT', 'TGEOGPOINTINST', 'TGEOGPOINTI', 'TGEOGPOINTSEQ', 'TGEOGPOINTS',
            'TINT', 'TINTINST', 'TINTI', 'TINTSEQ', 'TINTS',
            'TFLOAT', 'TFLOATINST', 'TFLOATI', 'TFLOATSEQ', 'TFLOATS',
            'TBOOL', 'TBOOLINST', 'TBOOLI', 'TBOOLSEQ', 'TBOOLS',

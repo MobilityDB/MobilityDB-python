@@ -25,6 +25,22 @@ def MobilityDBRegister(connection):
     oid = cursor.description[0][1]
     extensions.register_type(extensions.new_type((oid,), "TGEOMPOINT", TGEOMPOINT.read_from_cursor))
 
+    cursor.execute("SELECT NULL::TGEOGPOINT")
+    oid = cursor.description[0][1]
+    extensions.register_type(extensions.new_type((oid,), "TGEOGPOINT", TGEOGPOINT.read_from_cursor))
+
     cursor.execute("SELECT NULL::TINT")
     oid = cursor.description[0][1]
     extensions.register_type(extensions.new_type((oid,), "TINT", TINT.read_from_cursor))
+
+    cursor.execute("SELECT NULL::TFLOAT")
+    oid = cursor.description[0][1]
+    extensions.register_type(extensions.new_type((oid,), "TFLOAT", TFLOAT.read_from_cursor))
+
+    cursor.execute("SELECT NULL::TBOOL")
+    oid = cursor.description[0][1]
+    extensions.register_type(extensions.new_type((oid,), "TBOOL", TBOOL.read_from_cursor))
+
+    cursor.execute("SELECT NULL::TTEXT")
+    oid = cursor.description[0][1]
+    extensions.register_type(extensions.new_type((oid,), "TTEXT", TTEXT.read_from_cursor))

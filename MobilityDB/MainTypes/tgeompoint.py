@@ -18,12 +18,6 @@ class TGEOMPOINT(TEMPORAL):
             return None
         return TGEOMPOINT(MobilityDBReader.readTemporalType(TGEOMPOINT, value))
 
-    def __str__(self):
-        if len(self.__class__.__bases__) == 2:
-            return self.__class__.__bases__[0].__name__ + self.SubClass.__str__()
-        else:
-            return self.__class__.__name__ + self.SubClass.__str__()
-
 
 class TGEOMPOINTINST(TGEOMPOINT, TEMPORALINST):
 
