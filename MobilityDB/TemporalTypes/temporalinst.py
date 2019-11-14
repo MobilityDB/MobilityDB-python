@@ -1,5 +1,3 @@
-from bdateutil.parser import parse
-from postgis import Point
 from .temporal import TEMPORAL
 
 

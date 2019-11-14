@@ -18,7 +18,6 @@ setup(
     install_requires=[
         'psycopg2-binary',
         'postgis',
-        'bdateutil',
         'pytest'
     ],
     keywords=['MobilityDB', 'Python'],

@@ -1,5 +1,5 @@
 from postgis.ewkb import Reader
-from bdateutil.parser import parse
+import datetime
 from postgis import Point
 from MobilityDB.TemporalTypes import *
 import re
@@ -36,7 +36,7 @@ class MobilityDBReader(Reader):
                 value = cls.from_hex(inst[0].strip())
         else:
             value = mainClass.BaseValueClass(inst[0])
-        time = parse(inst[1])
+        time = format(inst[1])
         return TEMPORALINST(value, time)
 
     @classmethod

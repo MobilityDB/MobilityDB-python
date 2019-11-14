@@ -1,6 +1,6 @@
 import pytest
 from MobilityDB import *
-from tests.psycopg import *
+
 
 db = psycopg2.connect(host='localhost', dbname="sf0_005", user='postgres', password='ulb')
 db.autocommit = True
@@ -11,7 +11,11 @@ cur = db.cursor()
 
 def pytest_configure():
     cur.execute('CREATE TABLE IF NOT EXISTS tbl_tgeompoint (tgeompoint_col tgeompoint NOT NULL)')
+    cur.execute('CREATE TABLE IF NOT EXISTS tbl_tgeogpoint (tgeogpoint_col tgeogpoint NOT NULL)')
     cur.execute('CREATE TABLE IF NOT EXISTS tbl_tint (tint_col tint NOT NULL)')
+    cur.execute('CREATE TABLE IF NOT EXISTS tbl_tfloat (tfloat_col tfloat NOT NULL)')
+    cur.execute('CREATE TABLE IF NOT EXISTS tbl_tbool (tbool_col tbool NOT NULL)')
+    cur.execute('CREATE TABLE IF NOT EXISTS tbl_ttext (ttext_col ttext NOT NULL)')
 
 
 def pytest_unconfigure():
