@@ -19,7 +19,7 @@ def pytest_configure():
 
 
 def pytest_unconfigure():
-    cur.execute('DROP TABLE tbl_tgeompoint, tbl_tint')
+    cur.execute('DROP TABLE tbl_tgeompoint, tbl_tgeogpoint, tbl_tint, tbl_tfloat, tbl_tbool, tbl_ttext')
 
 
 
@@ -27,5 +27,9 @@ def pytest_unconfigure():
 def cursor():
     # Make sure tables are clean.
     cur.execute('TRUNCATE TABLE tbl_tgeompoint')
+    cur.execute('TRUNCATE TABLE tbl_tgeogpoint')
     cur.execute('TRUNCATE TABLE tbl_tint')
+    cur.execute('TRUNCATE TABLE tbl_tfloat')
+    cur.execute('TRUNCATE TABLE tbl_tbool')
+    cur.execute('TRUNCATE TABLE tbl_ttext')
     return cur
