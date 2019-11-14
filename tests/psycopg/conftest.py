@@ -1,7 +1,6 @@
 import pytest
 from MobilityDB import *
 
-
 db = psycopg2.connect(host='localhost', dbname="sf0_005", user='postgres', password='ulb')
 db.autocommit = True
 
@@ -20,7 +19,6 @@ def pytest_configure():
 
 def pytest_unconfigure():
     cur.execute('DROP TABLE tbl_tgeompoint, tbl_tgeogpoint, tbl_tint, tbl_tfloat, tbl_tbool, tbl_ttext')
-
 
 
 @pytest.fixture
