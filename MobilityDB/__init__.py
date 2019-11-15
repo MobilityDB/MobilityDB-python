@@ -13,10 +13,4 @@ __all__ = ['psycopg2', 'MobilityDBRegister',
            'TBOOL', 'TBOOLINST', 'TBOOLI', 'TBOOLSEQ', 'TBOOLS',
            'TTEXT', 'TTEXTINST', 'TTEXTI', 'TTEXTSEQ', 'TTEXTS',
            'PERIOD', 'TIMESTAMPSET', 'PERIODSET',
-           'TBOX']
-
-try:
-    import pkg_resources
-except ImportError:  # pragma: no cover
-    pass
-
+           'TBOX', 'STBOX']
