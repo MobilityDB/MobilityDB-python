@@ -7,8 +7,7 @@ class PERIODSET:
 
     # constructor is missing
     def __init__(self, value=None):
-        sequenceList = re.findall("((\[).+?\])+", value)
-        print(sequenceList[0])
+        value = value.replace('{', '').replace('}', '')
 
     def numPeriods(self):
         return len(self.periodList)
