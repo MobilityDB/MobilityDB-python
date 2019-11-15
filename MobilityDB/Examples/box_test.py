@@ -12,6 +12,15 @@ try:
 
     cursor = connectionObject.cursor()
 
+    var2 = TBOX(10, '2019-09-08 00:00:00+02', 30, '2019-09-10 00:00:00+02')
+    print(var2)
+
+    var2 = TBOX('2019-09-08 00:00:00+02', '2019-09-10 00:00:00+02')
+    print(var2)
+
+    var2 = TBOX(10, 30)
+    print(var2)
+
     var2 = TBOX('TBOX((10, 2019-09-08 00:00:00+02), (30, 2019-09-10 00:00:00+02))')
     print(var2)
 
@@ -48,9 +57,6 @@ try:
     var2 = STBOX(10, 50, 100, '2019-09-08 00:00:00+02', 20, 60, 200, '2019-09-10 00:00:00+02')
     print(var2)
 
-    #cursor.execute('SELECT c1::tbox from tintseq;')
-    #colVal = cursor.fetchone()
-    #print(colVal[0])
 
 except psycopg2.DatabaseError as e:
 

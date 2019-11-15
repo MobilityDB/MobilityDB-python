@@ -72,6 +72,9 @@ Usage
             endInstant(ttype):  ttypeinst
             instantN(ttype, int):  ttypeinst
 
+    2.8  Comparison Operators
+            
+
             
             
         

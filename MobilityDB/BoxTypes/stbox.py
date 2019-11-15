@@ -1,3 +1,4 @@
+from dateutil.parser import parse
 import re
 
 
@@ -5,23 +6,26 @@ class STBOX:
     __slots__ = ['xmin', 'ymin', 'zmin', 'tmin', 'xmax', 'ymax', 'zmax', 'tmax', 'flags']
 
     def __init__(self, *args):
-        if len(args) == 1 and isinstance(args[0], str):
-            self.parseFromString(args[0])
-        else:
-            if len(args) >= 4:
-                self.xmin = args[0]
-                self.xmax = args[int(len(args) / 2)]
-                self.ymin = args[1]
-                self.ymax = args[1 + int(len(args) / 2)]
-                self.flags = 0x04
-            if len(args) >= 6:
-                self.zmin = args[2]
-                self.zmax = args[2 + int(len(args) / 2)]
-                self.flags = self.flags | 0x08
-            if len(args) == 8:
-                self.tmin = args[int(len(args) / 2) - 1]
-                self.tmax = args[(int(len(args) / 2) - 1) + int(len(args) / 2)]
-                self.flags = self.flags | 0x10
+        try:
+            if len(args) == 1 and isinstance(args[0], str):
+                self.parseFromString(args[0])
+            else:
+                if len(args) >= 4:
+                    self.xmin = float(args[0])
+                    self.xmax = float(args[int(len(args) / 2)])
+                    self.ymin = float(args[1])
+                    self.ymax = float(args[1 + int(len(args) / 2)])
+                    self.flags = 0x04
+                if len(args) >= 6:
+                    self.zmin = float(args[2])
+                    self.zmax = float(args[2 + int(len(args) / 2)])
+                    self.flags = self.flags | 0x08
+                if len(args) == 8:
+                    self.tmin = parse(args[int(len(args) / 2) - 1])
+                    self.tmax = parse(args[(int(len(args) / 2) - 1) + int(len(args) / 2)])
+                    self.flags = self.flags | 0x10
+        except:
+            raise Exception("ERROR: wrong parameters")
 
     def parseFromString(self, value):
         if isinstance(value, str) and value is not None:
@@ -86,5 +90,7 @@ class STBOX:
             elif self.flags & 0x04 and not (self.flags & 0x08) and self.flags & 0x10:
                 return "STBOX T((%s, %s, %s), (%s, %s, %s))" % (self.xmin, self.ymin, self.tmin,
                                                                 self.xmax, self.ymax, self.tmax)
-            else:
+            elif self.flags & 0x04:
                 return "STBOX ((%s, %s), (%s, %s))" % (self.xmin, self.ymin, self.xmax, self.ymax)
+            else:
+                raise Exception("ERROR: Wrong values")
