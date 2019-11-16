@@ -1,4 +1,4 @@
-from bdateutil.parser import parse
+from dateutil.parser import parse
 
 
 class TIMESTAMPSET:
@@ -8,6 +8,12 @@ class TIMESTAMPSET:
         self.timeList = []
         for arg in argv:
             self.timeList.append(parse(arg))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            if len(other.timeList) == len(self.timeList) and set(other.timeList).intersection(self.timeList):
+                return True
+        return False
 
     def __str__(self):
         return "{}'{{{}}}'".format(self.__class__.__name__, ', '.join('{}'.format(time.__str__())
