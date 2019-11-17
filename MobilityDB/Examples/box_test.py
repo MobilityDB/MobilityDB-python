@@ -60,6 +60,12 @@ try:
     var2 = STBOX(10, 50, 100, '2019-09-08 00:00:00+02', 20, 60, 200, '2019-09-10 00:00:00+02')
     print(var2)
 
+    var2 = STBOX(10, 50, 100, 20, 60, 200, geodetic=True)
+    print(var2)
+
+    var2 = STBOX(10, 50, 100, '2019-09-08 00:00:00+02', 20, 60, 200, '2019-09-10 00:00:00+02', geodetic=False)
+    print(var2)
+
 
 except psycopg2.DatabaseError as e:
 

@@ -1,13 +1,10 @@
-from dateutil.parser import parse
-
-
 class TIMESTAMPSET:
     __slots__ = ['timeList']
 
     def __init__(self, *argv):
         self.timeList = []
         for arg in argv:
-            self.timeList.append(parse(arg))
+            self.timeList.append(format(arg))
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):

@@ -9,6 +9,15 @@ class TINT(TEMPORAL):
     def __init__(self, value=None):
         if isinstance(value, str):
             self.SubClass = MobilityDBReader.readTemporalType(self.__class__, value)
+        elif isinstance(value, list):
+            try:
+                instants = []
+                for item in value:
+                    if isinstance(item, self.SubClass.__class__.__bases__[0]):
+                        instants.append(item)
+                self.SubClass = TEMPORALI(instants)
+            except:
+                raise Exception("ERROR: different types")
         else:
             self.SubClass = value
 
@@ -31,7 +40,7 @@ class TINTINST(TINT, TEMPORALINST):
 class TINTI(TINT, TEMPORALI):
 
     def __init__(self, value=None):
-        if MobilityDBReader.checkTemporalType(value) == TEMPORALI:
+        if MobilityDBReader.checkTemporalType(value) == TEMPORALI or isinstance(value, list):
             super().__init__(value)
         else:
             raise Exception("ERROR: Input must be a temporal instants")

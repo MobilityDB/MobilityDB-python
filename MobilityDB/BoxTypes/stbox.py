@@ -5,7 +5,7 @@ import re
 class STBOX:
     __slots__ = ['xmin', 'ymin', 'zmin', 'tmin', 'xmax', 'ymax', 'zmax', 'tmax', 'flags']
 
-    def __init__(self, *args):
+    def __init__(self, *args, geodetic=False):
         try:
             if len(args) == 1 and isinstance(args[0], str):
                 self.parseFromString(args[0])
@@ -20,10 +20,13 @@ class STBOX:
                     self.zmin = float(args[2])
                     self.zmax = float(args[2 + int(len(args) / 2)])
                     self.flags = self.flags | 0x08
-                if len(args) == 8:
+                if len(args) >= 8:
                     self.tmin = parse(args[int(len(args) / 2) - 1])
                     self.tmax = parse(args[(int(len(args) / 2) - 1) + int(len(args) / 2)])
                     self.flags = self.flags | 0x10
+                if geodetic or len(args) == 7 or len(args) == 9:
+                    self.flags |= 0x20
+
         except:
             raise Exception("ERROR: wrong parameters")
 

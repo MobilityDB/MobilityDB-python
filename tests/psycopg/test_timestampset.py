@@ -8,7 +8,8 @@ from MobilityDB import TIMESTAMPSET
 ])
 def test_tint_should_round(cursor, expected):
     params = TIMESTAMPSET(expected)
-    cursor.execute("INSERT INTO tbl_timestampset (timestampset_col) VALUES ('%s')" % params)
-    cursor.execute("SELECT timestampset_col FROM tbl_timestampset WHERE timestampset_col='%s'" % params)
+    print(params)
+    cursor.execute("INSERT INTO tbl_timestampset (timestampset_col) VALUES (%s)" % params)
+    cursor.execute("SELECT timestampset_col FROM tbl_timestampset WHERE timestampset_col=%s" % params)
     result = cursor.fetchone()[0]
     # assert result == TIMESTAMPSET(expected)

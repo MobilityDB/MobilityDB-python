@@ -4,20 +4,20 @@ connectionObject = None
 
 try:
     # Set the connection parameters to PostgreSQL
-    connectionObject = psycopg2.connect(host='127.0.0.1', port=9000, database='sf0_005', user='postgres', password='ulb')
-    connectionObject.autocommit = True
+    #connectionObject = psycopg2.connect(host='127.0.0.1', port=5432, database='sf0_005', user='postgres', password='ulb')
+    #connectionObject.autocommit = True
 
     # Register MobilityDB data types
-    MobilityDBRegister(connectionObject)
+    #MobilityDBRegister(connectionObject)
 
-    cursor = connectionObject.cursor()
+    #cursor = connectionObject.cursor()
 
     # TGEOMPOINT(Sequence)
-    cursor.execute('SELECT trip::tgeogpoint from trips;')
-    colVal = cursor.fetchone()
-    print(colVal[0])
-    t = TGEOGPOINTSEQ('[POINT(-50.5168596804142 -28.210467256605625)@2007-05-29 21:17:36.245000+02:00, POINT(-50.5168596804142 -28.210467256605625)@2007-05-29 22:32:07.970000+02:00]')
-    print(t)
+    #cursor.execute('SELECT trip::tgeogpoint from trips;')
+    #colVal = cursor.fetchone()
+    #print(colVal[0])
+    #t = TGEOMPOINTSEQ('[POINT(-50.5168596804142 -28.210467256605625)@2007-05-29 21:17:36.245000+02:00, POINT(-50.5168596804142 -28.210467256605625)@2007-05-29 22:32:07.970000+02:00]')
+    #print(t)
     #print("Start Instant:", colVal.startInstant(), "End Instant: ", colVal.endInstant())
 
     # You can insert
@@ -27,7 +27,7 @@ try:
 
     # Test the constructor of tgeompointinst. Now I am reading a string (Point can be text or wkb).
     # I can also define the structure as TGEOMPOINT[Point(1,2)@time] without the need for defining this inside a string
-    t1 = TGEOMPOINT('[point(1 1)@2019-09-09]')
+    t1 = TGEOMPOINT('point(1 1)@2019-09-09', srid=4326)
     print(t1)
     #print(t1.getTimestamp())
 

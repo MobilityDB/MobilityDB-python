@@ -11,4 +11,4 @@ class TEMPORALS:
         return len(self.sequences)
 
     def __str__(self):
-        return "{}'{{{}}}'".format("", self.getSequences())
+        return "{}{{{}}}".format("", self.getSequences())

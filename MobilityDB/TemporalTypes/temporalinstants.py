@@ -1,4 +1,5 @@
 from .temporal import TEMPORAL
+from .temporalinst import TEMPORALINST
 
 
 class TEMPORALINSTANTS:
@@ -20,4 +21,8 @@ class TEMPORALINSTANTS:
         return self.value[len(self.value) - 1]
 
     def getInstants(self):
-        return ', '.join('{}'.format(inst.value.__str__() + "@" + inst.time.__str__()) for inst in self.value)
+        if len(self.value) > 0 and self.value[0].SubClass.__class__ == TEMPORALINST:
+            return ', '.join('{}'.format(inst.SubClass.value.__str__() + "@" + inst.SubClass.time.__str__())
+                             for inst in self.value)
+        else:
+            return ', '.join('{}'.format(inst.value.__str__() + "@" + inst.time.__str__()) for inst in self.value)
