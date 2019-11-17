@@ -27,8 +27,15 @@ try:
 
     # Test the constructor of tgeompointinst. Now I am reading a string (Point can be text or wkb).
     # I can also define the structure as TGEOMPOINT[Point(1,2)@time] without the need for defining this inside a string
-    t1 = TGEOMPOINT('point(1 1)@2019-09-09', srid=4326)
+    t1 = TGEOMPOINT('[point(1 1)@2019-09-09]', srid=4326)
     print(t1)
+
+    t2 = TGEOMPOINT('[point(1 1)@2019-09-09]', srid=4326)
+    print(t2)
+
+    var3 = TGEOMPOINT([t1, t2])
+    print(var3)
+
     #print(t1.getTimestamp())
 
     #t2 = TGEOMPOINTS('{[point(1 1)@2019-09-09]}')

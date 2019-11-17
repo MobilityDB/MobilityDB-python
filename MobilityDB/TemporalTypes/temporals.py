@@ -1,11 +1,17 @@
 class TEMPORALS:
     __slots__ = ['sequences']
+    Duration = 4
 
     def __init__(self, sequencesList=None):
-        self.sequences = sequencesList
+        if isinstance(sequencesList, list):
+            print(sequencesList[0].__class__.__name__)
+            self.sequences = sequencesList.copy()
 
     def getSequences(self):
-        return ', '.join('[{}]'.format(seq.getInstants()) for seq in self.sequences)
+        if isinstance(self.sequences, list) and len(self.sequences) > 0:
+            return ', '.join('[{}]'.format(seq.getInstants()) for seq in self.sequences)
+        else:
+            return []
 
     def numSequences(self):
         return len(self.sequences)

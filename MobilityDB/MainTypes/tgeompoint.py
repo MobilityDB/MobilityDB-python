@@ -16,11 +16,14 @@ class TGEOMPOINT(TEMPORAL):
                 self.SRID = 0
         elif isinstance(value, list):
             try:
-                instants = []
+                listItems = []
                 for item in value:
                     if isinstance(item, self.SubClass.__class__.__bases__[0]):
-                        instants.append(item)
-                self.SubClass = TEMPORALI(instants)
+                        listItems.append(item.SubClass)
+                if value[0].SubClass.__class__ == TEMPORALINST:
+                    self.SubClass = TEMPORALI(listItems)
+                elif value[0].SubClass.__class__ == TEMPORALSEQ:
+                    self.SubClass = TEMPORALS(listItems)
             except:
                 raise Exception("ERROR: different types")
         else:
@@ -70,7 +73,7 @@ class TGEOMPOINTSEQ(TGEOMPOINT, TEMPORALSEQ):
 class TGEOMPOINTS(TGEOMPOINT, TEMPORALS):
 
     def __init__(self, value=None, srid=None):
-        if MobilityDBReader.checkTemporalType(value) == TEMPORALS:
+        if MobilityDBReader.checkTemporalType(value) == TEMPORALS or isinstance(value, list):
             super().__init__(value, srid)
         else:
             raise Exception("ERROR: Input must be a temporal sequences")

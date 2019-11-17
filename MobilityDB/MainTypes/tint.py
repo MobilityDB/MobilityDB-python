@@ -11,11 +11,14 @@ class TINT(TEMPORAL):
             self.SubClass = MobilityDBReader.readTemporalType(self.__class__, value)
         elif isinstance(value, list):
             try:
-                instants = []
+                listItems = []
                 for item in value:
                     if isinstance(item, self.SubClass.__class__.__bases__[0]):
-                        instants.append(item)
-                self.SubClass = TEMPORALI(instants)
+                        listItems.append(item.SubClass)
+                if value[0].SubClass.__class__ == TEMPORALINST:
+                    self.SubClass = TEMPORALI(listItems)
+                elif value[0].SubClass.__class__ == TEMPORALSEQ:
+                    self.SubClass = TEMPORALS(listItems)
             except:
                 raise Exception("ERROR: different types")
         else:
@@ -58,7 +61,7 @@ class TINTSEQ(TINT, TEMPORALSEQ):
 class TINTS(TINT, TEMPORALS):
 
     def __init__(self, value=None):
-        if MobilityDBReader.checkTemporalType(value) == TEMPORALS:
+        if MobilityDBReader.checkTemporalType(value) == TEMPORALS or isinstance(value, list):
             super().__init__(value)
         else:
             raise Exception("ERROR: Input must be a temporal sequences")

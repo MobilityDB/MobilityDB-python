@@ -80,6 +80,10 @@ class TEMPORAL:
             return self.SubClass.sequences[n]
         raise Exception("ERROR: out of range")
 
+    def instants(self):
+        return self.SubClass.getInstants()
+
+
     # Comparison is missing
     def __eq__(self, other):
         if isinstance(other, self.__class__):
