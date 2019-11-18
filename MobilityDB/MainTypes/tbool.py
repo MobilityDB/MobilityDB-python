@@ -45,7 +45,7 @@ class TBOOLI(TBOOL, TEMPORALI):
         if MobilityDBReader.checkTemporalType(value) == TEMPORALI or isinstance(value, list):
             super().__init__(value)
         else:
-            raise Exception("ERROR: Input must be a temporal instants")
+            raise Exception("ERROR: Input must be a temporal instant set")
 
 
 class TBOOLSEQ(TBOOL, TEMPORALSEQ):
@@ -63,4 +63,4 @@ class TBOOLS(TBOOL, TEMPORALS):
         if MobilityDBReader.checkTemporalType(value) == TEMPORALS or isinstance(value, list):
             super().__init__(value)
         else:
-            raise Exception("ERROR: Input must be a temporal sequences")
+            raise Exception("ERROR: Input must be a temporal sequence set")

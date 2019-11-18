@@ -13,5 +13,5 @@ class TIMESTAMPSET:
         return False
 
     def __str__(self):
-        return "{}'{{{}}}'".format(self.__class__.__name__, ', '.join('{}'.format(time.__str__())
-                                                                      for time in self.timeList))
+        return "'{{{}}}'".format(', '.join('{}'.format(time.__str__())
+            for time in self.timeList))

@@ -45,7 +45,7 @@ class TFLOATI(TFLOAT, TEMPORALI):
         if MobilityDBReader.checkTemporalType(value) == TEMPORALI or isinstance(value, list):
             super().__init__(value)
         else:
-            raise Exception("ERROR: Input must be a temporal instants")
+            raise Exception("ERROR: Input must be a temporal instant set")
 
 
 class TFLOATSEQ(TFLOAT, TEMPORALSEQ):
@@ -63,4 +63,4 @@ class TFLOATS(TFLOAT, TEMPORALS):
         if MobilityDBReader.checkTemporalType(value) == TEMPORALS or isinstance(value, list):
             super().__init__(value)
         else:
-            raise Exception("ERROR: Input must be a temporal sequences")
+            raise Exception("ERROR: Input must be a temporal sequence set")

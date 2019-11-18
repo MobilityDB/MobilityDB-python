@@ -37,10 +37,15 @@ class TGEOMPOINT(TEMPORAL):
 
     def __str__(self):
         if len(self.__class__.__bases__) == 2:
-            return self.__class__.__bases__[0].__name__ + " 'SRID=" + str(
-                self.SRID) + ";" + self.SubClass.__str__() + "'"
+            if self.SRID != 0:
+                return self.__class__.__bases__[0].__name__ + " 'SRID=" + str(self.SRID) + ";" + self.SubClass.__str__() + "'"
+            else:
+                return self.__class__.__bases__[0].__name__ + " '" + self.SubClass.__str__() + "'"
         else:
-            return self.__class__.__name__ + " 'SRID=" + str(self.SRID) + ";" + self.SubClass.__str__() + "'"
+            if self.SRID != 0:
+                return self.__class__.__name__ + " 'SRID=" + str(self.SRID) + ";" + self.SubClass.__str__() + "'"
+            else:
+                return self.__class__.__name__ + "'" + self.SubClass.__str__() + "'"
 
 
 class TGEOMPOINTINST(TGEOMPOINT, TEMPORALINST):
@@ -58,7 +63,7 @@ class TGEOMPOINTI(TGEOMPOINT, TEMPORALI):
         if MobilityDBReader.checkTemporalType(value) == TEMPORALI or isinstance(value, list):
             super().__init__(value, srid)
         else:
-            raise Exception("ERROR: Input must be a temporal instants")
+            raise Exception("ERROR: Input must be a temporal instant set")
 
 
 class TGEOMPOINTSEQ(TGEOMPOINT, TEMPORALSEQ):
@@ -76,4 +81,4 @@ class TGEOMPOINTS(TGEOMPOINT, TEMPORALS):
         if MobilityDBReader.checkTemporalType(value) == TEMPORALS or isinstance(value, list):
             super().__init__(value, srid)
         else:
-            raise Exception("ERROR: Input must be a temporal sequences")
+            raise Exception("ERROR: Input must be a temporal sequence set")
