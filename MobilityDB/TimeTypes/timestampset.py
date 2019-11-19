@@ -1,7 +1,8 @@
 from .period import PERIOD
+from bdateutil.parser import parse
 
 class TIMESTAMPSET:
-    __slots__ = ['timeList']
+    __slots__ = ['datetimeList']
 
     def __init__(self, *argv):
         if len(argv) == 1 and isinstance(argv[0], str):
@@ -9,46 +10,53 @@ class TIMESTAMPSET:
             if ts[0] == '{' and ts[-1] == '}':
                 ts = ts[1:]
                 ts = ts[:-1]
-                self.timeList = []
+                self.datetimeList = []
                 times = ts.split(",")
                 for time in times:
-                    self.timeList.append(format(time.strip()))
+                    self.datetimeList.append(parse(time.strip()))
+                if not self.__valid():
+                    raise Exception("ERROR:  The timestamp values must be increasing")
             else:
                 raise Exception("ERROR:  Could not parse timestamp set value")
         else:
-            self.timeList = []
+            self.datetimeList = []
             for arg in argv:
-                self.timeList.append(format(arg))
+                self.datetimeList.append(parse(arg))
+            if not self.__valid():
+                raise Exception("ERROR:  The timestamp values must be increasing")
+
+    def __valid(self):
+        return all(x < y for x, y in zip(self.datetimeList, self.datetimeList[1:]))
 
     def timespan(self):
-        return PERIOD(min(time for time in self.timeList),
-                      max(time for time in self.timeList), True, True)
+        return PERIOD(self.datetimeList[0], self.datetimeList[-1], True, True)
 
     def numTimestamps(self):
-        return len(self.timeList)
+        return len(self.datetimeList)
 
     def startTimestamp(self):
-        return self.timeList[0]
+        return self.datetimeList[0]
 
     def endTimestamp(self):
-        return self.timeList[-1]
+        return self.datetimeList[-1]
 
     def timestampN(self, n):
         # 1-based
-        if 0 < n <= len(self.timeList):
-            return self.timeList[n - 1]
+        if 0 < n <= len(self.datetimeList):
+            return self.datetimeList[n - 1]
         else:
             raise Exception("ERROR: there is no value at this index")
 
     def timestamps(self):
-        return self.timeList
+        return self.datetimeList
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
-            if len(other.timeList) == len(self.timeList) and set(other.timeList).intersection(self.timeList):
+            if len(other.datetimeList) == len(self.datetimeList) and \
+                set(other.datetimeList).intersection(self.datetimeList):
                 return True
         return False
 
     def __str__(self):
-        return "'{{{}}}'".format(', '.join('{}'.format(time.__str__())
-            for time in self.timeList))
+        return "'{{{}}}'".format(', '.join('{}'.format(datetime.__str__())
+            for datetime in self.datetimeList))

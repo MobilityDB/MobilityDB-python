@@ -27,7 +27,17 @@ class PERIOD:
             self.lowerBound_inc = lower_inc if lower_inc is not None else True
             self.upperBound_inc = upper_inc if upper_inc is not None else False
         else:
-            raise Exception("ERROR:  Could not parse period value")
+            raise Exception("ERROR: Could not parse period value")
+        if not self.__valid():
+            raise Exception("ERROR: Invalid period arguments")
+
+    def __valid(self):
+        if self.lowerBound > self.upperBound:
+            return False
+        if self.lowerBound == self.upperBound and \
+                (self.lowerBound_inc == False or self.upperBound_inc == False):
+            return False
+        return True
 
     def lower(self):
         return self.lowerBound
@@ -40,6 +50,16 @@ class PERIOD:
 
     def upper_inc(self):
         return self.upperBound_inc
+
+    def duration(self):
+        return self
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            if self.lowerBound != other.lowerBound or self.upperBound != other.upperBound or \
+                self.lowerBound_inc != other.lowerBound_inc or self.upperBound_inc != other.upperBound_inc:
+                return False
+        return True
 
     def __str__(self):
         lower_str = '[' if self.lowerBound_inc else '('
