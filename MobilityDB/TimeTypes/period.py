@@ -41,6 +41,9 @@ class PERIOD:
     def upper_inc(self):
         return self.upperBound_inc
 
+    def duration(self):
+        return self
+
     def __str__(self):
         lower_str = '[' if self.lowerBound_inc else '('
         upper_str = ']' if self.upperBound_inc else ')'
