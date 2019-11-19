@@ -1,0 +1,1034 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MobilityDB package &mdash; MobilityDB-Python 0.01 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MobilityDB-Python
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">MobilityDB package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-MobilityDB.MobilityDBConnection">MobilityDB.MobilityDBConnection module</a></li>
+<li><a class="reference internal" href="#module-MobilityDB.MobilityDBReader">MobilityDB.MobilityDBReader module</a></li>
+<li><a class="reference internal" href="#module-MobilityDB">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MobilityDB-Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>MobilityDB package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/MobilityDB.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mobilitydb-package">
+<h1>MobilityDB package<a class="headerlink" href="#mobilitydb-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MobilityDB.BoxTypes.html">MobilityDB.BoxTypes package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.BoxTypes.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.BoxTypes.html#module-MobilityDB.BoxTypes.stbox">MobilityDB.BoxTypes.stbox module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.BoxTypes.html#module-MobilityDB.BoxTypes.tbox">MobilityDB.BoxTypes.tbox module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.BoxTypes.html#module-MobilityDB.BoxTypes">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MobilityDB.Examples.html">MobilityDB.Examples package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#mobilitydb-examples-box-manual-module">MobilityDB.Examples.box_manual module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.box_test">MobilityDB.Examples.box_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.talpha_manual">MobilityDB.Examples.talpha_manual module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.tbool_test">MobilityDB.Examples.tbool_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.tfloat_test">MobilityDB.Examples.tfloat_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.tgeompoint_test">MobilityDB.Examples.tgeompoint_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.time_manual">MobilityDB.Examples.time_manual module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#mobilitydb-examples-time-test-module">MobilityDB.Examples.time_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.tint_test">MobilityDB.Examples.tint_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.tpoint_manual">MobilityDB.Examples.tpoint_manual module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.ttext_test">MobilityDB.Examples.ttext_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MobilityDB.MainTypes.html">MobilityDB.MainTypes package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.MainTypes.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.MainTypes.html#module-MobilityDB.MainTypes.tbool">MobilityDB.MainTypes.tbool module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.MainTypes.html#module-MobilityDB.MainTypes.tfloat">MobilityDB.MainTypes.tfloat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.MainTypes.html#module-MobilityDB.MainTypes.tgeogpoint">MobilityDB.MainTypes.tgeogpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.MainTypes.html#module-MobilityDB.MainTypes.tgeompoint">MobilityDB.MainTypes.tgeompoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.MainTypes.html#module-MobilityDB.MainTypes.tint">MobilityDB.MainTypes.tint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.MainTypes.html#module-MobilityDB.MainTypes.ttext">MobilityDB.MainTypes.ttext module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.MainTypes.html#module-MobilityDB.MainTypes">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MobilityDB.TemporalTypes.html">MobilityDB.TemporalTypes package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TemporalTypes.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TemporalTypes.html#module-MobilityDB.TemporalTypes.temporal">MobilityDB.TemporalTypes.temporal module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TemporalTypes.html#module-MobilityDB.TemporalTypes.temporali">MobilityDB.TemporalTypes.temporali module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TemporalTypes.html#module-MobilityDB.TemporalTypes.temporalinst">MobilityDB.TemporalTypes.temporalinst module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TemporalTypes.html#module-MobilityDB.TemporalTypes.temporalinstants">MobilityDB.TemporalTypes.temporalinstants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TemporalTypes.html#module-MobilityDB.TemporalTypes.temporals">MobilityDB.TemporalTypes.temporals module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TemporalTypes.html#module-MobilityDB.TemporalTypes.temporalseq">MobilityDB.TemporalTypes.temporalseq module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TemporalTypes.html#module-MobilityDB.TemporalTypes">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MobilityDB.TimeTypes.html">MobilityDB.TimeTypes package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TimeTypes.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TimeTypes.html#module-MobilityDB.TimeTypes.period">MobilityDB.TimeTypes.period module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TimeTypes.html#module-MobilityDB.TimeTypes.periodset">MobilityDB.TimeTypes.periodset module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TimeTypes.html#module-MobilityDB.TimeTypes.timestampset">MobilityDB.TimeTypes.timestampset module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.TimeTypes.html#module-MobilityDB.TimeTypes">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-MobilityDB.MobilityDBConnection">
+<span id="mobilitydb-mobilitydbconnection-module"></span><h2>MobilityDB.MobilityDBConnection module<a class="headerlink" href="#module-MobilityDB.MobilityDBConnection" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="MobilityDB.MobilityDBConnection.MobilityDB">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.MobilityDBConnection.</code><code class="sig-name descname">MobilityDB</code><a class="headerlink" href="#MobilityDB.MobilityDBConnection.MobilityDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="MobilityDB.MobilityDBConnection.MobilityDB.connect">
+<em class="property">classmethod </em><code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param">host_</em>, <em class="sig-param">database_</em>, <em class="sig-param">user_</em>, <em class="sig-param">password_</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.MobilityDBConnection.MobilityDB.connect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="MobilityDB.MobilityDBConnection.MobilityDBRegister">
+<code class="sig-prename descclassname">MobilityDB.MobilityDBConnection.</code><code class="sig-name descname">MobilityDBRegister</code><span class="sig-paren">(</span><em class="sig-param">connection</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.MobilityDBConnection.MobilityDBRegister" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-MobilityDB.MobilityDBReader">
+<span id="mobilitydb-mobilitydbreader-module"></span><h2>MobilityDB.MobilityDBReader module<a class="headerlink" href="#module-MobilityDB.MobilityDBReader" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="MobilityDB.MobilityDBReader.MobilityDBReader">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.MobilityDBReader.</code><code class="sig-name descname">MobilityDBReader</code><span class="sig-paren">(</span><em class="sig-param">stream</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.MobilityDBReader.MobilityDBReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">postgis.ewkb.Reader</span></code></p>
+<dl class="method">
+<dt id="MobilityDB.MobilityDBReader.MobilityDBReader.readTemporalType">
+<em class="property">classmethod </em><code class="sig-name descname">readTemporalType</code><span class="sig-paren">(</span><em class="sig-param">MainClass</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.MobilityDBReader.MobilityDBReader.readTemporalType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.MobilityDBReader.MobilityDBReader.readTemporalInst">
+<em class="property">classmethod </em><code class="sig-name descname">readTemporalInst</code><span class="sig-paren">(</span><em class="sig-param">mainClass</em>, <em class="sig-param">valueStr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.MobilityDBReader.MobilityDBReader.readTemporalInst" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.MobilityDBReader.MobilityDBReader.readTemporalI">
+<em class="property">classmethod </em><code class="sig-name descname">readTemporalI</code><span class="sig-paren">(</span><em class="sig-param">mainClass</em>, <em class="sig-param">valueStr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.MobilityDBReader.MobilityDBReader.readTemporalI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.MobilityDBReader.MobilityDBReader.readTemporalSeq">
+<em class="property">classmethod </em><code class="sig-name descname">readTemporalSeq</code><span class="sig-paren">(</span><em class="sig-param">mainClass</em>, <em class="sig-param">seqStr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.MobilityDBReader.MobilityDBReader.readTemporalSeq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.MobilityDBReader.MobilityDBReader.readTemporalS">
+<em class="property">classmethod </em><code class="sig-name descname">readTemporalS</code><span class="sig-paren">(</span><em class="sig-param">mainClass</em>, <em class="sig-param">inputValue=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.MobilityDBReader.MobilityDBReader.readTemporalS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.MobilityDBReader.MobilityDBReader.readPointFromString">
+<em class="property">classmethod </em><code class="sig-name descname">readPointFromString</code><span class="sig-paren">(</span><em class="sig-param">valueStr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.MobilityDBReader.MobilityDBReader.readPointFromString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.MobilityDBReader.MobilityDBReader.checkTemporalType">
+<em class="property">classmethod </em><code class="sig-name descname">checkTemporalType</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.MobilityDBReader.MobilityDBReader.checkTemporalType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.MobilityDBReader.MobilityDBReader.endianness">
+<code class="sig-name descname">endianness</code><a class="headerlink" href="#MobilityDB.MobilityDBReader.MobilityDBReader.endianness" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.MobilityDBReader.MobilityDBReader.has_m">
+<code class="sig-name descname">has_m</code><a class="headerlink" href="#MobilityDB.MobilityDBReader.MobilityDBReader.has_m" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.MobilityDBReader.MobilityDBReader.has_z">
+<code class="sig-name descname">has_z</code><a class="headerlink" href="#MobilityDB.MobilityDBReader.MobilityDBReader.has_z" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.MobilityDBReader.MobilityDBReader.stream">
+<code class="sig-name descname">stream</code><a class="headerlink" href="#MobilityDB.MobilityDBReader.MobilityDBReader.stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-MobilityDB">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-MobilityDB" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="MobilityDB.MobilityDBRegister">
+<code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">MobilityDBRegister</code><span class="sig-paren">(</span><em class="sig-param">connection</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.MobilityDBRegister" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TGEOMPOINT">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TGEOMPOINT</code><span class="sig-paren">(</span><em class="sig-param">value=None</em>, <em class="sig-param">srid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TGEOMPOINT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporal.TEMPORAL" title="MobilityDB.TemporalTypes.temporal.TEMPORAL"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporal.TEMPORAL</span></code></a></p>
+<p>A representation of TGEOMPOINT.</p>
+<p>TGEOMPOINT is used to represent the evolution of a geometry point over time, e.g., a vehicle trajectory.
+It comes in four durations (Instant, Instant Set, Sequence, Sequence Set).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TGEOMPOINT</span><span class="p">(</span><span class="s2">&quot;srid=4326;Point(1 1)@2019-09-08&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TGEOMPOINT</span><span class="p">(</span><span class="s2">&quot;srid=4326;{Point(1 1)@2019-09-08, Point(2 2)@2019-09-09}&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TGEOMPOINT</span><span class="p">(</span><span class="s2">&quot;srid=4326;[Point(1 1)@2019-09-08, Point(2 2)@2019-09-09]&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TGEOMPOINT</span><span class="p">(</span><span class="s2">&quot;srid=4326;{[Point(1 1)@2019-09-08, Point(2 2)@2019-09-09],[Point(3 3)@2019-09-10]}&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="MobilityDB.TGEOMPOINT.BaseValueClass">
+<code class="sig-name descname">BaseValueClass</code><a class="headerlink" href="#MobilityDB.TGEOMPOINT.BaseValueClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">postgis.point.Point</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.TGEOMPOINT.SRID">
+<code class="sig-name descname">SRID</code><em class="property"> = 0</em><a class="headerlink" href="#MobilityDB.TGEOMPOINT.SRID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TGEOMPOINT.read_from_cursor">
+<em class="property">static </em><code class="sig-name descname">read_from_cursor</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">cursor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TGEOMPOINT.read_from_cursor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a TGEOMPOINT object from the value returned from the cursor. The reader accepts any subclass of
+TGEOMPOINT.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TGEOMPOINTINST">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TGEOMPOINTINST</code><span class="sig-paren">(</span><em class="sig-param">value=None</em>, <em class="sig-param">srid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TGEOMPOINTINST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tgeompoint.TGEOMPOINT" title="MobilityDB.MainTypes.tgeompoint.TGEOMPOINT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tgeompoint.TGEOMPOINT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporalinst.TEMPORALINST" title="MobilityDB.TemporalTypes.temporalinst.TEMPORALINST"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporalinst.TEMPORALINST</span></code></a></p>
+<p>A representation of TGEOMPOINTINST.</p>
+<dl>
+<dt>TGEOMPOINTINST is used to represent a temporal point of instant duration.</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TGEOMPOINTINST</span><span class="p">(</span><span class="s2">&quot;srid=4326;Point(1 1)@2019-09-08&quot;</span><span class="p">)</span>
+<span class="go">    &lt;TGEOMPOINTINST: &#39;TGEOMPOINT(Instant, Point, 4326)&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TGEOMPOINTINST</span><span class="p">(</span><span class="s2">&quot;srid=4326;Point(1 1 1)@2019-09-08&quot;</span><span class="p">)</span>
+<span class="go">    &lt;TGEOMPOINTINST: &#39;TGEOMPOINT(Instant, PointZ, 4326)&#39;&gt;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="MobilityDB.TGEOMPOINTINST.time">
+<code class="sig-name descname">time</code><a class="headerlink" href="#MobilityDB.TGEOMPOINTINST.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.TGEOMPOINTINST.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TGEOMPOINTINST.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TGEOMPOINTI">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TGEOMPOINTI</code><span class="sig-paren">(</span><em class="sig-param">value=None</em>, <em class="sig-param">srid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TGEOMPOINTI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tgeompoint.TGEOMPOINT" title="MobilityDB.MainTypes.tgeompoint.TGEOMPOINT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tgeompoint.TGEOMPOINT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporali.TEMPORALI" title="MobilityDB.TemporalTypes.temporali.TEMPORALI"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporali.TEMPORALI</span></code></a></p>
+<p>A representation of TGEOMPOINTI.</p>
+<dl>
+<dt>TGEOMPOINTI is used to represent a set of discrete instants.</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TGEOMPOINTI</span><span class="p">(</span><span class="s2">&quot;srid=4326;{Point(1 1)@2019-09-08, Point(2 2)@2019-09-09}&quot;</span><span class="p">)</span>
+<span class="go">    &lt;TGEOMPOINTI: &#39;TGEOMPOINT(InstantSet, Point, 4326)&#39;&gt;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="MobilityDB.TGEOMPOINTI.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TGEOMPOINTI.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TGEOMPOINTSEQ">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TGEOMPOINTSEQ</code><span class="sig-paren">(</span><em class="sig-param">value=None</em>, <em class="sig-param">srid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TGEOMPOINTSEQ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tgeompoint.TGEOMPOINT" title="MobilityDB.MainTypes.tgeompoint.TGEOMPOINT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tgeompoint.TGEOMPOINT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ" title="MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ</span></code></a></p>
+<p>A representation of TGEOMPOINTSEQ.</p>
+<dl>
+<dt>TGEOMPOINTSEQ is used to represent a set of connected instants.</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TGEOMPOINTSEQ</span><span class="p">(</span><span class="s2">&quot;srid=4326;[Point(1 1)@2019-09-08, Point(2 2)@2019-09-09]&quot;</span><span class="p">)</span>
+<span class="go">    &lt;TGEOMPOINTSEQ: &#39;TGEOMPOINT(Sequence, Point, 4326)&#39;&gt;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="MobilityDB.TGEOMPOINTSEQ.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TGEOMPOINTSEQ.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TGEOMPOINTS">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TGEOMPOINTS</code><span class="sig-paren">(</span><em class="sig-param">value=None</em>, <em class="sig-param">srid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TGEOMPOINTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tgeompoint.TGEOMPOINT" title="MobilityDB.MainTypes.tgeompoint.TGEOMPOINT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tgeompoint.TGEOMPOINT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporals.TEMPORALS" title="MobilityDB.TemporalTypes.temporals.TEMPORALS"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporals.TEMPORALS</span></code></a></p>
+<p>A representation of TGEOMPOINTS.</p>
+<dl>
+<dt>TGEOMPOINTS is used to represent a set of sequences.</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TGEOMPOINTS</span><span class="p">(</span><span class="s2">&quot;srid=4326;{[Point(1 1)@2019-09-08, Point(2 2)@2019-09-09],[Point(3 3)@2019-09-10]}&quot;</span><span class="p">)</span>
+<span class="go">    &lt;TGEOMPOINTS: &#39;TGEOMPOINT(SequenceSet, Point, 4326)&#39;&gt;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="MobilityDB.TGEOMPOINTS.sequences">
+<code class="sig-name descname">sequences</code><a class="headerlink" href="#MobilityDB.TGEOMPOINTS.sequences" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TGEOGPOINT">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TGEOGPOINT</code><span class="sig-paren">(</span><em class="sig-param">value=None</em>, <em class="sig-param">srid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TGEOGPOINT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporal.TEMPORAL" title="MobilityDB.TemporalTypes.temporal.TEMPORAL"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporal.TEMPORAL</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TGEOGPOINT.BaseValueClass">
+<code class="sig-name descname">BaseValueClass</code><a class="headerlink" href="#MobilityDB.TGEOGPOINT.BaseValueClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">postgis.point.Point</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.TGEOGPOINT.SRID">
+<code class="sig-name descname">SRID</code><em class="property"> = 0</em><a class="headerlink" href="#MobilityDB.TGEOGPOINT.SRID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TGEOGPOINT.read_from_cursor">
+<em class="property">static </em><code class="sig-name descname">read_from_cursor</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">cursor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TGEOGPOINT.read_from_cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TGEOGPOINTINST">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TGEOGPOINTINST</code><span class="sig-paren">(</span><em class="sig-param">value=None</em>, <em class="sig-param">srid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TGEOGPOINTINST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tgeogpoint.TGEOGPOINT" title="MobilityDB.MainTypes.tgeogpoint.TGEOGPOINT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tgeogpoint.TGEOGPOINT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporalinst.TEMPORALINST" title="MobilityDB.TemporalTypes.temporalinst.TEMPORALINST"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporalinst.TEMPORALINST</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TGEOGPOINTINST.time">
+<code class="sig-name descname">time</code><a class="headerlink" href="#MobilityDB.TGEOGPOINTINST.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.TGEOGPOINTINST.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TGEOGPOINTINST.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TGEOGPOINTI">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TGEOGPOINTI</code><span class="sig-paren">(</span><em class="sig-param">value=None</em>, <em class="sig-param">srid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TGEOGPOINTI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tgeogpoint.TGEOGPOINT" title="MobilityDB.MainTypes.tgeogpoint.TGEOGPOINT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tgeogpoint.TGEOGPOINT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporali.TEMPORALI" title="MobilityDB.TemporalTypes.temporali.TEMPORALI"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporali.TEMPORALI</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TGEOGPOINTI.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TGEOGPOINTI.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TGEOGPOINTSEQ">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TGEOGPOINTSEQ</code><span class="sig-paren">(</span><em class="sig-param">value=None</em>, <em class="sig-param">srid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TGEOGPOINTSEQ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tgeogpoint.TGEOGPOINT" title="MobilityDB.MainTypes.tgeogpoint.TGEOGPOINT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tgeogpoint.TGEOGPOINT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ" title="MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TGEOGPOINTSEQ.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TGEOGPOINTSEQ.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TGEOGPOINTS">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TGEOGPOINTS</code><span class="sig-paren">(</span><em class="sig-param">value=None</em>, <em class="sig-param">srid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TGEOGPOINTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tgeogpoint.TGEOGPOINT" title="MobilityDB.MainTypes.tgeogpoint.TGEOGPOINT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tgeogpoint.TGEOGPOINT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporals.TEMPORALS" title="MobilityDB.TemporalTypes.temporals.TEMPORALS"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporals.TEMPORALS</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TGEOGPOINTS.sequences">
+<code class="sig-name descname">sequences</code><a class="headerlink" href="#MobilityDB.TGEOGPOINTS.sequences" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TINT">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TINT</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TINT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporal.TEMPORAL" title="MobilityDB.TemporalTypes.temporal.TEMPORAL"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporal.TEMPORAL</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TINT.BaseValueClass">
+<code class="sig-name descname">BaseValueClass</code><a class="headerlink" href="#MobilityDB.TINT.BaseValueClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">builtins.int</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TINT.read_from_cursor">
+<em class="property">static </em><code class="sig-name descname">read_from_cursor</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">cursor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TINT.read_from_cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TINTINST">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TINTINST</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TINTINST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tint.TINT" title="MobilityDB.MainTypes.tint.TINT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tint.TINT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporalinst.TEMPORALINST" title="MobilityDB.TemporalTypes.temporalinst.TEMPORALINST"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporalinst.TEMPORALINST</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TINTINST.time">
+<code class="sig-name descname">time</code><a class="headerlink" href="#MobilityDB.TINTINST.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.TINTINST.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TINTINST.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TINTI">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TINTI</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TINTI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tint.TINT" title="MobilityDB.MainTypes.tint.TINT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tint.TINT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporali.TEMPORALI" title="MobilityDB.TemporalTypes.temporali.TEMPORALI"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporali.TEMPORALI</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TINTI.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TINTI.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TINTSEQ">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TINTSEQ</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TINTSEQ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tint.TINT" title="MobilityDB.MainTypes.tint.TINT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tint.TINT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ" title="MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TINTSEQ.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TINTSEQ.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TINTS">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TINTS</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TINTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tint.TINT" title="MobilityDB.MainTypes.tint.TINT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tint.TINT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporals.TEMPORALS" title="MobilityDB.TemporalTypes.temporals.TEMPORALS"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporals.TEMPORALS</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TINTS.sequences">
+<code class="sig-name descname">sequences</code><a class="headerlink" href="#MobilityDB.TINTS.sequences" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TFLOAT">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TFLOAT</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TFLOAT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporal.TEMPORAL" title="MobilityDB.TemporalTypes.temporal.TEMPORAL"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporal.TEMPORAL</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TFLOAT.BaseValueClass">
+<code class="sig-name descname">BaseValueClass</code><a class="headerlink" href="#MobilityDB.TFLOAT.BaseValueClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">builtins.float</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TFLOAT.read_from_cursor">
+<em class="property">static </em><code class="sig-name descname">read_from_cursor</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">cursor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TFLOAT.read_from_cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TFLOATINST">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TFLOATINST</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TFLOATINST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tfloat.TFLOAT" title="MobilityDB.MainTypes.tfloat.TFLOAT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tfloat.TFLOAT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporalinst.TEMPORALINST" title="MobilityDB.TemporalTypes.temporalinst.TEMPORALINST"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporalinst.TEMPORALINST</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TFLOATINST.time">
+<code class="sig-name descname">time</code><a class="headerlink" href="#MobilityDB.TFLOATINST.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.TFLOATINST.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TFLOATINST.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TFLOATI">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TFLOATI</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TFLOATI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tfloat.TFLOAT" title="MobilityDB.MainTypes.tfloat.TFLOAT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tfloat.TFLOAT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporali.TEMPORALI" title="MobilityDB.TemporalTypes.temporali.TEMPORALI"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporali.TEMPORALI</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TFLOATI.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TFLOATI.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TFLOATSEQ">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TFLOATSEQ</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TFLOATSEQ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tfloat.TFLOAT" title="MobilityDB.MainTypes.tfloat.TFLOAT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tfloat.TFLOAT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ" title="MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TFLOATSEQ.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TFLOATSEQ.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TFLOATS">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TFLOATS</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TFLOATS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tfloat.TFLOAT" title="MobilityDB.MainTypes.tfloat.TFLOAT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tfloat.TFLOAT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporals.TEMPORALS" title="MobilityDB.TemporalTypes.temporals.TEMPORALS"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporals.TEMPORALS</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TFLOATS.sequences">
+<code class="sig-name descname">sequences</code><a class="headerlink" href="#MobilityDB.TFLOATS.sequences" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TBOOL">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TBOOL</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TBOOL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporal.TEMPORAL" title="MobilityDB.TemporalTypes.temporal.TEMPORAL"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporal.TEMPORAL</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TBOOL.BaseValueClass">
+<code class="sig-name descname">BaseValueClass</code><a class="headerlink" href="#MobilityDB.TBOOL.BaseValueClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">builtins.bool</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TBOOL.read_from_cursor">
+<em class="property">static </em><code class="sig-name descname">read_from_cursor</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">cursor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TBOOL.read_from_cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TBOOLINST">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TBOOLINST</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TBOOLINST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tbool.TBOOL" title="MobilityDB.MainTypes.tbool.TBOOL"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tbool.TBOOL</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporalinst.TEMPORALINST" title="MobilityDB.TemporalTypes.temporalinst.TEMPORALINST"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporalinst.TEMPORALINST</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TBOOLINST.time">
+<code class="sig-name descname">time</code><a class="headerlink" href="#MobilityDB.TBOOLINST.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.TBOOLINST.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TBOOLINST.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TBOOLI">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TBOOLI</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TBOOLI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tbool.TBOOL" title="MobilityDB.MainTypes.tbool.TBOOL"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tbool.TBOOL</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporali.TEMPORALI" title="MobilityDB.TemporalTypes.temporali.TEMPORALI"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporali.TEMPORALI</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TBOOLI.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TBOOLI.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TBOOLSEQ">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TBOOLSEQ</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TBOOLSEQ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tbool.TBOOL" title="MobilityDB.MainTypes.tbool.TBOOL"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tbool.TBOOL</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ" title="MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TBOOLSEQ.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TBOOLSEQ.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TBOOLS">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TBOOLS</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TBOOLS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.tbool.TBOOL" title="MobilityDB.MainTypes.tbool.TBOOL"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.tbool.TBOOL</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporals.TEMPORALS" title="MobilityDB.TemporalTypes.temporals.TEMPORALS"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporals.TEMPORALS</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TBOOLS.sequences">
+<code class="sig-name descname">sequences</code><a class="headerlink" href="#MobilityDB.TBOOLS.sequences" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TTEXT">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TTEXT</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TTEXT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporal.TEMPORAL" title="MobilityDB.TemporalTypes.temporal.TEMPORAL"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporal.TEMPORAL</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TTEXT.BaseValueClass">
+<code class="sig-name descname">BaseValueClass</code><a class="headerlink" href="#MobilityDB.TTEXT.BaseValueClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">builtins.str</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TTEXT.read_from_cursor">
+<em class="property">static </em><code class="sig-name descname">read_from_cursor</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">cursor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TTEXT.read_from_cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TTEXTINST">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TTEXTINST</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TTEXTINST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.ttext.TTEXT" title="MobilityDB.MainTypes.ttext.TTEXT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.ttext.TTEXT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporalinst.TEMPORALINST" title="MobilityDB.TemporalTypes.temporalinst.TEMPORALINST"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporalinst.TEMPORALINST</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TTEXTINST.time">
+<code class="sig-name descname">time</code><a class="headerlink" href="#MobilityDB.TTEXTINST.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.TTEXTINST.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TTEXTINST.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TTEXTI">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TTEXTI</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TTEXTI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.ttext.TTEXT" title="MobilityDB.MainTypes.ttext.TTEXT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.ttext.TTEXT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporali.TEMPORALI" title="MobilityDB.TemporalTypes.temporali.TEMPORALI"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporali.TEMPORALI</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TTEXTI.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TTEXTI.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TTEXTSEQ">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TTEXTSEQ</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TTEXTSEQ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.ttext.TTEXT" title="MobilityDB.MainTypes.ttext.TTEXT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.ttext.TTEXT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ" title="MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporalseq.TEMPORALSEQ</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TTEXTSEQ.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#MobilityDB.TTEXTSEQ.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TTEXTS">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TTEXTS</code><span class="sig-paren">(</span><em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TTEXTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MobilityDB.MainTypes.html#MobilityDB.MainTypes.ttext.TTEXT" title="MobilityDB.MainTypes.ttext.TTEXT"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.MainTypes.ttext.TTEXT</span></code></a>, <a class="reference internal" href="MobilityDB.TemporalTypes.html#MobilityDB.TemporalTypes.temporals.TEMPORALS" title="MobilityDB.TemporalTypes.temporals.TEMPORALS"><code class="xref py py-class docutils literal notranslate"><span class="pre">MobilityDB.TemporalTypes.temporals.TEMPORALS</span></code></a></p>
+<dl class="attribute">
+<dt id="MobilityDB.TTEXTS.sequences">
+<code class="sig-name descname">sequences</code><a class="headerlink" href="#MobilityDB.TTEXTS.sequences" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.PERIOD">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">PERIOD</code><span class="sig-paren">(</span><em class="sig-param">lower</em>, <em class="sig-param">upper=None</em>, <em class="sig-param">lower_inc=None</em>, <em class="sig-param">upper_inc=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIOD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="MobilityDB.PERIOD.lowerBound">
+<code class="sig-name descname">lowerBound</code><a class="headerlink" href="#MobilityDB.PERIOD.lowerBound" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.PERIOD.upperBound">
+<code class="sig-name descname">upperBound</code><a class="headerlink" href="#MobilityDB.PERIOD.upperBound" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.PERIOD.lowerBound_inc">
+<code class="sig-name descname">lowerBound_inc</code><a class="headerlink" href="#MobilityDB.PERIOD.lowerBound_inc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.PERIOD.upperBound_inc">
+<code class="sig-name descname">upperBound_inc</code><a class="headerlink" href="#MobilityDB.PERIOD.upperBound_inc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIOD.lower">
+<code class="sig-name descname">lower</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIOD.lower" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIOD.upper">
+<code class="sig-name descname">upper</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIOD.upper" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIOD.lower_inc">
+<code class="sig-name descname">lower_inc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIOD.lower_inc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIOD.upper_inc">
+<code class="sig-name descname">upper_inc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIOD.upper_inc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIOD.duration">
+<code class="sig-name descname">duration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIOD.duration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TIMESTAMPSET">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TIMESTAMPSET</code><span class="sig-paren">(</span><em class="sig-param">*argv</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TIMESTAMPSET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="MobilityDB.TIMESTAMPSET.datetimeList">
+<code class="sig-name descname">datetimeList</code><a class="headerlink" href="#MobilityDB.TIMESTAMPSET.datetimeList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TIMESTAMPSET.timespan">
+<code class="sig-name descname">timespan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TIMESTAMPSET.timespan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TIMESTAMPSET.numTimestamps">
+<code class="sig-name descname">numTimestamps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TIMESTAMPSET.numTimestamps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TIMESTAMPSET.startTimestamp">
+<code class="sig-name descname">startTimestamp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TIMESTAMPSET.startTimestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TIMESTAMPSET.endTimestamp">
+<code class="sig-name descname">endTimestamp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TIMESTAMPSET.endTimestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TIMESTAMPSET.timestampN">
+<code class="sig-name descname">timestampN</code><span class="sig-paren">(</span><em class="sig-param">n</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TIMESTAMPSET.timestampN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TIMESTAMPSET.timestamps">
+<code class="sig-name descname">timestamps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TIMESTAMPSET.timestamps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.PERIODSET">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">PERIODSET</code><span class="sig-paren">(</span><em class="sig-param">*argv</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIODSET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="MobilityDB.PERIODSET.periodList">
+<code class="sig-name descname">periodList</code><a class="headerlink" href="#MobilityDB.PERIODSET.periodList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIODSET.numPeriods">
+<code class="sig-name descname">numPeriods</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIODSET.numPeriods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIODSET.startPeriod">
+<code class="sig-name descname">startPeriod</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIODSET.startPeriod" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIODSET.endPeriod">
+<code class="sig-name descname">endPeriod</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIODSET.endPeriod" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIODSET.periodN">
+<code class="sig-name descname">periodN</code><span class="sig-paren">(</span><em class="sig-param">n</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIODSET.periodN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIODSET.periods">
+<code class="sig-name descname">periods</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIODSET.periods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.TBOX">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">TBOX</code><span class="sig-paren">(</span><em class="sig-param">*args</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TBOX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="MobilityDB.TBOX.xMin">
+<code class="sig-name descname">xMin</code><a class="headerlink" href="#MobilityDB.TBOX.xMin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.TBOX.tMin">
+<code class="sig-name descname">tMin</code><a class="headerlink" href="#MobilityDB.TBOX.tMin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.TBOX.xMax">
+<code class="sig-name descname">xMax</code><a class="headerlink" href="#MobilityDB.TBOX.xMax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.TBOX.tMax">
+<code class="sig-name descname">tMax</code><a class="headerlink" href="#MobilityDB.TBOX.tMax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.TBOX.flags">
+<code class="sig-name descname">flags</code><a class="headerlink" href="#MobilityDB.TBOX.flags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TBOX.parseFromString">
+<code class="sig-name descname">parseFromString</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TBOX.parseFromString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.TBOX.read_from_cursor">
+<em class="property">static </em><code class="sig-name descname">read_from_cursor</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">cursor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TBOX.read_from_cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="MobilityDB.STBOX">
+<em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">STBOX</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">geodetic=False</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.STBOX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="MobilityDB.STBOX.xmin">
+<code class="sig-name descname">xmin</code><a class="headerlink" href="#MobilityDB.STBOX.xmin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.STBOX.xmax">
+<code class="sig-name descname">xmax</code><a class="headerlink" href="#MobilityDB.STBOX.xmax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.STBOX.ymin">
+<code class="sig-name descname">ymin</code><a class="headerlink" href="#MobilityDB.STBOX.ymin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.STBOX.ymax">
+<code class="sig-name descname">ymax</code><a class="headerlink" href="#MobilityDB.STBOX.ymax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.STBOX.zmin">
+<code class="sig-name descname">zmin</code><a class="headerlink" href="#MobilityDB.STBOX.zmin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.STBOX.zmax">
+<code class="sig-name descname">zmax</code><a class="headerlink" href="#MobilityDB.STBOX.zmax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.STBOX.tmin">
+<code class="sig-name descname">tmin</code><a class="headerlink" href="#MobilityDB.STBOX.tmin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.STBOX.tmax">
+<code class="sig-name descname">tmax</code><a class="headerlink" href="#MobilityDB.STBOX.tmax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="MobilityDB.STBOX.flags">
+<code class="sig-name descname">flags</code><a class="headerlink" href="#MobilityDB.STBOX.flags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.STBOX.parseFromString">
+<code class="sig-name descname">parseFromString</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.STBOX.parseFromString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.STBOX.read_from_cursor">
+<em class="property">static </em><code class="sig-name descname">read_from_cursor</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">cursor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.STBOX.read_from_cursor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MobilityDB Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

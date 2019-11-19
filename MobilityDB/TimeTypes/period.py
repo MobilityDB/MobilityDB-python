@@ -57,7 +57,7 @@ class PERIOD:
     def __eq__(self, other):
         if isinstance(other, self.__class__):
             if self.lowerBound != other.lowerBound or self.upperBound != other.upperBound or \
-                self.lowerBound_inc != other.lowerBound_inc or self.upperBound_inc != other.upperBound_inc:
+                    self.lowerBound_inc != other.lowerBound_inc or self.upperBound_inc != other.upperBound_inc:
                 return False
         return True
 

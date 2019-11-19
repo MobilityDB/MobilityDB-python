@@ -1,6 +1,7 @@
 from .period import PERIOD
 from bdateutil.parser import parse
 
+
 class TIMESTAMPSET:
     __slots__ = ['datetimeList']
 
@@ -53,10 +54,10 @@ class TIMESTAMPSET:
     def __eq__(self, other):
         if isinstance(other, self.__class__):
             if len(other.datetimeList) == len(self.datetimeList) and \
-                set(other.datetimeList).intersection(self.datetimeList):
+                    set(other.datetimeList).intersection(self.datetimeList):
                 return True
         return False
 
     def __str__(self):
         return "'{{{}}}'".format(', '.join('{}'.format(datetime.__str__())
-            for datetime in self.datetimeList))
+                                           for datetime in self.datetimeList))
