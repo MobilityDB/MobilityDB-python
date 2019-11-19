@@ -72,7 +72,7 @@ class TEMPORAL:
         elif self.SubClass.Duration in [2, 3]:
             return self.SubClass.endInstant().value
 
-    def getType(self):
+    def duration(self):
         if self.SubClass.Duration == 1:
             return "Instant"
         elif self.SubClass.Duration == 2:
