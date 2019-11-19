@@ -2,11 +2,24 @@ from MobilityDB.TimeTypes import *
 
 
 class TEMPORAL:
+    """
+    ...
+    General example:
+        >>> var1 = TGEOMPOINTINST('SRID=4326;Point(1 1)@2019-09-10')
+        >>> var2 = TINTINST('10@2019-09-10')
+    """
     BaseValueClass = None
     SubClass = None
 
     # Accessor functions
     def getValue(self):
+        """
+        It is used to retrieve the base value [getValue():  base]
+            >>> var1.getValue()
+                <Point: Geometry(Point, 4326)>
+            >>> var2.getValue()
+                10
+        """
         if self.SubClass.Duration == 1:
             return self.SubClass.value
         raise Exception("ERROR: Input must be a temporal instant")

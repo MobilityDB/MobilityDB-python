@@ -146,6 +146,12 @@
 <dt id="MobilityDB.TemporalTypes.temporal.TEMPORAL">
 <em class="property">class </em><code class="sig-prename descclassname">MobilityDB.TemporalTypes.temporal.</code><code class="sig-name descname">TEMPORAL</code><a class="headerlink" href="#MobilityDB.TemporalTypes.temporal.TEMPORAL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>…
+General example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">var1</span> <span class="o">=</span> <span class="n">TGEOMPOINTINST</span><span class="p">(</span><span class="s1">&#39;SRID=4326;Point(1 1)@2019-09-10&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">var2</span> <span class="o">=</span> <span class="n">TINTINST</span><span class="p">(</span><span class="s1">&#39;10@2019-09-10&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="MobilityDB.TemporalTypes.temporal.TEMPORAL.BaseValueClass">
 <code class="sig-name descname">BaseValueClass</code><em class="property"> = None</em><a class="headerlink" href="#MobilityDB.TemporalTypes.temporal.TEMPORAL.BaseValueClass" title="Permalink to this definition">¶</a></dt>
@@ -159,7 +165,16 @@
 <dl class="method">
 <dt id="MobilityDB.TemporalTypes.temporal.TEMPORAL.getValue">
 <code class="sig-name descname">getValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TemporalTypes.temporal.TEMPORAL.getValue" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl>
+<dt>It is used to retrieve the base value [getValue():  base]</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">var1</span><span class="o">.</span><span class="n">getValue</span><span class="p">()</span>
+<span class="go">    &lt;Point: Geometry(Point, 4326)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">var2</span><span class="o">.</span><span class="n">getValue</span><span class="p">()</span>
+<span class="go">    10</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="MobilityDB.TemporalTypes.temporal.TEMPORAL.getValues">
@@ -360,6 +375,12 @@
 <dt id="MobilityDB.TemporalTypes.TEMPORAL">
 <em class="property">class </em><code class="sig-prename descclassname">MobilityDB.TemporalTypes.</code><code class="sig-name descname">TEMPORAL</code><a class="headerlink" href="#MobilityDB.TemporalTypes.TEMPORAL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>…
+General example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">var1</span> <span class="o">=</span> <span class="n">TGEOMPOINTINST</span><span class="p">(</span><span class="s1">&#39;SRID=4326;Point(1 1)@2019-09-10&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">var2</span> <span class="o">=</span> <span class="n">TINTINST</span><span class="p">(</span><span class="s1">&#39;10@2019-09-10&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="MobilityDB.TemporalTypes.TEMPORAL.BaseValueClass">
 <code class="sig-name descname">BaseValueClass</code><em class="property"> = None</em><a class="headerlink" href="#MobilityDB.TemporalTypes.TEMPORAL.BaseValueClass" title="Permalink to this definition">¶</a></dt>
@@ -373,7 +394,16 @@
 <dl class="method">
 <dt id="MobilityDB.TemporalTypes.TEMPORAL.getValue">
 <code class="sig-name descname">getValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.TemporalTypes.TEMPORAL.getValue" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl>
+<dt>It is used to retrieve the base value [getValue():  base]</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">var1</span><span class="o">.</span><span class="n">getValue</span><span class="p">()</span>
+<span class="go">    &lt;Point: Geometry(Point, 4326)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">var2</span><span class="o">.</span><span class="n">getValue</span><span class="p">()</span>
+<span class="go">    10</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="MobilityDB.TemporalTypes.TEMPORAL.getValues">
