@@ -14,7 +14,7 @@ class TIMESTAMPSET:
                 times = ts.split(",")
                 for time in times:
                     self.datetimeList.append(parse(time.strip()))
-                if self.strictly_increasing() == False:
+                if not self.__valid():
                     raise Exception("ERROR:  The timestamp values must be increasing")
             else:
                 raise Exception("ERROR:  Could not parse timestamp set value")
@@ -22,10 +22,10 @@ class TIMESTAMPSET:
             self.datetimeList = []
             for arg in argv:
                 self.datetimeList.append(parse(arg))
-            if self.strictly_increasing() == False:
+            if not self.__valid():
                 raise Exception("ERROR:  The timestamp values must be increasing")
 
-    def strictly_increasing(self):
+    def __valid(self):
         return all(x < y for x, y in zip(self.datetimeList, self.datetimeList[1:]))
 
     def timespan(self):
