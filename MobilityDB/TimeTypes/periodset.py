@@ -20,6 +20,40 @@ class PERIODSET:
             for arg in argv:
                 self.periodList.append(PERIOD(arg))
 
+    @property
+    def timespan(self):
+        return PERIOD(self.periodList[0].lowerBound, self.periodList[-1].upperBound,
+                      self.periodList[0].lowerBound_inc, self.periodList[-1].upperBound_inc)
+
+    def numTimestamps(self):
+        return len(self.timestamps())
+
+    @property
+    def startTimestamp(self):
+        return self.periodList[0].lowerBound
+
+    @property
+    def endTimestamp(self):
+        return self.periodList[-1].upperBound
+
+    @property
+    def timestampN(self, n):
+        # 1-based
+        if 0 < n <= len(self.timestamps()):
+            return (self.timestamps())[n - 1]
+        else:
+            raise Exception("ERROR: there is no value at this index")
+
+    @property
+    def timestamps(self):
+        timestamps = []
+        for period in self.periodList:
+            timestamps.append(period.lowerBound)
+            timestamps.append(period.upperBound)
+        # Remove duplicates
+        timestamps = list(dict.fromkeys(timestamps))
+        return timestamps
+
     def numPeriods(self):
         return len(self.periodList)
 

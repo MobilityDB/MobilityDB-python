@@ -1,7 +1,6 @@
 import datetime
 from bdateutil.parser import parse
 
-
 class PERIOD:
     __slots__ = ['lowerBound', 'upperBound', 'lowerBound_inc', 'upperBound_inc']
 
@@ -59,7 +58,51 @@ class PERIOD:
             if self.lowerBound != other.lowerBound or self.upperBound != other.upperBound or \
                     self.lowerBound_inc != other.lowerBound_inc or self.upperBound_inc != other.upperBound_inc:
                 return False
-        return True
+            return True
+
+    def _cmp(self, other):
+        if isinstance(other, self.__class__):
+            if self.lowerBound < other.lowerBound:
+                return -1
+            elif self.lowerBound > other.lowerBound:
+                return 1
+            elif self.upperBound < other.upperBound:
+                return -1
+            elif self.upperBound > other.upperBound:
+                return 1
+            elif self.lowerBound_inc and not other.lowerBound_inc:
+                return -1
+            elif not self.lowerBound_inc and other.lowerBound_inc:
+                return 1
+            elif self.upperBound_inc and not other.upperBound_inc:
+                return -1
+            elif not self.upperBound_inc and other.upperBound_inc:
+                return 1
+            return 0
+
+    def __lt__(self, other):
+        if isinstance(other, self.__class__):
+            if self._cmp(other) == -1:
+                return True
+            return False
+
+    def __le__(self, other):
+        if isinstance(other, self.__class__):
+            if self._cmp(other) == -1 or self._cmp(other) == 0:
+                return True
+            return False
+
+    def __gt__(self, other):
+        if isinstance(other, self.__class__):
+            if self._cmp(other) == 1:
+                return True
+            return False
+
+    def __ge__(self, other):
+        if isinstance(other, self.__class__):
+            if self._cmp(other) == 1 or self._cmp(other) == 0:
+                return True
+            return False
 
     def __str__(self):
         lower_str = '[' if self.lowerBound_inc else '('

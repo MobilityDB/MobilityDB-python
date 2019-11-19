@@ -30,10 +30,14 @@ print("upper_inc:", var1)
 var1 = var.duration()
 print("duration:", var1)
 
-# Comparison
+# Comparisons
 var1 = PERIOD('2019-09-08', '2019-09-10', True, True)
 var2 = PERIOD('2019-09-08', '2019-09-10', False, True)
-print("Equal:", var1 == var2)
+print("Eq:", var1 == var2)
+print("Lt:", var1 < var2)
+print("Le:", var1 <= var2)
+print("Gt:", var1 > var2)
+print("Ge:", var1 >= var2)
 
 print("\n# TIMESTAMPSET")
 
@@ -80,3 +84,28 @@ var = PERIODSET('[2019-09-08, 2019-09-10]', '[2019-09-11, 2019-09-12)', \
     '[2019-09-13,2019-09-13]', '(2019-09-14, 2019-09-15)')
 print("Constructor elements:",var)
 
+# Accessor functions
+var1 = var.timespan()
+print("Timespan:", var1)
+
+var1 = var.numTimestamps()
+print("numTimestamps:", var1)
+var1 = var.startTimestamp()
+print("startTimestamp:", var1)
+var1 = var.endTimestamp()
+print("endTimestamp:", var1)
+var1 = var.timestampN(1)
+print("timestampN(1):", var1)
+var1 = var.timestamps()
+print("timestamps:", var1)
+
+var1 = var.numPeriods()
+print("numPeriods:", var1)
+var1 = var.startPeriod()
+print("startPeriod:", var1)
+var1 = var.endPeriod()
+print("endPeriod:", var1)
+var1 = var.periodN(1)
+print("periodN(1):", var1)
+var1 = var.periods()
+print("periods:", var1)

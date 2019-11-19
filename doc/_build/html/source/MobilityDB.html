@@ -173,8 +173,8 @@
 <li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.tbool_test">MobilityDB.Examples.tbool_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.tfloat_test">MobilityDB.Examples.tfloat_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.tgeompoint_test">MobilityDB.Examples.tgeompoint_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.time_manual">MobilityDB.Examples.time_manual module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#mobilitydb-examples-time-test-module">MobilityDB.Examples.time_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#mobilitydb-examples-time-manual-module">MobilityDB.Examples.time_manual module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.time_test">MobilityDB.Examples.time_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.tint_test">MobilityDB.Examples.tint_test module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.tpoint_manual">MobilityDB.Examples.tpoint_manual module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="MobilityDB.Examples.html#module-MobilityDB.Examples.ttext_test">MobilityDB.Examples.ttext_test module</a></li>
@@ -854,34 +854,59 @@ TGEOMPOINT.</p>
 <dt id="MobilityDB.PERIODSET">
 <em class="property">class </em><code class="sig-prename descclassname">MobilityDB.</code><code class="sig-name descname">PERIODSET</code><span class="sig-paren">(</span><em class="sig-param">*argv</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIODSET" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="attribute">
-<dt id="MobilityDB.PERIODSET.periodList">
-<code class="sig-name descname">periodList</code><a class="headerlink" href="#MobilityDB.PERIODSET.periodList" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt id="MobilityDB.PERIODSET.timespan">
+<em class="property">property </em><code class="sig-name descname">timespan</code><a class="headerlink" href="#MobilityDB.PERIODSET.timespan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIODSET.numTimestamps">
+<em class="property">property </em><code class="sig-name descname">numTimestamps</code><a class="headerlink" href="#MobilityDB.PERIODSET.numTimestamps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIODSET.startTimestamp">
+<em class="property">property </em><code class="sig-name descname">startTimestamp</code><a class="headerlink" href="#MobilityDB.PERIODSET.startTimestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIODSET.endTimestamp">
+<em class="property">property </em><code class="sig-name descname">endTimestamp</code><a class="headerlink" href="#MobilityDB.PERIODSET.endTimestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIODSET.timestampN">
+<em class="property">property </em><code class="sig-name descname">timestampN</code><a class="headerlink" href="#MobilityDB.PERIODSET.timestampN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="MobilityDB.PERIODSET.timestamps">
+<em class="property">property </em><code class="sig-name descname">timestamps</code><a class="headerlink" href="#MobilityDB.PERIODSET.timestamps" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="MobilityDB.PERIODSET.numPeriods">
-<code class="sig-name descname">numPeriods</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIODSET.numPeriods" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">numPeriods</code><a class="headerlink" href="#MobilityDB.PERIODSET.numPeriods" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="MobilityDB.PERIODSET.startPeriod">
-<code class="sig-name descname">startPeriod</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIODSET.startPeriod" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">startPeriod</code><a class="headerlink" href="#MobilityDB.PERIODSET.startPeriod" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="MobilityDB.PERIODSET.endPeriod">
-<code class="sig-name descname">endPeriod</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIODSET.endPeriod" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">endPeriod</code><a class="headerlink" href="#MobilityDB.PERIODSET.endPeriod" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="MobilityDB.PERIODSET.periodN">
-<code class="sig-name descname">periodN</code><span class="sig-paren">(</span><em class="sig-param">n</em><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIODSET.periodN" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">periodN</code><a class="headerlink" href="#MobilityDB.PERIODSET.periodN" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="MobilityDB.PERIODSET.periods">
-<code class="sig-name descname">periods</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MobilityDB.PERIODSET.periods" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">periods</code><a class="headerlink" href="#MobilityDB.PERIODSET.periods" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
