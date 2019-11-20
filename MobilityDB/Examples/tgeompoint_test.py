@@ -31,10 +31,16 @@ try:
     print(t1)
 
     t2 = TGEOMPOINT('[point(1 1)@2019-09-09]', srid=4326)
-    print(t2)
+    inst = t2.startInstant()
+    val = inst.getValue()
+    print(val)
+    print(val.x)
+    print(val.y)
+    print(inst.getTimestamp())
 
     var3 = TGEOMPOINT([t1, t2])
     print(var3)
+
 
     #print(t1.getTimestamp())
 

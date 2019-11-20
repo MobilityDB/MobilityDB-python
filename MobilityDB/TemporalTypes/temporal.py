@@ -48,7 +48,7 @@ class TEMPORAL:
         if self.SubClass.Duration == 1:
             return self.SubClass
         elif self.SubClass.Duration in [2, 3]:
-            return self.SubClass.startInstant()
+            return self.__class__(self.SubClass.startInstant())
         else:
             raise Exception("ERROR:  Could not parse temporal value")
 
