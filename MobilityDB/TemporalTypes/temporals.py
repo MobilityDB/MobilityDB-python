@@ -4,7 +4,6 @@ class TEMPORALS:
 
     def __init__(self, sequencesList=None):
         if isinstance(sequencesList, list):
-            print(sequencesList[0].__class__.__name__)
             self.sequences = sequencesList.copy()
 
     def getSequences(self):
