@@ -2,82 +2,151 @@ from .period import PERIOD
 import re
 
 class PERIODSET:
-    __slots__ = ['periodList']
+	__slots__ = ['periodList']
 
-    def __init__(self, *argv):
-        if len(argv) == 1 and isinstance(argv[0], str):
-            ps = argv[0].strip()
-            if ps[0] == '{' and ps[-1] == '}':
-                self.periodList = []
-                p = re.compile('[\[|\(].*?[^\]\)][\]|\)]')
-                periods = p.findall(ps)
-                for period in periods:
-                    self.periodList.append(PERIOD(period))
-            else:
-                raise Exception("ERROR: Could not parse period set value")
-        else:
-            self.periodList = []
-            for arg in argv:
-                self.periodList.append(PERIOD(arg))
+	def __init__(self, *argv):
+		self.periodList = []
+		# Constructor with a single argument of type string
+		if len(argv) == 1 and isinstance(argv[0], str):
+			ps = argv[0].strip()
+			if ps[0] == '{' and ps[-1] == '}':
+				p = re.compile('[\[|\(].*?[^\]\)][\]|\)]')
+				periods = p.findall(ps)
+				for period in periods:
+					self.periodList.append(PERIOD(period))
+			else:
+				raise Exception("ERROR: Could not parse period set value")
+		# Constructor with a single argument of type list
+		elif len(argv) == 1 and isinstance(argv[0], list):
+			# List of strings representing periods
+			if all(isinstance(arg, str) for arg in argv[0]):
+				for arg in argv[0]:
+					self.periodList.append(PERIOD(arg))
+			# List of periods
+			elif all(isinstance(arg, PERIOD) for arg in argv[0]):
+				for arg in argv[0]:
+					self.periodList.append(arg)
+			else:
+				raise Exception("ERROR: Could not parse period set value")
+		# Constructor with multiple arguments
+		else:
+			# Arguments are of type string
+			if all(isinstance(arg, str) for arg in argv):
+				for arg in argv:
+					self.periodList.append(PERIOD(arg))
+			# Arguments are of type period
+			elif all(isinstance(arg, PERIOD) for arg in argv):
+				for arg in argv:
+					self.periodList.append(arg)
+			else:
+				raise Exception("ERROR: Could not parse period set value")
+		# Verify validity of the resulting instance
+		if not self._valid():
+			raise Exception("ERROR: Invalid period arguments")
 
-    @property
-    def timespan(self):
-        return PERIOD(self.periodList[0].lowerBound, self.periodList[-1].upperBound,
-                      self.periodList[0].lowerBound_inc, self.periodList[-1].upperBound_inc)
+	def _valid(self):
+		return all(x.upperBound < y.lowerBound or \
+			(x.upperBound == y.lowerBound and (not x.upperBound_inc or not x.lowerBound_inc)) \
+			for x, y in zip(self.periodList, self.periodList[1:]))
 
-    def numTimestamps(self):
-        return len(self.timestamps())
+	def timespan(self):
+		"""
+		Interval
+		"""
+		return self.endTimestamp() - self.startTimestamp()
 
-    @property
-    def startTimestamp(self):
-        return self.periodList[0].lowerBound
+	def period(self):
+		"""
+		Period on which the period set is defined ignoring the potential time gaps
+		"""
+		return PERIOD((self.periodList[0]).lowerBound, (self.periodList[-1]).lowerBound,
+			self.periodList[0].lowerBound_inc, self.periodList[-1].lowerBound_inc)
 
-    @property
-    def endTimestamp(self):
-        return self.periodList[-1].upperBound
+	def numTimestamps(self):
+		"""
+		Number of distinct timestamps
+		"""
+		return len(self.timestamps())
 
-    @property
-    def timestampN(self, n):
-        # 1-based
-        if 0 < n <= len(self.timestamps()):
-            return (self.timestamps())[n - 1]
-        else:
-            raise Exception("ERROR: there is no value at this index")
+	def startTimestamp(self):
+		"""
+		Start timestamp
+		"""
+		return self.periodList[0].lowerBound
 
-    @property
-    def timestamps(self):
-        timestamps = []
-        for period in self.periodList:
-            timestamps.append(period.lowerBound)
-            timestamps.append(period.upperBound)
-        # Remove duplicates
-        timestamps = list(dict.fromkeys(timestamps))
-        return timestamps
+	def endTimestamp(self):
+		"""
+		End timestamp
+		"""
+		return self.periodList[-1].upperBound
 
-    def numPeriods(self):
-        return len(self.periodList)
+	def timestampN(self, n):
+		"""
+		N-th distinct timestamp
+		"""
+		# 1-based
+		if 0 < n <= len(self.timestamps()):
+			return (self.timestamps())[n - 1]
+		else:
+			raise Exception("ERROR: there is no value at this index")
 
-    def startPeriod(self):
-        return self.periodList[0]
+	def timestamps(self):
+		"""
+		Distinct timestamps
+		"""
+		timestampList = []
+		for period in self.periodList:
+			timestampList.append(period.lowerBound)
+			timestampList.append(period.upperBound)
+		# Remove duplicates
+		timestampList = list(dict.fromkeys(timestampList))
+		return timestampList
 
-    def endPeriod(self):
-        return self.periodList[self.numPeriods() - 1]
+	def numPeriods(self):
+		"""
+		Number of periods
+		"""
+		return len(self.periodList)
 
-    def periodN(self, n):
-        if 0 <= n < len(self.periodList):
-            return self.periodList[n]
-        else:
-            raise Exception("ERROR: Out of range")
+	def startPeriod(self):
+		"""
+		Start period
+		"""
+		return self.periodList[0]
 
-    def periods(self):
-        return [period for period in self.periodList]
+	def endPeriod(self):
+		"""
+		End period
+		"""
+		return self.periodList[self.numPeriods() - 1]
 
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            if len(other.periodList) == len(self.periodList) and set(other.periodList).intersection(self.periodList):
-                return True
-        return False
+	def periodN(self, n):
+		"""
+		N-th period
+		"""
+		if 0 <= n < len(self.periodList):
+			return self.periodList[n]
+		else:
+			raise Exception("ERROR: Out of range")
 
-    def __str__(self):
-        return "'{{{}}}'".format(', '.join('{}'.format(period.__str__().replace("'",""))
-            for period in self.periodList))
+	def periods(self):
+		"""
+		Periods
+		"""
+		return [period for period in self.periodList]
+
+	def shift(self,timedelta):
+		"""
+		Shift
+		"""
+		return PERIODSET([period.shift(timedelta) for period in self.periodList])
+
+	def __eq__(self, other):
+		if isinstance(other, self.__class__):
+			if len(other.periodList) == len(self.periodList) and set(other.periodList).intersection(self.periodList):
+				return True
+		return False
+
+	def __str__(self):
+		return "'{{{}}}'".format(', '.join('{}'.format(period.__str__().replace("'", ""))
+			for period in self.periodList))

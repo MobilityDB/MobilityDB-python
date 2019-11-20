@@ -1,63 +1,114 @@
-from .period import PERIOD
+from datetime import datetime
+from datetime import timedelta
 from bdateutil.parser import parse
-
+from .period import PERIOD
 
 class TIMESTAMPSET:
-    __slots__ = ['_datetimeList']
+	__slots__ = ['datetimeList']
 
-    def __init__(self, *argv):
-        if len(argv) == 1 and isinstance(argv[0], str):
-            ts = argv[0].strip()
-            if ts[0] == '{' and ts[-1] == '}':
-                ts = ts[1:]
-                ts = ts[:-1]
-                self._datetimeList = []
-                times = ts.split(",")
-                for time in times:
-                    self._datetimeList.append(parse(time.strip()))
-                if not self.__valid():
-                    raise Exception("ERROR:  The timestamp values must be increasing")
-            else:
-                raise Exception("ERROR:  Could not parse timestamp set value")
-        else:
-            self._datetimeList = []
-            for arg in argv:
-                self._datetimeList.append(parse(arg))
-            if not self.__valid():
-                raise Exception("ERROR:  The timestamp values must be increasing")
+	def __init__(self, *argv):
+		# Constructor with a single argument of type string
+		self.datetimeList = []
+		if len(argv) == 1 and isinstance(argv[0], str):
+			ts = argv[0].strip()
+			if ts[0] == '{' and ts[-1] == '}':
+				ts = ts[1:]
+				ts = ts[:-1]
+				times = ts.split(",")
+				for time in times:
+					self.datetimeList.append(parse(time.strip()))
+			else:
+				raise Exception("ERROR: Could not parse timestamp set value")
+		# Constructor with a single argument of type list
+		elif len(argv) == 1 and isinstance(argv[0], list):
+			# List of strings representing datetime values
+			if all(isinstance(arg, str) for arg in argv[0]):
+				for arg in argv[0]:
+					self.datetimeList.append(parse(arg))
+			# List of datetimes
+			elif all(isinstance(arg, datetime) for arg in argv[0]):
+				for arg in argv[0]:
+					self.datetimeList.append(arg)
+			else:
+				raise Exception("ERROR: Could not parse period set value")
+		# Constructor with multiple arguments
+		else:
+			# Arguments are of type string
+			if all(isinstance(arg, str) for arg in argv):
+				for arg in argv:
+					self.datetimeList.append(parse(arg))
+			# Arguments are of type datetime
+			elif all(isinstance(arg, datetime) for arg in argv):
+				for arg in argv:
+					self.datetimeList.append(arg)
+			else:
+				raise Exception("ERROR: Could not parse timestamp set value")
+		# Verify validity of the resulting instance
+		if not self._valid():
+			raise Exception("ERROR: The timestamp values must be increasing")
 
-    def __valid(self):
-        return all(x < y for x, y in zip(self._datetimeList, self._datetimeList[1:]))
+	def _valid(self):
+		return all(x < y for x, y in zip(self.datetimeList, self.datetimeList[1:]))
 
-    def timespan(self):
-        return PERIOD(self._datetimeList[0], self._datetimeList[-1], True, True)
+	def timespan(self):
+		"""
+		Interval
+		"""
+		return self.datetimeList[-1] - self.datetimeList[0]
 
-    def numTimestamps(self):
-        return len(self._datetimeList)
+	def period(self):
+		"""
+		Period on which the timestamp set is defined ignoring the potential time gaps
+		"""
+		return PERIOD(self.datetimeList[0], self.datetimeList[-1], True, True)
 
-    def startTimestamp(self):
-        return self._datetimeList[0]
+	def numTimestamps(self):
+		"""
+		Number of distinct timestamps
+		"""
+		return len(self.datetimeList)
 
-    def endTimestamp(self):
-        return self._datetimeList[-1]
+	def startTimestamp(self):
+		"""
+		Start timestamp
+		"""
+		return self.datetimeList[0]
 
-    def timestampN(self, n):
-        # 1-based
-        if 0 < n <= len(self._datetimeList):
-            return self._datetimeList[n - 1]
-        else:
-            raise Exception("ERROR: there is no value at this index")
+	def endTimestamp(self):
+		"""
+		End timestamp
+		"""
+		return self.datetimeList[-1]
 
-    def timestamps(self):
-        return self._datetimeList
+	def timestampN(self, n):
+		"""
+		N-th distinct timestamp
+		"""
+		# 1-based
+		if 0 < n <= len(self.datetimeList):
+			return self.datetimeList[n - 1]
+		else:
+			raise Exception("ERROR: there is no value at this index")
 
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            if len(other._datetimeList) == len(self._datetimeList) and \
-                    set(other._datetimeList).intersection(self._datetimeList):
-                return True
-        return False
+	def timestamps(self):
+		"""
+		Distinct timestamps
+		"""
+		return self.datetimeList
 
-    def __str__(self):
-        return "'{{{}}}'".format(', '.join('{}'.format(datetime.__str__())
-                                           for datetime in self._datetimeList))
+	def shift(self,timedelta):
+		"""
+		Distinct timestamps
+		"""
+		return TIMESTAMPSET([datetime + timedelta for datetime in self.datetimeList])
+
+	def __eq__(self, other):
+		if isinstance(other, self.__class__):
+			if len(other.datetimeList) == len(self.datetimeList) and \
+					set(other.datetimeList).intersection(self.datetimeList):
+				return True
+		return False
+
+	def __str__(self):
+		return "'{{{}}}'".format(', '.join('{}'.format(datetime.__str__())
+			for datetime in self.datetimeList))
