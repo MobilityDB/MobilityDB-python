@@ -3,6 +3,7 @@ from datetime import timedelta
 from bdateutil.parser import parse
 from .period import PERIOD
 
+
 class TIMESTAMPSET:
 	__slots__ = ['_datetimeList']
 
@@ -96,7 +97,7 @@ class TIMESTAMPSET:
 		"""
 		return self._datetimeList
 
-	def shift(self,timedelta):
+	def shift(self, timedelta):
 		"""
 		Distinct timestamps
 		"""
@@ -111,4 +112,4 @@ class TIMESTAMPSET:
 
 	def __str__(self):
 		return "'{{{}}}'".format(', '.join('{}'.format(datetime.__str__())
-			for datetime in self._datetimeList))
+										   for datetime in self._datetimeList))

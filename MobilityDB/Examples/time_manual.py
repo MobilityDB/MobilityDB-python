@@ -58,10 +58,10 @@ var = TIMESTAMPSET(t1, t2, t3, t4)
 print("Constructor datetimes:", var)
 # Constructor with a single argument of type list of strings
 var = TIMESTAMPSET(['2019-09-08', '2019-09-10', '2019-09-11', '2019-09-12'])
-print("Constructor list of strings:  ",var)
+print("Constructor list of strings:  ", var)
 # Constructor with a single argument of type list of periods
 var = TIMESTAMPSET([t1, t2, t3, t4])
-print("Constructor list of datetimes:",var)
+print("Constructor list of datetimes:", var)
 
 # Error
 # t4 = datetime.strptime('2019-09-11', '%Y-%m-%d')
@@ -95,22 +95,22 @@ var = PERIODSET('{[2019-09-08, 2019-09-10], [2019-09-11, 2019-09-12), \
 print("Constructor string: ", var)
 # Constructor with multiple arguments of type string
 var = PERIODSET('[2019-09-08, 2019-09-10]', '[2019-09-11, 2019-09-12)', \
-	'[2019-09-13,2019-09-13]', '(2019-09-14, 2019-09-15)')
-print("Constructor strings:",var)
+				'[2019-09-13,2019-09-13]', '(2019-09-14, 2019-09-15)')
+print("Constructor strings:", var)
 # Constructor with multiple arguments of type period
 p1 = PERIOD('[2019-09-08, 2019-09-10]')
 p2 = PERIOD('[2019-09-11, 2019-09-12)')
 p3 = PERIOD('[2019-09-13,2019-09-13]')
 p4 = PERIOD('(2019-09-14, 2019-09-15)')
 var = PERIODSET(p1, p2, p3, p4)
-print("Constructor periods:",var)
+print("Constructor periods:", var)
 # Constructor with a single argument of type list of strings
 var = PERIODSET(['[2019-09-08, 2019-09-10]', '[2019-09-11, 2019-09-12)', \
-	'[2019-09-13,2019-09-13]', '(2019-09-14, 2019-09-15)'])
-print("Constructor list of strings:",var)
+				 '[2019-09-13,2019-09-13]', '(2019-09-14, 2019-09-15)'])
+print("Constructor list of strings:", var)
 # Constructor with a single argument of type list of periods
 var = PERIODSET([p1, p2, p3, p4])
-print("Constructor list of periods:",var)
+print("Constructor list of periods:", var)
 
 # Error
 # t4 = datetime.strptime('2019-09-11', '%Y-%m-%d')

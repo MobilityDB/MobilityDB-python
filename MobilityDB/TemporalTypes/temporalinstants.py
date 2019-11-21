@@ -3,26 +3,84 @@ from .temporalinst import TEMPORALINST
 
 
 class TEMPORALINSTANTS:
-	__slots__ = ['value']
+	__slots__ = ['_instantList']
 
-	def __init__(self, instantsList=None):
-		self.value = instantsList
+	def __init__(self, instantList=None):
+		if instantList is not None and len(self.instantList) > 0:
+			self._instantList = instantList
+		else:
+			raise Exception("ERROR: Could not parse temporal value")
+		# Verify validity of the resulting list
+		if not self._valid():
+			raise Exception("ERROR: Timestamps must be increasing")
 
-	def __getitem__(self, item):
-		return self.value[item]
+	def _valid(self):
+		return all(x._time < y._time for x, y in zip(self.instantList, self.instantList[1:]))
 
 	def numInstants(self):
-		return len(self.value)
+		"""
+		Number of distinct instants
+		"""
+		return len(self._instantList)
 
 	def startInstant(self):
-		return self.value[0]
+		"""
+		Start instant
+		"""
+		return self._instantList[0]
 
 	def endInstant(self):
-		return self.value[len(self.value) - 1]
+		"""
+		End instant
+		"""
+		return self._instantList[len(self._instantList) - 1]
 
-	def getInstants(self):
-		if len(self.value) > 0 and self.value[0].SubClass.__class__ == TEMPORALINST:
-			return ', '.join('{}'.format(inst.SubClass.value.__str__() + "@" + inst.SubClass.time.__str__())
-							 for inst in self.value)
+	def instantN(self, n):
+		"""
+		N-th instant
+		"""
+		# 1-based
+		if 0 <= n < len(self._instantList):
+			return self._instantList[n - 1]
 		else:
-			return ', '.join('{}'.format(inst.value.__str__() + "@" + inst.time.__str__()) for inst in self.value)
+			raise Exception("ERROR: Out of range")
+
+	def instants(self):
+		"""
+		Instants
+		"""
+		return self._instantList
+
+	def numTimestamps(self):
+		"""
+		Number of distinct timestamps
+		"""
+		return len(self._instantList)
+
+	def startTimestamp(self):
+		"""
+		Start timestamp
+		"""
+		return self._instantList[0]
+
+	def endTimestamp(self):
+		"""
+		End timestamp
+		"""
+		return self._instantList[len(self._instantList) - 1]
+
+	def timestampN(self, n):
+		"""
+		N-th timestamp
+		"""
+		# 1-based
+		if 0 <= n < len(self._instantList):
+			return self._instantList[n - 1]
+		else:
+			raise Exception("ERROR: Out of range")
+
+	def timestamps(self):
+		"""
+		Timestamps
+		"""
+		return [instant._time for instant in self._instantList]

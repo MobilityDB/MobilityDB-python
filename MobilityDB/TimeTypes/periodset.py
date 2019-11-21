@@ -1,6 +1,7 @@
 from .period import PERIOD
 import re
 
+
 class PERIODSET:
 	__slots__ = ['_periodList']
 
@@ -46,8 +47,8 @@ class PERIODSET:
 
 	def _valid(self):
 		return all(x.upper() < y.lower() or \
-			(x.upper() == y.lower() and (not x.upper_inc() or not x.lower_inc())) \
-			for x, y in zip(self._periodList, self._periodList[1:]))
+				   (x.upper() == y.lower() and (not x.upper_inc() or not x.lower_inc())) \
+				   for x, y in zip(self._periodList, self._periodList[1:]))
 
 	def timespan(self):
 		"""
@@ -60,7 +61,7 @@ class PERIODSET:
 		Period on which the period set is defined ignoring the potential time gaps
 		"""
 		return PERIOD((self._periodList[0]).lower(), (self._periodList[-1]).lower(),
-			self._periodList[0].lower_inc(), self._periodList[-1].lower_inc())
+					  self._periodList[0].lower_inc(), self._periodList[-1].lower_inc())
 
 	def numTimestamps(self):
 		"""
@@ -124,8 +125,9 @@ class PERIODSET:
 		"""
 		N-th period
 		"""
+		# 1-based
 		if 0 <= n < len(self._periodList):
-			return self._periodList[n]
+			return self._periodList[n - 1]
 		else:
 			raise Exception("ERROR: Out of range")
 
@@ -135,7 +137,7 @@ class PERIODSET:
 		"""
 		return [period for period in self._periodList]
 
-	def shift(self,timedelta):
+	def shift(self, timedelta):
 		"""
 		Shift
 		"""
@@ -143,10 +145,11 @@ class PERIODSET:
 
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
-			if len(other._periodList) == len(self._periodList) and set(other._periodList).intersection(self._periodList):
+			if len(other._periodList) == len(self._periodList) and set(other._periodList).intersection(
+					self._periodList):
 				return True
 		return False
 
 	def __str__(self):
 		return "'{{{}}}'".format(', '.join('{}'.format(period.__str__().replace("'", ""))
-			for period in self._periodList))
+										   for period in self._periodList))

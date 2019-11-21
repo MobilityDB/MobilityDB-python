@@ -1,6 +1,7 @@
 import datetime
 from bdateutil.parser import parse
 
+
 class PERIOD:
 	__slots__ = ['_lowerBound', '_upperBound', '_lowerBound_inc', '_upperBound_inc']
 
@@ -37,7 +38,7 @@ class PERIOD:
 		if self._lowerBound > self._upperBound:
 			return False
 		if self._lowerBound == self._upperBound and \
-			(self._lowerBound_inc == False or self._upperBound_inc == False):
+				(self._lowerBound_inc == False or self._upperBound_inc == False):
 			return False
 		return True
 
@@ -76,7 +77,7 @@ class PERIOD:
 		Shift
 		"""
 		return PERIOD(self._lowerBound + timedelta, self._upperBound + timedelta,
-			self._lowerBound_inc, self._upperBound_inc)
+					  self._lowerBound_inc, self._upperBound_inc)
 
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
@@ -135,4 +136,4 @@ class PERIOD:
 		return "'" + lower_str + '{}, {}'.format(self._lowerBound, self._upperBound) + upper_str + "'"
 
 	# TODO
-	#def __repr__(self):
+	# def __repr__(self):

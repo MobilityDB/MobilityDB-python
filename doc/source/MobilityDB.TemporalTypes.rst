@@ -10,7 +10,7 @@ MobilityDB.TemporalTypes.temporal module
 .. automodule:: MobilityDB.TemporalTypes.temporal
 :members:
        :undoc-members:
-       :show-inheritance:
+           :show-inheritance:
 
 MobilityDB.TemporalTypes.temporali module
 -----------------------------------------
@@ -18,7 +18,7 @@ MobilityDB.TemporalTypes.temporali module
 .. automodule:: MobilityDB.TemporalTypes.temporali
 :members:
        :undoc-members:
-       :show-inheritance:
+           :show-inheritance:
 
 MobilityDB.TemporalTypes.temporalinst module
 --------------------------------------------
@@ -26,7 +26,7 @@ MobilityDB.TemporalTypes.temporalinst module
 .. automodule:: MobilityDB.TemporalTypes.temporalinst
 :members:
        :undoc-members:
-       :show-inheritance:
+           :show-inheritance:
 
 MobilityDB.TemporalTypes.temporalinstants module
 ------------------------------------------------
@@ -34,7 +34,7 @@ MobilityDB.TemporalTypes.temporalinstants module
 .. automodule:: MobilityDB.TemporalTypes.temporalinstants
 :members:
        :undoc-members:
-       :show-inheritance:
+           :show-inheritance:
 
 MobilityDB.TemporalTypes.temporals module
 -----------------------------------------
@@ -42,7 +42,7 @@ MobilityDB.TemporalTypes.temporals module
 .. automodule:: MobilityDB.TemporalTypes.temporals
 :members:
        :undoc-members:
-       :show-inheritance:
+           :show-inheritance:
 
 MobilityDB.TemporalTypes.temporalseq module
 -------------------------------------------
@@ -50,7 +50,7 @@ MobilityDB.TemporalTypes.temporalseq module
 .. automodule:: MobilityDB.TemporalTypes.temporalseq
 :members:
        :undoc-members:
-       :show-inheritance:
+           :show-inheritance:
 
 
 Module contents
@@ -59,4 +59,4 @@ Module contents
 .. automodule:: MobilityDB.TemporalTypes
 :members:
        :undoc-members:
-       :show-inheritance:
+           :show-inheritance:

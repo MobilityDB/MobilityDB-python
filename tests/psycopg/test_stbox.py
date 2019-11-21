@@ -16,4 +16,5 @@ def test_tint_should_round(cursor, expected):
 	cursor.execute("INSERT INTO tbl_stbox (stbox_col) VALUES ('%s')" % params)
 	cursor.execute("SELECT stbox_col FROM tbl_stbox WHERE stbox_col='%s'" % params)
 	result = cursor.fetchone()[0]
-	# assert result == STBOX(expected)
+
+# assert result == STBOX(expected)
