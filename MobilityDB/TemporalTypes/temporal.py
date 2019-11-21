@@ -1,113 +1,134 @@
+from abc import abstractmethod
 from MobilityDB.TimeTypes import *
-
 
 class TEMPORAL:
 	"""
 	...
 	General example:
-		>>> var1 = TGEOMPOINTINST('SRID=4326;Point(1 1)@2019-09-10')
-		>>> var2 = TINTINST('10@2019-09-10')
+		>>> var1 = TINTINST('10@2019-09-10')
+		>>> var2 = TGEOMPOINTINST('SRID=4326;Point(1 1)@2019-09-10')
 	"""
 	BaseValueClass = None
 	SubClass = None
 
-	# Accessor functions
+	@classmethod
+	def duration(cls):
+		"""
+		Duration
+		"""
+		pass
+
+	@abstractmethod
 	def getValues(self):
 		"""
 		Values
 		"""
-		if self.SubClass.Duration == 1:
-			return self.SubClass.value
-		elif self.SubClass.Duration == 2:
-			return [inst.value for inst in self.SubClass.value]
-		elif self.SubClass.Duration == 3:
-			return self.SubClass.getDistinctValues(self.BaseValueClass)
+		pass
 
-	@abstractproperty
+	@abstractmethod
+	def getTime(self):
+		"""
+		Time
+		"""
+		pass
+
+	@abstractmethod
+	def timespan(self):
+		"""
+		Timespan
+		"""
+		pass
+
+	@abstractmethod
 	def period(self):
 		"""
 		Period on which the temporal value is defined ignoring potential time gaps
 		"""
 		pass
 
+	@abstractmethod
+	def startValue(self):
+		"""
+		Start value
+		"""
+		pass
+
+	@abstractmethod
+	def endValue(self):
+		"""
+		Start value
+		"""
+		pass
+
+	@abstractmethod
+	def numInstants(self):
+		"""
+		Number of distinct instants
+		"""
+		pass
+
+	@abstractmethod
 	def startInstant(self):
 		"""
 		 Start instant
 		"""
-		if self.SubClass.Duration == 1:
-			return self.SubClass
-		elif self.SubClass.Duration in [2, 3]:
-			return self.__class__(self.SubClass.startInstant())
-		else:
-			raise Exception("ERROR:  Could not parse temporal value")
+		pass
 
+	@abstractmethod
 	def endInstant(self):
 		"""
 		End instant
 		"""
-		if self.SubClass.Duration == 1:
-			return self.SubClass
-		elif self.SubClass.Duration in [2, 3]:
-			return self.SubClass.endInstant()
-		else:
-		raise Exception("ERROR:  Could not parse temporal value")
+		pass
 
-
-	def startValue(self):
-		"""
-
-		"""
-		if self.SubClass.Duration == 1:
-			return self.SubClass.value
-		elif self.SubClass.Duration in [2, 3]:
-			return self.SubClass.startInstant().value
-
-	def endValue(self):
-		"""
-
-		"""
-		if self.SubClass.Duration == 1:
-			return self.SubClass.value
-		elif self.SubClass.Duration in [2, 3]:
-			return self.SubClass.endInstant().value
-
-	def duration(self):
-		"""
-
-		"""
-		if self.SubClass.Duration == 1:
-			return "Instant"
-		elif self.SubClass.Duration == 2:
-			return "InstantSet"
-		elif self.SubClass.Duration == 3:
-			return "Sequence"
-
+	@abstractmethod
 	def instantN(self, n):
 		"""
-
+		N-th instant
 		"""
-		if self.SubClass.Duration == 1 and n == 1:
-			return self.SubClass
-		elif self.SubClass.Duration in [2, 3] and 0 < n < self.SubClass.numInstants():
-			return self.SubClass.value[n - 1]
-		else:
-			raise Exception("ERROR: there is no value at this index")
+		pass
 
-	def sequenceN(self, n):
-		"""
-
-		"""
-		if 0 <= n < self.SubClass.numSequences():
-			return self.SubClass.sequences[n]
-		raise Exception("ERROR: out of range")
-
-
+	@abstractmethod
 	def instants(self):
 		"""
-
+		Instants
 		"""
-		return self.SubClass.getInstants()
+		pass
 
+	@abstractmethod
+	def numTimestamp(self):
+		"""
+		Number of distinct instants
+		"""
+		pass
+
+	@abstractmethod
+	def startTimestamp(self):
+		"""
+		 Start instant
+		"""
+		pass
+
+	@abstractmethod
+	def endTimestamp(self):
+		"""
+		End instant
+		"""
+		pass
+
+	@abstractmethod
+	def timestampN(self, n):
+		"""
+		N-th timestamp
+		"""
+		pass
+
+	@abstractmethod
+	def timestamps(self):
+		"""
+		Timestamps
+		"""
+		pass
 
 	# Comparisons are missing
 	def __eq__(self, other):

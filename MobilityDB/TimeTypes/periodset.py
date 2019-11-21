@@ -47,7 +47,7 @@ class PERIODSET:
 
 	def _valid(self):
 		return all(x.upper() < y.lower() or \
-				   (x.upper() == y.lower() and (not x.upper_inc() or not x.lower_inc())) \
+			(x.upper() == y.lower() and (not x.upper_inc() or not x.lower_inc())) \
 				   for x, y in zip(self._periodList, self._periodList[1:]))
 
 	def timespan(self):

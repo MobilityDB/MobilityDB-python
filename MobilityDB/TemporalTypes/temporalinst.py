@@ -1,13 +1,33 @@
+from datetime import datetime
+from bdateutil.parser import parse
 from .temporal import TEMPORAL
-
+from MobilityDB.TimeTypes.period import PERIOD
 
 class TEMPORALINST(TEMPORAL):
 	__slots__ = ['_value', '_time']
 	Duration = 1
 
-	def __init__(self, value=None, time=None):
-		self._value = value
-		self._time = time
+	def __init__(self, value, time=None):
+		# Constructor with a single argument of type string
+		if time is None and isinstance(value, str):
+			splits = value.split("@")
+			if len(splits == 2):
+				self._value = parse(splits[0])
+				self._time = parse(splits[1])
+			else:
+				raise Exception("ERROR: Could not temporal instant value")
+			print(self._value)
+			print(self._time)
+		# Constructor with two arguments of type string and optional arguments for the bounds
+		elif isinstance(value, str) and isinstance(time, str):
+			self._value = parse(value)
+			self._time = parse(time)
+		else:
+			raise Exception("ERROR: Could not temporal instant value")
+
+	@classmethod
+	def duration(cls):
+		return "Instant"
 
 	def getValue(self):
 		"""
@@ -17,19 +37,25 @@ class TEMPORALINST(TEMPORAL):
 			>>> var2.getValue()
 				10
 		"""
-		return self._value
+		return self.SubClass._value
 
 	def getTimestamp(self):
 		"""
-
+		Timestamp
 		"""
-		return self._time
+		return self.SubClass._time
 
 	def period(self):
 		"""
-
+		Period on which the temporal value is defined
 		"""
-		return PERIOD(self._time, self._time, True, True)
+		return PERIOD(self.getTimestamp(), self.getTimestamp(), True, True)
+
+	def numInstants(self):
+		"""
+		Number of instants
+		"""
+		return 1
 
 	def startInstant(self):
 		"""
@@ -58,35 +84,39 @@ class TEMPORALINST(TEMPORAL):
 		"""
 		return [self]
 
+	def numTimestamps(self):
+		"""
+		Number of distinct instants
+		"""
+		return 1
+
 	def startTimestamp(self):
 		"""
-		Start instant
+		Start timestamp
 		"""
-		return self._time
+		return self.SubClass._time
 
 	def endTimestamp(self):
 		"""
-		End instant
+		End timestamp
 		"""
-		return self._time
+		return self.SubClass._time
 
 	def timestampN(self, n):
 		"""
-		N-th instant
+		N-th distinct timestamp
 		"""
 		if n == 1:
-			return self._time
+			return self.SubClass._time
 		else:
 			raise Exception("ERROR: Out of range")
 
 	def timestamps(self):
 		"""
-		Instants
+		Timestamps
 		"""
-		return [self._time]
+		return [self.SubClass._time]
 
 	def __str__(self):
-		if self.SubClass.__class__ == TEMPORALINST:
-			return self.__class__.__bases__[0].__name__ + " '" + self.SubClass.__str__() + "'"
-		else:
-			return "{}{}".format(self._value.__str__() + "@", self._time.__str__())
+		#return self.__class__.__bases__[0].__name__ + " '" + self.SubClass.__str__() + "'"
+		return "'" + self.SubClass._time.__str__() + '@'+ self.SubClass._time.__str__() + "'"

@@ -1,12 +1,13 @@
 from MobilityDB.TimeTypes.period import PERIOD
 from MobilityDB.TemporalTypes.temporalinstants import TEMPORALINSTANTS
 
+
 class TEMPORALSEQ(TEMPORALINSTANTS):
 	__slots__ = ['_lower_inc', '_upper_inc']
 	Duration = 3
 
-	def __init__(self, instantList=None, lower_inc=None, upper_inc=None):
-		TEMPORALINSTANTS.__init__(self)
+	def __init__(self, instantList, lower_inc=None, upper_inc=None):
+		TEMPORALINSTANTS.__init__(self, instantList)
 		self._lower_inc = lower_inc if lower_inc is not None else True
 		self._upper_inc = upper_inc if upper_inc is not None else True
 		# Verify validity of the resulting instance
@@ -15,6 +16,10 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 
 	def _valid(self):
 		return len(self._instantList) > 1 or (self._lower_inc and self._lower_inc)
+
+	@classmethod
+	def duration(cls):
+		return "Sequence"
 
 	def lower_inc(self):
 		"""
@@ -77,7 +82,10 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 			valueList.append(inst._value)
 		# Remove duplicates
 		valueList = list(dict.fromkeys(valueList))
-		return new_list
+		return valueList
 
 	def __str__(self):
-		return "{}[{}]".format("", self.instants())
+		lower_str = '[' if self._lower_inc else '('
+		upper_str = ']' if self._upper_inc else ')'
+		return lower_str + 	TEMPORALINSTANTS.__str__(self) + upper_str
+
