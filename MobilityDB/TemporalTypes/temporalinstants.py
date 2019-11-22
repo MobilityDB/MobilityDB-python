@@ -11,8 +11,8 @@ class TEMPORALINSTANTS:
 		else:
 			raise Exception("ERROR: Could not parse temporal value")
 		# Verify validity of the resulting list
-		if not self._valid():
-			raise Exception("ERROR: Timestamps must be increasing")
+		#if not self._valid():
+		#	raise Exception("ERROR: Timestamps must be increasing")
 
 	def _valid(self):
 		return all(x._time < y._time for x, y in zip(self._instantList, self._instantList[1:]))

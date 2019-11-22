@@ -42,9 +42,9 @@ class MobilityDBReader(Reader):
 	def readTemporalI(cls, mainClass, valueStr=None):
 		valueStr = valueStr.replace('{', '')
 		valueStr = valueStr.replace('}', '')
-		instantsList = valueStr.split(',')
+		instantList = valueStr.split(',')
 		# Parse every instant in the array
-		instants = [cls.readTemporalInst(mainClass, instStr) for instStr in instantsList]
+		instants = [cls.readTemporalInst(mainClass, instStr) for instStr in instantList]
 		return TEMPORALI(instants)
 
 	@classmethod

@@ -11,19 +11,21 @@ class TEMPORALINST(TEMPORAL):
 		# Constructor with a single argument of type string
 		if time is None and isinstance(value, str):
 			splits = value.split("@")
-			if len(splits == 2):
-				self._value = parse(splits[0])
+			if len(splits) == 2:
+				self._value = splits[0]
 				self._time = parse(splits[1])
 			else:
-				raise Exception("ERROR: Could not temporal instant value")
-			print(self._value)
-			print(self._time)
-		# Constructor with two arguments of type string and optional arguments for the bounds
+				raise Exception("ERROR: Could not parse temporal instant value")
+		# Constructor with two arguments of type string
 		elif isinstance(value, str) and isinstance(time, str):
-			self._value = parse(value)
+			self._value = self.BaseValueClass(value)
 			self._time = parse(time)
+		# Constructor with two arguments of type BaseValueClass and datetime
+		elif isinstance(value, self.BaseValueClass) and isinstance(time, datetime):
+			self._value = value
+			self._time = time
 		else:
-			raise Exception("ERROR: Could not temporal instant value")
+			raise Exception("ERROR: Could not parse temporal instant value")
 
 	@classmethod
 	def duration(cls):
@@ -37,13 +39,13 @@ class TEMPORALINST(TEMPORAL):
 			>>> var2.getValue()
 				10
 		"""
-		return self.SubClass._value
+		return self._value
 
 	def getTimestamp(self):
 		"""
 		Timestamp
 		"""
-		return self.SubClass._time
+		return self._time
 
 	def period(self):
 		"""
@@ -94,20 +96,20 @@ class TEMPORALINST(TEMPORAL):
 		"""
 		Start timestamp
 		"""
-		return self.SubClass._time
+		return self._time
 
 	def endTimestamp(self):
 		"""
 		End timestamp
 		"""
-		return self.SubClass._time
+		return self._time
 
 	def timestampN(self, n):
 		"""
 		N-th distinct timestamp
 		"""
 		if n == 1:
-			return self.SubClass._time
+			return self._time
 		else:
 			raise Exception("ERROR: Out of range")
 
@@ -115,8 +117,8 @@ class TEMPORALINST(TEMPORAL):
 		"""
 		Timestamps
 		"""
-		return [self.SubClass._time]
+		return [self._time]
 
 	def __str__(self):
-		#return self.__class__.__bases__[0].__name__ + " '" + self.SubClass.__str__() + "'"
-		return "'" + self.SubClass._time.__str__() + '@'+ self.SubClass._time.__str__() + "'"
+		#return self.__class__.__bases__[0].__name__ + " '" + self.__str__() + "'"
+		return "'" + self._value.__str__() + '@' + self._time.__str__() + "'"

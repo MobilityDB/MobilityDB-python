@@ -1,7 +1,15 @@
 from MobilityDB import *
+from bdateutil.parser import parse
 
 inst = TFLOATINST('10@2019-09-08')
 print(inst)
+inst = TFLOATINST('10', '2019-09-08')
+print(inst)
+t = parse('2019-09-08')
+inst = TFLOATINST(10.0, t)
+print(inst)
+
+"""
 ti = TFLOATI('{10@2019-09-08, 20@2019-09-09, 20@2019-09-10}')
 print(ti)
 seq = TFLOATSEQ('[10@2019-09-08, 20@2019-09-09, 20@2019-09-10]')
@@ -117,5 +125,5 @@ print(ti.timestamps())
 print(seq.timestamps())
 print(ts.timestamps())
 
-
+"""
 
