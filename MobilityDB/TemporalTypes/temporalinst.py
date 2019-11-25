@@ -13,7 +13,8 @@ class TEMPORALINST(TEMPORAL):
 		if time is None and isinstance(value, str):
 			splits = value.split("@")
 			if len(splits) == 2:
-				self._value = splits[0]
+				self._value = type(self).BaseValueClass(splits[0])
+				#self._value = splits[0]
 				self._time = parse(splits[1])
 			else:
 				raise Exception("ERROR: Could not parse temporal instant value")
@@ -69,6 +70,18 @@ class TEMPORALINST(TEMPORAL):
 		Period on which the temporal value is defined
 		"""
 		return PERIOD(self.getTimestamp(), self.getTimestamp(), True, True)
+
+	def startValue(self):
+		"""
+		Start value
+		"""
+		return self._value
+
+	def endValue(self):
+		"""
+		Start value
+		"""
+		return self._value
 
 	def numInstants(self):
 		"""

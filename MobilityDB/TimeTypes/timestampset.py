@@ -31,7 +31,7 @@ class TIMESTAMPSET:
 				for arg in argv[0]:
 					self._datetimeList.append(arg)
 			else:
-				raise Exception("ERROR: Could not parse period set value")
+				raise Exception("ERROR: Could not parse timestamp set value")
 		# Constructor with multiple arguments
 		else:
 			# Arguments are of type string

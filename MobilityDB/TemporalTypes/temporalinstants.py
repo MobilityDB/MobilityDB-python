@@ -5,18 +5,6 @@ from .temporalinst import TEMPORALINST
 class TEMPORALINSTANTS:
 	__slots__ = ['_instantList']
 
-	def __init__(self, instantList=None):
-		if instantList is not None and len(instantList) > 0:
-			self._instantList = instantList
-		else:
-			raise Exception("ERROR: Could not parse temporal value")
-		# Verify validity of the resulting list
-		#if not self._valid():
-		#	raise Exception("ERROR: Timestamps must be increasing")
-
-	def _valid(self):
-		return all(x._time < y._time for x, y in zip(self._instantList, self._instantList[1:]))
-
 	def startValue(self):
 		"""
 		Start value
@@ -73,13 +61,13 @@ class TEMPORALINSTANTS:
 		"""
 		Start timestamp
 		"""
-		return self._instantList[0]
+		return self._instantList[0]._time
 
 	def endTimestamp(self):
 		"""
 		End timestamp
 		"""
-		return self._instantList[len(self._instantList) - 1]
+		return self._instantList[len(self._instantList) - 1]._time
 
 	def timestampN(self, n):
 		"""

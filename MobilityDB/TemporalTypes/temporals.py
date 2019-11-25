@@ -1,17 +1,74 @@
+import re
 from MobilityDB.TimeTypes.period import PERIOD
+from MobilityDB.TimeTypes.periodset import PERIODSET
+from MobilityDB.TemporalTypes.temporalseq import TEMPORALSEQ
 
 
 class TEMPORALS:
 	__slots__ = ['_sequenceList']
 	Duration = 4
 
-	def __init__(self, sequenceList=None):
-		if isinstance(sequenceList, list):
-			self._sequenceList = sequenceList.copy()
+	def __init__(self, *argv):
+		self._sequenceList = []
+		# Constructor with a single argument of type string
+		if len(argv) == 1 and isinstance(argv[0], str):
+			ps = argv[0].strip()
+			if ps[0] == '{' and ps[-1] == '}':
+				p = re.compile('[\[|\(].*?[^\]\)][\]|\)]')
+				sequences = p.findall(ps)
+				for seq in sequences:
+					self._sequenceList.append(TEMPORALSEQ(seq))
+			else:
+				raise Exception("ERROR: Could not parse period set value")
+		# Constructor with a single argument of type list
+		elif len(argv) == 1 and isinstance(argv[0], list):
+			# List of strings representing periods
+			if all(isinstance(arg, str) for arg in argv[0]):
+				for arg in argv[0]:
+					self._sequenceList.append(TEMPORALSEQ(arg))
+			# List of periods
+			elif all(isinstance(arg, TEMPORALSEQ) for arg in argv[0]):
+				for arg in argv[0]:
+					self._sequenceList.append(arg)
+			else:
+				raise Exception("ERROR: Could not parse temporal sequence set value")
+		# Constructor with multiple arguments
+		else:
+			# Arguments are of type string
+			if all(isinstance(arg, str) for arg in argv):
+				for arg in argv:
+					self._sequenceList.append(TEMPORALSEQ(arg))
+			# Arguments are of type temporal sequence
+			elif all(isinstance(arg, TEMPORALSEQ) for arg in argv):
+				for arg in argv:
+					self._sequenceList.append(arg)
+			else:
+				raise Exception("ERROR: Could not parse temporal sequence set value")
+		# Verify validity of the resulting instance
+		self._valid()
+
+	def _valid(self):
+		if not all(x.endTimestamp() < y.startTimestamp() or \
+			(x.endTimestamp() == y.startTimestamp() and (not x.upper_inc() or not x.lower_inc())) \
+				   for x, y in zip(self._sequenceList, self._sequenceList[1:])):
+			raise Exception("ERROR: The sequences must be non overlapping")
+		return True
 
 	@classmethod
 	def duration(cls):
 		return "SequenceSet"
+
+	def getTime(self):
+		"""
+		Timestamp
+		"""
+		return PERIODSET([seq.period() for seq in self._sequenceList])
+
+	def timespan(self):
+		"""
+		Interval
+		"""
+		return self.endTimestamp() - self.startTimestamp()
 
 	def period(self):
 		"""
@@ -68,8 +125,6 @@ class TEMPORALS:
 		for sequence in self._sequenceList:
 			for instant in sequence._instantList:
 				instantList.append(instant)
-		# Remove duplicates
-		instantList = list(dict.fromkeys(instantList))
 		return instantList
 
 	def numTimestamps(self):
