@@ -2,6 +2,7 @@ from datetime import datetime
 from bdateutil.parser import parse
 from .temporal import TEMPORAL
 from MobilityDB.TimeTypes.period import PERIOD
+from MobilityDB.TimeTypes.periodset import PERIODSET
 
 class TEMPORALINST(TEMPORAL):
 	__slots__ = ['_value', '_time']
@@ -41,11 +42,27 @@ class TEMPORALINST(TEMPORAL):
 		"""
 		return self._value
 
+	def getValues(self):
+		"""
+		Retrieve the base value [getValue():  base]
+			>>> var1.getValue()
+				<Point: Geometry(Point, 4326)>
+			>>> var2.getValue()
+				10
+		"""
+		return [self._value]
+
 	def getTimestamp(self):
 		"""
 		Timestamp
 		"""
 		return self._time
+
+	def getTime(self):
+		"""
+		Timestamp
+		"""
+		return PERIODSET([PERIOD(self._time, self._time, True, True)])
 
 	def period(self):
 		"""

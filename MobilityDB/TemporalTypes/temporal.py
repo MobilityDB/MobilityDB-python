@@ -18,6 +18,12 @@ class TEMPORAL:
 		"""
 		pass
 
+	def timespan(self):
+		"""
+		Interval
+		"""
+		return self.endTimestamp() - self.startTimestamp()
+
 	@abstractmethod
 	def getValues(self):
 		"""
