@@ -6,7 +6,6 @@ from MobilityDB.TimeTypes.periodset import PERIODSET
 
 class TEMPORALINST(TEMPORAL):
 	__slots__ = ['_value', '_time']
-	Duration = 1
 
 	def __init__(self, value, time=None):
 		# Constructor with a single argument of type string
@@ -53,6 +52,30 @@ class TEMPORALINST(TEMPORAL):
 		"""
 		return [self._value]
 
+	def startValue(self):
+		"""
+		Start value
+		"""
+		return self._value
+
+	def endValue(self):
+		"""
+		Start value
+		"""
+		return self._value
+
+	def minValue(self):
+		"""
+		Minimum value
+		"""
+		return self._value
+
+	def maxValue(self):
+		"""
+		Maximum value
+		"""
+		return self._value
+
 	def getTimestamp(self):
 		"""
 		Timestamp
@@ -70,18 +93,6 @@ class TEMPORALINST(TEMPORAL):
 		Period on which the temporal value is defined
 		"""
 		return PERIOD(self.getTimestamp(), self.getTimestamp(), True, True)
-
-	def startValue(self):
-		"""
-		Start value
-		"""
-		return self._value
-
-	def endValue(self):
-		"""
-		Start value
-		"""
-		return self._value
 
 	def numInstants(self):
 		"""

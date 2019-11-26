@@ -10,7 +10,7 @@ class PERIOD:
 		if upper is None and isinstance(lower, str):
 			lower = lower.strip()
 			self._lowerBound_inc = True if lower[0] == '[' else False
-			self._upperBound_inc = True if lower[len(lower) - 1] == ']' else False
+			self._upperBound_inc = True if lower[-1] == ']' else False
 			bounds = lower.split(',')
 			bounds[0] = (bounds[0])[1:]
 			bounds[1] = (bounds[1])[:-1]

@@ -8,8 +8,6 @@ class TEMPORAL:
 		>>> var1 = TINTINST('10@2019-09-10')
 		>>> var2 = TGEOMPOINTINST('SRID=4326;Point(1 1)@2019-09-10')
 	"""
-	BaseValueClass = None
-	SubClass = None
 
 	@classmethod
 	def duration(cls):
@@ -63,6 +61,20 @@ class TEMPORAL:
 	def endValue(self):
 		"""
 		Start value
+		"""
+		pass
+
+	@abstractmethod
+	def minValue(self):
+		"""
+		Minimum value
+		"""
+		pass
+
+	@abstractmethod
+	def maxValue(self):
+		"""
+		Maximum value
 		"""
 		pass
 

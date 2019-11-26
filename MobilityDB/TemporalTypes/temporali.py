@@ -3,8 +3,8 @@ from MobilityDB.TemporalTypes.temporalinstants import TEMPORALINSTANTS
 from MobilityDB.TimeTypes.period import PERIOD
 from MobilityDB.TimeTypes.periodset import PERIODSET
 
+
 class TEMPORALI(TEMPORALINSTANTS):
-	Duration = 2
 
 	def __init__(self, *argv):
 		# Constructor with a single argument of type string
@@ -12,11 +12,10 @@ class TEMPORALI(TEMPORALINSTANTS):
 		if len(argv) == 1 and isinstance(argv[0], str):
 			ts = argv[0].strip()
 			if ts[0] == '{' and ts[-1] == '}':
-				ts = ts[1:]
-				ts = ts[:-1]
+				ts = ts[1:-1]
 				instants = ts.split(",")
 				for inst in instants:
-					self._instantList.append(TEMPORALINST(inst.strip()))
+					self._instantList.append(TEMPORALI.ComponentValueClass(inst.strip()))
 			else:
 				raise Exception("ERROR: Could not parse temporal instant set value")
 		# Constructor with a single argument of type list
@@ -24,9 +23,9 @@ class TEMPORALI(TEMPORALINSTANTS):
 			# List of strings representing instant values
 			if all(isinstance(arg, str) for arg in argv[0]):
 				for arg in argv[0]:
-					self._instantList.append(TEMPORALINST(arg))
+					self._instantList.append(TEMPORALI.ComponentValueClass(arg))
 			# List of insant values
-			elif all(isinstance(arg, TEMPORALINST) for arg in argv[0]):
+			elif all(isinstance(arg, TEMPORALI.ComponentValueClass) for arg in argv[0]):
 				for arg in argv[0]:
 					self._instantList.append(arg)
 			else:
@@ -36,9 +35,9 @@ class TEMPORALI(TEMPORALINSTANTS):
 			# Arguments are of type string
 			if all(isinstance(arg, str) for arg in argv):
 				for arg in argv:
-					self._instantList.append(TEMPORALINST(arg))
+					self._instantList.append(TEMPORALI.ComponentValueClass(arg))
 			# Arguments are of type datetime
-			elif all(isinstance(arg, TEMPORALINST) for arg in argv):
+			elif all(isinstance(arg, TEMPORALI.ComponentValueClass) for arg in argv):
 				for arg in argv:
 					self._instantList.append(arg)
 			else:
@@ -53,12 +52,6 @@ class TEMPORALI(TEMPORALINSTANTS):
 	@classmethod
 	def duration(cls):
 		return "InstantSet"
-
-	def getValues(self):
-		"""
-		Distinct values
-		"""
-		return list(dict.fromkeys([inst._value for inst in self._instantList]))
 
 	def getTime(self):
 		"""

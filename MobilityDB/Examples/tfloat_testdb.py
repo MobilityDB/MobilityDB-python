@@ -12,17 +12,24 @@ try:
 
 	cursor = connectionObject.cursor()
 
-	t1 = PERIOD('2019-09-08', '2019-09-10')
-	print(t1)
+	# var = TFLOATS('{[10@2019-09-08, 20@2019-09-09, 20@2019-09-10]}')
+	# print(var)
 
-	t2 = TIMESTAMPSET('2019-09-08', '2019-09-10', '2019-09-11')
-	print(t2)
+	# var1 = TFLOAT('10@2019-09-08')
+	# print(var1)
+	# var2 = TFLOATINST('20@2019-09-09')
+	# print(var2)
 
-	t22 = TIMESTAMPSET('2019-09-08', '2019-09-10', '2019-09-11')
-	print(t2 == t22)
+	# var3 = TFLOAT([var1, var2])
+	# print(var3)
 
-	t3 = PERIODSET('{[2019-09-08, 2019-09-10], (2019-09-11, 2019-09-12), [2019-09-13), (2019-09-14, 2019-09-15]}')
-	print(t3)
+	var1 = TFLOAT('[10@2019-09-08]')
+	print(var1)
+	var2 = TFLOAT('[20@2019-09-09]')
+	print(var2)
+
+	var3 = TFLOAT([var1, var2])
+	print(var3)
 
 except psycopg2.DatabaseError as e:
 

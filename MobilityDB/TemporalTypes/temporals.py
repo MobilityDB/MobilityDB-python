@@ -1,12 +1,12 @@
 import re
 from MobilityDB.TimeTypes.period import PERIOD
 from MobilityDB.TimeTypes.periodset import PERIODSET
+from MobilityDB.TemporalTypes.temporal import TEMPORAL
 from MobilityDB.TemporalTypes.temporalseq import TEMPORALSEQ
 
 
-class TEMPORALS:
+class TEMPORALS(TEMPORAL):
 	__slots__ = ['_sequenceList']
-	Duration = 4
 
 	def __init__(self, *argv):
 		self._sequenceList = []
@@ -17,7 +17,7 @@ class TEMPORALS:
 				p = re.compile('[\[|\(].*?[^\]\)][\]|\)]')
 				sequences = p.findall(ps)
 				for seq in sequences:
-					self._sequenceList.append(TEMPORALSEQ(seq))
+					self._sequenceList.append(self.__class__.ComponentValueClass(seq))
 			else:
 				raise Exception("ERROR: Could not parse period set value")
 		# Constructor with a single argument of type list
@@ -25,9 +25,9 @@ class TEMPORALS:
 			# List of strings representing periods
 			if all(isinstance(arg, str) for arg in argv[0]):
 				for arg in argv[0]:
-					self._sequenceList.append(TEMPORALSEQ(arg))
+					self._sequenceList.append(self.__class__.ComponentValueClass(arg))
 			# List of periods
-			elif all(isinstance(arg, TEMPORALSEQ) for arg in argv[0]):
+			elif all(isinstance(arg, self.__class__.ComponentValueClass) for arg in argv[0]):
 				for arg in argv[0]:
 					self._sequenceList.append(arg)
 			else:
@@ -37,9 +37,9 @@ class TEMPORALS:
 			# Arguments are of type string
 			if all(isinstance(arg, str) for arg in argv):
 				for arg in argv:
-					self._sequenceList.append(TEMPORALSEQ(arg))
+					self._sequenceList.append(self.__class__.ComponentValueClass(arg))
 			# Arguments are of type temporal sequence
-			elif all(isinstance(arg, TEMPORALSEQ) for arg in argv):
+			elif all(isinstance(arg, self.__class__.ComponentValueClass) for arg in argv):
 				for arg in argv:
 					self._sequenceList.append(arg)
 			else:
@@ -57,6 +57,38 @@ class TEMPORALS:
 	@classmethod
 	def duration(cls):
 		return "SequenceSet"
+
+	def getValues(self):
+		"""
+		Distinct values
+		"""
+		values = [seq.getValues() for seq in self._sequenceList]
+		print(values)
+		return list(dict.fromkeys([item for sublist in values for item in sublist]))
+
+	def startValue(self):
+		"""
+		Start value
+		"""
+		return self._sequenceList[0].startInstant()._value
+
+	def endValue(self):
+		"""
+		Start value
+		"""
+		return self._sequenceList[-1].startInstant()._value
+
+	def minValue(self):
+		"""
+		Minimum value
+		"""
+		return min(seq.minValue() for seq in self._sequenceList)
+
+	def maxValue(self):
+		"""
+		Maximum value
+		"""
+		return max(seq.maxValue() for seq in self._sequenceList)
 
 	def getTime(self):
 		"""
@@ -77,18 +109,6 @@ class TEMPORALS:
 		return PERIOD(self.startTimestamp(), self.endTimestamp(),
 			self._sequenceList[0].lower_inc, self._sequenceList[-1].upper_inc)
 
-	def startValue(self):
-		"""
-		Start value
-		"""
-		return self._sequenceList[0].startInstant()._value
-
-	def endValue(self):
-		"""
-		Start value
-		"""
-		return self._sequenceList[len(self._sequenceList) - 1].startInstant()._value
-
 	def numInstants(self):
 		"""
 		Number of distinct instants
@@ -105,7 +125,7 @@ class TEMPORALS:
 		"""
 		End instant
 		"""
-		return self._sequenceList[len(self._sequenceList) - 1].endInstant()
+		return self._sequenceList[-1].endInstant()
 
 	def instantN(self, n):
 		"""
@@ -143,7 +163,7 @@ class TEMPORALS:
 		"""
 		End timestamp
 		"""
-		return self._sequenceList[len(self._sequenceList) - 1].endInstant().getTimestamp()
+		return self._sequenceList[-1].endInstant().getTimestamp()
 
 	def timestampN(self, n):
 		"""
@@ -183,7 +203,7 @@ class TEMPORALS:
 		"""
 		End sequence
 		"""
-		return self._sequenceList[len(self._sequenceList) - 1]
+		return self._sequenceList[-1]
 
 	def sequenceN(self, n):
 		"""

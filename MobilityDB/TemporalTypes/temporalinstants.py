@@ -2,8 +2,14 @@ from .temporal import TEMPORAL
 from .temporalinst import TEMPORALINST
 
 
-class TEMPORALINSTANTS:
+class TEMPORALINSTANTS(TEMPORAL):
 	__slots__ = ['_instantList']
+
+	def getValues(self):
+		"""
+		Distinct values
+		"""
+		return list(dict.fromkeys([inst._value for inst in self._instantList]))
 
 	def startValue(self):
 		"""
@@ -15,7 +21,19 @@ class TEMPORALINSTANTS:
 		"""
 		Start value
 		"""
-		return self._instantList[len(self._instantList) - 1]._value
+		return self._instantList[-1]._value
+
+	def minValue(self):
+		"""
+		Minimum value
+		"""
+		return min(inst._value for inst in self._instantList)
+
+	def maxValue(self):
+		"""
+		Maximum value
+		"""
+		return max(inst._value for inst in self._instantList)
 
 	def numInstants(self):
 		"""
@@ -33,7 +51,7 @@ class TEMPORALINSTANTS:
 		"""
 		End instant
 		"""
-		return self._instantList[len(self._instantList) - 1]
+		return self._instantList[-1]
 
 	def instantN(self, n):
 		"""
@@ -67,7 +85,7 @@ class TEMPORALINSTANTS:
 		"""
 		End timestamp
 		"""
-		return self._instantList[len(self._instantList) - 1]._time
+		return self._instantList[-1]._time
 
 	def timestampN(self, n):
 		"""

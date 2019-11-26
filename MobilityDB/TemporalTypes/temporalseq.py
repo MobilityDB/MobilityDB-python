@@ -6,7 +6,6 @@ from MobilityDB.TemporalTypes.temporalinstants import TEMPORALINSTANTS
 
 class TEMPORALSEQ(TEMPORALINSTANTS):
 	__slots__ = ['_lower_inc', '_upper_inc']
-	Duration = 3
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
 		# Constructor with a single argument of type string
@@ -22,11 +21,10 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 					self._upper_inc = True
 				else:
 					self._upper_inc = False
-				ts = ts[1:]
-				ts = ts[:-1]
+				ts = ts[1:-1]
 				instants = ts.split(",")
 				for inst in instants:
-					self._instantList.append(TEMPORALINST(inst.strip()))
+					self._instantList.append(TEMPORALSEQ.ComponentValueClass(inst.strip()))
 			else:
 				raise Exception("ERROR: Could not parse temporal sequence value")
 		# Constructor with a first argument of type list and two optional arguments for the bounds
@@ -34,9 +32,9 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 			# List of strings representing instant values
 			if all(isinstance(arg, str) for arg in instantList):
 				for arg in instantList:
-					self._instantList.append(TEMPORALINST(arg))
+					self._instantList.append(TEMPORALSEQ.ComponentValueClass(arg))
 			# List of instant values
-			elif all(isinstance(arg, TEMPORALINST) for arg in instantList):
+			elif all(isinstance(arg, TEMPORALSEQ.ComponentValueClass) for arg in instantList):
 				for arg in instantList:
 					self._instantList.append(arg)
 			else:
@@ -56,6 +54,12 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 	@classmethod
 	def duration(cls):
 		return "Sequence"
+
+	def getValues(self):
+		"""
+		Distinct values
+		"""
+		return list(dict.fromkeys([inst._value for inst in self._instantList]))
 
 	def lower_inc(self):
 		"""
@@ -129,7 +133,7 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 		for inst in self._instantList:
 			valueList.append(inst._value)
 		# Remove duplicates
-		valueList = list(dict.fromkeys(valueList))
+		valueList = list(valueList)
 		return valueList
 
 	def __str__(self):
