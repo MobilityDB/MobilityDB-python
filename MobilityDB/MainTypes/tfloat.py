@@ -69,11 +69,15 @@ class TFLOATS(TEMPORALS, TFLOAT):
 		"""
 		Distinct values
 		"""
-		ranges = [seq.getValues() for seq in self._sequenceList]
-		print("*****")
-		print(ranges)
-		print(ranges[0] < ranges[1])
-		print("*****")
-		print(ranges.sort())
-		return floatrange(self.minValue(), self.maxValue())
+		ranges = sorted([seq.getValues() for seq in self._sequenceList])
+		result = []
+		range = ranges[0]
+		for range1 in ranges[1:]:
+			if range.adjacent(range1) or range.overlap(range1):
+				range = range.union(range1)
+			else:
+				result.append(range)
+				range = range1
+		result.append(range)
+		return result
 
