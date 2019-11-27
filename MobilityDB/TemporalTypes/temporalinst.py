@@ -160,6 +160,19 @@ class TEMPORALINST(TEMPORAL):
 		"""
 		return [self._time]
 
+	def shift(self, timedelta):
+		"""
+		Shift
+		"""
+		self._time += timedelta
+		return self
+
+	def intersectsTimestamp(self, datetime):
+		"""
+		Intersects timestamp
+		"""
+		return self._time == datetime
+
 	def __str__(self):
 		#return self.__class__.__bases__[0].__name__ + " '" + self.__str__() + "'"
 		return "'" + self._value.__str__() + '@' + self._time.__str__() + "'"

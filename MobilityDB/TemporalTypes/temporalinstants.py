@@ -103,6 +103,14 @@ class TEMPORALINSTANTS(TEMPORAL):
 		"""
 		return [instant._time for instant in self._instantList]
 
+	def shift(self, timedelta):
+		"""
+		Shift
+		"""
+		for inst in self._instantList:
+			inst._time += timedelta
+		return self
+
 	def __str__(self):
 		return "{}".format(', '.join('{}'.format(instant.__str__().replace("'", ""))
 			for instant in self._instantList))

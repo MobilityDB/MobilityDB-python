@@ -65,5 +65,17 @@ class TEMPORALI(TEMPORALINSTANTS):
 		"""
 		return PERIOD(self.startTimestamp(), self.endTimestamp(), True, True)
 
+	def intersectsTimestamp(self, datetime):
+		"""
+		Intersects timestamp
+		"""
+		return any(inst._time == datetime for inst in self._instantList)
+
+	def intersectsPeriod(self, period):
+		"""
+		Intersects period
+		"""
+		return any(period.contains(inst._time) for inst in self._instantList)
+
 	def __str__(self):
 		return '{' + TEMPORALINSTANTS.__str__(self) + '}'

@@ -1,5 +1,4 @@
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 from bdateutil.parser import parse
 from .period import PERIOD
 
@@ -99,7 +98,7 @@ class TIMESTAMPSET:
 
 	def shift(self, timedelta):
 		"""
-		Distinct timestamps
+		Shift
 		"""
 		return TIMESTAMPSET([datetime + timedelta for datetime in self._datetimeList])
 

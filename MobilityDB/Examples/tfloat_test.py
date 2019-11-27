@@ -1,6 +1,8 @@
-from MobilityDB import *
+from datetime import datetime, timedelta
 from bdateutil.parser import parse
 from spans.types import Range
+from MobilityDB import *
+
 
 class floatrange(Range):
 	__slots__ = ()
@@ -178,3 +180,15 @@ print("\nsequences")
 print(seq.sequences())
 print(ts.sequences())
 
+print("\nshift")
+print(inst.shift(timedelta(days=1)))
+print(ti.shift(timedelta(days=1)))
+print(seq.shift(timedelta(days=1)))
+print(ts.shift(timedelta(days=1)))
+
+print("\nintersectsTimestamp")
+t1 = datetime.strptime('2019-09-09', '%Y-%m-%d')
+print(inst.intersectsTimestamp(t1))
+print(ti.intersectsTimestamp(t1))
+print(seq.intersectsTimestamp(t1))
+print(ts.intersectsTimestamp(t1))

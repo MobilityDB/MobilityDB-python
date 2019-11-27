@@ -63,7 +63,6 @@ class TEMPORALS(TEMPORAL):
 		Distinct values
 		"""
 		values = [seq.getValues() for seq in self._sequenceList]
-		print(values)
 		return list(dict.fromkeys([item for sublist in values for item in sublist]))
 
 	def startValue(self):
@@ -95,12 +94,6 @@ class TEMPORALS(TEMPORAL):
 		Timestamp
 		"""
 		return PERIODSET([seq.period() for seq in self._sequenceList])
-
-	def timespan(self):
-		"""
-		Interval
-		"""
-		return self.endTimestamp() - self.startTimestamp()
 
 	def period(self):
 		"""
@@ -220,6 +213,26 @@ class TEMPORALS(TEMPORAL):
 		Sequences
 		"""
 		return self._sequenceList
+
+	def shift(self, timedelta):
+		"""
+		Shift
+		"""
+		for seq in self._sequenceList:
+			seq = seq.shift(timedelta)
+		return self
+
+	def intersectsTimestamp(self, datetime):
+		"""
+		Intersects timestamp
+		"""
+		return any(seq.intersectsTimestamp(datetime) for seq in self._sequenceList)
+
+	def intersectsPeriod(self, period):
+		"""
+		Intersects period
+		"""
+		return any(seq.intersectsPeriod(period) for seq in self._sequenceList)
 
 	def __str__(self):
 		return "{{{}}}".format(', '.join('{}'.format(sequence.__str__().replace("'", ""))

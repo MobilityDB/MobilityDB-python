@@ -100,7 +100,7 @@ class PERIODSET:
 			timestampList.append(period.lower())
 			timestampList.append(period.upper())
 		# Remove duplicates
-		return set(timestampList)
+		return list(dict.fromkeys(timestampList))
 
 	def numPeriods(self):
 		"""

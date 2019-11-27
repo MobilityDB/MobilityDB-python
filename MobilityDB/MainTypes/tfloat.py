@@ -1,6 +1,7 @@
 from MobilityDB.TemporalTypes import *
 from spans.types import Range
 
+
 class floatrange(Range):
 	__slots__ = ()
 	type = float
@@ -18,8 +19,14 @@ class TFLOAT(TEMPORAL):
 class TFLOATINST(TEMPORALINST, TFLOAT):
 
 	def __init__(self, value, time=None):
-		super().__init__(value, time)
 		TEMPORALINST.BaseValueClass = float
+		super().__init__(value, time)
+
+	def getValues(self):
+		"""
+		Distinct values
+		"""
+		return floatrange(self._value, self._value, True, True)
 
 class TFLOATI(TEMPORALI, TFLOAT):
 
@@ -70,6 +77,7 @@ class TFLOATS(TEMPORALS, TFLOAT):
 		Distinct values
 		"""
 		ranges = sorted([seq.getValues() for seq in self._sequenceList])
+		# Normalize list of ranges
 		result = []
 		range = ranges[0]
 		for range1 in ranges[1:]:

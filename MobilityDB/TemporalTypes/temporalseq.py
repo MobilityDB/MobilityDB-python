@@ -55,12 +55,6 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 	def duration(cls):
 		return "Sequence"
 
-	def getValues(self):
-		"""
-		Distinct values
-		"""
-		return list(dict.fromkeys([inst._value for inst in self._instantList]))
-
 	def lower_inc(self):
 		"""
 		Is the lower bound of the temporal sequence inclusive?
@@ -78,12 +72,6 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 		Timestamp
 		"""
 		return PERIODSET([PERIOD(self.startTimestamp(), self.endTimestamp(), self._lower_inc, self._upper_inc)])
-
-	def timespan(self):
-		"""
-		Interval
-		"""
-		return self.endTimestamp() - self.startTimestamp()
 
 	def period(self):
 		"""
@@ -125,16 +113,13 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 		"""
 		return [self]
 
-	def distinctValues(self, base=None):
+	def intersectsTimestamp(self, datetime):
 		"""
-		Distinct values
+		Intersects timestamp
 		"""
-		valueList = []
-		for inst in self._instantList:
-			valueList.append(inst._value)
-		# Remove duplicates
-		valueList = list(valueList)
-		return valueList
+		return ((self.lower_inc and self._instantList[0]._time == datetime) or
+			(self.upper_inc and self._instantList[-1]._time == datetime) or
+			(self._instantList[0]._time < datetime < self._instantList[-1]._time))
 
 	def __str__(self):
 		lower_str = '[' if self._lower_inc else '('

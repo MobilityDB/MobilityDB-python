@@ -16,37 +16,10 @@ class TEMPORAL:
 		"""
 		pass
 
-	def timespan(self):
-		"""
-		Interval
-		"""
-		return self.endTimestamp() - self.startTimestamp()
-
 	@abstractmethod
 	def getValues(self):
 		"""
 		Values
-		"""
-		pass
-
-	@abstractmethod
-	def getTime(self):
-		"""
-		Time
-		"""
-		pass
-
-	@abstractmethod
-	def timespan(self):
-		"""
-		Timespan
-		"""
-		pass
-
-	@abstractmethod
-	def period(self):
-		"""
-		Period on which the temporal value is defined ignoring potential time gaps
 		"""
 		pass
 
@@ -75,6 +48,26 @@ class TEMPORAL:
 	def maxValue(self):
 		"""
 		Maximum value
+		"""
+		pass
+
+	@abstractmethod
+	def getTime(self):
+		"""
+		Time
+		"""
+		pass
+
+	def timespan(self):
+		"""
+		Interval
+		"""
+		return self.endTimestamp() - self.startTimestamp()
+
+	@abstractmethod
+	def period(self):
+		"""
+		Period on which the temporal value is defined ignoring potential time gaps
 		"""
 		pass
 
@@ -114,7 +107,7 @@ class TEMPORAL:
 		pass
 
 	@abstractmethod
-	def numTimestamp(self):
+	def numTimestamps(self):
 		"""
 		Number of distinct instants
 		"""
@@ -145,6 +138,41 @@ class TEMPORAL:
 	def timestamps(self):
 		"""
 		Timestamps
+		"""
+		pass
+
+	@abstractmethod
+	def shift(self, timedelta):
+		"""
+		Shift
+		"""
+		pass
+
+	@abstractmethod
+	def intersectsTimestamp(self, datetime):
+		"""
+		Intersects timestamp
+		"""
+		pass
+
+	@abstractmethod
+	def intersectsTimestampset(self, timestampset):
+		"""
+		Intersects timestamp set
+		"""
+		pass
+
+	@abstractmethod
+	def intersectsPeriod(self, period):
+		"""
+		Intersects period
+		"""
+		pass
+
+	@abstractmethod
+	def intersectsPeriodset(self, periodset):
+		"""
+		Intersects period set
 		"""
 		pass
 

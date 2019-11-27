@@ -1,5 +1,4 @@
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 from MobilityDB import *
 
 print("\n# PERIOD")
@@ -144,3 +143,9 @@ var1 = var.periods()
 print("periods:", var1)
 var1 = var.shift(timedelta(days=1))
 print("shift:", var1)
+
+p1 = PERIOD('[2019-09-08, 2019-09-10]')
+p2 = PERIOD('[2019-09-11, 2019-09-12)')
+print ("overlap:", p1.overlap(p2))
+p2 = PERIOD('[2019-09-09, 2019-09-12)')
+print ("overlap:", p1.overlap(p2))
