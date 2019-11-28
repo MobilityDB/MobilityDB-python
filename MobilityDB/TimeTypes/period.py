@@ -18,14 +18,23 @@ def _period_cmp_bounds(t1, t2, lower1, lower2, inclusive1, inclusive2):
 		if lower1 == lower2:
 			return 0
 		else:
-			result = 1 if lower1 else -1
-			return result
+			if lower1:
+				return 1
+			else:
+				return -1
 	elif not inclusive1:
-		result = 1 if lower1 else -1
+		if lower1:
+			return 1
+		else:
+			return -1
 		return result
 	elif not inclusive2:
-		result = -1 if lower2 else 1
-		return result
+		if lower2:
+			return -1
+		else:
+			return 1
+	else:
+		return 0
 
 class PERIOD:
 	__slots__ = ['_lower', '_upper', '_lower_inc', '_upper_inc']
@@ -106,21 +115,29 @@ class PERIOD:
 
 	def overlap(self, other):
 		"""
-		Returns True if both ranges share any points.
+		Returns True if both period share any timestamps.
 		"""
-		if _period_cmp_bounds(self._lower, other._lower, True, True, self._lower_inc, other._lower_inc) >= 0 and \
-			_period_cmp_bounds(self._lower, other._upper, True, False, self._lower_inc, other._upper_inc) <= 0:
+		if ((_period_cmp_bounds(self._lower, other._lower, True, True, self._lower_inc, other._lower_inc) >= 0 and
+			_period_cmp_bounds(self._lower, other._upper, True, False, self._lower_inc, other._upper_inc) <= 0) or
+			(_period_cmp_bounds(other._lower, self._lower, True, True, other._lower_inc, self._lower_inc) >= 0 and
+			_period_cmp_bounds(other._lower, self._upper, True, False, other._lower_inc, self._upper_inc) <= 0)):
 			return True
+		return False
 
-		if _period_cmp_bounds(other._lower, self._lower, True, True, other._lower_inc, self._lower_inc) >= 0 and \
-			_period_cmp_bounds(other._lower, self._upper, True, False, other._lower_inc, self._upper_inc) <= 0:
+	def contains_timestamp(self, datetime):
+		"""
+		Returns True if the period contains the timestamp.
+		"""
+		if ((self._lower < datetime < self._upper) or
+			(self._lower_inc and self._lower == datetime) or
+			(self._upper_inc and self._upper == datetime)):
 			return True
 		return False
 
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
-			if self._lower != other._lower or self._upper != other._upper or \
-							self._lower_inc != other._lower_inc or self._upper_inc != other._upper_inc:
+			if (self._lower != other._lower or self._upper != other._upper or
+				self._lower_inc != other._lower_inc or self._upper_inc != other._upper_inc):
 				return False
 		return True
 

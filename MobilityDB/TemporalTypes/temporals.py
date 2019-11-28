@@ -222,17 +222,29 @@ class TEMPORALS(TEMPORAL):
 			seq = seq.shift(timedelta)
 		return self
 
-	def intersectsTimestamp(self, datetime):
+	def intersectsTimestamp(self, timestamp):
 		"""
 		Intersects timestamp
 		"""
-		return any(seq.intersectsTimestamp(datetime) for seq in self._sequenceList)
+		return any(seq.intersectsTimestamp(timestamp) for seq in self._sequenceList)
+
+	def intersectsTimestampset(self, timestampset):
+		"""
+		Intersects timestamp set
+		"""
+		return any(seq.intersectsTimestamp(timestamp) for seq in self._sequenceList for timestamp in timestampset._datetimeList)
 
 	def intersectsPeriod(self, period):
 		"""
 		Intersects period
 		"""
 		return any(seq.intersectsPeriod(period) for seq in self._sequenceList)
+
+	def intersectsPeriodset(self, periodset):
+		"""
+		Intersects period set
+		"""
+		return any(seq.intersectsPeriod(period) for seq in self._sequenceList for period in periodset._periodList)
 
 	def __str__(self):
 		return "{{{}}}".format(', '.join('{}'.format(sequence.__str__().replace("'", ""))

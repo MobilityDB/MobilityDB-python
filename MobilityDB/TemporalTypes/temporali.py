@@ -24,7 +24,7 @@ class TEMPORALI(TEMPORALINSTANTS):
 			if all(isinstance(arg, str) for arg in argv[0]):
 				for arg in argv[0]:
 					self._instantList.append(TEMPORALI.ComponentValueClass(arg))
-			# List of insant values
+			# List of instant values
 			elif all(isinstance(arg, TEMPORALI.ComponentValueClass) for arg in argv[0]):
 				for arg in argv[0]:
 					self._instantList.append(arg)
@@ -36,7 +36,7 @@ class TEMPORALI(TEMPORALINSTANTS):
 			if all(isinstance(arg, str) for arg in argv):
 				for arg in argv:
 					self._instantList.append(TEMPORALI.ComponentValueClass(arg))
-			# Arguments are of type datetime
+			# Arguments are of type instant
 			elif all(isinstance(arg, TEMPORALI.ComponentValueClass) for arg in argv):
 				for arg in argv:
 					self._instantList.append(arg)
@@ -65,17 +65,29 @@ class TEMPORALI(TEMPORALINSTANTS):
 		"""
 		return PERIOD(self.startTimestamp(), self.endTimestamp(), True, True)
 
-	def intersectsTimestamp(self, datetime):
+	def intersectsTimestamp(self, timestamp):
 		"""
 		Intersects timestamp
 		"""
-		return any(inst._time == datetime for inst in self._instantList)
+		return any(inst._time == timestamp for inst in self._instantList)
+
+	def intersectsTimestampset(self, timestampset):
+		"""
+		Intersects timestamp set
+		"""
+		return any(inst._time == timestamp for inst in self._instantList for timestamp in timestampset._datetimeList)
 
 	def intersectsPeriod(self, period):
 		"""
 		Intersects period
 		"""
-		return any(period.contains(inst._time) for inst in self._instantList)
+		return any(period.contains_timestamp(inst._time) for inst in self._instantList)
+
+	def intersectsPeriodset(self, periodset):
+		"""
+		Intersects period set
+		"""
+		return any(period.contains_timestamp(inst._time) for inst in self._instantList for period in periodset._periodList)
 
 	def __str__(self):
 		return '{' + TEMPORALINSTANTS.__str__(self) + '}'

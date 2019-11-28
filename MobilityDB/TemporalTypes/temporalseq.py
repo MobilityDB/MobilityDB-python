@@ -39,7 +39,7 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 					self._instantList.append(arg)
 			else:
 				raise Exception("ERROR: Could not parse temporal sequence value")
-			self._lower_inc = True if lower_inc == True else False
+			self._lower_inc = True if lower_inc == None or lower_inc == True else False
 			self._upper_inc = True if upper_inc == True else False
 		# Verify validity of the resulting instance
 		self._valid()
@@ -113,13 +113,31 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 		"""
 		return [self]
 
-	def intersectsTimestamp(self, datetime):
+	def intersectsTimestamp(self, timestamp):
 		"""
 		Intersects timestamp
 		"""
-		return ((self.lower_inc and self._instantList[0]._time == datetime) or
-			(self.upper_inc and self._instantList[-1]._time == datetime) or
-			(self._instantList[0]._time < datetime < self._instantList[-1]._time))
+		return ((self.lower_inc and self._instantList[0]._time == timestamp) or
+			(self.upper_inc and self._instantList[-1]._time == timestamp) or
+			(self._instantList[0]._time < timestamp < self._instantList[-1]._time))
+
+	def intersectsTimestampset(self, timestampset):
+		"""
+		Intersects timestamp set
+		"""
+		return any(self.intersectsTimestamp(timestamp) for timestamp in timestampset._datetimeList)
+
+	def intersectsPeriod(self, period):
+		"""
+		Intersects period
+		"""
+		return self.period().overlap(period)
+
+	def intersectsPeriodset(self, periodset):
+		"""
+		Intersects timestamp set
+		"""
+		return any(self.intersectsPeriod(period) for period in periodset._periodList)
 
 	def __str__(self):
 		lower_str = '[' if self._lower_inc else '('

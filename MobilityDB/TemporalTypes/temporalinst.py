@@ -13,7 +13,6 @@ class TEMPORALINST(TEMPORAL):
 			splits = value.split("@")
 			if len(splits) == 2:
 				self._value = type(self).BaseValueClass(splits[0])
-				#self._value = splits[0]
 				self._time = parse(splits[1])
 			else:
 				raise Exception("ERROR: Could not parse temporal instant value")
@@ -167,11 +166,29 @@ class TEMPORALINST(TEMPORAL):
 		self._time += timedelta
 		return self
 
-	def intersectsTimestamp(self, datetime):
+	def intersectsTimestamp(self, timestamp):
 		"""
 		Intersects timestamp
 		"""
-		return self._time == datetime
+		return self._time == timestamp
+
+	def intersectsTimestampset(self, timestampset):
+		"""
+		Intersects timestamp set
+		"""
+		return any(self._time == timestamp for timestamp in timestampset._datetimeList)
+
+	def intersectsPeriod(self, period):
+		"""
+		Intersects period
+		"""
+		return period.contains_timestamp(self._time)
+
+	def intersectsPeriodset(self, periodset):
+		"""
+		Intersects period set
+		"""
+		return any(period.contains_timestamp(self._time) for period in periodset._periodList)
 
 	def __str__(self):
 		#return self.__class__.__bases__[0].__name__ + " '" + self.__str__() + "'"
