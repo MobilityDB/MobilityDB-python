@@ -1,81 +1,115 @@
-from postgis import Point
+from datetime import datetime
+from bdateutil.parser import parse
 from MobilityDB.TemporalTypes import *
-from MobilityDB.MobilityDBReader import MobilityDBReader
+from postgis import Point, MultiPoint, LineString, GeometryCollection, MultiLineString
 
 
-class TGeogPoint(Temporal):
+# We need to add additional method to Point
+def __eq__(self, other):
+	if isinstance(other, self.__class__):
+		if (self.x != other.x or self.y != other.y or
+			self.z != other.z or self.m != other.m):
+			return False
+	return True
+
+setattr(Point, '__eq__', __eq__)
+
+def __hash__(self):
+	return hash(self.values())
+
+setattr(Point, '__hash__', __hash__)
+
+class TGeomPoint(Temporal):
 	BaseValueClass = Point
-	SRID = 0
+	ComponentValueClass = None
 
-	def __init__(self, value=None, srid=None):
-		if isinstance(value, str):
-			self.SubClass = MobilityDBReader.readTemporalType(self.__class__, value)
-			if srid is not None:
-				self.SRID = srid
+class TGeomPointInst(TemporalInst, TGeomPoint):
+
+	def __init__(self, value, time=None):
+		TemporalInst.BaseValueClass = Point
+		#super().__init__(value, time)
+		# Constructor with a single argument of type string
+		if time is None and isinstance(value, str):
+			splits = value.split("@")
+			if len(splits) == 2:
+				idx1 = splits[0].find('(')
+				idx2 = splits[0].find(')')
+				coords = (splits[0][idx1 + 1:idx2]).split(' ')
+				self._value = type(self).BaseValueClass(coords)
+				self._time = parse(splits[1])
 			else:
-				self.SRID = 0
-		elif isinstance(value, list):
-			try:
-				listItems = []
-				for item in value:
-					if isinstance(item, self.SubClass.__class__.__bases__[0]):
-						listItems.append(item.SubClass)
-				if value[0].SubClass.__class__ == TemporalInst:
-					self.SubClass = TemporalI(listItems)
-				elif value[0].SubClass.__class__ == TemporalSeq:
-					self.SubClass = TemporalS(listItems)
-			except:
-				raise Exception("ERROR: different types")
+				raise Exception("ERROR: Could not parse temporal instant value")
+		# Constructor with two arguments of type string
+		elif isinstance(value, str) and isinstance(time, str):
+			idx1 = value.find('(')
+			idx2 = value.find(')')
+			coords = (value[idx1 + 1:idx2]).split(' ')
+			self._value = self.BaseValueClass(coords)
+			self._time = parse(time)
+		# Constructor with two arguments of type BaseValueClass and datetime
+		elif isinstance(value, self.BaseValueClass) and isinstance(time, datetime):
+			self._value = value
+			self._time = time
 		else:
-			self.SubClass = value
+			raise Exception("ERROR: Could not parse temporal instant value")
 
-	@staticmethod
-	def read_from_cursor(value, cursor=None):
-		if not value:
-			return None
-		return TGeogPoint(MobilityDBReader.readTemporalType(TGeogPoint, value))
 
-	def __str__(self):
-		if len(self.__class__.__bases__) == 2:
-			if self.SRID != 0:
-				return self.__class__.__bases__[0].__name__ + " 'SRID=" + str(
-					self.SRID) + ";" + self.SubClass.__str__() + "'"
-			else:
-				return self.__class__.__bases__[0].__name__ + " '" + self.SubClass.__str__() + "'"
+	def getValues(self):
+		"""
+		Distinct values
+		"""
+		return self._value
+
+class TGeomPointI(TemporalI, TGeomPoint):
+
+	def __init__(self,  *argv):
+		TemporalI.BaseValueClass = Point
+		TemporalI.ComponentValueClass = TGeomPointInst
+		super().__init__(*argv)
+
+	def getValues(self):
+		"""
+		Distinct values
+		"""
+		values = super().getValues()
+		return MultiPoint(values)
+
+class TGeomPointSeq(TemporalSeq, TGeomPoint):
+
+	def __init__(self, instantList, lower_inc=None, upper_inc=None):
+		TemporalSeq.BaseValueClass = Point
+		TemporalSeq.ComponentValueClass = TGeomPointInst
+		super().__init__(instantList, lower_inc, upper_inc)
+
+	def getValues(self):
+		"""
+		Distinct values
+		"""
+		values = super().getValues()
+		if len(values) == 1:
+			result = values[0]
 		else:
-			if self.SRID != 0:
-				return self.__class__.__name__ + " 'SRID=" + str(self.SRID) + ";" + self.SubClass.__str__() + "'"
-			else:
-				return self.__class__.__name__ + " '" + self.SubClass.__str__() + "'"
+			result = LineString(values)
+		return result
 
+class TGeomPointS(TemporalS, TGeomPoint):
 
-class TGeogPointInst(TGeogPoint, TemporalInst):
-	def __init__(self, value=None, srid=None):
-		if MobilityDBReader.checkTemporalType(value) == TemporalInst:
-			super().__init__(value, srid)
-		else:
-			raise Exception("ERROR: Input must be a temporal instant")
+	def __init__(self, *argv):
+		TemporalS.BaseValueClass = Point
+		TemporalS.ComponentValueClass = TGeomPointSeq
+		super().__init__(*argv)
 
+	def getValues(self):
+		"""
+		Distinct values
+		"""
+		values = [seq.getValues() for seq in self._sequenceList]
+		points = [geom for geom in values if isinstance(geom, Point)]
+		lines = [geom for geom in values if isinstance(geom, LineString)]
+		if len(points) != 0 and len(points) != 0:
+			return GeometryCollection(points + lines)
+		if len(points) != 0 and len(points) == 0:
+			return MultiPoint(points)
+		if len(points) == 0 and len(points) != 0:
+			return MultiLineString(lines)
 
-class TGeogPointI(TGeogPoint, TemporalI):
-	def __init__(self, value=None, srid=None):
-		if MobilityDBReader.checkTemporalType(value) == TemporalI or isinstance(value, list):
-			super().__init__(value, srid)
-		else:
-			raise Exception("ERROR: Input must be a temporal instant set")
-
-
-class TGeogPointSeq(TGeogPoint, TemporalSeq):
-	def __init__(self, value=None, srid=None):
-		if MobilityDBReader.checkTemporalType(value) == TemporalSeq:
-			super().__init__(value, srid)
-		else:
-			raise Exception("ERROR: Input must be a temporal sequence")
-
-
-class TGeogPointS(TGeogPoint, TemporalS):
-	def __init__(self, value=None, srid=None):
-		if MobilityDBReader.checkTemporalType(value) == TemporalS or isinstance(value, list):
-			super().__init__(value, srid)
-		else:
-			raise Exception("ERROR: Input must be a temporal sequence set")

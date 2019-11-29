@@ -1,23 +1,61 @@
-from MobilityDB import *
+from datetime import datetime, timedelta
 from bdateutil.parser import parse
 from spans.types import Range
+from MobilityDB import *
+from MobilityDB.TemporalTypes import Temporal
 
-class intrange(Range):
+"""
+class floatrange(Range):
 	__slots__ = ()
-	type = int
+	type = float
+"""
 
-inst = TIntInst('10@2019-09-08')
+print("\nConstructors for TFloatInst")
+inst = TFloatInst('10@2019-09-08')
 print(inst)
 inst = TIntInst('10', '2019-09-08')
 print(inst)
 t = parse('2019-09-08')
 inst = TIntInst(10, t)
 print(inst)
+
+print("\nConstructors for TIntI")
 ti = TIntI('{10@2019-09-08, 20@2019-09-09, 20@2019-09-10}')
 print(ti)
+ti = TIntI('10@2019-09-08', '20@2019-09-09', '20@2019-09-10')
+print(ti)
+ti = TIntI(['10@2019-09-08', '20@2019-09-09', '20@2019-09-10'])
+print(ti)
+t1 = TIntInst('10@2019-09-08')
+t2 = TIntInst('20@2019-09-09')
+t3 = TIntInst('20@2019-09-10')
+ti = TIntI(t1, t2, t3)
+print(ti)
+ti = TIntI([t1, t2, t3])
+print(ti)
+
+print("\nConstructors for TIntSeq")
 seq = TIntSeq('[10@2019-09-08, 20@2019-09-09, 20@2019-09-10]')
 print(seq)
-ts = TIntS('{[10@2019-09-08, 20@2019-09-09, 20@2019-09-10],[25@2019-09-11, 30@2019-09-12]}')
+seq = TIntSeq(['10@2019-09-08', '20@2019-09-09', '20@2019-09-10'])
+print(seq)
+seq = TIntSeq([t1, t2, t3])
+print(seq)
+seq = TIntSeq([t1, t2, t3], False, True)
+print(seq)
+
+print("\nConstructors for TIntS")
+ts = TIntS('{[10@2019-09-08, 20@2019-09-09, 20@2019-09-10],[15@2019-09-11, 30@2019-09-12]}')
+print(ts)
+ts = TIntS('[10@2019-09-08, 20@2019-09-09, 20@2019-09-10]', '[15@2019-09-11, 30@2019-09-12]')
+print(ts)
+ts = TIntS(['[10@2019-09-08, 20@2019-09-09, 20@2019-09-10]', '[15@2019-09-11, 30@2019-09-12]'])
+print(ts)
+seq1 = TIntSeq('[10@2019-09-08, 20@2019-09-09, 20@2019-09-10]')
+seq2 = TIntSeq('[15@2019-09-11, 30@2019-09-12]')
+ts = TIntS([seq1, seq2])
+print(ts)
+ts = TIntS(seq1, seq2)
 print(ts)
 
 print("\n__class__ ")
@@ -158,3 +196,63 @@ print(ti.timestamps())
 print(seq.timestamps())
 print(ts.timestamps())
 
+print("\nnumSequences")
+print(seq.numSequences())
+print(ts.numSequences())
+
+print("\nstartSequence")
+print(seq.startSequence())
+print(ts.startSequence())
+
+print("\nendSequence")
+print(seq.endSequence())
+print(ts.endSequence())
+
+print("\nsequenceN")
+print(seq.sequenceN(1))
+print(ts.sequenceN(1))
+
+print("\nsequences")
+print(seq.sequences())
+print(ts.sequences())
+
+print("\nshift")
+print(inst.shift(timedelta(days=1)))
+print(ti.shift(timedelta(days=1)))
+print(seq.shift(timedelta(days=1)))
+print(ts.shift(timedelta(days=1)))
+
+print("\nintersectsTimestamp")
+t = datetime.strptime('2019-09-09', '%Y-%m-%d')
+print(inst.intersectsTimestamp(t))
+print(ti.intersectsTimestamp(t))
+print(seq.intersectsTimestamp(t))
+print(ts.intersectsTimestamp(t))
+
+print("\nintersectsTimestampset")
+tss = TimestampSet('{2019-09-09, 2019-09-10}')
+print(inst.intersectsTimestampset(tss))
+print(ti.intersectsTimestampset(tss))
+print(seq.intersectsTimestampset(tss))
+print(ts.intersectsTimestampset(tss))
+
+print("\nintersectsPeriod")
+p = Period('2019-09-09', '2019-09-10', True, True)
+print(inst.intersectsPeriod(p))
+print(ti.intersectsPeriod(p))
+print(seq.intersectsPeriod(p))
+print(ts.intersectsPeriod(p))
+
+print("\nintersectsPeriodset")
+ps = PeriodSet('{[2019-09-09,2019-09-10], [2019-09-11,2019-09-12]}')
+print(inst.intersectsPeriodset(ps))
+print(ti.intersectsPeriodset(ps))
+print(seq.intersectsPeriodset(ps))
+print(ts.intersectsPeriodset(ps))
+
+"""
+f = TInt('1@2000-01-01')
+print(f)
+f = TInt('{1@2000-01-01, 1@2000-01-02}')
+print(f)
+"""

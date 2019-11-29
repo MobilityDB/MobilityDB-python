@@ -249,7 +249,9 @@ print(ti.intersectsPeriodset(ps))
 print(seq.intersectsPeriodset(ps))
 print(ts.intersectsPeriodset(ps))
 
+"""
 f = TFloat('1@2000-01-01')
 print(f)
 f = TFloat('{1@2000-01-01, 1@2000-01-02}')
 print(f)
+"""

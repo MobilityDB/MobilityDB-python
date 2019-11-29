@@ -19,11 +19,11 @@ def __hash__(self):
 
 setattr(Point, '__hash__', __hash__)
 
-class TGeomPoint(Temporal):
+class TGeogPoint(Temporal):
 	BaseValueClass = Point
 	ComponentValueClass = None
 
-class TGeomPointInst(TemporalInst, TGeomPoint):
+class TGeogPointInst(TemporalInst, TGeogPoint):
 
 	def __init__(self, value, time=None):
 		TemporalInst.BaseValueClass = Point
@@ -60,11 +60,11 @@ class TGeomPointInst(TemporalInst, TGeomPoint):
 		"""
 		return self._value
 
-class TGeomPointI(TemporalI, TGeomPoint):
+class TGeogPointI(TemporalI, TGeogPoint):
 
 	def __init__(self,  *argv):
 		TemporalI.BaseValueClass = Point
-		TemporalI.ComponentValueClass = TGeomPointInst
+		TemporalI.ComponentValueClass = TGeogPointInst
 		super().__init__(*argv)
 
 	def getValues(self):
@@ -74,11 +74,11 @@ class TGeomPointI(TemporalI, TGeomPoint):
 		values = super().getValues()
 		return MultiPoint(values)
 
-class TGeomPointSeq(TemporalSeq, TGeomPoint):
+class TGeogPointSeq(TemporalSeq, TGeogPoint):
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
 		TemporalSeq.BaseValueClass = Point
-		TemporalSeq.ComponentValueClass = TGeomPointInst
+		TemporalSeq.ComponentValueClass = TGeogPointInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
 	def getValues(self):
@@ -92,11 +92,11 @@ class TGeomPointSeq(TemporalSeq, TGeomPoint):
 			result = LineString(values)
 		return result
 
-class TGeomPointS(TemporalS, TGeomPoint):
+class TGeogPointS(TemporalS, TGeogPoint):
 
 	def __init__(self, *argv):
 		TemporalS.BaseValueClass = Point
-		TemporalS.ComponentValueClass = TGeomPointSeq
+		TemporalS.ComponentValueClass = TGeogPointSeq
 		super().__init__(*argv)
 
 	def getValues(self):
@@ -104,8 +104,8 @@ class TGeomPointS(TemporalS, TGeomPoint):
 		Distinct values
 		"""
 		values = [seq.getValues() for seq in self._sequenceList]
-		points = [geom for geom in values if isinstance(geom, Point)]
-		lines = [geom for geom in values if isinstance(geom, LineString)]
+		points = [geo for geo in values if isinstance(geo, Point)]
+		lines = [geo for geo in values if isinstance(geo, LineString)]
 		if len(points) != 0 and len(points) != 0:
 			return GeometryCollection(points + lines)
 		if len(points) != 0 and len(points) == 0:
