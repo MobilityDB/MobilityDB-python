@@ -104,14 +104,8 @@ class TGEOMPOINTS(TEMPORALS, TGEOMPOINT):
 		Distinct values
 		"""
 		values = [seq.getValues() for seq in self._sequenceList]
-		# Normalize list of ranges
-		points = []
-		lines = []
-		for geom in values:
-			if isinstance(geom, Point):
-				points.append(geom)
-			else:
-				lines.append(geom)
+		points = [geom for geom in values if isinstance(geom, Point)]
+		lines = [geom for geom in values if isinstance(geom, LineString)]
 		if len(points) != 0 and len(points) != 0:
 			return GeometryCollection(points + lines)
 		if len(points) != 0 and len(points) == 0:
