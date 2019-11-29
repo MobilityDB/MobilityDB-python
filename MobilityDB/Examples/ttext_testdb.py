@@ -4,7 +4,7 @@ connectionObject = None
 
 try:
 	# Set the connection parameters to PostgreSQL
-	connectionObject = psycopg2.connect(host='127.0.0.1', database='sf0_005', user='postgres', password='ulb')
+	connectionObject = psycopg2.connect(host='127.0.0.1', database='regtests', user='mobilitydb', password='')
 	connectionObject.autocommit = True
 
 	# Register MobilityDB data types
@@ -12,8 +12,69 @@ try:
 
 	cursor = connectionObject.cursor()
 
-	var1 = TTextSeq('[text1@2019-09-08, text2@2019-09-09, text3@2019-09-10]')
-	print(var1)
+	# TTextInst
+
+	postgreSQL_select_Query = "select * from tbl_ttextinst order by k limit 10"
+
+	cursor.execute(postgreSQL_select_Query)
+	print("Selecting rows from tbl_ttextinst table using cursor.fetchall")
+	rows = cursor.fetchall()
+
+	for row in rows:
+		print("key =", row[0])
+		print("ttextinst =", row[1])
+		if not row[1]:
+			print("")
+		else:
+			print("startTimestamp =", row[1].startTimestamp(), "\n")
+
+	# TTextI
+
+	postgreSQL_select_Query = "select * from tbl_ttexti order by k limit 10"
+
+	cursor.execute(postgreSQL_select_Query)
+	print("Selecting rows from tbl_ttexti table using cursor.fetchall")
+	rows = cursor.fetchall()
+
+	for row in rows:
+		print("key =", row[0])
+		print("ttexti =", row[1])
+		if not row[1]:
+			print("")
+		else:
+			print("startTimestamp =", row[1].startTimestamp(), "\n")
+
+	# TTextSeq
+
+	postgreSQL_select_Query = "select * from tbl_ttextseq order by k limit 10"
+
+	cursor.execute(postgreSQL_select_Query)
+	print("Selecting rows from tbl_ttextseq table using cursor.fetchall")
+	rows = cursor.fetchall()
+
+	for row in rows:
+		print("key =", row[0])
+		print("ttextseq =", row[1])
+		if not row[1]:
+			print("")
+		else:
+			print("startTimestamp =", row[1].startTimestamp(), "\n")
+
+	# TTextS
+
+	postgreSQL_select_Query = "select * from tbl_ttexts order by k limit 10"
+
+	cursor.execute(postgreSQL_select_Query)
+	print("Selecting rows from tbl_ttexts table using cursor.fetchall")
+	rows = cursor.fetchall()
+
+	for row in rows:
+		print("key =", row[0])
+		print("ttexts =", row[1])
+		if not row[1]:
+			print("")
+		else:
+			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
 except psycopg2.DatabaseError as e:
 

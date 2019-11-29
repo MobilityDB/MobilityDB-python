@@ -1,5 +1,5 @@
-from MobilityDB.TemporalTypes import *
 from spans.types import Range
+from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
 
 
 class floatrange(Range):
@@ -7,28 +7,11 @@ class floatrange(Range):
 	type = float
 
 class TFloat(Temporal):
+	"""
+	Temporal floats of any duration (abstract class)
+	"""
 	BaseValueClass = float
 	ComponentValueClass = None
-
-	def __init__(self, value):
-		if isinstance(value, str):
-			subclasses = self.__class__.__subclasses__()
-			print(subclasses)
-			if value[0] != '{' and value[0] != '[' and value[0] != '(':
-				# TemporalInst
-				subclasses[0](value)
-			elif value[0] == '[' or value[0] == '(':
-				# TemporalSeq
-				subclasses[2](value)
-			elif (value[0] == '{'):
-				# TemporalS
-				if value[1] == '[' or value[1] == '(':
-					subclasses[3](value)
-				else:
-					# TemporalS
-					subclasses[1](value)
-		else:
-			raise Exception("ERROR: Could not parse temporal value")
 
 	def valueRange(self):
 		"""
@@ -36,14 +19,25 @@ class TFloat(Temporal):
 		"""
 		return floatrange(self.minValue(), self.maxValue(), True, True)
 
-	def __str__(self):
-		"""
-		String representation
-		"""
-		print(type(self))
-		pass
+	@staticmethod
+	def read_from_cursor(value, cursor=None):
+		if not value:
+			return None
+		if value[0] != '{' and value[0] != '[' and value[0] != '(':
+			return TFloatInst(value)
+		elif value[0] == '[' or value[0] == '(':
+			return TFloatSeq(value)
+		elif value[0] == '{':
+			if value[1] == '[' or value[1] == '(':
+				return TFloatS(value)
+			else:
+				return TFloatI(value)
+		raise Exception("ERROR: Could not parse temporal float value")
 
 class TFloatInst(TemporalInst, TFloat):
+	"""
+	Temporal floats of instant duration
+	"""
 
 	def __init__(self, value, time=None):
 		TemporalInst.BaseValueClass = float
@@ -55,7 +49,11 @@ class TFloatInst(TemporalInst, TFloat):
 		"""
 		return floatrange(self._value, self._value, True, True)
 
+
 class TFloatI(TemporalI, TFloat):
+	"""
+	Temporal floats of instant set duration
+	"""
 
 	def __init__(self,  *argv):
 		TemporalI.BaseValueClass = float
@@ -69,7 +67,11 @@ class TFloatI(TemporalI, TFloat):
 		values = super().getValues()
 		return [floatrange(value, value, True, True) for value in values]
 
+
 class TFloatSeq(TemporalSeq, TFloat):
+	"""
+	Temporal floats of sequence duration
+	"""
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
 		TemporalSeq.BaseValueClass = float
@@ -92,8 +94,11 @@ class TFloatSeq(TemporalSeq, TFloat):
 			max_inc = max in self._instantList[1:-1]
 		return floatrange(min, max, min_inc, max_inc)
 
-class TFloatS(TemporalS, TFloat):
 
+class TFloatS(TemporalS, TFloat):
+	"""
+	Temporal floats of sequence set duration
+	"""
 	def __init__(self, *argv):
 		TemporalS.BaseValueClass = float
 		TemporalS.ComponentValueClass = TFloatSeq

@@ -4,6 +4,9 @@ from .period import Period
 
 
 class TimestampSet:
+	"""
+	Set of disjoint timestamp values
+	"""
 	__slots__ = ['_datetimeList']
 
 	def __init__(self, *argv):
@@ -104,11 +107,17 @@ class TimestampSet:
 
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
-			if len(other._datetimeList) == len(self._datetimeList) and \
-					set(other._datetimeList).intersection(self._datetimeList):
+			if (len(other._datetimeList) == len(self._datetimeList) and
+				set(other._datetimeList).intersection(self._datetimeList)):
 				return True
 		return False
 
+	@staticmethod
+	def read_from_cursor(value, cursor=None):
+		if not value:
+			return None
+		return TimestampSet(value)
+
 	def __str__(self):
 		return "'{{{}}}'".format(', '.join('{}'.format(datetime.__str__())
-										   for datetime in self._datetimeList))
+			for datetime in self._datetimeList))

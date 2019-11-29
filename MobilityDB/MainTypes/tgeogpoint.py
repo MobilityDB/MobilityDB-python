@@ -3,27 +3,41 @@ from bdateutil.parser import parse
 from MobilityDB.TemporalTypes import *
 from postgis import Point, MultiPoint, LineString, GeometryCollection, MultiLineString
 
-
-# We need to add additional method to Point
-def __eq__(self, other):
-	if isinstance(other, self.__class__):
-		if (self.x != other.x or self.y != other.y or
-			self.z != other.z or self.m != other.m):
-			return False
-	return True
-
-setattr(Point, '__eq__', __eq__)
-
+# Add method to Point to make the class hashable
 def __hash__(self):
 	return hash(self.values())
 
 setattr(Point, '__hash__', __hash__)
 
-class TGeomPoint(Temporal):
+
+class TGeogPoint(Temporal):
+	"""
+	Temporal geographic points of any duration (abstract class)
+	"""
 	BaseValueClass = Point
 	ComponentValueClass = None
 
-class TGeomPointInst(TemporalInst, TGeomPoint):
+	@staticmethod
+	def read_from_cursor(value, cursor=None):
+		if not value:
+			return None
+		print("value =", value)
+		if value[0] != '{' and value[0] != '[' and value[0] != '(':
+			return TGeogPointInst(value)
+		elif value[0] == '[' or value[0] == '(':
+			return TGeogPointSeq(value)
+		elif (value[0] == '{'):
+			if value[1] == '[' or value[1] == '(':
+				return TGeogPointS(value)
+			else:
+				return TGeogPointI(value)
+		raise Exception("ERROR: Could not parse temporal float value")
+
+
+class TGeogPointInst(TemporalInst, TGeogPoint):
+	"""
+	Temporal geographic points of instant duration
+	"""
 
 	def __init__(self, value, time=None):
 		TemporalInst.BaseValueClass = Point
@@ -53,18 +67,21 @@ class TGeomPointInst(TemporalInst, TGeomPoint):
 		else:
 			raise Exception("ERROR: Could not parse temporal instant value")
 
-
 	def getValues(self):
 		"""
 		Distinct values
 		"""
 		return self._value
 
-class TGeomPointI(TemporalI, TGeomPoint):
+
+class TGeogPointI(TemporalI, TGeogPoint):
+	"""
+	Temporal geographic points of instant set duration
+	"""
 
 	def __init__(self,  *argv):
 		TemporalI.BaseValueClass = Point
-		TemporalI.ComponentValueClass = TGeomPointInst
+		TemporalI.ComponentValueClass = TGeogPointInst
 		super().__init__(*argv)
 
 	def getValues(self):
@@ -74,11 +91,15 @@ class TGeomPointI(TemporalI, TGeomPoint):
 		values = super().getValues()
 		return MultiPoint(values)
 
-class TGeomPointSeq(TemporalSeq, TGeomPoint):
+
+class TGeogPointSeq(TemporalSeq, TGeogPoint):
+	"""
+	Temporal geographic points of sequence duration
+	"""
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
 		TemporalSeq.BaseValueClass = Point
-		TemporalSeq.ComponentValueClass = TGeomPointInst
+		TemporalSeq.ComponentValueClass = TGeogPointInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
 	def getValues(self):
@@ -92,11 +113,15 @@ class TGeomPointSeq(TemporalSeq, TGeomPoint):
 			result = LineString(values)
 		return result
 
-class TGeomPointS(TemporalS, TGeomPoint):
+
+class TGeogPointS(TemporalS, TGeogPoint):
+	"""
+	Temporal geographic points of sequence set duration
+	"""
 
 	def __init__(self, *argv):
 		TemporalS.BaseValueClass = Point
-		TemporalS.ComponentValueClass = TGeomPointSeq
+		TemporalS.ComponentValueClass = TGeogPointSeq
 		super().__init__(*argv)
 
 	def getValues(self):
@@ -104,8 +129,8 @@ class TGeomPointS(TemporalS, TGeomPoint):
 		Distinct values
 		"""
 		values = [seq.getValues() for seq in self._sequenceList]
-		points = [geom for geom in values if isinstance(geom, Point)]
-		lines = [geom for geom in values if isinstance(geom, LineString)]
+		points = [geo for geo in values if isinstance(geo, Point)]
+		lines = [geo for geo in values if isinstance(geo, LineString)]
 		if len(points) != 0 and len(points) != 0:
 			return GeometryCollection(points + lines)
 		if len(points) != 0 and len(points) == 0:

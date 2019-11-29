@@ -4,7 +4,7 @@ connectionObject = None
 
 try:
 	# Set the connection parameters to PostgreSQL
-	connectionObject = psycopg2.connect(host='127.0.0.1', database='sf0_005', user='postgres', password='ulb')
+	connectionObject = psycopg2.connect(host='127.0.0.1', database='regtests', user='mobilitydb', password='')
 	connectionObject.autocommit = True
 
 	# Register MobilityDB data types
@@ -12,17 +12,53 @@ try:
 
 	cursor = connectionObject.cursor()
 
-	t1 = Period('2019-09-08', '2019-09-10')
-	print(t1)
+	# TimestampSet
 
-	t2 = TimestampSet('2019-09-08', '2019-09-10', '2019-09-11')
-	print(t2)
+	postgreSQL_select_Query = "select * from tbl_timestampset order by k limit 10"
 
-	t22 = TimestampSet('2019-09-08', '2019-09-10', '2019-09-11')
-	print(t2 == t22)
+	cursor.execute(postgreSQL_select_Query)
+	print("Selecting rows from tbl_timestampset table using cursor.fetchall")
+	rows = cursor.fetchall()
 
-	t3 = PeriodSet('{[2019-09-08, 2019-09-10], (2019-09-11, 2019-09-12), [2019-09-13), (2019-09-14, 2019-09-15]}')
-	print(t3)
+	for row in rows:
+		print("key =", row[0])
+		print("timestampset =", row[1])
+		if not row[1]:
+			print("")
+		else:
+			print("timespan =", row[1].timespan(), "\n")
+
+	# Period
+
+	postgreSQL_select_Query = "select * from tbl_period order by k limit 10"
+
+	cursor.execute(postgreSQL_select_Query)
+	print("Selecting rows from tbl_period table using cursor.fetchall")
+	rows = cursor.fetchall()
+
+	for row in rows:
+		print("key =", row[0])
+		print("period =", row[1])
+		if not row[1]:
+			print("")
+		else:
+			print("timespan =", row[1].timespan(), "\n")
+
+	# PeriodSet
+
+	postgreSQL_select_Query = "select * from tbl_periodset order by k limit 10"
+
+	cursor.execute(postgreSQL_select_Query)
+	print("Selecting rows from tbl_periodset table using cursor.fetchall")
+	rows = cursor.fetchall()
+
+	for row in rows:
+		print("key =", row[0])
+		print("periodset =", row[1])
+		if not row[1]:
+			print("")
+		else:
+			print("timespan =", row[1].timespan(), "\n")
 
 except psycopg2.DatabaseError as e:
 

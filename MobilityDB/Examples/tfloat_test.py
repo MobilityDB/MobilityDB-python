@@ -1,13 +1,14 @@
 from datetime import datetime, timedelta
 from bdateutil.parser import parse
 from spans.types import Range
-from MobilityDB import *
-from MobilityDB.TemporalTypes import Temporal
+from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
+from MobilityDB.MainTypes import TFloat, TFloatInst, TFloatI, TFloatSeq, TFloatS
 
 
 class floatrange(Range):
 	__slots__ = ()
 	type = float
+
 
 print("\nConstructors for TFloatInst")
 inst = TFloatInst('10@2019-09-08')

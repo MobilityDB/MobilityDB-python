@@ -1,8 +1,11 @@
-from .period import Period
 import re
+from .period import Period
 
 
 class PeriodSet:
+	"""
+	Set of disjoint period values
+	"""
 	__slots__ = ['_periodList']
 
 	def __init__(self, *argv):
@@ -144,11 +147,17 @@ class PeriodSet:
 
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
-			if len(other._periodList) == len(self._periodList) and set(other._periodList).intersection(
-					self._periodList):
+			if (len(other._periodList) == len(self._periodList) and
+				set(other._periodList).intersection(self._periodList)):
 				return True
 		return False
 
+	@staticmethod
+	def read_from_cursor(value, cursor=None):
+		if not value:
+			return None
+		return PeriodSet(value)
+
 	def __str__(self):
 		return "'{{{}}}'".format(', '.join('{}'.format(period.__str__().replace("'", ""))
-										   for period in self._periodList))
+			for period in self._periodList))

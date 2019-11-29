@@ -12,65 +12,65 @@ try:
 
 	cursor = connectionObject.cursor()
 
-	# TFloatInst
+	# TGeogPointInst
 
-	postgreSQL_select_Query = "select * from tbl_tfloatinst order by k limit 10"
+	postgreSQL_select_Query = "select * from tbl_tgeogpointinst order by k limit 10"
 
 	cursor.execute(postgreSQL_select_Query)
-	print("Selecting rows from tbl_tfloatinst table using cursor.fetchall")
+	print("Selecting rows from tbl_tgeogpointinst table using cursor.fetchall")
 	rows = cursor.fetchall()
 
 	for row in rows:
 		print("key =", row[0])
-		print("tfloatinst =", row[1])
+		print("tgeogpointinst =", row[1])
 		if not row[1]:
 			print("")
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
-	# TFloatI
+	# TGeogPointI
 
-	postgreSQL_select_Query = "select * from tbl_tfloati order by k limit 10"
+	postgreSQL_select_Query = "select * from tbl_tgeogpointi order by k limit 10"
 
 	cursor.execute(postgreSQL_select_Query)
-	print("Selecting rows from tbl_tfloati table using cursor.fetchall")
+	print("Selecting rows from tbl_tgeogpointi table using cursor.fetchall")
 	rows = cursor.fetchall()
 
 	for row in rows:
 		print("key =", row[0])
-		print("tfloati =", row[1])
+		print("tgeogpointi =", row[1])
 		if not row[1]:
 			print("")
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
-	# TFloatSeq
+	# TGeogPointSeq
 
-	postgreSQL_select_Query = "select * from tbl_tfloatseq order by k limit 10"
+	postgreSQL_select_Query = "select * from tbl_tgeogpointseq order by k limit 10"
 
 	cursor.execute(postgreSQL_select_Query)
-	print("Selecting rows from tbl_tfloatseq table using cursor.fetchall")
+	print("Selecting rows from tbl_tgeogpointseq table using cursor.fetchall")
 	rows = cursor.fetchall()
 
 	for row in rows:
 		print("key =", row[0])
-		print("tfloatseq =", row[1])
+		print("tgeogpointseq =", row[1])
 		if not row[1]:
 			print("")
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
-	# TFloatS
+	# TGeogPointS
 
-	postgreSQL_select_Query = "select * from tbl_tfloats order by k limit 10"
+	postgreSQL_select_Query = "select * from tbl_tgeogpoints order by k limit 10"
 
 	cursor.execute(postgreSQL_select_Query)
-	print("Selecting rows from tbl_tfloats table using cursor.fetchall")
+	print("Selecting rows from tbl_tgeogpoints table using cursor.fetchall")
 	rows = cursor.fetchall()
 
 	for row in rows:
 		print("key =", row[0])
-		print("tfloats =", row[1])
+		print("tgeogpoints =", row[1])
 		if not row[1]:
 			print("")
 		else:

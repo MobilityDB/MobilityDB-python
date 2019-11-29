@@ -2,41 +2,10 @@ import datetime
 from bdateutil.parser import parse
 
 
-def _period_cmp_bounds(t1, t2, lower1, lower2, inclusive1, inclusive2):
-	# Compare the values
-	if t1 < t2:
-		return -1
-	elif t1 > t2:
-		return 1
-	"""
-	If the comparison is not equal and the bounds are both inclusive or 
-	both exclusive, we're done. If they compare equal, we still have to 
-	consider whether the boundaries are inclusive or exclusive. 
-	"""
-	if not inclusive1 and not inclusive2:
-		# both are exclusive
-		if lower1 == lower2:
-			return 0
-		else:
-			if lower1:
-				return 1
-			else:
-				return -1
-	elif not inclusive1:
-		if lower1:
-			return 1
-		else:
-			return -1
-		return result
-	elif not inclusive2:
-		if lower2:
-			return -1
-		else:
-			return 1
-	else:
-		return 0
-
 class Period:
+	"""
+	Set of contiguous timestamp values between a lower and upper bounds, which may be inclusive or not
+	"""
 	__slots__ = ['_lower', '_upper', '_lower_inc', '_upper_inc']
 
 	def __init__(self, lower, upper=None, lower_inc=None, upper_inc=None):
@@ -113,14 +82,48 @@ class Period:
 		return Period(self._lower + timedelta, self._upper + timedelta,
 					  self._lower_inc, self._upper_inc)
 
+	@staticmethod
+	def _cmp_bounds(t1, t2, lower1, lower2, inclusive1, inclusive2):
+		# Compare the values
+		if t1 < t2:
+			return -1
+		elif t1 > t2:
+			return 1
+		"""
+		If the comparison is not equal and the bounds are both inclusive or 
+		both exclusive, we're done. If they compare equal, we still have to 
+		consider whether the boundaries are inclusive or exclusive. 
+		"""
+		if not inclusive1 and not inclusive2:
+			# both are exclusive
+			if lower1 == lower2:
+				return 0
+			else:
+				if lower1:
+					return 1
+				else:
+					return -1
+		elif not inclusive1:
+			if lower1:
+				return 1
+			else:
+				return -1
+		elif not inclusive2:
+			if lower2:
+				return -1
+			else:
+				return 1
+		else:
+			return 0
+
 	def overlap(self, other):
 		"""
 		Returns True if both period share any timestamps.
 		"""
-		if ((_period_cmp_bounds(self._lower, other._lower, True, True, self._lower_inc, other._lower_inc) >= 0 and
-			_period_cmp_bounds(self._lower, other._upper, True, False, self._lower_inc, other._upper_inc) <= 0) or
-			(_period_cmp_bounds(other._lower, self._lower, True, True, other._lower_inc, self._lower_inc) >= 0 and
-			_period_cmp_bounds(other._lower, self._upper, True, False, other._lower_inc, self._upper_inc) <= 0)):
+		if ((self._cmp_bounds(self._lower, other._lower, True, True, self._lower_inc, other._lower_inc) >= 0 and
+					 self._cmp_bounds(self._lower, other._upper, True, False, self._lower_inc, other._upper_inc) <= 0) or
+			(self._cmp_bounds(other._lower, self._lower, True, True, other._lower_inc, self._lower_inc) >= 0 and
+					 self._cmp_bounds(other._lower, self._upper, True, False, other._lower_inc, self._upper_inc) <= 0)):
 			return True
 		return False
 
@@ -184,6 +187,12 @@ class Period:
 			if self._cmp(other) == 1 or self._cmp(other) == 0:
 				return True
 			return False
+
+	@staticmethod
+	def read_from_cursor(value, cursor=None):
+		if not value:
+			return None
+		return Period(value)
 
 	def __str__(self):
 		lower_str = '[' if self._lower_inc else '('

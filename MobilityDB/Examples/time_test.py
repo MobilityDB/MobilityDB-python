@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from MobilityDB import *
+from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
 
 print("\n# Period")
 

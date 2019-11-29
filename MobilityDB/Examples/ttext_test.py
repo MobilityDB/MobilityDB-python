@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from bdateutil.parser import parse
-from MobilityDB import *
-
+from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
+from MobilityDB.MainTypes import TText, TTextInst, TTextI, TTextSeq, TTextS
 
 print("\nConstructors for TTextInst")
 inst = TTextInst('A@2019-09-08')
@@ -13,11 +13,11 @@ inst = TTextInst('A', t)
 print(inst)
 
 print("\nConstructors for TText")
-ti = TText('{A@2019-09-08, B@2019-09-09, B@2019-09-10}')
+ti = TTextI('{A@2019-09-08, B@2019-09-09, B@2019-09-10}')
 print(ti)
-ti = TText('A@2019-09-08', 'B@2019-09-09', 'B@2019-09-10')
+ti = TTextI('A@2019-09-08', 'B@2019-09-09', 'B@2019-09-10')
 print(ti)
-ti = TText(['A@2019-09-08', 'B@2019-09-09', 'B@2019-09-10'])
+ti = TTextI(['A@2019-09-08', 'B@2019-09-09', 'B@2019-09-10'])
 print(ti)
 t1 = TTextInst('A@2019-09-08')
 t2 = TTextInst('B@2019-09-09')

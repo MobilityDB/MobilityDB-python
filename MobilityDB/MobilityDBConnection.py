@@ -20,14 +20,25 @@ def MobilityDBRegister(connection):
 		cursor = connection.cursor()
 
 	# Add MobilityDB types to PostgreSQL adapter and specify the reader function for each type.
-
-	cursor.execute("SELECT NULL::TGeomPoint")
+	cursor.execute("SELECT NULL::TimestampSet")
 	oid = cursor.description[0][1]
-	extensions.register_type(extensions.new_type((oid,), "TGeomPoint", TGeomPoint.read_from_cursor))
+	extensions.register_type(extensions.new_type((oid,), "TimestampSet", TimestampSet.read_from_cursor))
 
-	cursor.execute("SELECT NULL::TGeogPoint")
+	cursor.execute("SELECT NULL::Period")
 	oid = cursor.description[0][1]
-	extensions.register_type(extensions.new_type((oid,), "TGeogPoint", TGeogPoint.read_from_cursor))
+	extensions.register_type(extensions.new_type((oid,), "Period", Period.read_from_cursor))
+
+	cursor.execute("SELECT NULL::PeriodSet")
+	oid = cursor.description[0][1]
+	extensions.register_type(extensions.new_type((oid,), "PeriodSet", PeriodSet.read_from_cursor))
+
+	cursor.execute("SELECT NULL::TBOX")
+	oid = cursor.description[0][1]
+	extensions.register_type(extensions.new_type((oid,), "TBOX", TBOX.read_from_cursor))
+
+	cursor.execute("SELECT NULL::TBool")
+	oid = cursor.description[0][1]
+	extensions.register_type(extensions.new_type((oid,), "TBool", TBool.read_from_cursor))
 
 	cursor.execute("SELECT NULL::TInt")
 	oid = cursor.description[0][1]
@@ -37,18 +48,18 @@ def MobilityDBRegister(connection):
 	oid = cursor.description[0][1]
 	extensions.register_type(extensions.new_type((oid,), "TFloat", TFloat.read_from_cursor))
 
-	cursor.execute("SELECT NULL::TBool")
-	oid = cursor.description[0][1]
-	extensions.register_type(extensions.new_type((oid,), "TBool", TBool.read_from_cursor))
-
 	cursor.execute("SELECT NULL::TText")
 	oid = cursor.description[0][1]
 	extensions.register_type(extensions.new_type((oid,), "TText", TText.read_from_cursor))
 
-	cursor.execute("SELECT NULL::TBOX")
-	oid = cursor.description[0][1]
-	extensions.register_type(extensions.new_type((oid,), "TBOX", TBOX.read_from_cursor))
-
 	cursor.execute("SELECT NULL::STBOX")
 	oid = cursor.description[0][1]
 	extensions.register_type(extensions.new_type((oid,), "STBOX", STBOX.read_from_cursor))
+
+	cursor.execute("SELECT NULL::TGeomPoint")
+	oid = cursor.description[0][1]
+	extensions.register_type(extensions.new_type((oid,), "TGeomPoint", TGeomPoint.read_from_cursor))
+
+	cursor.execute("SELECT NULL::TGeogPoint")
+	oid = cursor.description[0][1]
+	extensions.register_type(extensions.new_type((oid,), "TGeogPoint", TGeogPoint.read_from_cursor))
