@@ -1,11 +1,11 @@
 import re
-from MobilityDB.TimeTypes.period import PERIOD
-from MobilityDB.TimeTypes.periodset import PERIODSET
-from MobilityDB.TemporalTypes.temporal import TEMPORAL
-from MobilityDB.TemporalTypes.temporalseq import TEMPORALSEQ
+from MobilityDB.TimeTypes.period import Period
+from MobilityDB.TimeTypes.periodset import PeriodSet
+from MobilityDB.TemporalTypes.temporal import Temporal
+from MobilityDB.TemporalTypes.temporalseq import TemporalSeq
 
 
-class TEMPORALS(TEMPORAL):
+class TemporalS(Temporal):
 	__slots__ = ['_sequenceList']
 
 	def __init__(self, *argv):
@@ -93,13 +93,13 @@ class TEMPORALS(TEMPORAL):
 		"""
 		Timestamp
 		"""
-		return PERIODSET([seq.period() for seq in self._sequenceList])
+		return PeriodSet([seq.period() for seq in self._sequenceList])
 
 	def period(self):
 		"""
 		Period on which the temporal value is defined ignoring the potential time gaps
 		"""
-		return PERIOD(self.startTimestamp(), self.endTimestamp(),
+		return Period(self.startTimestamp(), self.endTimestamp(),
 			self._sequenceList[0].lower_inc, self._sequenceList[-1].upper_inc)
 
 	def numInstants(self):

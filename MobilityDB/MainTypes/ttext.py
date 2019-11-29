@@ -1,34 +1,34 @@
 from MobilityDB.TemporalTypes import *
 
 
-class TTEXT(TEMPORAL):
+class TText(Temporal):
 	BaseValueClass = str
 
-class TTEXTINST(TEMPORALINST, TTEXT):
+class TTextInst(TemporalInst, TText):
 
 	def __init__(self, value, time=None):
-		TEMPORALINST.BaseValueClass = str
+		TemporalInst.BaseValueClass = str
 		super().__init__(value, time)
 
-class TTEXTI(TEMPORALI, TTEXT):
+class TTextI(TemporalI, TText):
 
 	def __init__(self,  *argv):
-		TEMPORALI.BaseValueClass = str
-		TEMPORALI.ComponentValueClass = TTEXTINST
+		TemporalI.BaseValueClass = str
+		TemporalI.ComponentValueClass = TTextInst
 		super().__init__(*argv)
 
-class TTEXTSEQ(TEMPORALSEQ, TTEXT):
+class TTextSeq(TemporalSeq, TText):
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
-		TEMPORALSEQ.BaseValueClass = str
-		TEMPORALSEQ.ComponentValueClass = TTEXTINST
+		TemporalSeq.BaseValueClass = str
+		TemporalSeq.ComponentValueClass = TTextInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
-class TTEXTS(TEMPORALS, TTEXT):
+class TTextS(TemporalS, TText):
 
 	def __init__(self, *argv):
-		TEMPORALS.BaseValueClass = str
-		TEMPORALS.ComponentValueClass = TTEXTSEQ
+		TemporalS.BaseValueClass = str
+		TemporalS.ComponentValueClass = TTextSeq
 		super().__init__(*argv)
 
 

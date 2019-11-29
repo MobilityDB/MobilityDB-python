@@ -6,9 +6,29 @@ class floatrange(Range):
 	__slots__ = ()
 	type = float
 
-class TFLOAT(TEMPORAL):
+class TFloat(Temporal):
 	BaseValueClass = float
 	ComponentValueClass = None
+
+	def __init__(self, value):
+		if isinstance(value, str):
+			subclasses = self.__class__.__subclasses__()
+			print(subclasses)
+			if value[0] != '{' and value[0] != '[' and value[0] != '(':
+				# TemporalInst
+				subclasses[0](value)
+			elif value[0] == '[' or value[0] == '(':
+				# TemporalSeq
+				subclasses[2](value)
+			elif (value[0] == '{'):
+				# TemporalS
+				if value[1] == '[' or value[1] == '(':
+					subclasses[3](value)
+				else:
+					# TemporalS
+					subclasses[1](value)
+		else:
+			raise Exception("ERROR: Could not parse temporal value")
 
 	def valueRange(self):
 		"""
@@ -16,10 +36,17 @@ class TFLOAT(TEMPORAL):
 		"""
 		return floatrange(self.minValue(), self.maxValue(), True, True)
 
-class TFLOATINST(TEMPORALINST, TFLOAT):
+	def __str__(self):
+		"""
+		String representation
+		"""
+		print(type(self))
+		pass
+
+class TFloatInst(TemporalInst, TFloat):
 
 	def __init__(self, value, time=None):
-		TEMPORALINST.BaseValueClass = float
+		TemporalInst.BaseValueClass = float
 		super().__init__(value, time)
 
 	def getValues(self):
@@ -28,11 +55,11 @@ class TFLOATINST(TEMPORALINST, TFLOAT):
 		"""
 		return floatrange(self._value, self._value, True, True)
 
-class TFLOATI(TEMPORALI, TFLOAT):
+class TFloatI(TemporalI, TFloat):
 
 	def __init__(self,  *argv):
-		TEMPORALI.BaseValueClass = float
-		TEMPORALI.ComponentValueClass = TFLOATINST
+		TemporalI.BaseValueClass = float
+		TemporalI.ComponentValueClass = TFloatInst
 		super().__init__(*argv)
 
 	def getValues(self):
@@ -42,11 +69,11 @@ class TFLOATI(TEMPORALI, TFLOAT):
 		values = super().getValues()
 		return [floatrange(value, value, True, True) for value in values]
 
-class TFLOATSEQ(TEMPORALSEQ, TFLOAT):
+class TFloatSeq(TemporalSeq, TFloat):
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
-		TEMPORALSEQ.BaseValueClass = float
-		TEMPORALSEQ.ComponentValueClass = TFLOATINST
+		TemporalSeq.BaseValueClass = float
+		TemporalSeq.ComponentValueClass = TFloatInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
 	def getValues(self):
@@ -65,11 +92,11 @@ class TFLOATSEQ(TEMPORALSEQ, TFLOAT):
 			max_inc = max in self._instantList[1:-1]
 		return floatrange(min, max, min_inc, max_inc)
 
-class TFLOATS(TEMPORALS, TFLOAT):
+class TFloatS(TemporalS, TFloat):
 
 	def __init__(self, *argv):
-		TEMPORALS.BaseValueClass = float
-		TEMPORALS.ComponentValueClass = TFLOATSEQ
+		TemporalS.BaseValueClass = float
+		TemporalS.ComponentValueClass = TFloatSeq
 		super().__init__(*argv)
 
 	def getValues(self):

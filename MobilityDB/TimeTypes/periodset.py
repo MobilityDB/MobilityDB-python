@@ -1,8 +1,8 @@
-from .period import PERIOD
+from .period import Period
 import re
 
 
-class PERIODSET:
+class PeriodSet:
 	__slots__ = ['_periodList']
 
 	def __init__(self, *argv):
@@ -14,7 +14,7 @@ class PERIODSET:
 				p = re.compile('[\[|\(].*?[^\]\)][\]|\)]')
 				periods = p.findall(ps)
 				for period in periods:
-					self._periodList.append(PERIOD(period))
+					self._periodList.append(Period(period))
 			else:
 				raise Exception("ERROR: Could not parse period set value")
 		# Constructor with a single argument of type list
@@ -22,9 +22,9 @@ class PERIODSET:
 			# List of strings representing periods
 			if all(isinstance(arg, str) for arg in argv[0]):
 				for arg in argv[0]:
-					self._periodList.append(PERIOD(arg))
+					self._periodList.append(Period(arg))
 			# List of periods
-			elif all(isinstance(arg, PERIOD) for arg in argv[0]):
+			elif all(isinstance(arg, Period) for arg in argv[0]):
 				for arg in argv[0]:
 					self._periodList.append(arg)
 			else:
@@ -34,9 +34,9 @@ class PERIODSET:
 			# Arguments are of type string
 			if all(isinstance(arg, str) for arg in argv):
 				for arg in argv:
-					self._periodList.append(PERIOD(arg))
+					self._periodList.append(Period(arg))
 			# Arguments are of type period
-			elif all(isinstance(arg, PERIOD) for arg in argv):
+			elif all(isinstance(arg, Period) for arg in argv):
 				for arg in argv:
 					self._periodList.append(arg)
 			else:
@@ -60,7 +60,7 @@ class PERIODSET:
 		"""
 		Period on which the period set is defined ignoring the potential time gaps
 		"""
-		return PERIOD((self._periodList[0]).lower(), (self._periodList[-1]).lower(),
+		return Period((self._periodList[0]).lower(), (self._periodList[-1]).lower(),
 					  self._periodList[0].lower_inc(), self._periodList[-1].lower_inc())
 
 	def numTimestamps(self):
@@ -140,7 +140,7 @@ class PERIODSET:
 		"""
 		Shift
 		"""
-		return PERIODSET([period.shift(timedelta) for period in self._periodList])
+		return PeriodSet([period.shift(timedelta) for period in self._periodList])
 
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):

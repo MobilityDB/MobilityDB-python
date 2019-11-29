@@ -19,14 +19,14 @@ def __hash__(self):
 
 setattr(Point, '__hash__', __hash__)
 
-class TGEOMPOINT(TEMPORAL):
+class TGeomPoint(Temporal):
 	BaseValueClass = Point
 	ComponentValueClass = None
 
-class TGEOMPOINTINST(TEMPORALINST, TGEOMPOINT):
+class TGeomPointInst(TemporalInst, TGeomPoint):
 
 	def __init__(self, value, time=None):
-		TEMPORALINST.BaseValueClass = Point
+		TemporalInst.BaseValueClass = Point
 		#super().__init__(value, time)
 		# Constructor with a single argument of type string
 		if time is None and isinstance(value, str):
@@ -60,11 +60,11 @@ class TGEOMPOINTINST(TEMPORALINST, TGEOMPOINT):
 		"""
 		return self._value
 
-class TGEOMPOINTI(TEMPORALI, TGEOMPOINT):
+class TGeomPointI(TemporalI, TGeomPoint):
 
 	def __init__(self,  *argv):
-		TEMPORALI.BaseValueClass = Point
-		TEMPORALI.ComponentValueClass = TGEOMPOINTINST
+		TemporalI.BaseValueClass = Point
+		TemporalI.ComponentValueClass = TGeomPointInst
 		super().__init__(*argv)
 
 	def getValues(self):
@@ -74,11 +74,11 @@ class TGEOMPOINTI(TEMPORALI, TGEOMPOINT):
 		values = super().getValues()
 		return MultiPoint(values)
 
-class TGEOMPOINTSEQ(TEMPORALSEQ, TGEOMPOINT):
+class TGeomPointSeq(TemporalSeq, TGeomPoint):
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
-		TEMPORALSEQ.BaseValueClass = Point
-		TEMPORALSEQ.ComponentValueClass = TGEOMPOINTINST
+		TemporalSeq.BaseValueClass = Point
+		TemporalSeq.ComponentValueClass = TGeomPointInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
 	def getValues(self):
@@ -92,11 +92,11 @@ class TGEOMPOINTSEQ(TEMPORALSEQ, TGEOMPOINT):
 			result = LineString(values)
 		return result
 
-class TGEOMPOINTS(TEMPORALS, TGEOMPOINT):
+class TGeomPointS(TemporalS, TGeomPoint):
 
 	def __init__(self, *argv):
-		TEMPORALS.BaseValueClass = Point
-		TEMPORALS.ComponentValueClass = TGEOMPOINTSEQ
+		TemporalS.BaseValueClass = Point
+		TemporalS.ComponentValueClass = TGeomPointSeq
 		super().__init__(*argv)
 
 	def getValues(self):

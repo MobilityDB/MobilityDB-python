@@ -21,29 +21,29 @@ def MobilityDBRegister(connection):
 
 	# Add MobilityDB types to PostgreSQL adapter and specify the reader function for each type.
 
-	cursor.execute("SELECT NULL::TGEOMPOINT")
+	cursor.execute("SELECT NULL::TGeomPoint")
 	oid = cursor.description[0][1]
-	extensions.register_type(extensions.new_type((oid,), "TGEOMPOINT", TGEOMPOINT.read_from_cursor))
+	extensions.register_type(extensions.new_type((oid,), "TGeomPoint", TGeomPoint.read_from_cursor))
 
-	cursor.execute("SELECT NULL::TGEOGPOINT")
+	cursor.execute("SELECT NULL::TGeogPoint")
 	oid = cursor.description[0][1]
-	extensions.register_type(extensions.new_type((oid,), "TGEOGPOINT", TGEOGPOINT.read_from_cursor))
+	extensions.register_type(extensions.new_type((oid,), "TGeogPoint", TGeogPoint.read_from_cursor))
 
-	cursor.execute("SELECT NULL::TINT")
+	cursor.execute("SELECT NULL::TInt")
 	oid = cursor.description[0][1]
-	extensions.register_type(extensions.new_type((oid,), "TINT", TINT.read_from_cursor))
+	extensions.register_type(extensions.new_type((oid,), "TInt", TInt.read_from_cursor))
 
-	cursor.execute("SELECT NULL::TFLOAT")
+	cursor.execute("SELECT NULL::TFloat")
 	oid = cursor.description[0][1]
-	extensions.register_type(extensions.new_type((oid,), "TFLOAT", TFLOAT.read_from_cursor))
+	extensions.register_type(extensions.new_type((oid,), "TFloat", TFloat.read_from_cursor))
 
-	cursor.execute("SELECT NULL::TBOOL")
+	cursor.execute("SELECT NULL::TBool")
 	oid = cursor.description[0][1]
-	extensions.register_type(extensions.new_type((oid,), "TBOOL", TBOOL.read_from_cursor))
+	extensions.register_type(extensions.new_type((oid,), "TBool", TBool.read_from_cursor))
 
-	cursor.execute("SELECT NULL::TTEXT")
+	cursor.execute("SELECT NULL::TText")
 	oid = cursor.description[0][1]
-	extensions.register_type(extensions.new_type((oid,), "TTEXT", TTEXT.read_from_cursor))
+	extensions.register_type(extensions.new_type((oid,), "TText", TText.read_from_cursor))
 
 	cursor.execute("SELECT NULL::TBOX")
 	oid = cursor.description[0][1]

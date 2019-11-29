@@ -1,34 +1,34 @@
 from MobilityDB.TemporalTypes import *
 
 
-class TBOOL(TEMPORAL):
+class TBool(Temporal):
 	BaseValueClass = bool
 
-class TBOOLINST(TEMPORALINST, TBOOL):
+class TBoolInst(TemporalInst, TBool):
 
 	def __init__(self, value, time=None):
-		TEMPORALINST.BaseValueClass = str
+		TemporalInst.BaseValueClass = str
 		super().__init__(value, time)
 
-class TBOOLI(TEMPORALI, TBOOL):
+class TBoolI(TemporalI, TBool):
 
 	def __init__(self,  *argv):
-		TEMPORALI.BaseValueClass = str
-		TEMPORALI.ComponentValueClass = TBOOLINST
+		TemporalI.BaseValueClass = str
+		TemporalI.ComponentValueClass = TBoolInst
 		super().__init__(*argv)
 
-class TBOOLSEQ(TEMPORALSEQ, TBOOL):
+class TBoolSeq(TemporalSeq, TBool):
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
-		TEMPORALSEQ.BaseValueClass = str
-		TEMPORALSEQ.ComponentValueClass = TBOOLINST
+		TemporalSeq.BaseValueClass = str
+		TemporalSeq.ComponentValueClass = TBoolInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
-class TBOOLS(TEMPORALS, TBOOL):
+class TBoolS(TemporalS, TBool):
 
 	def __init__(self, *argv):
-		TEMPORALS.BaseValueClass = str
-		TEMPORALS.ComponentValueClass = TBOOLSEQ
+		TemporalS.BaseValueClass = str
+		TemporalS.ComponentValueClass = TBoolSeq
 		super().__init__(*argv)
 
 

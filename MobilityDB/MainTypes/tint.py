@@ -6,7 +6,7 @@ class intrange(Range):
 	__slots__ = ()
 	type = int
 
-class TINT(TEMPORAL):
+class TInt(Temporal):
 	BaseValueClass = int
 	ComponentValueClass = None
 
@@ -16,31 +16,31 @@ class TINT(TEMPORAL):
 		"""
 		return intrange(self.minValue(), self.maxValue(), True, True)
 
-class TINTINST(TEMPORALINST, TINT):
+class TIntInst(TemporalInst, TInt):
 
 	def __init__(self, value, time=None):
-		TEMPORALINST.BaseValueClass = int
+		TemporalInst.BaseValueClass = int
 		super().__init__(value, time)
 
-class TINTI(TEMPORALI, TINT):
+class TIntI(TemporalI, TInt):
 
 	def __init__(self,  *argv):
-		TEMPORALI.BaseValueClass = int
-		TEMPORALI.ComponentValueClass = TINTINST
+		TemporalI.BaseValueClass = int
+		TemporalI.ComponentValueClass = TIntInst
 		super().__init__(*argv)
 
-class TINTSEQ(TEMPORALSEQ, TINT):
+class TIntSeq(TemporalSeq, TInt):
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
-		TEMPORALSEQ.BaseValueClass = int
-		TEMPORALSEQ.ComponentValueClass = TINTINST
+		TemporalSeq.BaseValueClass = int
+		TemporalSeq.ComponentValueClass = TIntInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
-class TINTS(TEMPORALS, TINT):
+class TIntS(TemporalS, TInt):
 
 	def __init__(self, *argv):
-		TEMPORALS.BaseValueClass = int
-		TEMPORALS.ComponentValueClass = TINTSEQ
+		TemporalS.BaseValueClass = int
+		TemporalS.ComponentValueClass = TIntSeq
 		super().__init__(*argv)
 
 

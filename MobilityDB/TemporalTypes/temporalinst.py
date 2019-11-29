@@ -1,10 +1,10 @@
 from datetime import datetime
 from bdateutil.parser import parse
-from .temporal import TEMPORAL
-from MobilityDB.TimeTypes.period import PERIOD
-from MobilityDB.TimeTypes.periodset import PERIODSET
+from .temporal import Temporal
+from MobilityDB.TimeTypes.period import Period
+from MobilityDB.TimeTypes.periodset import PeriodSet
 
-class TEMPORALINST(TEMPORAL):
+class TemporalInst(Temporal):
 	__slots__ = ['_value', '_time']
 
 	def __init__(self, value, time=None):
@@ -85,13 +85,13 @@ class TEMPORALINST(TEMPORAL):
 		"""
 		Timestamp
 		"""
-		return PERIODSET([PERIOD(self._time, self._time, True, True)])
+		return PeriodSet([Period(self._time, self._time, True, True)])
 
 	def period(self):
 		"""
 		Period on which the temporal value is defined
 		"""
-		return PERIOD(self.getTimestamp(), self.getTimestamp(), True, True)
+		return Period(self.getTimestamp(), self.getTimestamp(), True, True)
 
 	def numInstants(self):
 		"""

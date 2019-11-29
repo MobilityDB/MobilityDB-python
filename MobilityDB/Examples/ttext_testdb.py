@@ -12,7 +12,7 @@ try:
 
 	cursor = connectionObject.cursor()
 
-	var1 = TTEXTSEQ('[text1@2019-09-08, text2@2019-09-09, text3@2019-09-10]')
+	var1 = TTextSeq('[text1@2019-09-08, text2@2019-09-09, text3@2019-09-10]')
 	print(var1)
 
 except psycopg2.DatabaseError as e:

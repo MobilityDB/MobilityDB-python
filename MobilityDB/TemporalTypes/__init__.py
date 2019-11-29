@@ -1,8 +1,8 @@
-from .temporal import TEMPORAL
-from .temporalinst import TEMPORALINST
+from .temporal import Temporal
+from .temporalinst import TemporalInst
 from .temporalinstants import TEMPORALINSTANTS
-from .temporali import TEMPORALI
-from .temporalseq import TEMPORALSEQ
-from .temporals import TEMPORALS
+from .temporali import TemporalI
+from .temporalseq import TemporalSeq
+from .temporals import TemporalS
 
-__all__ = ['TEMPORAL', 'TEMPORALINST', 'TEMPORALINSTANTS', 'TEMPORALI', 'TEMPORALSEQ', 'TEMPORALS']
+__all__ = ['Temporal', 'TemporalInst', 'TEMPORALINSTANTS', 'TemporalI', 'TemporalSeq', 'TemporalS']

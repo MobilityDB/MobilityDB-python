@@ -2,7 +2,7 @@ from MobilityDB.TemporalTypes import *
 from MobilityDB.MobilityDBReader import MobilityDBReader
 
 
-class TBOOL(TEMPORAL):
+class TBool(Temporal):
 	BaseValueClass = bool
 
 	def __init__(self, value=None):
@@ -14,10 +14,10 @@ class TBOOL(TEMPORAL):
 				for item in value:
 					if isinstance(item, self.SubClass.__class__.__bases__[0]):
 						listItems.append(item.SubClass)
-				if value[0].SubClass.__class__ == TEMPORALINST:
-					self.SubClass = TEMPORALI(listItems)
-				elif value[0].SubClass.__class__ == TEMPORALSEQ:
-					self.SubClass = TEMPORALS(listItems)
+				if value[0].SubClass.__class__ == TemporalInst:
+					self.SubClass = TemporalI(listItems)
+				elif value[0].SubClass.__class__ == TemporalSeq:
+					self.SubClass = TemporalS(listItems)
 			except:
 				raise Exception("ERROR: different types")
 		else:
@@ -27,36 +27,36 @@ class TBOOL(TEMPORAL):
 	def read_from_cursor(value, cursor=None):
 		if not value:
 			return None
-		return TBOOL(MobilityDBReader.readTemporalType(TBOOL, value))
+		return TBool(MobilityDBReader.readTemporalType(TBool, value))
 
 
-class TBOOLINST(TBOOL, TEMPORALINST):
+class TBoolInst(TBool, TemporalInst):
 	def __init__(self, value=None):
-		if MobilityDBReader.checkTemporalType(value) == TEMPORALINST:
+		if MobilityDBReader.checkTemporalType(value) == TemporalInst:
 			super().__init__(value)
 		else:
 			raise Exception("ERROR: Input must be a temporal instant")
 
 
-class TBOOLI(TBOOL, TEMPORALI):
+class TBoolI(TBool, TemporalI):
 	def __init__(self, value=None):
-		if MobilityDBReader.checkTemporalType(value) == TEMPORALI or isinstance(value, list):
+		if MobilityDBReader.checkTemporalType(value) == TemporalI or isinstance(value, list):
 			super().__init__(value)
 		else:
 			raise Exception("ERROR: Input must be a temporal instant set")
 
 
-class TBOOLSEQ(TBOOL, TEMPORALSEQ):
+class TBoolSeq(TBool, TemporalSeq):
 	def __init__(self, value=None):
-		if MobilityDBReader.checkTemporalType(value) == TEMPORALSEQ:
+		if MobilityDBReader.checkTemporalType(value) == TemporalSeq:
 			super().__init__(value)
 		else:
 			raise Exception("ERROR: Input must be a temporal sequence")
 
 
-class TBOOLS(TBOOL, TEMPORALS):
+class TBoolS(TBool, TemporalS):
 	def __init__(self, value=None):
-		if MobilityDBReader.checkTemporalType(value) == TEMPORALS or isinstance(value, list):
+		if MobilityDBReader.checkTemporalType(value) == TemporalS or isinstance(value, list):
 			super().__init__(value)
 		else:
 			raise Exception("ERROR: Input must be a temporal sequence set")

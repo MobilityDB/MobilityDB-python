@@ -36,7 +36,7 @@ def _period_cmp_bounds(t1, t2, lower1, lower2, inclusive1, inclusive2):
 	else:
 		return 0
 
-class PERIOD:
+class Period:
 	__slots__ = ['_lower', '_upper', '_lower_inc', '_upper_inc']
 
 	def __init__(self, lower, upper=None, lower_inc=None, upper_inc=None):
@@ -110,7 +110,7 @@ class PERIOD:
 		"""
 		Shift
 		"""
-		return PERIOD(self._lower + timedelta, self._upper + timedelta,
+		return Period(self._lower + timedelta, self._upper + timedelta,
 					  self._lower_inc, self._upper_inc)
 
 	def overlap(self, other):

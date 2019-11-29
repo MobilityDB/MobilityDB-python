@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
 from bdateutil.parser import parse
-from .period import PERIOD
+from .period import Period
 
 
-class TIMESTAMPSET:
+class TimestampSet:
 	__slots__ = ['_datetimeList']
 
 	def __init__(self, *argv):
@@ -60,7 +60,7 @@ class TIMESTAMPSET:
 		"""
 		Period on which the timestamp set is defined ignoring the potential time gaps
 		"""
-		return PERIOD(self._datetimeList[0], self._datetimeList[-1], True, True)
+		return Period(self._datetimeList[0], self._datetimeList[-1], True, True)
 
 	def numTimestamps(self):
 		"""
@@ -100,7 +100,7 @@ class TIMESTAMPSET:
 		"""
 		Shift
 		"""
-		return TIMESTAMPSET([datetime + timedelta for datetime in self._datetimeList])
+		return TimestampSet([datetime + timedelta for datetime in self._datetimeList])
 
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):

@@ -12,16 +12,16 @@ class MobilityDBReader(Reader):
 	def readTemporalType(cls, MainClass, value):
 		# Check the temporal type and read it
 		if '{' in value and '[' in value:
-			MainClass.SubClass = TEMPORALS
+			MainClass.SubClass = TemporalS
 			return MobilityDBReader.readTemporalS(MainClass, value)
 		elif '[' in value:
-			MainClass.SubClass = TEMPORALSEQ
+			MainClass.SubClass = TemporalSeq
 			return MobilityDBReader.readTemporalSeq(MainClass, value)
 		elif '{' in value:
-			MainClass.SubClass = TEMPORALI
+			MainClass.SubClass = TemporalI
 			return MobilityDBReader.readTemporalI(MainClass, value)
 		else:
-			MainClass.SubClass = TEMPORALINST
+			MainClass.SubClass = TemporalInst
 			return MobilityDBReader.readTemporalInst(MainClass, value)
 
 	@classmethod
@@ -36,7 +36,7 @@ class MobilityDBReader(Reader):
 		else:
 			value = mainClass.BaseValueClass(inst[0])
 		time = format(inst[1])
-		return TEMPORALINST(value, time)
+		return TemporalInst(value, time)
 
 	@classmethod
 	def readTemporalI(cls, mainClass, valueStr=None):
@@ -45,7 +45,7 @@ class MobilityDBReader(Reader):
 		instantList = valueStr.split(',')
 		# Parse every instant in the array
 		instants = [cls.readTemporalInst(mainClass, instStr) for instStr in instantList]
-		return TEMPORALI(instants)
+		return TemporalI(instants)
 
 	@classmethod
 	def readTemporalSeq(cls, mainClass, seqStr=None):
@@ -54,7 +54,7 @@ class MobilityDBReader(Reader):
 		instantsList = seqStr.split(',')
 		# Parse every instant in the sequence
 		instants = [cls.readTemporalInst(mainClass, instStr.strip()) for instStr in instantsList]
-		return TEMPORALSEQ(instants)
+		return TemporalSeq(instants)
 
 	@classmethod
 	def readTemporalS(cls, mainClass, inputValue=None):
@@ -63,7 +63,7 @@ class MobilityDBReader(Reader):
 		sequenceList = re.findall("(\[.+?\])+", inputValue)
 		# Parse every sequence in the list
 		instants = [cls.readTemporalSeq(mainClass, seq.strip()) for seq in sequenceList]
-		return TEMPORALS(instants)
+		return TemporalS(instants)
 
 	@classmethod
 	def readPointFromString(cls, valueStr=None):
@@ -75,10 +75,10 @@ class MobilityDBReader(Reader):
 	def checkTemporalType(cls, value):
 		# Check the temporal type and read it
 		if '{' in value and '[' in value:
-			return TEMPORALS
+			return TemporalS
 		elif '[' in value:
-			return TEMPORALSEQ
+			return TemporalSeq
 		elif '{' in value:
-			return TEMPORALI
+			return TemporalI
 		else:
-			return TEMPORALINST
+			return TemporalInst

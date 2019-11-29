@@ -1,8 +1,8 @@
-from .temporal import TEMPORAL
-from .temporalinst import TEMPORALINST
+from .temporal import Temporal
+from .temporalinst import TemporalInst
 
 
-class TEMPORALINSTANTS(TEMPORAL):
+class TEMPORALINSTANTS(Temporal):
 	__slots__ = ['_instantList']
 
 	def getValues(self):

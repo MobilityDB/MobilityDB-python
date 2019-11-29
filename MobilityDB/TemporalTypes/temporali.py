@@ -1,10 +1,10 @@
-from MobilityDB.TemporalTypes.temporalinst import TEMPORALINST
+from MobilityDB.TemporalTypes.temporalinst import TemporalInst
 from MobilityDB.TemporalTypes.temporalinstants import TEMPORALINSTANTS
-from MobilityDB.TimeTypes.period import PERIOD
-from MobilityDB.TimeTypes.periodset import PERIODSET
+from MobilityDB.TimeTypes.period import Period
+from MobilityDB.TimeTypes.periodset import PeriodSet
 
 
-class TEMPORALI(TEMPORALINSTANTS):
+class TemporalI(TEMPORALINSTANTS):
 
 	def __init__(self, *argv):
 		# Constructor with a single argument of type string
@@ -15,7 +15,7 @@ class TEMPORALI(TEMPORALINSTANTS):
 				ts = ts[1:-1]
 				instants = ts.split(",")
 				for inst in instants:
-					self._instantList.append(TEMPORALI.ComponentValueClass(inst.strip()))
+					self._instantList.append(TemporalI.ComponentValueClass(inst.strip()))
 			else:
 				raise Exception("ERROR: Could not parse temporal instant set value")
 		# Constructor with a single argument of type list
@@ -23,9 +23,9 @@ class TEMPORALI(TEMPORALINSTANTS):
 			# List of strings representing instant values
 			if all(isinstance(arg, str) for arg in argv[0]):
 				for arg in argv[0]:
-					self._instantList.append(TEMPORALI.ComponentValueClass(arg))
+					self._instantList.append(TemporalI.ComponentValueClass(arg))
 			# List of instant values
-			elif all(isinstance(arg, TEMPORALI.ComponentValueClass) for arg in argv[0]):
+			elif all(isinstance(arg, TemporalI.ComponentValueClass) for arg in argv[0]):
 				for arg in argv[0]:
 					self._instantList.append(arg)
 			else:
@@ -35,9 +35,9 @@ class TEMPORALI(TEMPORALINSTANTS):
 			# Arguments are of type string
 			if all(isinstance(arg, str) for arg in argv):
 				for arg in argv:
-					self._instantList.append(TEMPORALI.ComponentValueClass(arg))
+					self._instantList.append(TemporalI.ComponentValueClass(arg))
 			# Arguments are of type instant
-			elif all(isinstance(arg, TEMPORALI.ComponentValueClass) for arg in argv):
+			elif all(isinstance(arg, TemporalI.ComponentValueClass) for arg in argv):
 				for arg in argv:
 					self._instantList.append(arg)
 			else:
@@ -57,13 +57,13 @@ class TEMPORALI(TEMPORALINSTANTS):
 		"""
 		Timestamp
 		"""
-		return PERIODSET([PERIOD(inst._time, inst._time, True, True) for inst in self._instantList])
+		return PeriodSet([Period(inst._time, inst._time, True, True) for inst in self._instantList])
 
 	def period(self):
 		"""
 		Period on which the temporal value is defined
 		"""
-		return PERIOD(self.startTimestamp(), self.endTimestamp(), True, True)
+		return Period(self.startTimestamp(), self.endTimestamp(), True, True)
 
 	def intersectsTimestamp(self, timestamp):
 		"""

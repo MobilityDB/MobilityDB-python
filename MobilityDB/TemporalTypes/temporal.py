@@ -1,12 +1,13 @@
 from abc import abstractmethod
 from MobilityDB.TimeTypes import *
 
-class TEMPORAL:
+
+class Temporal:
 	"""
 	...
 	General example:
-		>>> var1 = TINTINST('10@2019-09-10')
-		>>> var2 = TGEOMPOINTINST('SRID=4326;Point(1 1)@2019-09-10')
+		>>> var1 = TIntInst('10@2019-09-10')
+		>>> var2 = TGeomPointInst('SRID=4326;Point(1 1)@2019-09-10')
 	"""
 
 	@classmethod
@@ -182,7 +183,7 @@ class TEMPORAL:
 			return True
 
 	def __str__(self):
-		if len(self.__class__.__bases__) == 2:
-			return self.__class__.__bases__[0].__name__ + " '" + self.SubClass.__str__() + "'"
-		else:
-			return self.__class__.__name__ + " '" + self.SubClass.__str__() + "'"
+		"""
+		String representation
+		"""
+		pass

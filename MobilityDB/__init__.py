@@ -6,11 +6,11 @@ from MobilityDB.BoxTypes import *
 from MobilityDB.MobilityDBConnection import MobilityDBRegister, MobilityDB
 
 __all__ = ['psycopg2', 'MobilityDBRegister',
-		   'TGEOMPOINT', 'TGEOMPOINTINST', 'TGEOMPOINTI', 'TGEOMPOINTSEQ', 'TGEOMPOINTS',
-		   'TGEOGPOINT', 'TGEOGPOINTINST', 'TGEOGPOINTI', 'TGEOGPOINTSEQ', 'TGEOGPOINTS',
-		   'TINT', 'TINTINST', 'TINTI', 'TINTSEQ', 'TINTS',
-		   'TFLOAT', 'TFLOATINST', 'TFLOATI', 'TFLOATSEQ', 'TFLOATS',
-		   'TBOOL', 'TBOOLINST', 'TBOOLI', 'TBOOLSEQ', 'TBOOLS',
-		   'TTEXT', 'TTEXTINST', 'TTEXTI', 'TTEXTSEQ', 'TTEXTS',
-		   'PERIOD', 'TIMESTAMPSET', 'PERIODSET',
+		   'TGeomPoint', 'TGeomPointInst', 'TGeomPointI', 'TGeomPointSeq', 'TGeomPointS',
+		   'TGeogPoint', 'TGeogPointInst', 'TGeogPointI', 'TGeogPointSeq', 'TGeogPointS',
+		   'TInt', 'TIntInst', 'TIntI', 'TIntSeq', 'TIntS',
+		   'TFloat', 'TFloatInst', 'TFloatI', 'TFloatSeq', 'TFloatS',
+		   'TBool', 'TBoolInst', 'TBoolI', 'TBoolSeq', 'TBoolS',
+		   'TText', 'TTextInst', 'TText', 'TTextSeq', 'TTextS',
+		   'Period', 'TimestampSet', 'PeriodSet',
 		   'TBOX', 'STBOX']

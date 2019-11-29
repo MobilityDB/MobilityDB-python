@@ -1,10 +1,10 @@
-from MobilityDB.TimeTypes.period import PERIOD
-from MobilityDB.TimeTypes.periodset import PERIODSET
-from MobilityDB.TemporalTypes.temporalinst import TEMPORALINST
+from MobilityDB.TimeTypes.period import Period
+from MobilityDB.TimeTypes.periodset import PeriodSet
+from MobilityDB.TemporalTypes.temporalinst import TemporalInst
 from MobilityDB.TemporalTypes.temporalinstants import TEMPORALINSTANTS
 
 
-class TEMPORALSEQ(TEMPORALINSTANTS):
+class TemporalSeq(TEMPORALINSTANTS):
 	__slots__ = ['_lower_inc', '_upper_inc']
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
@@ -24,7 +24,7 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 				ts = ts[1:-1]
 				instants = ts.split(",")
 				for inst in instants:
-					self._instantList.append(TEMPORALSEQ.ComponentValueClass(inst.strip()))
+					self._instantList.append(TemporalSeq.ComponentValueClass(inst.strip()))
 			else:
 				raise Exception("ERROR: Could not parse temporal sequence value")
 		# Constructor with a first argument of type list and two optional arguments for the bounds
@@ -32,9 +32,9 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 			# List of strings representing instant values
 			if all(isinstance(arg, str) for arg in instantList):
 				for arg in instantList:
-					self._instantList.append(TEMPORALSEQ.ComponentValueClass(arg))
+					self._instantList.append(TemporalSeq.ComponentValueClass(arg))
 			# List of instant values
-			elif all(isinstance(arg, TEMPORALSEQ.ComponentValueClass) for arg in instantList):
+			elif all(isinstance(arg, TemporalSeq.ComponentValueClass) for arg in instantList):
 				for arg in instantList:
 					self._instantList.append(arg)
 			else:
@@ -71,13 +71,13 @@ class TEMPORALSEQ(TEMPORALINSTANTS):
 		"""
 		Timestamp
 		"""
-		return PERIODSET([PERIOD(self.startTimestamp(), self.endTimestamp(), self._lower_inc, self._upper_inc)])
+		return PeriodSet([Period(self.startTimestamp(), self.endTimestamp(), self._lower_inc, self._upper_inc)])
 
 	def period(self):
 		"""
 		Period on which the temporal value is defined
 		"""
-		return PERIOD(self.startTimestamp(), self.endTimestamp(), self.lower_inc(), self.upper_inc())
+		return Period(self.startTimestamp(), self.endTimestamp(), self.lower_inc(), self.upper_inc())
 
 	def numSequences(self):
 		"""
