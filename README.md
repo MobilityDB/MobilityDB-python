@@ -61,7 +61,7 @@ Usage
                 geodstbox(float, float, float, timestamptz, float, float, float, timestamptz):  stbox
                 stbox(timestamptz, timestamptz):  stbox
     2.4  Accessor Functions
-            getType(ttype):  {’Instant’, ’InstantSet’, ’Sequence’, ’SequenceSet’}
+            duration(ttype):  {’Instant’, ’InstantSet’, ’Sequence’, ’SequenceSet’}
             getValue(ttypeinst):  base
             getValues(ttype):  {base[], floatrange[], geo}
             timespan(ttype):  period
