@@ -1,5 +1,12 @@
 import re
 from .period import Period
+import warnings
+
+try:
+	# Do not make psycopg2 a requirement.
+	from psycopg2.extensions import ISQLQuote
+except ImportError:
+	warnings.warn('psycopg2 not installed', ImportWarning)
 
 
 class PeriodSet:
@@ -45,13 +52,14 @@ class PeriodSet:
 			else:
 				raise Exception("ERROR: Could not parse period set value")
 		# Verify validity of the resulting instance
-		if not self._valid():
-			raise Exception("ERROR: Invalid period arguments")
+		self._valid()
 
 	def _valid(self):
-		return all(x.upper() < y.lower() or \
-			(x.upper() == y.lower() and (not x.upper_inc() or not x.lower_inc())) \
-				   for x, y in zip(self._periodList, self._periodList[1:]))
+		if any(x.upper() > y.lower() or \
+			(x.upper() == y.lower() and x.upper_inc() and x.lower_inc()) \
+				   for x, y in zip(self._periodList, self._periodList[1:])):
+			raise Exception("ERROR: The periods of a period set cannot overlap")
+		return True
 
 	def timespan(self):
 		"""
@@ -151,6 +159,15 @@ class PeriodSet:
 				set(other._periodList).intersection(self._periodList)):
 				return True
 		return False
+
+	# Psycopg2 interface.
+	def __conform__(self, protocol):
+		if protocol is ISQLQuote:
+			return self
+
+	def getquoted(self):
+		return "{}".format(self.__str__())
+	# End Psycopg2 interface.
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):

@@ -3,7 +3,7 @@ from MobilityDB.MobilityDBReader import MobilityDBReader
 
 
 class TFloat(Temporal):
-	BaseValueClass = float
+	BaseClass = float
 
 	def __init__(self, value=None):
 		if isinstance(value, str):

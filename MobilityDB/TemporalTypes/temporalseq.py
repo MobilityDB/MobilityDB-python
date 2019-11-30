@@ -5,6 +5,9 @@ from MobilityDB.TemporalTypes.temporalinstants import TEMPORALINSTANTS
 
 
 class TemporalSeq(TEMPORALINSTANTS):
+	"""
+	Abstract class for temporal types of sequence duration
+	"""
 	__slots__ = ['_lower_inc', '_upper_inc']
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
@@ -24,7 +27,7 @@ class TemporalSeq(TEMPORALINSTANTS):
 				ts = ts[1:-1]
 				instants = ts.split(",")
 				for inst in instants:
-					self._instantList.append(TemporalSeq.ComponentValueClass(inst.strip()))
+					self._instantList.append(TemporalSeq.ComponentClass(inst.strip()))
 			else:
 				raise Exception("ERROR: Could not parse temporal sequence value")
 		# Constructor with a first argument of type list and two optional arguments for the bounds
@@ -32,9 +35,9 @@ class TemporalSeq(TEMPORALINSTANTS):
 			# List of strings representing instant values
 			if all(isinstance(arg, str) for arg in instantList):
 				for arg in instantList:
-					self._instantList.append(TemporalSeq.ComponentValueClass(arg))
+					self._instantList.append(TemporalSeq.ComponentClass(arg))
 			# List of instant values
-			elif all(isinstance(arg, TemporalSeq.ComponentValueClass) for arg in instantList):
+			elif all(isinstance(arg, TemporalSeq.ComponentClass) for arg in instantList):
 				for arg in instantList:
 					self._instantList.append(arg)
 			else:
@@ -45,10 +48,13 @@ class TemporalSeq(TEMPORALINSTANTS):
 		self._valid()
 
 	def _valid(self):
-		if not all(x._time < y._time for x, y in zip(self._instantList, self._instantList[1:])):
-			raise Exception("ERROR: The timestamps of the temporal instants must be increasing")
 		if len(self._instantList) == 1 and (not self._lower_inc or not self._lower_inc):
-			raise Exception("ERROR: Invalid bounds for temporal sequence value")
+			raise Exception("ERROR: The lower and upper bounds must be inclusive for an instant temporal sequence")
+		if any(x._time >= y._time for x, y in zip(self._instantList, self._instantList[1:])):
+			raise Exception("ERROR: The timestamps of a temporal sequence must be increasing")
+		if (self.Interpolation == 'stepwise' and len(self._instantList) > 1 and not self._upper_inc and
+			self._instantList[-1]._value != self._instantList[-2]._value):
+			raise Exception("ERROR: The last two values of a temporal sequence with exclusive upper bound and stepwise interpolation must be equal")
 		return True
 
 	@classmethod
@@ -142,5 +148,5 @@ class TemporalSeq(TEMPORALINSTANTS):
 	def __str__(self):
 		lower_str = '[' if self._lower_inc else '('
 		upper_str = ']' if self._upper_inc else ')'
-		return lower_str + 	TEMPORALINSTANTS.__str__(self) + upper_str
+		return "'" + lower_str + TEMPORALINSTANTS.__str__(self) + upper_str + "'"
 

@@ -3,7 +3,7 @@ from MobilityDB.MobilityDBReader import MobilityDBReader
 
 
 class TBool(Temporal):
-	BaseValueClass = bool
+	BaseClass = bool
 
 	def __init__(self, value=None):
 		if isinstance(value, str):

@@ -14,9 +14,9 @@ try:
 
 	# TGeomPointInst
 
-	postgreSQL_select_Query = "select * from tbl_tgeompointinst order by k limit 10"
+	select_query = "select * from tbl_tgeompointinst order by k limit 10"
 
-	cursor.execute(postgreSQL_select_Query)
+	cursor.execute(select_query)
 	print("Selecting rows from tbl_tgeompointinst table using cursor.fetchall")
 	rows = cursor.fetchall()
 
@@ -30,9 +30,9 @@ try:
 
 	# TGeomPointI
 
-	postgreSQL_select_Query = "select * from tbl_tgeompointi order by k limit 10"
+	select_query = "select * from tbl_tgeompointi order by k limit 10"
 
-	cursor.execute(postgreSQL_select_Query)
+	cursor.execute(select_query)
 	print("Selecting rows from tbl_tgeompointi table using cursor.fetchall")
 	rows = cursor.fetchall()
 
@@ -46,9 +46,9 @@ try:
 
 	# TGeomPointSeq
 
-	postgreSQL_select_Query = "select * from tbl_tgeompointseq order by k limit 10"
+	select_query = "select * from tbl_tgeompointseq order by k limit 10"
 
-	cursor.execute(postgreSQL_select_Query)
+	cursor.execute(select_query)
 	print("Selecting rows from tbl_tgeompointseq table using cursor.fetchall")
 	rows = cursor.fetchall()
 
@@ -62,9 +62,9 @@ try:
 
 	# TGeomPointS
 
-	postgreSQL_select_Query = "select * from tbl_tgeompoints order by k limit 10"
+	select_query = "select * from tbl_tgeompoints order by k limit 10"
 
-	cursor.execute(postgreSQL_select_Query)
+	cursor.execute(select_query)
 	print("Selecting rows from tbl_tgeompoints table using cursor.fetchall")
 	rows = cursor.fetchall()
 
@@ -76,9 +76,8 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
-except psycopg2.DatabaseError as e:
-
-	print('Error {e}')
+except (Exception, psycopg2.Error) as error:
+	print("Error while connecting to PostgreSQL", error)
 
 finally:
 

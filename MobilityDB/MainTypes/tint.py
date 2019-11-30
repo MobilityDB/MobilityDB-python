@@ -1,5 +1,12 @@
 from spans.types import Range
 from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+import warnings
+
+try:
+	# Do not make psycopg2 a requirement.
+	from psycopg2.extensions import ISQLQuote
+except ImportError:
+	warnings.warn('psycopg2 not installed', ImportWarning)
 
 
 class intrange(Range):
@@ -10,8 +17,7 @@ class TInt(Temporal):
 	"""
 	Temporal integers of any duration (abstract class)
 	"""
-	BaseValueClass = int
-	ComponentValueClass = None
+	Interpolation = 'stepwise'
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):
@@ -28,6 +34,15 @@ class TInt(Temporal):
 				return TIntI(value)
 		raise Exception("ERROR: Could not parse temporal integer value")
 
+	# Psycopg2 interface.
+	def __conform__(self, protocol):
+		if protocol is ISQLQuote:
+			return self
+
+	def getquoted(self):
+		return "{}".format(self.__str__())
+	# End Psycopg2 interface.
+
 	def valueRange(self):
 		"""
 		Distinct values
@@ -41,7 +56,7 @@ class TIntInst(TemporalInst, TInt):
 	"""
 
 	def __init__(self, value, time=None):
-		TemporalInst.BaseValueClass = int
+		TemporalInst.BaseClass = int
 		super().__init__(value, time)
 
 
@@ -51,8 +66,8 @@ class TIntI(TemporalI, TInt):
 	"""
 
 	def __init__(self,  *argv):
-		TemporalI.BaseValueClass = int
-		TemporalI.ComponentValueClass = TIntInst
+		TemporalI.BaseClass = int
+		TemporalI.ComponentClass = TIntInst
 		super().__init__(*argv)
 
 
@@ -62,8 +77,8 @@ class TIntSeq(TemporalSeq, TInt):
 	"""
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
-		TemporalSeq.BaseValueClass = int
-		TemporalSeq.ComponentValueClass = TIntInst
+		TemporalSeq.BaseClass = int
+		TemporalSeq.ComponentClass = TIntInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
 
@@ -73,8 +88,8 @@ class TIntS(TemporalS, TInt):
 	"""
 
 	def __init__(self, *argv):
-		TemporalS.BaseValueClass = int
-		TemporalS.ComponentValueClass = TIntSeq
+		TemporalS.BaseClass = int
+		TemporalS.ComponentClass = TIntSeq
 		super().__init__(*argv)
 
 

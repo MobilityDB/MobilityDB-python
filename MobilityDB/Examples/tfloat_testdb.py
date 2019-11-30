@@ -16,25 +16,11 @@ try:
 	# TFloatInst
 	######################
 
-	drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloatinst_temp;'''
-	cursor.execute(drop_table_query)
-	connection.commit()
-	print("Table deleted successfully in PostgreSQL ")
-	
-	create_table_query = '''CREATE TABLE tbl_tfloatinst_temp
-		(
-		  k integer PRIMARY KEY,
-		  temp tfloat
-		); '''
+	select_query = "select * from tbl_tfloatinst order by k limit 10"
 
-	cursor.execute(create_table_query)
-	connection.commit()
-	print("Table created successfully in PostgreSQL ")
-
-	postgreSQL_select_Query = "select * from tbl_tfloatinst order by k limit 10"
-
-	cursor.execute(postgreSQL_select_Query)
-	print("Selecting rows from tbl_tfloatinst table using cursor.fetchall")
+	cursor.execute(select_query)
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tfloatinst table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -45,42 +31,36 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
-	print(rows)
-	print(type(rows[3]))
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloatinst_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
 
-	rows1 = [(row[0],) for row in rows]
-	print(rows1)
-	print(type(rows1[3]))
+	create_table_query = '''CREATE TABLE tbl_tfloatinst_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tfloat
+		); '''
 
-	postgres_insert_query = ''' INSERT INTO tbl_tfloatinst_temp (k) VALUES (%s) '''
-	result = cursor.executemany(postgres_insert_query, rows1)
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
+
+	postgres_insert_query = ''' INSERT INTO tbl_tfloatinst_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
 	connection.commit()
 	count = cursor.rowcount
 	print(count, "record(s) inserted successfully into tbl_tfloatinst table")
-
-	#postgres_insert_query = ''' INSERT INTO tbl_tfloatinst_temp (k, temp) VALUES (%s,%s) '''
-
-	#record_to_insert = (0, '1@2000-01-01')
-	#cursor.execute(postgres_insert_query, record_to_insert)
-	#connection.commit()
-	#print(cursor.rowcount, "Record inserted successfully into tbl_tfloatinst table")
-
-	#cursor.execute(postgres_insert_query, rows[3])
-
-	postgres_insert_query = ''' INSERT INTO tbl_tfloatinst_temp (k) VALUES (%s) '''
-
-	# executemany() to insert multiple rows rows
-	#result = cursor.executemany(postgres_insert_query, rows)
-	#connection.commit()
 
 	######################
 	# TFloatI
 	######################
 
-	postgreSQL_select_Query = "select * from tbl_tfloati order by k limit 10"
+	select_query = "select * from tbl_tfloati order by k limit 10"
 
-	cursor.execute(postgreSQL_select_Query)
-	print("Selecting rows from tbl_tfloati table using cursor.fetchall")
+	cursor.execute(select_query)
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tfloati table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -91,14 +71,36 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloati_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
+
+	create_table_query = '''CREATE TABLE tbl_tfloati_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tfloat
+		); '''
+
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
+
+	postgres_insert_query = ''' INSERT INTO tbl_tfloati_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_tfloati_temp table")
+
 	######################
 	# TFloatSeq
 	######################
 
-	postgreSQL_select_Query = "select * from tbl_tfloatseq order by k limit 10"
+	select_query = "select * from tbl_tfloatseq order by k limit 10"
 
-	cursor.execute(postgreSQL_select_Query)
-	print("Selecting rows from tbl_tfloatseq table using cursor.fetchall")
+	cursor.execute(select_query)
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tfloatseq table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -109,14 +111,36 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloatseq_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
+
+	create_table_query = '''CREATE TABLE tbl_tfloatseq_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tfloat
+		); '''
+
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
+
+	postgres_insert_query = ''' INSERT INTO tbl_tfloatseq_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_tfloatseq_temp table")
+
 	######################
 	# TFloatS
 	######################
 
-	postgreSQL_select_Query = "select * from tbl_tfloats order by k limit 10"
+	select_query = "select * from tbl_tfloats order by k limit 10"
 
-	cursor.execute(postgreSQL_select_Query)
-	print("Selecting rows from tbl_tfloats table using cursor.fetchall")
+	cursor.execute(select_query)
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tfloats table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -127,9 +151,31 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
-except psycopg2.DatabaseError as e:
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloats_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
 
-	print('Error {e}')
+	create_table_query = '''CREATE TABLE tbl_tfloats_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tfloat
+		); '''
+
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
+
+	postgres_insert_query = ''' INSERT INTO tbl_tfloats_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_tfloats_temp table")
+
+	print("\n****************************************************************")
+
+except (Exception, psycopg2.Error) as error:
+	print("Error while connecting to PostgreSQL", error)
 
 finally:
 

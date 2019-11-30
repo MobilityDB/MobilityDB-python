@@ -1,7 +1,17 @@
+import re
 from datetime import datetime
 from bdateutil.parser import parse
 from postgis import Point, MultiPoint, LineString, GeometryCollection, MultiLineString
+from postgis.ewkb import Reader, Writer
 from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+import warnings
+
+try:
+	# Do not make psycopg2 a requirement.
+	from psycopg2.extensions import ISQLQuote
+except ImportError:
+	warnings.warn('psycopg2 not installed', ImportWarning)
+
 
 # Add method to Point to make the class hashable
 def __hash__(self):
@@ -14,14 +24,25 @@ class TGeomPoint(Temporal):
 	"""
 	Temporal geometric points of any duration (abstract class)
 	"""
-	BaseValueClass = Point
-	ComponentValueClass = None
+	Interpolation = 'linear'
+
+	def has_z(self):
+		"""
+		Returns True if the temporal point has Z dimension
+		"""
+		return self.startValue().z is not None
+
+	def srid(self):
+		"""
+		Returns True if the temporal point has Z dimension
+		"""
+		result = self.startValue().srid if hasattr(self.startValue(), "srid") else None
+		return result
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):
 		if not value:
 			return None
-		print("value =", value)
 		if value[0] != '{' and value[0] != '[' and value[0] != '(':
 			return TGeomPointInst(value)
 		elif value[0] == '[' or value[0] == '(':
@@ -33,6 +54,14 @@ class TGeomPoint(Temporal):
 				return TGeomPointI(value)
 		raise Exception("ERROR: Could not parse temporal float value")
 
+	# Psycopg2 interface.
+	def __conform__(self, protocol):
+		if protocol is ISQLQuote:
+			return self
+
+	def getquoted(self):
+		return "{}".format(self.__str__())
+	# End Psycopg2 interface.
 
 class TGeomPointInst(TemporalInst, TGeomPoint):
 	"""
@@ -40,16 +69,19 @@ class TGeomPointInst(TemporalInst, TGeomPoint):
 	"""
 
 	def __init__(self, value, time=None):
-		TemporalInst.BaseValueClass = Point
+		TemporalInst.BaseClass = Point
 		#super().__init__(value, time)
 		# Constructor with a single argument of type string
 		if time is None and isinstance(value, str):
 			splits = value.split("@")
 			if len(splits) == 2:
-				idx1 = splits[0].find('(')
-				idx2 = splits[0].find(')')
-				coords = (splits[0][idx1 + 1:idx2]).split(' ')
-				self._value = type(self).BaseValueClass(coords)
+				if '(' in splits[0] and ')' in splits[0]:
+					idx1 = splits[0].find('(')
+					idx2 = splits[0].find(')')
+					coords = (splits[0][idx1 + 1:idx2]).split(' ')
+					self._value = type(self).BaseClass(coords)
+				else:
+					self._value = Reader.from_hex(splits[0])
 				self._time = parse(splits[1])
 			else:
 				raise Exception("ERROR: Could not parse temporal instant value")
@@ -58,14 +90,20 @@ class TGeomPointInst(TemporalInst, TGeomPoint):
 			idx1 = value.find('(')
 			idx2 = value.find(')')
 			coords = (value[idx1 + 1:idx2]).split(' ')
-			self._value = self.BaseValueClass(coords)
+			self._value = self.BaseClass(coords)
 			self._time = parse(time)
-		# Constructor with two arguments of type BaseValueClass and datetime
-		elif isinstance(value, self.BaseValueClass) and isinstance(time, datetime):
+		# Constructor with two arguments of type BaseClass and datetime
+		elif isinstance(value, self.BaseClass) and isinstance(time, datetime):
 			self._value = value
 			self._time = time
 		else:
 			raise Exception("ERROR: Could not parse temporal instant value")
+		# Verify validity of the resulting instance
+		self._valid()
+
+	def _valid(self):
+		if self._value.m is not None:
+			raise Exception("ERROR: The geometries composing a temporal point cannot have M dimension")
 
 	def getValues(self):
 		"""
@@ -80,9 +118,19 @@ class TGeomPointI(TemporalI, TGeomPoint):
 	"""
 
 	def __init__(self,  *argv):
-		TemporalI.BaseValueClass = Point
-		TemporalI.ComponentValueClass = TGeomPointInst
+		TemporalI.BaseClass = Point
+		TemporalI.ComponentClass = TGeomPointInst
 		super().__init__(*argv)
+
+	def _valid(self):
+		super()._valid()
+		if any((x._value.z is None and y._value.z is not None) or (x._value.z is not None and y._value.z is None) \
+				for x, y in zip(self._instantList, self._instantList[1:])):
+			raise Exception("ERROR: All geometries composing a temporal point must be of the same dimensionality")
+		if any(x._value.m is not None for x in self._instantList):
+			raise Exception("ERROR: The geometries composing a temporal point cannot have M dimension")
+		if any(x.srid() != y.srid() for x, y in zip(self._instantList, self._instantList[1:])):
+			raise Exception("ERROR: All geometries composing a temporal point must have the same SRID")
 
 	def getValues(self):
 		"""
@@ -98,9 +146,19 @@ class TGeomPointSeq(TemporalSeq, TGeomPoint):
 	"""
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
-		TemporalSeq.BaseValueClass = Point
-		TemporalSeq.ComponentValueClass = TGeomPointInst
+		TemporalSeq.BaseClass = Point
+		TemporalSeq.ComponentClass = TGeomPointInst
 		super().__init__(instantList, lower_inc, upper_inc)
+
+	def _valid(self):
+		super()._valid()
+		if any((x._value.z is None and y._value.z is not None) or (x._value.z is not None and y._value.z is None) \
+				for x, y in zip(self._instantList, self._instantList[1:])):
+			raise Exception("ERROR: All geometries composing a temporal point must be of the same dimensionality")
+		if any(x._value.m is not None for x in self._instantList):
+			raise Exception("ERROR: The geometries composing a temporal point cannot have M dimension")
+		if any(x.srid() != y.srid() for x, y in zip(self._instantList, self._instantList[1:])):
+			raise Exception("ERROR: All geometries composing a temporal point must have the same SRID")
 
 	def getValues(self):
 		"""
@@ -120,9 +178,17 @@ class TGeomPointS(TemporalS, TGeomPoint):
 	"""
 
 	def __init__(self, *argv):
-		TemporalS.BaseValueClass = Point
-		TemporalS.ComponentValueClass = TGeomPointSeq
+		TemporalS.BaseClass = Point
+		TemporalS.ComponentClass = TGeomPointSeq
 		super().__init__(*argv)
+
+	def _valid(self):
+		super()._valid()
+		if any((x.has_z is None and y.has_z is not None) or (x.has_z is not None and y.has_z is None) \
+				for x, y in zip(self._sequenceList, self._sequenceList[1:])):
+			raise Exception("ERROR: All geometries composing a temporal point must be of the same dimensionality")
+		if any(x.srid() != y.srid() for x, y in zip(self._sequenceList, self._sequenceList[1:])):
+			raise Exception("ERROR: All geometries composing a temporal point must have the same SRID")
 
 	def getValues(self):
 		"""

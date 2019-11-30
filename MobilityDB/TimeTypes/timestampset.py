@@ -1,6 +1,13 @@
 from datetime import datetime, timedelta
 from bdateutil.parser import parse
 from .period import Period
+import warnings
+
+try:
+	# Do not make psycopg2 a requirement.
+	from psycopg2.extensions import ISQLQuote
+except ImportError:
+	warnings.warn('psycopg2 not installed', ImportWarning)
 
 
 class TimestampSet:
@@ -47,11 +54,11 @@ class TimestampSet:
 			else:
 				raise Exception("ERROR: Could not parse timestamp set value")
 		# Verify validity of the resulting instance
-		if not self._valid():
-			raise Exception("ERROR: The timestamp values must be increasing")
+		self._valid()
 
 	def _valid(self):
-		return all(x < y for x, y in zip(self._datetimeList, self._datetimeList[1:]))
+		if any(x >= y for x, y in zip(self._datetimeList, self._datetimeList[1:])):
+			raise Exception("ERROR: The timestamps of a timestamp set must be increasing")
 
 	def timespan(self):
 		"""
@@ -111,6 +118,15 @@ class TimestampSet:
 				set(other._datetimeList).intersection(self._datetimeList)):
 				return True
 		return False
+
+	# Psycopg2 interface.
+	def __conform__(self, protocol):
+		if protocol is ISQLQuote:
+			return self
+
+	def getquoted(self):
+		return "{}".format(self.__str__())
+	# End Psycopg2 interface.
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):

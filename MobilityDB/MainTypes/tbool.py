@@ -1,17 +1,23 @@
 from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+import warnings
+
+try:
+	# Do not make psycopg2 a requirement.
+	from psycopg2.extensions import ISQLQuote
+except ImportError:
+	warnings.warn('psycopg2 not installed', ImportWarning)
 
 
 class TBool(Temporal):
 	"""
 	Temporal booleans of any duration (abstract class)
 	"""
-	BaseValueClass = bool
+	Interpolation = 'stepwise'
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):
 		if not value:
 			return None
-		print("value =", value)
 		if value[0] != '{' and value[0] != '[' and value[0] != '(':
 			return TBoolInst(value)
 		elif value[0] == '[' or value[0] == '(':
@@ -23,6 +29,15 @@ class TBool(Temporal):
 				return TBoolI(value)
 		raise Exception("ERROR: Could not parse temporal float value")
 
+	# Psycopg2 interface.
+	def __conform__(self, protocol):
+		if protocol is ISQLQuote:
+			return self
+
+	def getquoted(self):
+		return "{}".format(self.__str__())
+	# End Psycopg2 interface.
+
 
 class TBoolInst(TemporalInst, TBool):
 	"""
@@ -30,7 +45,7 @@ class TBoolInst(TemporalInst, TBool):
 	"""
 
 	def __init__(self, value, time=None):
-		TemporalInst.BaseValueClass = str
+		TemporalInst.BaseClass = str
 		super().__init__(value, time)
 
 
@@ -40,8 +55,8 @@ class TBoolI(TemporalI, TBool):
 	"""
 
 	def __init__(self,  *argv):
-		TemporalI.BaseValueClass = str
-		TemporalI.ComponentValueClass = TBoolInst
+		TemporalI.BaseClass = str
+		TemporalI.ComponentClass = TBoolInst
 		super().__init__(*argv)
 
 
@@ -51,8 +66,8 @@ class TBoolSeq(TemporalSeq, TBool):
 	"""
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
-		TemporalSeq.BaseValueClass = str
-		TemporalSeq.ComponentValueClass = TBoolInst
+		TemporalSeq.BaseClass = str
+		TemporalSeq.ComponentClass = TBoolInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
 
@@ -62,8 +77,8 @@ class TBoolS(TemporalS, TBool):
 	"""
 
 	def __init__(self, *argv):
-		TemporalS.BaseValueClass = str
-		TemporalS.ComponentValueClass = TBoolSeq
+		TemporalS.BaseClass = str
+		TemporalS.ComponentClass = TBoolSeq
 		super().__init__(*argv)
 
 

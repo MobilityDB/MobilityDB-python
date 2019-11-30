@@ -14,14 +14,12 @@ class TGeogPoint(Temporal):
 	"""
 	Temporal geographic points of any duration (abstract class)
 	"""
-	BaseValueClass = Point
-	ComponentValueClass = None
+	Interpolation = 'linear'
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):
 		if not value:
 			return None
-		print("value =", value)
 		if value[0] != '{' and value[0] != '[' and value[0] != '(':
 			return TGeogPointInst(value)
 		elif value[0] == '[' or value[0] == '(':
@@ -33,6 +31,14 @@ class TGeogPoint(Temporal):
 				return TGeogPointI(value)
 		raise Exception("ERROR: Could not parse temporal float value")
 
+	# Psycopg2 interface.
+	def __conform__(self, protocol):
+		if protocol is ISQLQuote:
+			return self
+
+	def getquoted(self):
+		return "{}".format(self.__str__())
+	# End Psycopg2 interface.
 
 class TGeogPointInst(TemporalInst, TGeogPoint):
 	"""
@@ -40,7 +46,7 @@ class TGeogPointInst(TemporalInst, TGeogPoint):
 	"""
 
 	def __init__(self, value, time=None):
-		TemporalInst.BaseValueClass = Point
+		TemporalInst.BaseClass = Point
 		#super().__init__(value, time)
 		# Constructor with a single argument of type string
 		if time is None and isinstance(value, str):
@@ -49,7 +55,7 @@ class TGeogPointInst(TemporalInst, TGeogPoint):
 				idx1 = splits[0].find('(')
 				idx2 = splits[0].find(')')
 				coords = (splits[0][idx1 + 1:idx2]).split(' ')
-				self._value = type(self).BaseValueClass(coords)
+				self._value = type(self).BaseClass(coords)
 				self._time = parse(splits[1])
 			else:
 				raise Exception("ERROR: Could not parse temporal instant value")
@@ -58,10 +64,10 @@ class TGeogPointInst(TemporalInst, TGeogPoint):
 			idx1 = value.find('(')
 			idx2 = value.find(')')
 			coords = (value[idx1 + 1:idx2]).split(' ')
-			self._value = self.BaseValueClass(coords)
+			self._value = self.BaseClass(coords)
 			self._time = parse(time)
-		# Constructor with two arguments of type BaseValueClass and datetime
-		elif isinstance(value, self.BaseValueClass) and isinstance(time, datetime):
+		# Constructor with two arguments of type BaseClass and datetime
+		elif isinstance(value, self.BaseClass) and isinstance(time, datetime):
 			self._value = value
 			self._time = time
 		else:
@@ -80,8 +86,8 @@ class TGeogPointI(TemporalI, TGeogPoint):
 	"""
 
 	def __init__(self,  *argv):
-		TemporalI.BaseValueClass = Point
-		TemporalI.ComponentValueClass = TGeogPointInst
+		TemporalI.BaseClass = Point
+		TemporalI.ComponentClass = TGeogPointInst
 		super().__init__(*argv)
 
 	def getValues(self):
@@ -98,8 +104,8 @@ class TGeogPointSeq(TemporalSeq, TGeogPoint):
 	"""
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
-		TemporalSeq.BaseValueClass = Point
-		TemporalSeq.ComponentValueClass = TGeogPointInst
+		TemporalSeq.BaseClass = Point
+		TemporalSeq.ComponentClass = TGeogPointInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
 	def getValues(self):
@@ -120,8 +126,8 @@ class TGeogPointS(TemporalS, TGeogPoint):
 	"""
 
 	def __init__(self, *argv):
-		TemporalS.BaseValueClass = Point
-		TemporalS.ComponentValueClass = TGeogPointSeq
+		TemporalS.BaseClass = Point
+		TemporalS.ComponentClass = TGeogPointSeq
 		super().__init__(*argv)
 
 	def getValues(self):

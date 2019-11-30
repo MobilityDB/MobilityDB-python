@@ -3,7 +3,7 @@ from MobilityDB.MobilityDBReader import MobilityDBReader
 
 
 class TText(Temporal):
-	BaseValueClass = str
+	BaseClass = str
 
 	def __init__(self, value=None):
 		if isinstance(value, str):

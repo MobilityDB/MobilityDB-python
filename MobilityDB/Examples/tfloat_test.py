@@ -251,8 +251,11 @@ print(seq.intersectsPeriodset(ps))
 print(ts.intersectsPeriodset(ps))
 
 """
+print("callable", callable(TFloat))
 f = TFloat('1@2000-01-01')
-print(f)
+print("after")
+print(type(f))
 f = TFloat('{1@2000-01-01, 1@2000-01-02}')
 print(f)
 """
+

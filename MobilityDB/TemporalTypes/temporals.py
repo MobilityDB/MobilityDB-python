@@ -6,6 +6,9 @@ from MobilityDB.TemporalTypes.temporalseq import TemporalSeq
 
 
 class TemporalS(Temporal):
+	"""
+	Abstract class for temporal types of sequence set duration
+	"""
 	__slots__ = ['_sequenceList']
 
 	def __init__(self, *argv):
@@ -17,7 +20,7 @@ class TemporalS(Temporal):
 				p = re.compile('[\[|\(].*?[^\]\)][\]|\)]')
 				sequences = p.findall(ps)
 				for seq in sequences:
-					self._sequenceList.append(self.__class__.ComponentValueClass(seq))
+					self._sequenceList.append(self.__class__.ComponentClass(seq))
 			else:
 				raise Exception("ERROR: Could not parse period set value")
 		# Constructor with a single argument of type list
@@ -25,9 +28,9 @@ class TemporalS(Temporal):
 			# List of strings representing periods
 			if all(isinstance(arg, str) for arg in argv[0]):
 				for arg in argv[0]:
-					self._sequenceList.append(self.__class__.ComponentValueClass(arg))
+					self._sequenceList.append(self.__class__.ComponentClass(arg))
 			# List of periods
-			elif all(isinstance(arg, self.__class__.ComponentValueClass) for arg in argv[0]):
+			elif all(isinstance(arg, self.__class__.ComponentClass) for arg in argv[0]):
 				for arg in argv[0]:
 					self._sequenceList.append(arg)
 			else:
@@ -37,9 +40,9 @@ class TemporalS(Temporal):
 			# Arguments are of type string
 			if all(isinstance(arg, str) for arg in argv):
 				for arg in argv:
-					self._sequenceList.append(self.__class__.ComponentValueClass(arg))
+					self._sequenceList.append(self.__class__.ComponentClass(arg))
 			# Arguments are of type temporal sequence
-			elif all(isinstance(arg, self.__class__.ComponentValueClass) for arg in argv):
+			elif all(isinstance(arg, self.__class__.ComponentClass) for arg in argv):
 				for arg in argv:
 					self._sequenceList.append(arg)
 			else:
@@ -48,10 +51,10 @@ class TemporalS(Temporal):
 		self._valid()
 
 	def _valid(self):
-		if not all(x.endTimestamp() < y.startTimestamp() or \
-			(x.endTimestamp() == y.startTimestamp() and (not x.upper_inc() or not x.lower_inc())) \
+		if any(x.endTimestamp() >= y.startTimestamp() or \
+			(x.endTimestamp() == y.startTimestamp() and x.upper_inc() and x.lower_inc()) \
 				   for x, y in zip(self._sequenceList, self._sequenceList[1:])):
-			raise Exception("ERROR: The sequences must be non overlapping")
+			raise Exception("ERROR: The sequences of a sequence set cannot overlap")
 		return True
 
 	@classmethod
@@ -247,5 +250,5 @@ class TemporalS(Temporal):
 		return any(seq.intersectsPeriod(period) for seq in self._sequenceList for period in periodset._periodList)
 
 	def __str__(self):
-		return "{{{}}}".format(', '.join('{}'.format(sequence.__str__().replace("'", ""))
+		return "'{{{}}}'".format(', '.join('{}'.format(sequence.__str__().replace("'", ""))
 			for sequence in self._sequenceList))

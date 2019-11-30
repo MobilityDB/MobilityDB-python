@@ -5,6 +5,9 @@ from MobilityDB.TimeTypes.periodset import PeriodSet
 
 
 class TemporalI(TEMPORALINSTANTS):
+	"""
+	Abstract class for temporal types of instant set duration
+	"""
 
 	def __init__(self, *argv):
 		# Constructor with a single argument of type string
@@ -15,7 +18,7 @@ class TemporalI(TEMPORALINSTANTS):
 				ts = ts[1:-1]
 				instants = ts.split(",")
 				for inst in instants:
-					self._instantList.append(TemporalI.ComponentValueClass(inst.strip()))
+					self._instantList.append(TemporalI.ComponentClass(inst.strip()))
 			else:
 				raise Exception("ERROR: Could not parse temporal instant set value")
 		# Constructor with a single argument of type list
@@ -23,9 +26,9 @@ class TemporalI(TEMPORALINSTANTS):
 			# List of strings representing instant values
 			if all(isinstance(arg, str) for arg in argv[0]):
 				for arg in argv[0]:
-					self._instantList.append(TemporalI.ComponentValueClass(arg))
+					self._instantList.append(TemporalI.ComponentClass(arg))
 			# List of instant values
-			elif all(isinstance(arg, TemporalI.ComponentValueClass) for arg in argv[0]):
+			elif all(isinstance(arg, TemporalI.ComponentClass) for arg in argv[0]):
 				for arg in argv[0]:
 					self._instantList.append(arg)
 			else:
@@ -35,19 +38,19 @@ class TemporalI(TEMPORALINSTANTS):
 			# Arguments are of type string
 			if all(isinstance(arg, str) for arg in argv):
 				for arg in argv:
-					self._instantList.append(TemporalI.ComponentValueClass(arg))
+					self._instantList.append(TemporalI.ComponentClass(arg))
 			# Arguments are of type instant
-			elif all(isinstance(arg, TemporalI.ComponentValueClass) for arg in argv):
+			elif all(isinstance(arg, TemporalI.ComponentClass) for arg in argv):
 				for arg in argv:
 					self._instantList.append(arg)
 			else:
 				raise Exception("ERROR: Could not parse temporal instant set value")
 		# Verify validity of the resulting instance
-		if not self._valid():
-			raise Exception("ERROR: The timestamps of the temporal instants must be increasing")
+		self._valid()
 
 	def _valid(self):
-		return all(x._time < y._time for x, y in zip(self._instantList, self._instantList[1:]))
+		if any(x._time > y._time for x, y in zip(self._instantList, self._instantList[1:])):
+			raise Exception("ERROR: The timestamps of a temporal instant must be increasing")
 
 	@classmethod
 	def duration(cls):
@@ -90,4 +93,4 @@ class TemporalI(TEMPORALINSTANTS):
 		return any(period.contains_timestamp(inst._time) for inst in self._instantList for period in periodset._periodList)
 
 	def __str__(self):
-		return '{' + TEMPORALINSTANTS.__str__(self) + '}'
+		return "'{" + TEMPORALINSTANTS.__str__(self) + "}'"

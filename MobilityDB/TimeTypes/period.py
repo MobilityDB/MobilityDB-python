@@ -1,10 +1,17 @@
 import datetime
 from bdateutil.parser import parse
+import warnings
+
+try:
+	# Do not make psycopg2 a requirement.
+	from psycopg2.extensions import ISQLQuote
+except ImportError:
+	warnings.warn('psycopg2 not installed', ImportWarning)
 
 
 class Period:
 	"""
-	Set of contiguous timestamp values between a lower and upper bounds, which may be inclusive or not
+	Set of contiguous timestamps between a lower and an upper bound. The bounds may be inclusive or not
 	"""
 	__slots__ = ['_lower', '_upper', '_lower_inc', '_upper_inc']
 
@@ -14,9 +21,7 @@ class Period:
 			lower = lower.strip()
 			self._lower_inc = True if lower[0] == '[' else False
 			self._upper_inc = True if lower[-1] == ']' else False
-			bounds = lower.split(',')
-			bounds[0] = (bounds[0])[1:]
-			bounds[1] = (bounds[1])[:-1]
+			bounds = lower[1:-1].split(',')
 			self._lower = parse(bounds[0])
 			self._upper = parse(bounds[1])
 		# Constructor with two arguments of type string and optional arguments for the bounds
@@ -34,15 +39,14 @@ class Period:
 		else:
 			raise Exception("ERROR: Could not parse period value")
 		# Verify validity of the resulting instance
-		if not self._valid():
-			raise Exception("ERROR: Invalid period arguments")
+		self._valid()
 
 	def _valid(self):
 		if self._lower > self._upper:
-			return False
-		if self._lower == self._upper and \
-				(self._lower_inc == False or self._upper_inc == False):
-			return False
+			raise Exception("ERROR: The lower bound must be less than or equal to the upper bound")
+		if (self._lower == self._upper and
+			(self._lower_inc == False or self._upper_inc == False)):
+			raise Exception("ERROR: The lower and upper bounds must be inclusive for an instant period")
 		return True
 
 	def lower(self):
@@ -187,6 +191,15 @@ class Period:
 			if self._cmp(other) == 1 or self._cmp(other) == 0:
 				return True
 			return False
+
+	# Psycopg2 interface.
+	def __conform__(self, protocol):
+		if protocol is ISQLQuote:
+			return self
+
+	def getquoted(self):
+		return "{}".format(self.__str__())
+	# End Psycopg2 interface.
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):

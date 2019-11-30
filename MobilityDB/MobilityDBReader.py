@@ -28,13 +28,13 @@ class MobilityDBReader(Reader):
 	def readTemporalInst(cls, mainClass, valueStr=None):
 		value = None
 		inst = valueStr.split('@')
-		if mainClass.BaseValueClass == Point:
+		if mainClass.BaseClass == Point:
 			if '(' in inst[0] and ')' in inst[0]:
 				value = cls.readPointFromString(inst[0])
 			else:
 				value = cls.from_hex(inst[0].strip())
 		else:
-			value = mainClass.BaseValueClass(inst[0])
+			value = mainClass.BaseClass(inst[0])
 		time = format(inst[1])
 		return TemporalInst(value, time)
 

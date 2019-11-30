@@ -5,6 +5,9 @@ from MobilityDB.TimeTypes.period import Period
 from MobilityDB.TimeTypes.periodset import PeriodSet
 
 class TemporalInst(Temporal):
+	"""
+	Abstract class for temporal types of instant duration
+	"""
 	__slots__ = ['_value', '_time']
 
 	def __init__(self, value, time=None):
@@ -12,16 +15,16 @@ class TemporalInst(Temporal):
 		if time is None and isinstance(value, str):
 			splits = value.split("@")
 			if len(splits) == 2:
-				self._value = type(self).BaseValueClass(splits[0])
+				self._value = type(self).BaseClass(splits[0])
 				self._time = parse(splits[1])
 			else:
 				raise Exception("ERROR: Could not parse temporal instant value")
 		# Constructor with two arguments of type string
 		elif isinstance(value, str) and isinstance(time, str):
-			self._value = self.BaseValueClass(value)
+			self._value = self.BaseClass(value)
 			self._time = parse(time)
-		# Constructor with two arguments of type BaseValueClass and datetime
-		elif isinstance(value, self.BaseValueClass) and isinstance(time, datetime):
+		# Constructor with two arguments of type BaseClass and datetime
+		elif isinstance(value, self.BaseClass) and isinstance(time, datetime):
 			self._value = value
 			self._time = time
 		else:

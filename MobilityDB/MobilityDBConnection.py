@@ -39,6 +39,10 @@ def MobilityDBRegister(connection):
 	cursor.execute("SELECT NULL::TBool")
 	oid = cursor.description[0][1]
 	extensions.register_type(extensions.new_type((oid,), "TBool", TBool.read_from_cursor))
+	#extensions.register_type(extensions.new_type((oid,), "TBoolInst", TBoolInst.__init__))
+	#extensions.register_type(extensions.new_type((oid,), "TBoolI", TBoolI.__init__))
+	#extensions.register_type(extensions.new_type((oid,), "TBoolSeq", TBoolSeq.__init__))
+	#extensions.register_type(extensions.new_type((oid,), "TBoolS", TBoolS.__init__))
 
 	cursor.execute("SELECT NULL::TInt")
 	oid = cursor.description[0][1]
@@ -47,6 +51,10 @@ def MobilityDBRegister(connection):
 	cursor.execute("SELECT NULL::TFloat")
 	oid = cursor.description[0][1]
 	extensions.register_type(extensions.new_type((oid,), "TFloat", TFloat.read_from_cursor))
+	#extensions.register_type(extensions.new_type((oid,), "TFloatInst", TFloatInst.read_from_cursor))
+	#extensions.register_type(extensions.new_type((oid,), "TFloatI", TFloatI.read_from_cursor))
+	#extensions.register_type(extensions.new_type((oid,), "TFloatSeq", TFloatSeq.read_from_cursor))
+	#extensions.register_type(extensions.new_type((oid,), "TFloatS", TFloatS.read_from_cursor))
 
 	cursor.execute("SELECT NULL::TText")
 	oid = cursor.description[0][1]

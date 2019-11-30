@@ -1,11 +1,18 @@
 from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+import warnings
+
+try:
+	# Do not make psycopg2 a requirement.
+	from psycopg2.extensions import ISQLQuote
+except ImportError:
+	warnings.warn('psycopg2 not installed', ImportWarning)
 
 
 class TText(Temporal):
 	"""
 	Temporal texts of any duration (abstract class)
 	"""
-	BaseValueClass = str
+	Interpolation = 'stepwise'
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):
@@ -22,6 +29,15 @@ class TText(Temporal):
 				return TTextI(value)
 		raise Exception("ERROR: Could not parse temporal text value")
 
+	# Psycopg2 interface.
+	def __conform__(self, protocol):
+		if protocol is ISQLQuote:
+			return self
+
+	def getquoted(self):
+		return "{}".format(self.__str__())
+	# End Psycopg2 interface.
+
 
 class TTextInst(TemporalInst, TText):
 	"""
@@ -29,7 +45,7 @@ class TTextInst(TemporalInst, TText):
 	"""
 
 	def __init__(self, value, time=None):
-		TemporalInst.BaseValueClass = str
+		TemporalInst.BaseClass = str
 		super().__init__(value, time)
 
 
@@ -39,8 +55,8 @@ class TTextI(TemporalI, TText):
 	"""
 
 	def __init__(self,  *argv):
-		TemporalI.BaseValueClass = str
-		TemporalI.ComponentValueClass = TTextInst
+		TemporalI.BaseClass = str
+		TemporalI.ComponentClass = TTextInst
 		super().__init__(*argv)
 
 
@@ -50,8 +66,8 @@ class TTextSeq(TemporalSeq, TText):
 	"""
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
-		TemporalSeq.BaseValueClass = str
-		TemporalSeq.ComponentValueClass = TTextInst
+		TemporalSeq.BaseClass = str
+		TemporalSeq.ComponentClass = TTextInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
 
@@ -61,8 +77,8 @@ class TTextS(TemporalS, TText):
 	"""
 
 	def __init__(self, *argv):
-		TemporalS.BaseValueClass = str
-		TemporalS.ComponentValueClass = TTextSeq
+		TemporalS.BaseClass = str
+		TemporalS.ComponentClass = TTextSeq
 		super().__init__(*argv)
 
 

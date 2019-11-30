@@ -1,23 +1,26 @@
 from MobilityDB import *
 
-connectionObject = None
+connection = None
 
 try:
 	# Set the connection parameters to PostgreSQL
-	connectionObject = psycopg2.connect(host='127.0.0.1', database='regtests', user='mobilitydb', password='')
-	connectionObject.autocommit = True
+	connection = psycopg2.connect(host='127.0.0.1', database='regtests', user='mobilitydb', password='')
+	connection.autocommit = True
 
 	# Register MobilityDB data types
-	MobilityDBRegister(connectionObject)
+	MobilityDBRegister(connection)
 
-	cursor = connectionObject.cursor()
+	cursor = connection.cursor()
 
+	######################
 	# TBoolInst
+	######################
 
-	postgreSQL_select_Query = "select * from tbl_tboolinst order by k limit 10"
+	select_query = "select * from tbl_tboolinst order by k limit 10"
 
-	cursor.execute(postgreSQL_select_Query)
-	print("Selecting rows from tbl_tboolinst table using cursor.fetchall")
+	cursor.execute(select_query)
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tboolinst table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -28,12 +31,36 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tboolinst_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
+
+	create_table_query = '''CREATE TABLE tbl_tboolinst_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tbool
+		); '''
+
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
+
+	postgres_insert_query = ''' INSERT INTO tbl_tboolinst_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_tboolinst_temp table")
+
+	######################
 	# TBoolI
+	######################
 
-	postgreSQL_select_Query = "select * from tbl_tbooli order by k limit 10"
+	select_query = "select * from tbl_tbooli order by k limit 10"
 
-	cursor.execute(postgreSQL_select_Query)
-	print("Selecting rows from tbl_tbooli table using cursor.fetchall")
+	cursor.execute(select_query)
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tbooli table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -44,12 +71,36 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tbooli_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
+
+	create_table_query = '''CREATE TABLE tbl_tbooli_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tbool
+		); '''
+
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
+
+	postgres_insert_query = ''' INSERT INTO tbl_tbooli_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_tbooli_temp table")
+
+	######################
 	# TBoolSeq
+	######################
 
-	postgreSQL_select_Query = "select * from tbl_tboolseq order by k limit 10"
+	select_query = "select * from tbl_tboolseq order by k limit 10"
 
-	cursor.execute(postgreSQL_select_Query)
-	print("Selecting rows from tbl_tboolseq table using cursor.fetchall")
+	cursor.execute(select_query)
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tboolseq table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -60,12 +111,36 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tboolseq_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
+
+	create_table_query = '''CREATE TABLE tbl_tboolseq_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tbool
+		); '''
+
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
+
+	postgres_insert_query = ''' INSERT INTO tbl_tboolseq_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_tboolseq_temp table")
+
+	######################
 	# TBoolS
+	######################
 
-	postgreSQL_select_Query = "select * from tbl_tbools order by k limit 10"
+	select_query = "select * from tbl_tbools order by k limit 10"
 
-	cursor.execute(postgreSQL_select_Query)
-	print("Selecting rows from tbl_tbools table using cursor.fetchall")
+	cursor.execute(select_query)
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tbools table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -76,11 +151,34 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
-except psycopg2.DatabaseError as e:
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tbools_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
 
-	print('Error {e}')
+	create_table_query = '''CREATE TABLE tbl_tbools_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tbool
+		); '''
+
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
+
+	postgres_insert_query = ''' INSERT INTO tbl_tbools_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_tbools_temp table")
+
+	print("\n****************************************************************")
+
+
+except (Exception, psycopg2.Error) as error:
+	print("Error while connecting to PostgreSQL", error)
 
 finally:
 
-	if connectionObject:
-		connectionObject.close()
+	if connection:
+		connection.close()

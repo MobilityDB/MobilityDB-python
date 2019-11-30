@@ -4,11 +4,10 @@ from MobilityDB.TimeTypes import *
 
 class Temporal:
 	"""
-	...
-	General example:
-		>>> var1 = TIntInst('10@2019-09-10')
-		>>> var2 = TGeomPointInst('SRID=4326;Point(1 1)@2019-09-10')
+	Abstract class for temporal types of any duration
 	"""
+	BaseClass = None
+	ComponentClass = None
 
 	@classmethod
 	def duration(cls):

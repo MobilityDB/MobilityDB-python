@@ -67,9 +67,8 @@ try:
 	print(var2)
 
 
-except psycopg2.DatabaseError as e:
-
-	print('Error {e}')
+except (Exception, psycopg2.Error) as error:
+	print("Error while connecting to PostgreSQL", error)
 
 finally:
 
