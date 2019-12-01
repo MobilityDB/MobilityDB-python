@@ -1,76 +1,103 @@
 from MobilityDB import *
 
-connectionObject = None
+connection = None
 
 try:
 	# Set the connection parameters to PostgreSQL
-	connectionObject = psycopg2.connect(host='127.0.0.1', database='sf0_005', user='postgres', password='ulb')
-	connectionObject.autocommit = True
+	connection = psycopg2.connect(host='127.0.0.1', database='regtests', user='mobilitydb', password='')
+	connection.autocommit = True
 
 	# Register MobilityDB data types
-	MobilityDBRegister(connectionObject)
+	MobilityDBRegister(connection)
 
-	cursor = connectionObject.cursor()
+	cursor = connection.cursor()
 
-	var2 = TBOX(10, '2019-09-08 00:00:00+02', 30, '2019-09-10 00:00:00+02')
-	print(var2)
+	######################
+	# TBOX
+	######################
 
-	var3 = TBOX(10, '2019-09-08 00:00:00+02', 30, '2019-09-10 00:00:00+02')
-	print(var3 == var2)
+	select_query = "select * from tbl_tbox order by k limit 10"
 
-	var2 = TBOX('2019-09-08 00:00:00+02', '2019-09-10 00:00:00+02')
-	print(var2)
+	cursor.execute(select_query)
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tbox table using cursor.fetchall\n")
+	rows = cursor.fetchall()
 
-	var2 = TBOX(10, 30)
-	print(var2)
+	for row in rows:
+		print("key =", row[0])
+		print("tbox =", row[1])
+		if not row[1]:
+			print("")
+		else:
+			print("tmin =", row[1].tmin, "\n")
 
-	var2 = TBOX('TBOX((10, 2019-09-08 00:00:00+02), (30, 2019-09-10 00:00:00+02))')
-	print(var2)
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tbox_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
 
-	var2 = TBOX('TBOX((, 2019-09-08 00:00:00+02), (, 2019-09-10 00:00:00+02))')
-	print(var2)
+	create_table_query = '''CREATE TABLE tbl_tbox_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tfloat
+		); '''
 
-	var2 = TBOX('TBOX((10, ), (30, ))')
-	print(var2)
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
 
-	var2 = STBOX('STBOX T((10, 50, 2019-09-08 00:00:00+02), (20, 60, 2019-09-10 00:00:00+02))')
-	print(var2)
+	postgres_insert_query = ''' INSERT INTO tbl_tbox_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_tbox_temp table")
 
-	var2 = STBOX('STBOX ZT((10, 50, 100,2019-09-08 00:00:00+02), (20, 60, 200, 2019-09-10 00:00:00+02))')
-	print(var2)
+	######################
+	# STBOX
+	######################
 
-	var2 = STBOX('STBOX Z((10, 50, 100), (20, 60, 200))')
-	print(var2)
+	select_query = "select * from tbl_stbox order by k limit 10"
 
-	var2 = STBOX('GEODSTBOX T((10, 50, 100,2019-09-08 00:00:00+02), (20, 60, 200, 2019-09-10 00:00:00+02))')
-	print(var2)
+	cursor.execute(select_query)
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_stbox table using cursor.fetchall\n")
+	rows = cursor.fetchall()
 
-	var2 = STBOX('GEODSTBOX((10, 50, 100), (20, 60, 200))')
-	print(var2)
+	for row in rows:
+		print("key =", row[0])
+		print("stbox =", row[1])
+		if not row[1]:
+			print("")
+		else:
+			print("tmin =", row[1].tmin, "\n")
 
-	var2 = STBOX('STBOX ((10, 50), (20, 60))')
-	print(var2)
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_stbox_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
 
-	var2 = STBOX(10, 50, 20, 60)
-	print(var2)
+	create_table_query = '''CREATE TABLE tbl_stbox_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tfloat
+		); '''
 
-	var2 = STBOX(10, 50, 100, 20, 60, 200)
-	print(var2)
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
 
-	var2 = STBOX(10, 50, 100, '2019-09-08 00:00:00+02', 20, 60, 200, '2019-09-10 00:00:00+02')
-	print(var2)
+	postgres_insert_query = ''' INSERT INTO tbl_stbox_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_stbox_temp table")
 
-	var2 = STBOX(10, 50, 100, 20, 60, 200, geodetic=True)
-	print(var2)
-
-	var2 = STBOX(10, 50, 100, '2019-09-08 00:00:00+02', 20, 60, 200, '2019-09-10 00:00:00+02', geodetic=False)
-	print(var2)
-
+	print("\n****************************************************************")
 
 except (Exception, psycopg2.Error) as error:
 	print("Error while connecting to PostgreSQL", error)
 
 finally:
 
-	if connectionObject:
-		connectionObject.close()
+	if connection:
+		connection.close()
