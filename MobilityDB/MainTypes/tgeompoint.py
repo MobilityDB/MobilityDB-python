@@ -1,16 +1,8 @@
 import re
 from datetime import datetime
 from bdateutil.parser import parse
-from postgis import Point, MultiPoint, LineString, GeometryCollection, MultiLineString
-from postgis.ewkb import Reader, Writer
+from postgis import Geometry, Point, MultiPoint, LineString, GeometryCollection, MultiLineString
 from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
-import warnings
-
-try:
-	# Do not make psycopg2 a requirement.
-	from psycopg2.extensions import ISQLQuote
-except ImportError:
-	warnings.warn('psycopg2 not installed', ImportWarning)
 
 
 # Add method to Point to make the class hashable
@@ -54,14 +46,6 @@ class TGeomPoint(Temporal):
 				return TGeomPointI(value)
 		raise Exception("ERROR: Could not parse temporal float value")
 
-	# Psycopg2 interface.
-	def __conform__(self, protocol):
-		if protocol is ISQLQuote:
-			return self
-
-	def getquoted(self):
-		return "{}".format(self.__str__())
-	# End Psycopg2 interface.
 
 class TGeomPointInst(TemporalInst, TGeomPoint):
 	"""
@@ -81,7 +65,7 @@ class TGeomPointInst(TemporalInst, TGeomPoint):
 					coords = (splits[0][idx1 + 1:idx2]).split(' ')
 					self._value = type(self).BaseClass(coords)
 				else:
-					self._value = Reader.from_hex(splits[0])
+					self._value = Geometry.from_ewkb(splits[0])
 				self._time = parse(splits[1])
 			else:
 				raise Exception("ERROR: Could not parse temporal instant value")

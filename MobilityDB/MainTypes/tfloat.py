@@ -1,12 +1,5 @@
 from spans.types import Range
 from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
-import warnings
-
-try:
-	# Do not make psycopg2 a requirement.
-	from psycopg2.extensions import ISQLQuote
-except ImportError:
-	warnings.warn('psycopg2 not installed', ImportWarning)
 
 
 class floatrange(Range):
@@ -40,14 +33,6 @@ class TFloat(Temporal):
 				return TFloatI(value)
 		raise Exception("ERROR: Could not parse temporal float value")
 
-	# Psycopg2 interface.
-	def __conform__(self, protocol):
-		if protocol is ISQLQuote:
-			return self
-
-	def getquoted(self):
-		return "{}".format(self.__str__())
-	# End Psycopg2 interface.
 
 class TFloatInst(TemporalInst, TFloat):
 	"""

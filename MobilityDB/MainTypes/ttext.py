@@ -1,11 +1,4 @@
 from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
-import warnings
-
-try:
-	# Do not make psycopg2 a requirement.
-	from psycopg2.extensions import ISQLQuote
-except ImportError:
-	warnings.warn('psycopg2 not installed', ImportWarning)
 
 
 class TText(Temporal):
@@ -28,15 +21,6 @@ class TText(Temporal):
 			else:
 				return TTextI(value)
 		raise Exception("ERROR: Could not parse temporal text value")
-
-	# Psycopg2 interface.
-	def __conform__(self, protocol):
-		if protocol is ISQLQuote:
-			return self
-
-	def getquoted(self):
-		return "{}".format(self.__str__())
-	# End Psycopg2 interface.
 
 
 class TTextInst(TemporalInst, TText):

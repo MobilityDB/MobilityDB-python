@@ -1,7 +1,8 @@
 from datetime import datetime
 from bdateutil.parser import parse
 from MobilityDB.TemporalTypes import *
-from postgis import Point, MultiPoint, LineString, GeometryCollection, MultiLineString
+from postgis import Geometry, Point, MultiPoint, LineString, GeometryCollection, MultiLineString
+
 
 # Add method to Point to make the class hashable
 def __hash__(self):
@@ -31,14 +32,6 @@ class TGeogPoint(Temporal):
 				return TGeogPointI(value)
 		raise Exception("ERROR: Could not parse temporal float value")
 
-	# Psycopg2 interface.
-	def __conform__(self, protocol):
-		if protocol is ISQLQuote:
-			return self
-
-	def getquoted(self):
-		return "{}".format(self.__str__())
-	# End Psycopg2 interface.
 
 class TGeogPointInst(TemporalInst, TGeogPoint):
 	"""
@@ -52,10 +45,13 @@ class TGeogPointInst(TemporalInst, TGeogPoint):
 		if time is None and isinstance(value, str):
 			splits = value.split("@")
 			if len(splits) == 2:
-				idx1 = splits[0].find('(')
-				idx2 = splits[0].find(')')
-				coords = (splits[0][idx1 + 1:idx2]).split(' ')
-				self._value = type(self).BaseClass(coords)
+				if '(' in splits[0] and ')' in splits[0]:
+					idx1 = splits[0].find('(')
+					idx2 = splits[0].find(')')
+					coords = (splits[0][idx1 + 1:idx2]).split(' ')
+					self._value = type(self).BaseClass(coords)
+				else:
+					self._value = Geometry.from_ewkb(splits[0])
 				self._time = parse(splits[1])
 			else:
 				raise Exception("ERROR: Could not parse temporal instant value")

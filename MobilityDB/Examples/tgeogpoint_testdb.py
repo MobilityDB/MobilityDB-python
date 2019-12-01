@@ -1,23 +1,26 @@
 from MobilityDB import *
 
-connectionObject = None
+connection = None
 
 try:
 	# Set the connection parameters to PostgreSQL
-	connectionObject = psycopg2.connect(host='127.0.0.1', database='regtests', user='mobilitydb', password='')
-	connectionObject.autocommit = True
+	connection = psycopg2.connect(host='127.0.0.1', database='regtests', user='mobilitydb', password='')
+	connection.autocommit = True
 
 	# Register MobilityDB data types
-	MobilityDBRegister(connectionObject)
+	MobilityDBRegister(connection)
 
-	cursor = connectionObject.cursor()
+	cursor = connection.cursor()
 
+	######################
 	# TGeogPointInst
+	######################
 
 	select_query = "select * from tbl_tgeogpointinst order by k limit 10"
 
 	cursor.execute(select_query)
-	print("Selecting rows from tbl_tgeogpointinst table using cursor.fetchall")
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tgeogpointinst table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -28,12 +31,36 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpointinst_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
+
+	create_table_query = '''CREATE TABLE tbl_tgeogpointinst_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tgeogpoint
+		); '''
+
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
+
+	postgres_insert_query = ''' INSERT INTO tbl_tgeogpointinst_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_tgeogpointinst_temp table")
+
+	######################
 	# TGeogPointI
+	######################
 
 	select_query = "select * from tbl_tgeogpointi order by k limit 10"
 
 	cursor.execute(select_query)
-	print("Selecting rows from tbl_tgeogpointi table using cursor.fetchall")
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tgeogpointi table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -44,12 +71,36 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpointi_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
+
+	create_table_query = '''CREATE TABLE tbl_tgeogpointi_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tgeogpoint
+		); '''
+
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
+
+	postgres_insert_query = ''' INSERT INTO tbl_tgeogpointi_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_tgeogpointi_temp table")
+
+	######################
 	# TGeogPointSeq
+	######################
 
 	select_query = "select * from tbl_tgeogpointseq order by k limit 10"
 
 	cursor.execute(select_query)
-	print("Selecting rows from tbl_tgeogpointseq table using cursor.fetchall")
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tgeogpointseq table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -60,12 +111,36 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpointseq_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
+
+	create_table_query = '''CREATE TABLE tbl_tgeogpointseq_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tgeogpoint
+		); '''
+
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
+
+	postgres_insert_query = ''' INSERT INTO tbl_tgeogpointseq_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_tgeogpointseq_temp table")
+
+	######################
 	# TGeogPointS
+	######################
 
 	select_query = "select * from tbl_tgeogpoints order by k limit 10"
 
 	cursor.execute(select_query)
-	print("Selecting rows from tbl_tgeogpoints table using cursor.fetchall")
+	print("\n****************************************************************")
+	print("Selecting rows from tbl_tgeogpoints table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -76,10 +151,33 @@ try:
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpoints_temp;'''
+	cursor.execute(drop_table_query)
+	connection.commit()
+	print("Table deleted successfully in PostgreSQL ")
+
+	create_table_query = '''CREATE TABLE tbl_tgeogpoints_temp
+		(
+		  k integer PRIMARY KEY,
+		  temp tgeogpoint
+		); '''
+
+	cursor.execute(create_table_query)
+	connection.commit()
+	print("Table created successfully in PostgreSQL ")
+
+	postgres_insert_query = ''' INSERT INTO tbl_tgeogpoints_temp (k, temp) VALUES (%s, %s) '''
+	result = cursor.executemany(postgres_insert_query, rows)
+	connection.commit()
+	count = cursor.rowcount
+	print(count, "record(s) inserted successfully into tbl_tgeogpoints_temp table")
+
+	print("\n****************************************************************")
+
 except (Exception, psycopg2.Error) as error:
 	print("Error while connecting to PostgreSQL", error)
 
 finally:
 
-	if connectionObject:
-		connectionObject.close()
+	if connection:
+		connection.close()
