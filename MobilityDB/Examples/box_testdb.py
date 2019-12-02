@@ -39,14 +39,14 @@ try:
 	create_table_query = '''CREATE TABLE tbl_tbox_temp
 		(
 		  k integer PRIMARY KEY,
-		  temp tfloat
+		  box tbox
 		); '''
 
 	cursor.execute(create_table_query)
 	connection.commit()
 	print("Table created successfully in PostgreSQL ")
 
-	postgres_insert_query = ''' INSERT INTO tbl_tbox_temp (k, temp) VALUES (%s, %s) '''
+	postgres_insert_query = ''' INSERT INTO tbl_tbox_temp (k, box) VALUES (%s, %s) '''
 	result = cursor.executemany(postgres_insert_query, rows)
 	connection.commit()
 	count = cursor.rowcount
@@ -79,14 +79,14 @@ try:
 	create_table_query = '''CREATE TABLE tbl_stbox_temp
 		(
 		  k integer PRIMARY KEY,
-		  temp tfloat
+		  box stbox
 		); '''
 
 	cursor.execute(create_table_query)
 	connection.commit()
 	print("Table created successfully in PostgreSQL ")
 
-	postgres_insert_query = ''' INSERT INTO tbl_stbox_temp (k, temp) VALUES (%s, %s) '''
+	postgres_insert_query = ''' INSERT INTO tbl_stbox_temp (k, box) VALUES (%s, %s) '''
 	result = cursor.executemany(postgres_insert_query, rows)
 	connection.commit()
 	count = cursor.rowcount
