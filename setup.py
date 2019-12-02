@@ -17,6 +17,7 @@ setup(
 	download_url='',
 	install_requires=[
 		'psycopg2-binary',
+		'Spans',
 		'postgis',
 		'pytest', 'python-dateutil'
 	],
