@@ -7,32 +7,27 @@ db.autocommit = True
 MobilityDBRegister(db)
 cur = db.cursor()
 
+tfloat_types = [TFloatInst, TFloatI, TFloatSeq, TFloatS]
+temporal_types = ['INSTANT', 'INSTANTSET', 'SEQUENCE', 'SEQUENCESET']
+
 
 def pytest_configure():
-	cur.execute('CREATE TABLE IF NOT EXISTS tbl_tgeompoint (tgeompoint_col tgeompoint NOT NULL)')
-	cur.execute('CREATE TABLE IF NOT EXISTS tbl_tgeogpoint (tgeogpoint_col tgeogpoint NOT NULL)')
-	cur.execute('CREATE TABLE IF NOT EXISTS tbl_tint (tint_col tint NOT NULL)')
-	cur.execute('CREATE TABLE IF NOT EXISTS tbl_tfloat (tfloat_col tfloat NOT NULL)')
-	cur.execute('CREATE TABLE IF NOT EXISTS tbl_tbool (tbool_col tbool NOT NULL)')
-	cur.execute('CREATE TABLE IF NOT EXISTS tbl_ttext (ttext_col ttext NOT NULL)')
-	cur.execute('CREATE TABLE IF NOT EXISTS tbl_tbox (tbox_col tbox NOT NULL)')
-	cur.execute('CREATE TABLE IF NOT EXISTS tbl_stbox (stbox_col stbox NOT NULL)')
+    i = 0
+    while i < 4:
+        cur.execute(
+            'CREATE TABLE IF NOT EXISTS tbl_' + tfloat_types[i].__name__ +
+            ' (temp TFLOAT(' + temporal_types[i] + ') NOT NULL);')
+        i += 1
 
 
 def pytest_unconfigure():
-	cur.execute('DROP TABLE tbl_tgeompoint, tbl_tgeogpoint, tbl_tint, tbl_tfloat, tbl_tbool, tbl_ttext, '
-				'tbl_tbox, tbl_stbox')
+    for tfloat_type in tfloat_types:
+        cur.execute('DROP TABLE tbl_' + tfloat_type.__name__)
 
 
 @pytest.fixture
 def cursor():
-	# Make sure tables are clean.
-	cur.execute('TRUNCATE TABLE tbl_tgeompoint')
-	cur.execute('TRUNCATE TABLE tbl_tgeogpoint')
-	cur.execute('TRUNCATE TABLE tbl_tint')
-	cur.execute('TRUNCATE TABLE tbl_tfloat')
-	cur.execute('TRUNCATE TABLE tbl_tbool')
-	cur.execute('TRUNCATE TABLE tbl_ttext')
-	cur.execute('TRUNCATE TABLE tbl_tbox')
-	cur.execute('TRUNCATE TABLE tbl_stbox')
-	return cur
+    # Make sure tables are clean.
+    for tfloat_type in tfloat_types:
+        cur.execute('TRUNCATE TABLE tbl_' + tfloat_type.__name__)
+    return cur

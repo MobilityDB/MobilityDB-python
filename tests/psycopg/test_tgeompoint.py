@@ -1,5 +1,5 @@
+"""
 import pytest
-
 from MobilityDB import TGEOMPOINT
 
 
@@ -15,3 +15,4 @@ def test_tgeompoint_should_round(cursor, expected):
 	cursor.execute('SELECT tgeompoint_col FROM tbl_tgeompoint WHERE tgeompoint_col=%s' % params)
 	result = cursor.fetchone()[0]
 	assert result == TGEOMPOINT(expected)
+"""

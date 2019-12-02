@@ -1,5 +1,5 @@
+"""
 import pytest
-
 from MobilityDB import TIMESTAMPSET
 
 
@@ -14,3 +14,4 @@ def test_tint_should_round(cursor, expected):
 	result = cursor.fetchone()[0]
 
 # assert result == TIMESTAMPSET(expected)
+"""

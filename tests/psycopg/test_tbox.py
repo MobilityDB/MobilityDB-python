@@ -1,6 +1,7 @@
+"""
 import pytest
 
-from MobilityDB import TBOX
+from MobilityDB import TBox
 
 
 @pytest.mark.parametrize('expected', [
@@ -14,3 +15,4 @@ def test_tint_should_round(cursor, expected):
 	cursor.execute("SELECT tbox_col FROM tbl_tbox WHERE tbox_col='%s'" % params)
 	result = cursor.fetchone()[0]
 	assert result == TBOX(expected)
+"""

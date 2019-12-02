@@ -1,5 +1,5 @@
+"""
 import pytest
-
 from MobilityDB import TTEXT
 
 
@@ -15,3 +15,4 @@ def test_ttext_should_round(cursor, expected):
 	cursor.execute('SELECT ttext_col FROM tbl_ttext WHERE ttext_col=%s' % params)
 	result = cursor.fetchone()[0]
 	assert result == TTEXT(expected)
+"""

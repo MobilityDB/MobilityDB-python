@@ -1,6 +1,7 @@
+"""
 import pytest
 
-from MobilityDB import STBOX
+from MobilityDB import STBox
 
 
 @pytest.mark.parametrize('expected', [
@@ -18,3 +19,4 @@ def test_tint_should_round(cursor, expected):
 	result = cursor.fetchone()[0]
 
 # assert result == STBOX(expected)
+"""
