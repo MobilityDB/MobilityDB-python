@@ -81,7 +81,7 @@ class STBox:
 	def read_from_cursor(value, cursor=None):
 		if not value:
 			return None
-		return STBOX(value)
+		return STBox(value)
 
 	# Psycopg2 interface.
 	def __conform__(self, protocol):

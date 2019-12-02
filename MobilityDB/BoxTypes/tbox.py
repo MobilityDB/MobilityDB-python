@@ -59,7 +59,7 @@ class TBox:
 	def read_from_cursor(value, cursor=None):
 		if not value:
 			return None
-		return TBOX(value)
+		return TBox(value)
 
 	# Psycopg2 interface.
 	def __conform__(self, protocol):
