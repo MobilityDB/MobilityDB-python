@@ -34,7 +34,7 @@ def MobilityDBRegister(connection):
 
 	cursor.execute("SELECT NULL::TBOX")
 	oid = cursor.description[0][1]
-	extensions.register_type(extensions.new_type((oid,), "TBOX", TBOX.read_from_cursor))
+	extensions.register_type(extensions.new_type((oid,), "TBOX", TBox.read_from_cursor))
 
 	cursor.execute("SELECT NULL::TBool")
 	oid = cursor.description[0][1]
@@ -62,7 +62,7 @@ def MobilityDBRegister(connection):
 
 	cursor.execute("SELECT NULL::STBOX")
 	oid = cursor.description[0][1]
-	extensions.register_type(extensions.new_type((oid,), "STBOX", STBOX.read_from_cursor))
+	extensions.register_type(extensions.new_type((oid,), "STBOX", STBox.read_from_cursor))
 
 	cursor.execute("SELECT NULL::TGeomPoint")
 	oid = cursor.description[0][1]

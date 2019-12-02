@@ -9,7 +9,7 @@ except ImportError:
 	warnings.warn('psycopg2 not installed', ImportWarning)
 
 
-class STBOX:
+class STBox:
 	__slots__ = ['xmin', 'ymin', 'zmin', 'tmin', 'xmax', 'ymax', 'zmax', 'tmax', 'geodetic']
 
 	def __init__(self, *args, geodetic=False):

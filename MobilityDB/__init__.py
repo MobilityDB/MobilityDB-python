@@ -13,4 +13,4 @@ __all__ = ['psycopg2', 'MobilityDBRegister',
 		   'TBool', 'TBoolInst', 'TBoolI', 'TBoolSeq', 'TBoolS',
 		   'TText', 'TTextInst', 'TText', 'TTextSeq', 'TTextS',
 		   'Period', 'TimestampSet', 'PeriodSet',
-		   'TBOX', 'STBOX']
+		   'TBox', 'STBox']

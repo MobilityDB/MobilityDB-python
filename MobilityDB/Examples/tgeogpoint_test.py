@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 from bdateutil.parser import parse
-from spans.types import Range
 from postgis import Point
 from MobilityDB import *
 

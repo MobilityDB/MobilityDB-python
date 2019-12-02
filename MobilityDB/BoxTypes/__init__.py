@@ -1,4 +1,4 @@
-from .tbox import TBOX
-from .stbox import STBOX
+from .tbox import TBox
+from .stbox import STBox
 
-__all__ = ['TBOX', 'STBOX']
+__all__ = ['TBox', 'STBox']

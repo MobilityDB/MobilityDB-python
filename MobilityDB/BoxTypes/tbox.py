@@ -9,7 +9,7 @@ except ImportError:
 	warnings.warn('psycopg2 not installed', ImportWarning)
 
 
-class TBOX:
+class TBox:
 	__slots__ = ['xmin', 'tmin', 'xmax', 'tmax']
 
 	def __init__(self, *args):
