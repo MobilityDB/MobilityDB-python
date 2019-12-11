@@ -8,13 +8,18 @@ class TemporalSeq(TEMPORALINSTANTS):
 	"""
 	Abstract class for temporal types of sequence duration
 	"""
-	__slots__ = ['_lower_inc', '_upper_inc']
+	__slots__ = ['_lower_inc', '_upper_inc', '_interp']
 
-	def __init__(self, instantList, lower_inc=None, upper_inc=None):
+	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
 		# Constructor with a single argument of type string
 		self._instantList = []
 		if isinstance(instantList, str):
 			ts = instantList.strip()
+			if (ts.startswith('Interp=Stepwise;')):
+				self._interp = 'Stepwise'
+				ts = ts.replace('Interp=Stepwise;','')
+			else:
+				self._interp = 'Linear'
 			if (ts[0] == '[' or ts[0] == '(') and (ts[-1] == ']' or ts[-1] == ')'):
 				if ts[0] == '[':
 					self._lower_inc = True
@@ -44,6 +49,7 @@ class TemporalSeq(TEMPORALINSTANTS):
 				raise Exception("ERROR: Could not parse temporal sequence value")
 			self._lower_inc = True if lower_inc == None or lower_inc == True else False
 			self._upper_inc = True if upper_inc == True else False
+			self.interp = True if upper_inc == True else False
 		# Verify validity of the resulting instance
 		self._valid()
 
@@ -52,7 +58,7 @@ class TemporalSeq(TEMPORALINSTANTS):
 			raise Exception("ERROR: The lower and upper bounds must be inclusive for an instant temporal sequence")
 		if any(x._time >= y._time for x, y in zip(self._instantList, self._instantList[1:])):
 			raise Exception("ERROR: The timestamps of a temporal sequence must be increasing")
-		if (self.Interpolation == 'stepwise' and len(self._instantList) > 1 and not self._upper_inc and
+		if (self._interp == 'Stepwise' and len(self._instantList) > 1 and not self._upper_inc and
 			self._instantList[-1]._value != self._instantList[-2]._value):
 			raise Exception("ERROR: The last two values of a temporal sequence with exclusive upper bound and stepwise interpolation must be equal")
 		return True

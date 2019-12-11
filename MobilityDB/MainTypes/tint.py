@@ -10,7 +10,6 @@ class TInt(Temporal):
 	"""
 	Temporal integers of any duration (abstract class)
 	"""
-	Interpolation = 'stepwise'
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):
@@ -65,6 +64,11 @@ class TIntSeq(TemporalSeq, TInt):
 		TemporalSeq.ComponentClass = TIntInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
+	@classmethod
+	def interpolation(self):
+		return 'Stepwise'
+
+
 
 class TIntS(TemporalS, TInt):
 	"""
@@ -75,5 +79,9 @@ class TIntS(TemporalS, TInt):
 		TemporalS.BaseClass = int
 		TemporalS.ComponentClass = TIntSeq
 		super().__init__(*argv)
+
+	@classmethod
+	def interpolation(self):
+		return 'Stepwise'
 
 

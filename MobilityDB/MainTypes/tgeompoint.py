@@ -16,7 +16,6 @@ class TGeomPoint(Temporal):
 	"""
 	Temporal geometric points of any duration (abstract class)
 	"""
-	Interpolation = 'linear'
 
 	def has_z(self):
 		"""
@@ -144,6 +143,9 @@ class TGeomPointSeq(TemporalSeq, TGeomPoint):
 		if any(x.srid() != y.srid() for x, y in zip(self._instantList, self._instantList[1:])):
 			raise Exception("ERROR: All geometries composing a temporal point must have the same SRID")
 
+	def interpolation(self):
+		return self._interp
+
 	def getValues(self):
 		"""
 		Distinct values
@@ -154,6 +156,10 @@ class TGeomPointSeq(TemporalSeq, TGeomPoint):
 		else:
 			result = LineString(values)
 		return result
+
+	def __str__(self):
+		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
+		return interp_str + super().__str__()
 
 
 class TGeomPointS(TemporalS, TGeomPoint):
@@ -174,6 +180,9 @@ class TGeomPointS(TemporalS, TGeomPoint):
 		if any(x.srid() != y.srid() for x, y in zip(self._sequenceList, self._sequenceList[1:])):
 			raise Exception("ERROR: All geometries composing a temporal point must have the same SRID")
 
+	def interpolation(self):
+		return self._interp
+
 	def getValues(self):
 		"""
 		Distinct values
@@ -187,3 +196,8 @@ class TGeomPointS(TemporalS, TGeomPoint):
 			return MultiPoint(points)
 		if len(points) == 0 and len(points) != 0:
 			return MultiLineString(lines)
+
+	def __str__(self):
+		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
+		return interp_str + super().__str__()
+

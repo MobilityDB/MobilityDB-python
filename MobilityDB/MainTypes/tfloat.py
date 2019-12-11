@@ -10,7 +10,6 @@ class TFloat(Temporal):
 	"""
 	Temporal floats of any duration (abstract class)
 	"""
-	Interpolation = 'linear'
 
 	def valueRange(self):
 		"""
@@ -78,6 +77,9 @@ class TFloatSeq(TemporalSeq, TFloat):
 		TemporalSeq.ComponentClass = TFloatInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
+	def interpolation(self):
+		return self._interp
+
 	def getValues(self):
 		"""
 		Distinct values
@@ -94,6 +96,11 @@ class TFloatSeq(TemporalSeq, TFloat):
 			max_inc = max in self._instantList[1:-1]
 		return floatrange(min, max, min_inc, max_inc)
 
+	def __str__(self):
+		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
+		return interp_str + super().__str__()
+
+
 class TFloatS(TemporalS, TFloat):
 	"""
 	Temporal floats of sequence set duration
@@ -102,6 +109,9 @@ class TFloatS(TemporalS, TFloat):
 		TemporalS.BaseClass = float
 		TemporalS.ComponentClass = TFloatSeq
 		super().__init__(*argv)
+
+	def interpolation(self):
+		return self._interp
 
 	def getValues(self):
 		"""
@@ -119,3 +129,7 @@ class TFloatS(TemporalS, TFloat):
 				range = range1
 		result.append(range)
 		return result
+
+	def __str__(self):
+		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
+		return interp_str + super().__str__()

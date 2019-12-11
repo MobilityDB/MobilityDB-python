@@ -15,7 +15,6 @@ class TGeogPoint(Temporal):
 	"""
 	Temporal geographic points of any duration (abstract class)
 	"""
-	Interpolation = 'linear'
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):
@@ -115,6 +114,10 @@ class TGeogPointSeq(TemporalSeq, TGeogPoint):
 			result = LineString(values)
 		return result
 
+	def __str__(self):
+		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
+		return interp_str + super().__str__()
+
 
 class TGeogPointS(TemporalS, TGeogPoint):
 	"""
@@ -139,4 +142,8 @@ class TGeogPointS(TemporalS, TGeogPoint):
 			return MultiPoint(points)
 		if len(points) == 0 and len(points) != 0:
 			return MultiLineString(lines)
+
+	def __str__(self):
+		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
+		return interp_str + super().__str__()
 

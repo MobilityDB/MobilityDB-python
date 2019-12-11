@@ -69,6 +69,10 @@ print(ti.duration())
 print(seq.duration())
 print(ts.duration())
 
+print("\ninterpolation")
+print(seq.interpolation())
+print(ts.interpolation())
+
 print("\ngetValue")
 print(inst.getValue())
 

@@ -9,13 +9,18 @@ class TemporalS(Temporal):
 	"""
 	Abstract class for temporal types of sequence set duration
 	"""
-	__slots__ = ['_sequenceList']
+	__slots__ = ['_sequenceList', '_interp']
 
 	def __init__(self, *argv):
 		self._sequenceList = []
 		# Constructor with a single argument of type string
 		if len(argv) == 1 and isinstance(argv[0], str):
 			ps = argv[0].strip()
+			if (ps.startswith('Interp=Stepwise;')):
+				self._interp = 'Stepwise'
+				ps = ps.replace('Interp=Stepwise;','')
+			else:
+				self._interp = 'Linear'
 			if ps[0] == '{' and ps[-1] == '}':
 				p = re.compile('[\[|\(].*?[^\]\)][\]|\)]')
 				sequences = p.findall(ps)

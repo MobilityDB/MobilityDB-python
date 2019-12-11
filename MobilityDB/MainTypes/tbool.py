@@ -5,7 +5,6 @@ class TBool(Temporal):
 	"""
 	Temporal booleans of any duration (abstract class)
 	"""
-	Interpolation = 'stepwise'
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):
@@ -52,7 +51,12 @@ class TBoolSeq(TemporalSeq, TBool):
 	def __init__(self, instantList, lower_inc=None, upper_inc=None):
 		TemporalSeq.BaseClass = str
 		TemporalSeq.ComponentClass = TBoolInst
+		self._interp = 'Stepwise'
 		super().__init__(instantList, lower_inc, upper_inc)
+
+	@classmethod
+	def interpolation(self):
+		return 'Stepwise'
 
 
 class TBoolS(TemporalS, TBool):
@@ -63,6 +67,11 @@ class TBoolS(TemporalS, TBool):
 	def __init__(self, *argv):
 		TemporalS.BaseClass = str
 		TemporalS.ComponentClass = TBoolSeq
+		self._interp = 'Stepwise'
 		super().__init__(*argv)
+
+	@classmethod
+	def interpolation(self):
+		return 'Stepwise'
 
 

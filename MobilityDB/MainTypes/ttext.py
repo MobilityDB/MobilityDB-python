@@ -5,7 +5,6 @@ class TText(Temporal):
 	"""
 	Temporal texts of any duration (abstract class)
 	"""
-	Interpolation = 'stepwise'
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):
@@ -54,6 +53,10 @@ class TTextSeq(TemporalSeq, TText):
 		TemporalSeq.ComponentClass = TTextInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
+	@classmethod
+	def interpolation(self):
+		return 'Stepwise'
+
 
 class TTextS(TemporalS, TText):
 	"""
@@ -64,5 +67,9 @@ class TTextS(TemporalS, TText):
 		TemporalS.BaseClass = str
 		TemporalS.ComponentClass = TTextSeq
 		super().__init__(*argv)
+
+	@classmethod
+	def interpolation(self):
+		return 'Stepwise'
 
 
