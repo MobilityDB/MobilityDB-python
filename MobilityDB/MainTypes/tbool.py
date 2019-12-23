@@ -48,7 +48,7 @@ class TBoolSeq(TemporalSeq, TBool):
 	Temporal booleans of sequence duration
 	"""
 
-	def __init__(self, instantList, lower_inc=None, upper_inc=None):
+	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp='Stepwise'):
 		TemporalSeq.BaseClass = str
 		TemporalSeq.ComponentClass = TBoolInst
 		self._interp = 'Stepwise'
@@ -64,11 +64,11 @@ class TBoolS(TemporalS, TBool):
 	Temporal booleans of sequence set duration
 	"""
 
-	def __init__(self, *argv):
+	def __init__(self, sequenceList, interp='Stepwise'):
 		TemporalS.BaseClass = str
 		TemporalS.ComponentClass = TBoolSeq
 		self._interp = 'Stepwise'
-		super().__init__(*argv)
+		super().__init__(sequenceList)
 
 	@classmethod
 	def interpolation(self):

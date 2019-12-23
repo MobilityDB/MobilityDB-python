@@ -72,10 +72,10 @@ class TFloatSeq(TemporalSeq, TFloat):
 	Temporal floats of sequence duration
 	"""
 
-	def __init__(self, instantList, lower_inc=None, upper_inc=None):
+	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
 		TemporalSeq.BaseClass = float
 		TemporalSeq.ComponentClass = TFloatInst
-		super().__init__(instantList, lower_inc, upper_inc)
+		super().__init__(instantList, lower_inc, upper_inc, interp)
 
 	def interpolation(self):
 		return self._interp
@@ -105,10 +105,10 @@ class TFloatS(TemporalS, TFloat):
 	"""
 	Temporal floats of sequence set duration
 	"""
-	def __init__(self, *argv):
+	def __init__(self, sequenceList, interp=None):
 		TemporalS.BaseClass = float
 		TemporalS.ComponentClass = TFloatSeq
-		super().__init__(*argv)
+		super().__init__(sequenceList, interp)
 
 	def interpolation(self):
 		return self._interp

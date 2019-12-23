@@ -1,4 +1,6 @@
 import re
+from MobilityDB.TemporalTypes.temporal_parser import *
+from parsec import *
 from MobilityDB.TimeTypes.period import Period
 from MobilityDB.TimeTypes.periodset import PeriodSet
 from MobilityDB.TemporalTypes.temporal import Temporal
@@ -11,47 +13,42 @@ class TemporalS(Temporal):
 	"""
 	__slots__ = ['_sequenceList', '_interp']
 
-	def __init__(self, *argv):
+	def __init__(self, sequenceList, interp=None):
 		self._sequenceList = []
 		# Constructor with a single argument of type string
-		if len(argv) == 1 and isinstance(argv[0], str):
-			ps = argv[0].strip()
-			if (ps.startswith('Interp=Stepwise;')):
-				self._interp = 'Stepwise'
-				ps = ps.replace('Interp=Stepwise;','')
-			else:
-				self._interp = 'Linear'
-			if ps[0] == '{' and ps[-1] == '}':
-				p = re.compile('[\[|\(].*?[^\]\)][\]|\)]')
-				sequences = p.findall(ps)
-				for seq in sequences:
-					self._sequenceList.append(self.__class__.ComponentClass(seq))
-			else:
-				raise Exception("ERROR: Could not parse period set value")
+		if isinstance(sequenceList, str):
+			elements = parse_temporals(sequenceList, 0)
+			seqList = []
+			for seq in elements[2][0]:
+				instList = []
+				for inst in seq[0]:
+					instList.append(TemporalS.ComponentClass.ComponentClass(inst[0], inst[1]))
+				seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2], seq[3]))
+			self._sequenceList= seqList
+			# Set interpolation with the argument value if given
+			self._interp = interp if interp is not None else elements[2][1]
 		# Constructor with a single argument of type list
-		elif len(argv) == 1 and isinstance(argv[0], list):
+		elif isinstance(sequenceList, list):
 			# List of strings representing periods
-			if all(isinstance(arg, str) for arg in argv[0]):
-				for arg in argv[0]:
-					self._sequenceList.append(self.__class__.ComponentClass(arg))
+			if all(isinstance(sequence, str) for sequence in sequenceList):
+				for sequence in sequenceList:
+					self._sequenceList.append(self.__class__.ComponentClass(sequence))
 			# List of periods
-			elif all(isinstance(arg, self.__class__.ComponentClass) for arg in argv[0]):
-				for arg in argv[0]:
-					self._sequenceList.append(arg)
+			elif all(isinstance(sequence, self.__class__.ComponentClass) for sequence in sequenceList):
+				for sequence in sequenceList:
+					self._sequenceList.append(sequence)
 			else:
 				raise Exception("ERROR: Could not parse temporal sequence set value")
+			# Set the interpolation
+			if interp is None or interp == 'Linear':
+				self._interp = 'Linear'
+			elif interp == 'Stepwise':
+				self._interp = 'Stepwise'
+			else:
+				raise Exception("ERROR: Invalid interpolation")
 		# Constructor with multiple arguments
 		else:
-			# Arguments are of type string
-			if all(isinstance(arg, str) for arg in argv):
-				for arg in argv:
-					self._sequenceList.append(self.__class__.ComponentClass(arg))
-			# Arguments are of type temporal sequence
-			elif all(isinstance(arg, self.__class__.ComponentClass) for arg in argv):
-				for arg in argv:
-					self._sequenceList.append(arg)
-			else:
-				raise Exception("ERROR: Could not parse temporal sequence set value")
+			raise Exception("ERROR: Could not parse temporal sequence set value")
 		# Verify validity of the resulting instance
 		self._valid()
 

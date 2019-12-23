@@ -128,10 +128,10 @@ class TGeomPointSeq(TemporalSeq, TGeomPoint):
 	Temporal geometric points of sequence duration
 	"""
 
-	def __init__(self, instantList, lower_inc=None, upper_inc=None):
+	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
 		TemporalSeq.BaseClass = Point
 		TemporalSeq.ComponentClass = TGeomPointInst
-		super().__init__(instantList, lower_inc, upper_inc)
+		super().__init__(instantList, lower_inc, upper_inc, interp)
 
 	def _valid(self):
 		super()._valid()
@@ -167,10 +167,10 @@ class TGeomPointS(TemporalS, TGeomPoint):
 	Temporal geometric points of sequence set duration
 	"""
 
-	def __init__(self, *argv):
+	def __init__(self, sequenceList, interp=None):
 		TemporalS.BaseClass = Point
 		TemporalS.ComponentClass = TGeomPointSeq
-		super().__init__(*argv)
+		super().__init__(sequenceList, interp)
 
 	def _valid(self):
 		super()._valid()

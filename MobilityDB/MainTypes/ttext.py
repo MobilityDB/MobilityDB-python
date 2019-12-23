@@ -48,10 +48,10 @@ class TTextSeq(TemporalSeq, TText):
 	Temporal texts of sequence duration
 	"""
 
-	def __init__(self, instantList, lower_inc=None, upper_inc=None):
+	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp='Stepwise'):
 		TemporalSeq.BaseClass = str
 		TemporalSeq.ComponentClass = TTextInst
-		super().__init__(instantList, lower_inc, upper_inc)
+		super().__init__(instantList, lower_inc, upper_inc, interp)
 
 	@classmethod
 	def interpolation(self):
@@ -63,10 +63,10 @@ class TTextS(TemporalS, TText):
 	Temporal texts of sequence set duration
 	"""
 
-	def __init__(self, *argv):
+	def __init__(self, sequenceList, interp='Stepwise'):
 		TemporalS.BaseClass = str
 		TemporalS.ComponentClass = TTextSeq
-		super().__init__(*argv)
+		super().__init__(sequenceList, interp)
 
 	@classmethod
 	def interpolation(self):

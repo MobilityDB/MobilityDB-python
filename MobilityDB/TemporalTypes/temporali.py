@@ -1,3 +1,5 @@
+from parsec import *
+from MobilityDB.TemporalTypes.temporal_parser import *
 from MobilityDB.TemporalTypes.temporalinst import TemporalInst
 from MobilityDB.TemporalTypes.temporalinstants import TEMPORALINSTANTS
 from MobilityDB.TimeTypes.period import Period
@@ -13,14 +15,9 @@ class TemporalI(TEMPORALINSTANTS):
 		# Constructor with a single argument of type string
 		self._instantList = []
 		if len(argv) == 1 and isinstance(argv[0], str):
-			ts = argv[0].strip()
-			if ts[0] == '{' and ts[-1] == '}':
-				ts = ts[1:-1]
-				instants = ts.split(",")
-				for inst in instants:
-					self._instantList.append(TemporalI.ComponentClass(inst.strip()))
-			else:
-				raise Exception("ERROR: Could not parse temporal instant set value")
+			elements = parse_temporali(argv[0], 0)
+			for inst in elements[2]:
+				self._instantList.append(TemporalI.ComponentClass(inst[0], inst[1]))
 		# Constructor with a single argument of type list
 		elif len(argv) == 1 and isinstance(argv[0], list):
 			# List of strings representing instant values

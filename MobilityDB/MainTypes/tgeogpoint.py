@@ -39,7 +39,6 @@ class TGeogPointInst(TemporalInst, TGeogPoint):
 
 	def __init__(self, value, time=None):
 		TemporalInst.BaseClass = Point
-		#super().__init__(value, time)
 		# Constructor with a single argument of type string
 		if time is None and isinstance(value, str):
 			splits = value.split("@")
@@ -98,10 +97,13 @@ class TGeogPointSeq(TemporalSeq, TGeogPoint):
 	Temporal geographic points of sequence duration
 	"""
 
-	def __init__(self, instantList, lower_inc=None, upper_inc=None):
+	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
 		TemporalSeq.BaseClass = Point
 		TemporalSeq.ComponentClass = TGeogPointInst
-		super().__init__(instantList, lower_inc, upper_inc)
+		super().__init__(instantList, lower_inc, upper_inc, interp)
+
+	def interpolation(self):
+		return self._interp
 
 	def getValues(self):
 		"""
@@ -124,10 +126,13 @@ class TGeogPointS(TemporalS, TGeogPoint):
 	Temporal geographic points of sequence set duration
 	"""
 
-	def __init__(self, *argv):
+	def __init__(self, sequenceList, interp=None):
 		TemporalS.BaseClass = Point
 		TemporalS.ComponentClass = TGeogPointSeq
-		super().__init__(*argv)
+		super().__init__(sequenceList, interp)
+
+	def interpolation(self):
+		return self._interp
 
 	def getValues(self):
 		"""
