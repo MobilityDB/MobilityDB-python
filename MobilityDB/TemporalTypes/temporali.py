@@ -1,12 +1,12 @@
 from parsec import *
 from MobilityDB.TemporalTypes.temporal_parser import *
 from MobilityDB.TemporalTypes.temporalinst import TemporalInst
-from MobilityDB.TemporalTypes.temporalinstants import TEMPORALINSTANTS
+from MobilityDB.TemporalTypes.temporalinstants import TemporalInstants
 from MobilityDB.TimeTypes.period import Period
 from MobilityDB.TimeTypes.periodset import PeriodSet
 
 
-class TemporalI(TEMPORALINSTANTS):
+class TemporalI(TemporalInstants):
 	"""
 	Abstract class for temporal types of instant set duration
 	"""
@@ -89,5 +89,16 @@ class TemporalI(TEMPORALINSTANTS):
 		"""
 		return any(period.contains_timestamp(inst._time) for inst in self._instantList for period in periodset._periodList)
 
+	# Comparisons are missing
+	def __eq__(self, other):
+		if isinstance(other, self.__class__):
+			if self._instantList == other._instantList:
+				return True
+		return False
+
 	def __str__(self):
-		return "'{" + TEMPORALINSTANTS.__str__(self) + "}'"
+		return (f"'{{{TemporalInstants.__str__(self)}}}'")
+
+	def __repr__(self):
+		return (f'{self.__class__.__name__ }'
+				f'({self._instantList!r})')

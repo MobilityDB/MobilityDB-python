@@ -12,6 +12,10 @@ except ImportError:
 class Temporal:
 	"""
 	Abstract class for temporal types of any duration
+	The class variables are as follows:
+	* BaseClass is the class of the base type, e.g., float
+	* Component Class is the class of the components, e.g., TFloatInst for TFloatI
+	  and TFloatSeq or TFloatSeq for TFloatS.
 	"""
 	BaseClass = None
 	ComponentClass = None
@@ -61,7 +65,7 @@ class Temporal:
 	@abstractmethod
 	def getTime(self):
 		"""
-		Time
+		Period set on which the temporal value is defined
 		"""
 		pass
 
@@ -194,11 +198,19 @@ class Temporal:
 
 	# Comparisons are missing
 	def __eq__(self, other):
-		if isinstance(other, self.__class__):
-			return True
+		"""
+		Equality
+		"""
+		pass
 
 	def __str__(self):
 		"""
-		String representation
+		String
+		"""
+		pass
+
+	def __repr__(self):
+		"""
+		Representation
 		"""
 		pass

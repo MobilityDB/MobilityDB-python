@@ -3,11 +3,9 @@ from MobilityDB.TemporalTypes.temporal_parser import *
 from MobilityDB.TimeTypes.period import Period
 from MobilityDB.TimeTypes.periodset import PeriodSet
 from MobilityDB.TemporalTypes.temporalinst import TemporalInst
-from MobilityDB.TemporalTypes.temporalinstants import TEMPORALINSTANTS
+from MobilityDB.TemporalTypes.temporalinstants import TemporalInstants
 
-spaces = regex(r'\s*', re.MULTILINE)
-
-class TemporalSeq(TEMPORALINSTANTS):
+class TemporalSeq(TemporalInstants):
 	"""
 	Abstract class for temporal types of sequence duration
 	"""
@@ -77,13 +75,13 @@ class TemporalSeq(TEMPORALINSTANTS):
 
 	def getTime(self):
 		"""
-		Timestamp
+		Period set on which the temporal value is defined
 		"""
 		return PeriodSet([Period(self.startTimestamp(), self.endTimestamp(), self._lower_inc, self._upper_inc)])
 
 	def period(self):
 		"""
-		Period on which the temporal value is defined
+		Period on which the temporal value is defined ignoring potential time gaps
 		"""
 		return Period(self.startTimestamp(), self.endTimestamp(), self.lower_inc(), self.upper_inc())
 
@@ -123,7 +121,7 @@ class TemporalSeq(TEMPORALINSTANTS):
 
 	def intersectsTimestamp(self, timestamp):
 		"""
-		Intersects timestamp
+		Intersects timestamp?
 		"""
 		return ((self.lower_inc and self._instantList[0]._time == timestamp) or
 			(self.upper_inc and self._instantList[-1]._time == timestamp) or
@@ -131,24 +129,35 @@ class TemporalSeq(TEMPORALINSTANTS):
 
 	def intersectsTimestampset(self, timestampset):
 		"""
-		Intersects timestamp set
+		Intersects timestamp set?
 		"""
 		return any(self.intersectsTimestamp(timestamp) for timestamp in timestampset._datetimeList)
 
 	def intersectsPeriod(self, period):
 		"""
-		Intersects period
+		Intersects period?
 		"""
 		return self.period().overlap(period)
 
 	def intersectsPeriodset(self, periodset):
 		"""
-		Intersects timestamp set
+		Intersects period set?
 		"""
 		return any(self.intersectsPeriod(period) for period in periodset._periodList)
+
+	# Comparisons are missing
+	def __eq__(self, other):
+		if isinstance(other, self.__class__):
+			if self._instantList == other._instantList and self._lower_inc == other._lower_inc and \
+				self._upper_inc == other._upper_inc and self._interp == other._interp:
+				return True
+		return False
 
 	def __str__(self):
 		lower_str = '[' if self._lower_inc else '('
 		upper_str = ']' if self._upper_inc else ')'
-		return "'" + lower_str + TEMPORALINSTANTS.__str__(self) + upper_str + "'"
+		return (f"'{lower_str}{TemporalInstants.__str__(self)}{upper_str}'")
 
+	def __repr__(self):
+		return (f'{self.__class__.__name__ }'
+				f'({self._instantList!r}, {self._lower_inc!r}, {self._upper_inc!r}, {self._interp!r})')

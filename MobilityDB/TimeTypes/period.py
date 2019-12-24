@@ -143,10 +143,10 @@ class Period:
 
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
-			if (self._lower != other._lower or self._upper != other._upper or
-				self._lower_inc != other._lower_inc or self._upper_inc != other._upper_inc):
-				return False
-		return True
+			if (self._lower == other._lower and self._upper == other._upper and
+				self._lower_inc == other._lower_inc and self._upper_inc == other._upper_inc):
+				return True
+		return False
 
 	def _cmp(self, other):
 		if isinstance(other, self.__class__):
@@ -212,5 +212,6 @@ class Period:
 		upper_str = ']' if self._upper_inc else ')'
 		return "'" + lower_str + '{}, {}'.format(self._lower, self._upper) + upper_str + "'"
 
-	# TODO
-	# def __repr__(self):
+	def __repr__(self):
+		return (f'{self.__class__.__name__ }'
+				f'({self._lower!r}, {self._upper!r}, {self._lower_inc!r}, {self._upper_inc!r})')

@@ -22,8 +22,7 @@ class TimestampSet:
 		if len(argv) == 1 and isinstance(argv[0], str):
 			ts = argv[0].strip()
 			if ts[0] == '{' and ts[-1] == '}':
-				ts = ts[1:]
-				ts = ts[:-1]
+				ts = ts[1:-1]
 				times = ts.split(",")
 				for time in times:
 					self._datetimeList.append(parse(time.strip()))
@@ -137,3 +136,7 @@ class TimestampSet:
 	def __str__(self):
 		return "'{{{}}}'".format(', '.join('{}'.format(datetime.__str__())
 			for datetime in self._datetimeList))
+
+	def __repr__(self):
+		return (f'{self.__class__.__name__ }'
+				f'({self._datetimeList!r})')

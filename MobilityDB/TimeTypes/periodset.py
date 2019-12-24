@@ -145,7 +145,7 @@ class PeriodSet:
 		"""
 		Periods
 		"""
-		return [period for period in self._periodList]
+		return self._periodList
 
 	def shift(self, timedelta):
 		"""
@@ -178,3 +178,7 @@ class PeriodSet:
 	def __str__(self):
 		return "'{{{}}}'".format(', '.join('{}'.format(period.__str__().replace("'", ""))
 			for period in self._periodList))
+
+	def __repr__(self):
+		return (f'{self.__class__.__name__ }'
+				f'({self._periodList!r})')

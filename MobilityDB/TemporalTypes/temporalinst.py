@@ -15,18 +15,10 @@ class TemporalInst(Temporal):
 
 	def __init__(self, value, time=None):
 		# Constructor with a single argument of type string
-		if time is None and isinstance(value, str):
+		if isinstance(value, str) and time is None:
 			couple = parse_temporalinst(value, 0)
 			self._value = type(self).BaseClass(couple[2][0])
 			self._time = parse(couple[2][1])
-			"""
-			splits = value.split("@")
-			if len(splits) == 2:
-				self._value = type(self).BaseClass(splits[0])
-				self._time = parse(splits[1])
-			else:
-				raise Exception("ERROR: Could not parse temporal instant value")
-			"""
 		# Constructor with two arguments of type string
 		elif isinstance(value, str) and isinstance(time, str):
 			self._value = self.BaseClass(value)
@@ -42,30 +34,19 @@ class TemporalInst(Temporal):
 		else:
 			raise Exception("ERROR: Could not parse temporal instant value")
 
-	def test(self, value):
-		print ('*** TEST ***, value = ')
-
 	@classmethod
 	def duration(cls):
 		return "Instant"
 
 	def getValue(self):
 		"""
-		Retrieve the base value [getValue():  base]
-			>>> var1.getValue()
-				<Point: Geometry(Point, 4326)>
-			>>> var2.getValue()
-				10
+		Value
 		"""
 		return self._value
 
 	def getValues(self):
 		"""
-		Retrieve the base value [getValue():  base]
-			>>> var1.getValue()
-				<Point: Geometry(Point, 4326)>
-			>>> var2.getValue()
-				10
+		Distinct values
 		"""
 		return [self._value]
 
@@ -77,7 +58,7 @@ class TemporalInst(Temporal):
 
 	def endValue(self):
 		"""
-		Start value
+		End value
 		"""
 		return self._value
 
@@ -101,19 +82,19 @@ class TemporalInst(Temporal):
 
 	def getTime(self):
 		"""
-		Timestamp
+		Period set on which the temporal value is defined
 		"""
 		return PeriodSet([Period(self._time, self._time, True, True)])
 
 	def period(self):
 		"""
-		Period on which the temporal value is defined
+		Period on which the temporal value is defined ignoring the potential time gaps
 		"""
-		return Period(self.getTimestamp(), self.getTimestamp(), True, True)
+		return Period(self._time, self._time, True, True)
 
 	def numInstants(self):
 		"""
-		Number of instants
+		Number of distinct instants
 		"""
 		return 1
 
@@ -131,7 +112,7 @@ class TemporalInst(Temporal):
 
 	def instantN(self, n):
 		"""
-		N-th instant
+		N-th distinct instant
 		"""
 		if n == 1:
 			return self
@@ -140,13 +121,13 @@ class TemporalInst(Temporal):
 
 	def instants(self):
 		"""
-		Instants
+		Distinct instants
 		"""
 		return [self]
 
 	def numTimestamps(self):
 		"""
-		Number of distinct instants
+		Number of distinct timestamps
 		"""
 		return 1
 
@@ -186,28 +167,39 @@ class TemporalInst(Temporal):
 
 	def intersectsTimestamp(self, timestamp):
 		"""
-		Intersects timestamp
+		Intersects the timestamp?
 		"""
 		return self._time == timestamp
 
 	def intersectsTimestampset(self, timestampset):
 		"""
-		Intersects timestamp set
+		Intersects the timestamp set?
 		"""
 		return any(self._time == timestamp for timestamp in timestampset._datetimeList)
 
 	def intersectsPeriod(self, period):
 		"""
-		Intersects period
+		Intersects the period?
 		"""
 		return period.contains_timestamp(self._time)
 
 	def intersectsPeriodset(self, periodset):
 		"""
-		Intersects period set
+		Intersects the period set?
 		"""
 		return any(period.contains_timestamp(self._time) for period in periodset._periodList)
 
+	# Comparisons are missing
+	def __eq__(self, other):
+		if isinstance(other, self.__class__):
+			if self._value == other._value and self._time == other._time:
+				return True
+		return False
+
 	def __str__(self):
-		# return self.__class__.__bases__[0].__name__ + " '" + self.__str__() + "'"
-		return "'" + self._value.__str__() + '@' + self._time.__str__() + "'"
+		return (f"'{self._value!s}@{self._time!s}'")
+
+	def __repr__(self):
+		return (f'{self.__class__.__name__ }'
+				f'({self._value!r}, {self._time!r})')
+

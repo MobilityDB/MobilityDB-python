@@ -46,7 +46,6 @@ class TemporalS(Temporal):
 				self._interp = 'Stepwise'
 			else:
 				raise Exception("ERROR: Invalid interpolation")
-		# Constructor with multiple arguments
 		else:
 			raise Exception("ERROR: Could not parse temporal sequence set value")
 		# Verify validity of the resulting instance
@@ -96,7 +95,7 @@ class TemporalS(Temporal):
 
 	def getTime(self):
 		"""
-		Timestamp
+		Period set on which the temporal value is defined
 		"""
 		return PeriodSet([seq.period() for seq in self._sequenceList])
 
@@ -127,7 +126,7 @@ class TemporalS(Temporal):
 
 	def instantN(self, n):
 		"""
-		N-th instant
+		N-th distinct instant
 		"""
 		# 1-based
 		if 0 <= n < len(self.instants()):
@@ -229,28 +228,39 @@ class TemporalS(Temporal):
 
 	def intersectsTimestamp(self, timestamp):
 		"""
-		Intersects timestamp
+		Intersects timestamp?
 		"""
 		return any(seq.intersectsTimestamp(timestamp) for seq in self._sequenceList)
 
 	def intersectsTimestampset(self, timestampset):
 		"""
-		Intersects timestamp set
+		Intersects timestamp set?
 		"""
 		return any(seq.intersectsTimestamp(timestamp) for seq in self._sequenceList for timestamp in timestampset._datetimeList)
 
 	def intersectsPeriod(self, period):
 		"""
-		Intersects period
+		Intersects period?
 		"""
 		return any(seq.intersectsPeriod(period) for seq in self._sequenceList)
 
 	def intersectsPeriodset(self, periodset):
 		"""
-		Intersects period set
+		Intersects period set?
 		"""
 		return any(seq.intersectsPeriod(period) for seq in self._sequenceList for period in periodset._periodList)
+
+	# Comparisons are missing
+	def __eq__(self, other):
+		if isinstance(other, self.__class__):
+			if self._sequenceList == other._sequenceList and self._interp == other._interp:
+				return True
+		return False
 
 	def __str__(self):
 		return "'{{{}}}'".format(', '.join('{}'.format(sequence.__str__().replace("'", ""))
 			for sequence in self._sequenceList))
+
+	def __repr__(self):
+		return (f'{self.__class__.__name__ }'
+				f'({self._sequenceList!r}, {self._interp!r})')

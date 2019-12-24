@@ -2,7 +2,7 @@ from .temporal import Temporal
 from .temporalinst import TemporalInst
 
 
-class TEMPORALINSTANTS(Temporal):
+class TemporalInstants(Temporal):
 	__slots__ = ['_instantList']
 
 	def getValues(self):
@@ -19,7 +19,7 @@ class TEMPORALINSTANTS(Temporal):
 
 	def endValue(self):
 		"""
-		Start value
+		End value
 		"""
 		return self._instantList[-1]._value
 
@@ -55,7 +55,7 @@ class TEMPORALINSTANTS(Temporal):
 
 	def instantN(self, n):
 		"""
-		N-th instant
+		N-th distinct instant
 		"""
 		# 1-based
 		if 0 <= n < len(self._instantList):
