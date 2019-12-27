@@ -1,7 +1,7 @@
 import pytest
 from MobilityDB import *
 
-db = psycopg2.connect(host='localhost', dbname="sf0_005", user='postgres', password='ulb')
+db = psycopg2.connect(host='localhost', dbname="mobilitydb", user='mobilitydb', password='')
 db.autocommit = True
 
 MobilityDBRegister(db)
@@ -15,14 +15,15 @@ def pytest_configure():
     i = 0
     while i < 4:
         cur.execute(
-            'CREATE TABLE IF NOT EXISTS tbl_' + tfloat_types[i].__name__ +
+            'CREATE TABLE IF NOT EXISTS tbl_' + tfloat_types[i].__name__.lower() +
             ' (temp TFLOAT(' + temporal_types[i] + ') NOT NULL);')
         i += 1
 
 
 def pytest_unconfigure():
-    for tfloat_type in tfloat_types:
-        cur.execute('DROP TABLE tbl_' + tfloat_type.__name__)
+    pass
+    # for tfloat_type in tfloat_types:
+        # cur.execute('DROP TABLE tbl_' + tfloat_type.__name__)
 
 
 @pytest.fixture

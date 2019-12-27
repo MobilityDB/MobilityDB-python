@@ -32,7 +32,7 @@ Usage
     
     1.1 Constructor Functions
             period(timestamptz, timestamptz, boolean = true, boolean = false):  period
-            timestampset(timestamptz[]}):  timestampset
+            timestampset(timestamptz[]):  timestampset
         
     1.3  Accessor Functions
             lower(period):  timestamptz
