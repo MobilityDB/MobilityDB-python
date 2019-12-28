@@ -170,31 +170,31 @@ class Period:
 				return -1
 			elif not self._upper_inc and other._upper_inc:
 				return 1
-			return 0
+		return 0
 
 	def __lt__(self, other):
 		if isinstance(other, self.__class__):
 			if self._cmp(other) == -1:
 				return True
-			return False
+		return False
 
 	def __le__(self, other):
 		if isinstance(other, self.__class__):
 			if self._cmp(other) == -1 or self._cmp(other) == 0:
 				return True
-			return False
+		return False
 
 	def __gt__(self, other):
 		if isinstance(other, self.__class__):
 			if self._cmp(other) == 1:
 				return True
-			return False
+		return False
 
 	def __ge__(self, other):
 		if isinstance(other, self.__class__):
 			if self._cmp(other) == 1 or self._cmp(other) == 0:
 				return True
-			return False
+		return False
 
 	# Psycopg2 interface.
 	def __conform__(self, protocol):

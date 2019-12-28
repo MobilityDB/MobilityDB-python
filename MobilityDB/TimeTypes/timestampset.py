@@ -114,7 +114,7 @@ class TimestampSet:
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
 			if (len(other._datetimeList) == len(self._datetimeList) and
-				set(other._datetimeList).intersection(self._datetimeList)):
+				other._datetimeList == self._datetimeList):
 				return True
 		return False
 

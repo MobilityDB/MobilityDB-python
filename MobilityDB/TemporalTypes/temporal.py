@@ -14,8 +14,8 @@ class Temporal:
 	Abstract class for temporal types of any duration
 	The class variables are as follows:
 	* BaseClass is the class of the base type, e.g., float
-	* Component Class is the class of the components, e.g., TFloatInst for TFloatI
-	  and TFloatSeq or TFloatSeq for TFloatS.
+	* Component Class is the class of the components, e.g., TFloatInst for
+	  both TFloatI and TFloatSeq or TFloatSeq for TFloatS.
 	"""
 	BaseClass = None
 	ComponentClass = None

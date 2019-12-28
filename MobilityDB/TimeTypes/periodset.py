@@ -156,7 +156,7 @@ class PeriodSet:
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
 			if (len(other._periodList) == len(self._periodList) and
-				set(other._periodList).intersection(self._periodList)):
+				other._periodList == self._periodList):
 				return True
 		return False
 

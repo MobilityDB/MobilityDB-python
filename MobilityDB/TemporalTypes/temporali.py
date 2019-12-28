@@ -57,7 +57,7 @@ class TemporalI(TemporalInstants):
 		"""
 		Timestamp
 		"""
-		return PeriodSet([Period(inst._time, inst._time, True, True) for inst in self._instantList])
+		return PeriodSet([inst.period() for inst in self._instantList])
 
 	def period(self):
 		"""

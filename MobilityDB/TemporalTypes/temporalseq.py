@@ -12,8 +12,10 @@ class TemporalSeq(TemporalInstants):
 	__slots__ = ['_lower_inc', '_upper_inc', '_interp']
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
-		# Constructor with a single argument of type string
+		assert(isinstance(lower_inc, (bool, type(None))))
+		assert(isinstance(upper_inc, (bool, type(None))))
 		self._instantList = []
+		# Constructor with a single argument of type string
 		if isinstance(instantList, str):
 			elements = parse_temporalseq(instantList, 0)
 			for inst in elements[2][0]:
@@ -22,7 +24,7 @@ class TemporalSeq(TemporalInstants):
 			self._upper_inc = elements[2][2]
 			# Set interpolation with the argument value if given
 			self._interp = interp if interp is not None else elements[2][3]
-		# Constructor with a first argument of type list and two optional arguments for the bounds and interpolation
+		# Constructor with a first argument of type list and optional arguments for the bounds and interpolation
 		elif isinstance(instantList, list):
 			# List of strings representing instant values
 			if all(isinstance(arg, str) for arg in instantList):
@@ -34,8 +36,8 @@ class TemporalSeq(TemporalInstants):
 					self._instantList.append(arg)
 			else:
 				raise Exception("ERROR: Could not parse temporal sequence value")
-			self._lower_inc = True if lower_inc == None or lower_inc == True else False
-			self._upper_inc = True if upper_inc == True else False
+			self._lower_inc = lower_inc if lower_inc is not None else True
+			self._upper_inc = upper_inc if upper_inc is not None else False
 			if interp is None or interp == 'Linear':
 				self._interp = 'Linear'
 			elif interp == 'Stepwise':
@@ -77,7 +79,7 @@ class TemporalSeq(TemporalInstants):
 		"""
 		Period set on which the temporal value is defined
 		"""
-		return PeriodSet([Period(self.startTimestamp(), self.endTimestamp(), self._lower_inc, self._upper_inc)])
+		return PeriodSet([self.period()])
 
 	def period(self):
 		"""

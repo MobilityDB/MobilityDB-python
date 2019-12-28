@@ -27,12 +27,12 @@ def parse_temporali():
 
 @generate
 def parse_temporalseq():
-	ip = yield spaces >> (string('Interp=Stepwise;') | string('')) << spaces
+	ip = yield spaces >> string('Interp=Stepwise;') | string('') << spaces
 	if ip == '':
 		interp = 'Linear'
 	else:
 		interp = 'Stepwise'
-	lb = yield spaces >> (lbrack | lparen) << spaces
+	lb = yield spaces >> lbrack | lparen << spaces
 	lower = True if lb == '[' else False
 	instants = yield sepEndBy1(parse_temporalinst, string(','))
 	ub = yield spaces >> rbrack | rparen << spaces
@@ -41,7 +41,7 @@ def parse_temporalseq():
 
 @generate
 def parse_temporals():
-	ip = yield spaces >> (string('Interp=Stepwise;') | string('')) << spaces
+	ip = yield spaces >> string('Interp=Stepwise;') | string('') << spaces
 	if ip == '':
 		interp = 'Linear'
 	else:
