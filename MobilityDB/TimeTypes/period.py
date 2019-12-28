@@ -16,9 +16,13 @@ class Period:
 	__slots__ = ['_lower', '_upper', '_lower_inc', '_upper_inc']
 
 	def __init__(self, lower, upper=None, lower_inc=None, upper_inc=None):
+		assert(isinstance(lower_inc, (bool, type(None))))
+		assert(isinstance(upper_inc, (bool, type(None))))
 		# Constructor with a single argument of type string
 		if upper is None and isinstance(lower, str):
 			lower = lower.strip()
+			assert(lower[0] == '[' or lower[0] == '('), "Lower bound flag must be either '[' or '('"
+			assert(lower[-1] == ']' or lower[-1] == ')'), "Upper bound flag must be either ']' or ')'"
 			self._lower_inc = True if lower[0] == '[' else False
 			self._upper_inc = True if lower[-1] == ']' else False
 			bounds = lower[1:-1].split(',')

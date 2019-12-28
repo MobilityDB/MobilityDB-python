@@ -104,7 +104,7 @@ class TemporalS(Temporal):
 		Period on which the temporal value is defined ignoring the potential time gaps
 		"""
 		return Period(self.startTimestamp(), self.endTimestamp(),
-			self._sequenceList[0].lower_inc, self._sequenceList[-1].upper_inc)
+			self._sequenceList[0]._lower_inc, self._sequenceList[-1]._upper_inc)
 
 	def numInstants(self):
 		"""
