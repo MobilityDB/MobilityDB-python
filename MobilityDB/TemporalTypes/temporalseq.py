@@ -18,6 +18,7 @@ class TemporalSeq(TemporalInstants):
 		# Constructor with a single argument of type string
 		if isinstance(instantList, str):
 			elements = parse_temporalseq(instantList, 0)
+			print(elements)
 			for inst in elements[2][0]:
 				self._instantList.append(TemporalSeq.ComponentClass(inst[0], inst[1]))
 			self._lower_inc = elements[2][1]

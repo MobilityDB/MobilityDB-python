@@ -1,17 +1,34 @@
-"""
 import pytest
-from MobilityDB import TIMESTAMPSET
+from MobilityDB import TimestampSet, Period, PeriodSet
 
 
-@pytest.mark.parametrize('expected', [
-	('2019-09-08', '2019-09-10', '2019-09-11')
+@pytest.mark.parametrize('expected_timestampset', [
+	'{2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01, 2019-09-11 00:00:00+01}',
+	#('2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', '2019-09-11 00:00:00+01'),
+	#['2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', '2019-09-11 00:00:00+01'],
 ])
-def test_tint_should_round(cursor, expected):
-	params = TIMESTAMPSET(expected)
+def test_timestampset_constructor(cursor, expected_timestampset):
+	params = TimestampSet(expected_timestampset)
 	print(params)
-	cursor.execute("INSERT INTO tbl_timestampset (timestampset_col) VALUES (%s)" % params)
-	cursor.execute("SELECT timestampset_col FROM tbl_timestampset WHERE timestampset_col=%s" % params)
+	cursor.execute("INSERT INTO tbl_timestampset (timetype) VALUES (%s)" % params)
+	cursor.execute("SELECT timetype FROM tbl_timestampset WHERE timetype=%s" % params)
 	result = cursor.fetchone()[0]
+	print(result)
+	print(TimestampSet(expected_timestampset))
+	assert result == TimestampSet(expected_timestampset)
 
-# assert result == TIMESTAMPSET(expected)
-"""
+@pytest.mark.parametrize('expected_period', [
+	'[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]',
+	'[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01)',
+	'(2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]',
+	'(2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01)',
+])
+def test_period_constructor(cursor, expected_period):
+	params = Period(expected_period)
+	print(params)
+	cursor.execute("INSERT INTO tbl_period (timetype) VALUES (%s)" % params)
+	cursor.execute("SELECT timetype FROM tbl_period WHERE timetype=%s" % params)
+	result = cursor.fetchone()[0]
+	print(result)
+	print(Period(expected_period))
+	assert result == TimestampSet(expected_period)

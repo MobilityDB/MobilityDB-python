@@ -7,28 +7,34 @@ db.autocommit = True
 MobilityDBRegister(db)
 cur = db.cursor()
 
-tfloat_types = [TFloatInst, TFloatI, TFloatSeq, TFloatS]
-temporal_types = ['INSTANT', 'INSTANTSET', 'SEQUENCE', 'SEQUENCESET']
-
+time_types = [TimestampSet, Period, PeriodSet]
+duration_suffixes = ['Inst', 'I', 'Seq', 'S']
+duration_types = ['INSTANT', 'INSTANTSET', 'SEQUENCE', 'SEQUENCESET']
+temporal_types = [TBool, TInt, TFloat, TGeomPoint, TGeogPoint]
 
 def pytest_configure():
-    i = 0
-    while i < 4:
-        cur.execute(
-            'CREATE TABLE IF NOT EXISTS tbl_' + tfloat_types[i].__name__.lower() +
-            ' (temp TFLOAT(' + temporal_types[i] + ') NOT NULL);')
-        i += 1
-
+	for time in time_types:
+		cur.execute(
+			'CREATE TABLE IF NOT EXISTS tbl_' + time.__name__.lower() +
+			'(timetype ' +  time.__name__.lower() + ' NOT NULL);')
+	for ttype in temporal_types:
+		for suffix, duration in zip(duration_suffixes, duration_types):
+			cur.execute(
+				'CREATE TABLE IF NOT EXISTS tbl_' + ttype.__name__.lower() + suffix +
+				'(temp ' + ttype.__name__.lower() + '(' + duration + ') NOT NULL);')
 
 def pytest_unconfigure():
-    pass
-    # for tfloat_type in tfloat_types:
-        # cur.execute('DROP TABLE tbl_' + tfloat_type.__name__)
-
+	"""
+		for temp in temporal_types:
+		for ttype in temp:
+			cur.execute('DROP TABLE tbl_' + ttype.__name__.lower() + ';')
+	"""
+	pass
 
 @pytest.fixture
 def cursor():
     # Make sure tables are clean.
-    for tfloat_type in tfloat_types:
-        cur.execute('TRUNCATE TABLE tbl_' + tfloat_type.__name__)
-    return cur
+	for ttype in temporal_types:
+		for suffix in duration_suffixes:
+			cur.execute('TRUNCATE TABLE tbl_' + ttype.__name__.lower() + suffix + ';')
+	return cur
