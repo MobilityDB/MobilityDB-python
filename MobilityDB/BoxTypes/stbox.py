@@ -10,34 +10,34 @@ except ImportError:
 
 
 class STBox:
-	__slots__ = ['xmin', 'ymin', 'zmin', 'tmin', 'xmax', 'ymax', 'zmax', 'tmax', 'geodetic']
+	__slots__ = ['_xmin', '_ymin', '_zmin', '_tmin', '_xmax', '_ymax', '_zmax', '_tmax', '_geodetic']
 
-	def __init__(self, *args, geodetic=False):
-		self.xmin = self.xmax = self.ymin = self.ymax = self.zmin = self.zmax = self.tmin = self.tmax = None
-		self.geodetic = geodetic if geodetic is not None else False
+	def __init__(self, *args, geodetic=None):
+		self._xmin = self._xmax = self._ymin = self._ymax = self._zmin = self._zmax = self._tmin = self._tmax = None
+		self._geodetic = geodetic if geodetic is not None else False
 		try:
 			if len(args) == 1 and isinstance(args[0], str):
 				self.parseFromString(args[0])
 			elif len(args) == 2:
-				self.tmin = parse(args[0])
-				self.tmax = parse(args[1])
-				self.xmin = self.xmax = self.ymin = self.ymax = self.zmin = self.zmax = None
+				self._tmin = parse(args[0])
+				self._tmax = parse(args[1])
+				self._xmin = self._xmax = self._ymin = self._ymax = self._zmin = self._zmax = None
 			else:
 				if len(args) >= 4:
-					self.xmin = float(args[0])
-					self.xmax = float(args[int(len(args) / 2)])
-					self.ymin = float(args[1])
-					self.ymax = float(args[1 + int(len(args) / 2)])
+					self._xmin = float(args[0])
+					self._xmax = float(args[int(len(args) / 2)])
+					self._ymin = float(args[1])
+					self._ymax = float(args[1 + int(len(args) / 2)])
 				if len(args) >= 6:
 					try:
-						self.zmin = float(args[2])
-						self.zmax = float(args[2 + int(len(args) / 2)])
+						self._zmin = float(args[2])
+						self._zmax = float(args[2 + int(len(args) / 2)])
 					except:
-						self.tmin = parse(args[2])
-						self.tmax = parse(args[2 + int(len(args) / 2)])
+						self._tmin = parse(args[2])
+						self._tmax = parse(args[2 + int(len(args) / 2)])
 				if len(args) >= 8:
-					self.tmin = parse(args[int(len(args) / 2) - 1])
-					self.tmax = parse(args[(int(len(args) / 2) - 1) + int(len(args) / 2)])
+					self._tmin = parse(args[int(len(args) / 2) - 1])
+					self._tmax = parse(args[(int(len(args) / 2) - 1) + int(len(args) / 2)])
 		except:
 			raise Exception("ERROR: wrong parameters")
 
@@ -47,7 +47,7 @@ class STBox:
 
 		values = None
 		if 'GEODSTBOX' in value:
-			self.geodetic = True
+			self._geodetic = True
 			value = value.replace("GEODSTBOX", '')
 			hasz = True
 			hast = True if 'T' in value else False
@@ -62,20 +62,20 @@ class STBox:
 		# Remove empty or only space strings
 		values = [value for value in values if value != '' and not value.isspace()]
 		if len(values) == 2:
-			self.tmin = parse(values[0])
-			self.tmax = parse(values[1])
+			self._tmin = parse(values[0])
+			self._tmax = parse(values[1])
 		else:
 			if len(values) >= 4:
-				self.xmin = float(values[0])
-				self.xmax = float(values[int(len(values) / 2)])
-				self.ymin = float(values[1])
-				self.ymax = float(values[1 + int(len(values) / 2)])
+				self._xmin = float(values[0])
+				self._xmax = float(values[int(len(values) / 2)])
+				self._ymin = float(values[1])
+				self._ymax = float(values[1 + int(len(values) / 2)])
 			if hasz:
-				self.zmin = float(values[2])
-				self.zmax = float(values[2 + int(len(values) / 2)])
+				self._zmin = float(values[2])
+				self._zmax = float(values[2 + int(len(values) / 2)])
 			if hast:
-				self.tmin = parse(values[int(len(values) / 2) - 1])
-				self.tmax = parse(values[(int(len(values) / 2) - 1) + int(len(values) / 2)])
+				self._tmin = parse(values[int(len(values) / 2) - 1])
+				self._tmax = parse(values[(int(len(values) / 2) - 1) + int(len(values) / 2)])
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):
@@ -92,31 +92,38 @@ class STBox:
 		return "{}".format(self.__str__())
 	# End Psycopg2 interface.
 
+	def __eq__(self, other):
+		if isinstance(other, self.__class__):
+			return self._xmin == other._xmin and self._ymin == other._ymin and self._zmin == other._zmin and \
+				   self._tmin == other._tmin and self._xmax == other._xmax and self._ymax == other._ymax and \
+				   self._zmax == other._zmax and self._tmax == other._tmax and self._geodetic == other._geodetic
+		return False
+
 	def __str__(self):
-		if self.geodetic:
-			if self.tmin is not None:
-				if self.xmin is not None:
+		if self._geodetic:
+			if self._tmin is not None:
+				if self._xmin is not None:
 					return "'GEODSTBOX T((%s, %s, %s, %s), (%s, %s, %s, %s))'" % \
-						(self.xmin, self.ymin, self.zmin, self.tmin, self.xmax, self.ymax, self.zmax, self.tmax)
+						(self._xmin, self._ymin, self._zmin, self._tmin, self._xmax, self._ymax, self._zmax, self._tmax)
 				else:
-					return "'GEODSTBOX T((, %s), (, %s))'" % (self.tmin, self.tmax)
+					return "'GEODSTBOX T((, %s), (, %s))'" % (self._tmin, self._tmax)
 			else:
 				return "'GEODSTBOX((%s, %s, %s), (%s, %s, %s))'" % \
-					(self.xmin, self.ymin, self.zmin, self.xmax, self.ymax, self.zmax)
+					(self._xmin, self._ymin, self._zmin, self._xmax, self._ymax, self._zmax)
 		else:
-			if self.xmin is not None and self.zmin is not None and self.tmin is not None:
+			if self._xmin is not None and self._zmin is not None and self._tmin is not None:
 				return "'STBOX ZT((%s, %s, %s, %s), (%s, %s, %s, %s))'" % \
-					(self.xmin, self.ymin, self.zmin, self.tmin, self.xmax, self.ymax, self.zmax, self.tmax)
-			elif self.xmin is not None and self.zmin is not None and self.tmin is None:
+					(self._xmin, self._ymin, self._zmin, self._tmin, self._xmax, self._ymax, self._zmax, self._tmax)
+			elif self._xmin is not None and self._zmin is not None and self._tmin is None:
 				return "'STBOX Z((%s, %s, %s), (%s, %s, %s))'" % \
-					(self.xmin, self.ymin, self.zmin, self.xmax, self.ymax, self.zmax)
-			elif self.xmin is not None and self.zmin is None and self.tmin is not None:
+					(self._xmin, self._ymin, self._zmin, self._xmax, self._ymax, self._zmax)
+			elif self._xmin is not None and self._zmin is None and self._tmin is not None:
 				return "'STBOX T((%s, %s, %s), (%s, %s, %s))'" % \
-					(self.xmin, self.ymin, self.tmin, self.xmax, self.ymax, self.tmax)
-			elif self.xmin is not None and self.zmin is None and self.tmin is None:
+					(self._xmin, self._ymin, self._tmin, self._xmax, self._ymax, self._tmax)
+			elif self._xmin is not None and self._zmin is None and self._tmin is None:
 				return "'STBOX ((%s, %s), (%s, %s))'" % \
-					   (self.xmin, self.ymin, self.xmax, self.ymax)
-			elif self.xmin is None and self.zmin is None and self.tmin is not None:
-				return "'STBOX T(, %s), (, %s))'" % (self.tmin, self.tmax)
+					   (self._xmin, self._ymin, self._xmax, self._ymax)
+			elif self._xmin is None and self._zmin is None and self._tmin is not None:
+				return "'STBOX T((, %s), (, %s))'" % (self._tmin, self._tmax)
 			else:
 				raise Exception("ERROR: Wrong values")

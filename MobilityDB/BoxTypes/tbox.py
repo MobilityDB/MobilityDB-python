@@ -10,7 +10,7 @@ except ImportError:
 
 
 class TBox:
-	__slots__ = ['xmin', 'tmin', 'xmax', 'tmax']
+	__slots__ = ['_xmin', '_tmin', '_xmax', '_tmax']
 
 	def __init__(self, *args):
 		try:
@@ -18,20 +18,20 @@ class TBox:
 				self.parseFromString(args[0])
 			elif len(args) == 2:
 				try:
-					self.xmin = float(args[0])
-					self.xmax = float(args[1])
-					self.tmin = None
-					self.tmax = None
+					self._xmin = float(args[0])
+					self._xmax = float(args[1])
+					self._tmin = None
+					self._tmax = None
 				except:
-					self.xmin = None
-					self.xmax = None
-					self.tmin = parse(args[0])
-					self.tmax = parse(args[1])
+					self._xmin = None
+					self._xmax = None
+					self._tmin = parse(args[0])
+					self._tmax = parse(args[1])
 			elif len(args) == 4:
-				self.xmin = float(args[0])
-				self.tmin = parse(args[1])
-				self.xmax = float(args[2])
-				self.tmax = parse(args[3])
+				self._xmin = float(args[0])
+				self._tmin = parse(args[1])
+				self._xmax = float(args[2])
+				self._tmax = parse(args[3])
 		except:
 			raise Exception("ERROR: Wrong parameters")
 
@@ -39,19 +39,19 @@ class TBox:
 		values = value.replace("TBOX", '')
 		if 'T' in values:
 			time = True
-			self.xmin = None
-			self.xmax = None
+			self._xmin = None
+			self._xmax = None
 		else:
 			time = False
 		values = values.replace('T', '').replace('(', '').replace(')', '').split(',')
 		if time:
-			self.tmin = parse(values[0])
-			self.tmax = parse(values[1])
+			self._tmin = parse(values[0])
+			self._tmax = parse(values[1])
 		elif len(values) == 4:
-			self.xmin = float(values[0]) if values[0] != '' and not values[0].isspace() else None
-			self.xmax = float(values[2]) if values[2] != '' and not values[2].isspace() else None
-			self.tmin = parse(values[1]) if values[1] != '' and not values[1].isspace() else None
-			self.tmax = parse(values[3]) if values[3] != '' and not values[3].isspace() else None
+			self._xmin = float(values[0]) if values[0] != '' and not values[0].isspace() else None
+			self._xmax = float(values[2]) if values[2] != '' and not values[2].isspace() else None
+			self._tmin = parse(values[1]) if values[1] != '' and not values[1].isspace() else None
+			self._tmax = parse(values[3]) if values[3] != '' and not values[3].isspace() else None
 		else:
 			raise Exception("ERROR: Wrong parameters")
 
@@ -72,23 +72,22 @@ class TBox:
 
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
-			# I need to add the other values in the comparison but there is a problem appears when I run the test file
-			return self.xmin == other.xmin and self.tmin == other.tmin and self.xmax == other.xmax and self.tmax == other.tmax
-		else:
-			return False
+			return self._xmin == other._xmin and self._tmin == other._tmin and self._xmax == other._xmax and \
+				   self._tmax == other._tmax
+		return False
 
 	def __str__(self):
-		if self.xmin is not None and self.tmin is not None:
-			return "'TBOX((%s, %s), (%s, %s))'" % (repr(self.xmin), self.tmin, repr(self.xmax), self.tmax)
-		elif self.xmin is not None:
-			return "'TBOX((%s, ), (%s, ))'" % (repr(self.xmin), repr(self.xmax))
-		elif self.tmin is not None:
-			return "'TBOX((, %s), (, %s))'" % (self.tmin, self.tmax)
+		if self._xmin is not None and self._tmin is not None:
+			return "'TBOX((%s, %s), (%s, %s))'" % (repr(self._xmin), self._tmin, repr(self._xmax), self._tmax)
+		elif self._xmin is not None:
+			return "'TBOX((%s, ), (%s, ))'" % (repr(self._xmin), repr(self._xmax))
+		elif self._tmin is not None:
+			return "'TBOX((, %s), (, %s))'" % (self._tmin, self._tmax)
 
 	def __repr__(self):
-		if self.xmin is not None and self.tmin is not None:
-			return "'TBOX((%s, %s), (%s, %s))'" % (repr(self.xmin), repr(self.tmin), repr(self.xmax), repr(self.tmax))
-		elif self.xmin is not None:
-			return "'TBOX((%s, ), (%s, ))'" % (repr(self.xmin), repr(self.xmax))
-		elif self.tmin is not None:
-			return "'TBOX((, %s), (, %s))'" % (repr(self.tmin), repr(self.tmax))
+		if self._xmin is not None and self._tmin is not None:
+			return "'TBOX((%s, %s), (%s, %s))'" % (repr(self._xmin), repr(self._tmin), repr(self._xmax), repr(self._tmax))
+		elif self._xmin is not None:
+			return "'TBOX((%s, ), (%s, ))'" % (repr(self._xmin), repr(self._xmax))
+		elif self._tmin is not None:
+			return "'TBOX((, %s), (, %s))'" % (repr(self._tmin), repr(self._tmax))

@@ -93,7 +93,7 @@ class TemporalInstants(Temporal):
 		"""
 		# 1-based
 		if 0 <= n < len(self._instantList):
-			return self._instantList[n - 1]
+			return self._instantList[n - 1]._time
 		else:
 			raise Exception("ERROR: Out of range")
 

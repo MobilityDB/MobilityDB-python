@@ -1,22 +1,29 @@
-"""
 import pytest
 
 from MobilityDB import STBox
 
 
-@pytest.mark.parametrize('expected', [
-	'STBOX ZT((10.0, 50, 100, 2019-09-08 00:00:00+02), (30.0, 60, 200, 2019-09-10 00:00:00+02))',
-	'STBOX T((10.0, 50, 2019-09-08 00:00:00+02), (30.0, 60, 2019-09-10 00:00:00+02))',
-	'STBOX Z((10.0, 50, 100), (30.0, 60, 200))',
-	'STBOX ((10.0, 50), (30.0, 60))',
-	'GEODSTBOX T((10, 50, 100,2019-09-08 00:00:00+02), (20, 60, 200, 2019-09-10 00:00:00+02))',
-	'GEODSTBOX ((10, 50, 100), (20, 60, 200))'
+@pytest.mark.parametrize('expected_stbox', [
+	# Only coordinate (X and Y) dimension
+	'STBOX ((1.0, 2.0), (1.0, 2.0))',
+	# Only coordinate (X, Y and Z) dimension
+	'STBOX Z((1.0, 2.0, 3.0), (1.0, 2.0, 3.0))',
+	# Both coordinate (X, Y) and time dimensions
+	'STBOX T((1.0, 2.0, 2001-01-03 00:00:00+01), (1.0, 2.0, 2001-01-03 00:00:00+01))',
+	# Both coordinate (X, Y, and Z) and time dimensions
+	'STBOX ZT((1.0, 2.0, 3.0, 2001-01-04 00:00:00+01), (1.0, 2.0, 3.0, 2001-01-04 00:00:00+01))',
+	# Only time dimension
+	'STBOX T(, 2001-01-03 00:00:00+01), (, 2001-01-03 00:00:00+01))',
+	# Only geodetic coordinate (X, Y and Z) dimension
+	'GEODSTBOX((1.0, 2.0, 3.0), (1.0, 2.0, 3.0))',
+	#  Both geodetic coordinate (X, Y, and Z) and time dimensions
+	'GEODSTBOX T((1.0, 2.0, 3.0, 2001-01-03 00:00:00+01), (1.0, 2.0, 3.0, 2001-01-04 00:00:00+01))',
+	# Only time dimension for geodetic box
+	'GEODSTBOX T((, 2001-01-03 00:00:00+01), (, 2001-01-03 00:00:00+01))',
 ])
-def test_stbox_constructor(cursor, expected):
-	params = STBOX(expected)
-	cursor.execute("INSERT INTO tbl_stbox (stbox_col) VALUES ('%s')" % params)
-	cursor.execute("SELECT stbox_col FROM tbl_stbox WHERE stbox_col='%s'" % params)
+def test_stbox_constructor(cursor, expected_stbox):
+	params = STBox(expected_stbox)
+	cursor.execute("INSERT INTO tbl_stbox (box) VALUES (%s)" % params)
+	cursor.execute("SELECT box FROM tbl_stbox WHERE box=%s" % params)
 	result = cursor.fetchone()[0]
-
-# assert result == STBOX(expected)
-"""
+	assert result == STBox(expected_stbox)

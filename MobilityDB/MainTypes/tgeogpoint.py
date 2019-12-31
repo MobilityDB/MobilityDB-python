@@ -20,7 +20,13 @@ class TGeogPoint(Temporal):
 	def read_from_cursor(value, cursor=None):
 		if not value:
 			return None
-		if value[0] != '{' and value[0] != '[' and value[0] != '(':
+		if value.startswith('Interp=Stepwise;'):
+			value1 = value.replace('Interp=Stepwise;', '')
+			if value1[0] == '{':
+				return TGeogPointS(value)
+			else:
+				return TGeogPointSeq(value)
+		elif value[0] != '{' and value[0] != '[' and value[0] != '(':
 			return TGeogPointInst(value)
 		elif value[0] == '[' or value[0] == '(':
 			return TGeogPointSeq(value)

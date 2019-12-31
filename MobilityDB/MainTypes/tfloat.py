@@ -21,7 +21,13 @@ class TFloat(Temporal):
 	def read_from_cursor(value, cursor=None):
 		if not value:
 			return None
-		if value[0] != '{' and value[0] != '[' and value[0] != '(':
+		if value.startswith('Interp=Stepwise;'):
+			value1 = value.replace('Interp=Stepwise;', '')
+			if value1[0] == '{':
+				return TFloatS(value)
+			else:
+				return TFloatSeq(value)
+		elif value[0] != '{' and value[0] != '[' and value[0] != '(':
 			return TFloatInst(value)
 		elif value[0] == '[' or value[0] == '(':
 			return TFloatSeq(value)
@@ -98,7 +104,8 @@ class TFloatSeq(TemporalSeq, TFloat):
 
 	def __str__(self):
 		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
-		return interp_str + super().__str__()
+		seq_str= super().__str__().replace("'", "")
+		return f"'{interp_str}{seq_str}'"
 
 
 class TFloatS(TemporalS, TFloat):
@@ -132,4 +139,5 @@ class TFloatS(TemporalS, TFloat):
 
 	def __str__(self):
 		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
-		return interp_str + super().__str__()
+		seq_str= super().__str__().replace("'", "")
+		return f"'{interp_str}{seq_str}'"
