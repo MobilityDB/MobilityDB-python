@@ -1,13 +1,8 @@
 from datetime import datetime, timedelta
 from bdateutil.parser import parse
-from spans.types import Range
+from spans.types import floatrange
 from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
 from MobilityDB.MainTypes import TFloat, TFloatInst, TFloatI, TFloatSeq, TFloatS
-
-
-class floatrange(Range):
-	__slots__ = ()
-	type = float
 
 
 print("\nConstructors for TFloatInst")
@@ -302,9 +297,3 @@ print(type(f))
 f = TFloat('{1@2000-01-01, 1@2000-01-02}')
 print(f)
 """
-
-r1 = floatrange(10.0, 10.0, upper_inc=True)
-r2 = floatrange(10.0, 10.0, upper_inc=True)
-print("***", r1)
-print("***", r2)
-print("***", r1 == r2)

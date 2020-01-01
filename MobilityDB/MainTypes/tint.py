@@ -1,10 +1,6 @@
-from spans.types import Range
+from spans.types import intrange
 from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
 
-
-class intrange(Range):
-	__slots__ = ()
-	type = int
 
 class TInt(Temporal):
 	"""

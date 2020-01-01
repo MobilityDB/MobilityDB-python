@@ -1,14 +1,9 @@
 from datetime import datetime, timedelta
 from bdateutil.parser import parse
-from spans.types import Range
+from spans.types import intrange
 from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
 from MobilityDB.MainTypes import TInt, TIntInst, TIntI, TIntSeq, TIntS
 
-"""
-class floatrange(Range):
-	__slots__ = ()
-	type = float
-"""
 
 print("\nConstructors for TFloatInst")
 inst = TIntInst('10@2019-09-08')

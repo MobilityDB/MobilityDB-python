@@ -20,167 +20,187 @@ def test_tfloatinst_constructors(cursor, expected_tfloatinst):
 	assert result == TFloatInst(expected_tfloatinst)
 
 
-@pytest.mark.parametrize('expected', [
+@pytest.mark.parametrize('expected_tfloatinst', [
 	'10.0@2019-09-01 00:00:00+01',
 ])
-def test_tfloatinst_accessors(cursor, expected):
-	assert TFloatInst(expected).duration() == 'Instant'
-	assert TFloatInst(expected).getValue() == 10.0
-	# assert TFloatInst(expected).getValues() == floatrange(10.0, 10.0, upper_inc=True)
-	assert TFloatInst(expected).startValue() == 10.0
-	assert TFloatInst(expected).endValue() == 10.0
-	assert TFloatInst(expected).minValue() == 10.0
-	assert TFloatInst(expected).maxValue() == 10.0
-	#assert TFloatInst(expected).valueRange() == floatrange(10.0, 10.0, upper_inc=True)
-	assert TFloatInst(expected).getTimestamp() == parse('2019-09-01 00:00:00+01')
-	assert TFloatInst(expected).getTime() == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]}')
-	assert TFloatInst(expected).timespan() == timedelta(0)
-	assert TFloatInst(expected).period() == Period('[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]')
-	assert TFloatInst(expected).numInstants() == 1
-	assert TFloatInst(expected).startInstant() == TFloatInst('10.0@2019-09-01 00:00:00+01')
-	assert TFloatInst(expected).endInstant() == TFloatInst('10.0@2019-09-01 00:00:00+01')
-	assert TFloatInst(expected).instantN(1) == TFloatInst('10.0@2019-09-01 00:00:00+01')
-	assert TFloatInst(expected).instants() == [TFloatInst('10.0@2019-09-01 00:00:00+01')]
-	assert TFloatInst(expected).numTimestamps() == 1
-	assert TFloatInst(expected).startTimestamp() == parse('2019-09-01 00:00:00+01')
-	assert TFloatInst(expected).endTimestamp() == parse('2019-09-01 00:00:00+01')
-	assert TFloatInst(expected).timestampN(1) == parse('2019-09-01 00:00:00+01')
-	assert TFloatInst(expected).timestamps() == [parse('2019-09-01 00:00:00+01')]
-	assert TFloatInst(expected).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
-	assert TFloatInst(expected).intersectsTimestamp(parse('2019-09-02 00:00:00+01')) == False
-	assert TFloatInst(expected).intersectsTimestampset(
+def test_tfloatinst_accessors(cursor, expected_tfloatinst):
+	assert TFloatInst(expected_tfloatinst).duration() == 'Instant'
+	assert TFloatInst(expected_tfloatinst).getValue() == 10.0
+	assert TFloatInst(expected_tfloatinst).getValues() == floatrange(10.0, 10.0, upper_inc=True)
+	assert TFloatInst(expected_tfloatinst).startValue() == 10.0
+	assert TFloatInst(expected_tfloatinst).endValue() == 10.0
+	assert TFloatInst(expected_tfloatinst).minValue() == 10.0
+	assert TFloatInst(expected_tfloatinst).maxValue() == 10.0
+	assert TFloatInst(expected_tfloatinst).valueRange() == floatrange(10.0, 10.0, upper_inc=True)
+	assert TFloatInst(expected_tfloatinst).getTimestamp() == parse('2019-09-01 00:00:00+01')
+	assert TFloatInst(expected_tfloatinst).getTime() == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]}')
+	assert TFloatInst(expected_tfloatinst).timespan() == timedelta(0)
+	assert TFloatInst(expected_tfloatinst).period() == Period('[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]')
+	assert TFloatInst(expected_tfloatinst).numInstants() == 1
+	assert TFloatInst(expected_tfloatinst).startInstant() == TFloatInst('10.0@2019-09-01 00:00:00+01')
+	assert TFloatInst(expected_tfloatinst).endInstant() == TFloatInst('10.0@2019-09-01 00:00:00+01')
+	assert TFloatInst(expected_tfloatinst).instantN(1) == TFloatInst('10.0@2019-09-01 00:00:00+01')
+	assert TFloatInst(expected_tfloatinst).instants() == [TFloatInst('10.0@2019-09-01 00:00:00+01')]
+	assert TFloatInst(expected_tfloatinst).numTimestamps() == 1
+	assert TFloatInst(expected_tfloatinst).startTimestamp() == parse('2019-09-01 00:00:00+01')
+	assert TFloatInst(expected_tfloatinst).endTimestamp() == parse('2019-09-01 00:00:00+01')
+	assert TFloatInst(expected_tfloatinst).timestampN(1) == parse('2019-09-01 00:00:00+01')
+	assert TFloatInst(expected_tfloatinst).timestamps() == [parse('2019-09-01 00:00:00+01')]
+	assert TFloatInst(expected_tfloatinst).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
+	assert TFloatInst(expected_tfloatinst).intersectsTimestamp(parse('2019-09-02 00:00:00+01')) == False
+	assert TFloatInst(expected_tfloatinst).intersectsTimestampset(
 		TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-	assert TFloatInst(expected).intersectsTimestampset(
+	assert TFloatInst(expected_tfloatinst).intersectsTimestampset(
 		TimestampSet('{2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01}')) == False
-	assert TFloatInst(expected).intersectsPeriod(Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
-	assert TFloatInst(expected).intersectsPeriod(Period('(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == False
-	assert TFloatInst(expected).intersectsPeriod(Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')) == False
-	assert TFloatInst(expected).intersectsPeriodset(
+	assert TFloatInst(expected_tfloatinst).intersectsPeriod(Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
+	assert TFloatInst(expected_tfloatinst).intersectsPeriod(Period('(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == False
+	assert TFloatInst(expected_tfloatinst).intersectsPeriod(Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')) == False
+	assert TFloatInst(expected_tfloatinst).intersectsPeriodset(
 		PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-	assert TFloatInst(expected).intersectsPeriodset(
+	assert TFloatInst(expected_tfloatinst).intersectsPeriodset(
 		PeriodSet('{(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == False
-	assert TFloatInst(expected).intersectsPeriodset(
+	assert TFloatInst(expected_tfloatinst).intersectsPeriodset(
 		PeriodSet('{[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')) == False
 
 
 @pytest.mark.parametrize('expected_tfloati', [
 	'{10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01}',
-	# ('10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'),
-	# (TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'), TFloatInst('10.0@2019-09-03 00:00:00+01')),
+	('10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'),
+	(TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
+	 TFloatInst('10.0@2019-09-03 00:00:00+01')),
 	['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'],
 	[TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
 	 TFloatInst('10.0@2019-09-03 00:00:00+01')],
 ])
 def test_tfloati_constructor(cursor, expected_tfloati):
-	params = [TFloatI(expected_tfloati)]
+	if isinstance(expected_tfloati, tuple):
+		params = [TFloatI(*expected_tfloati)]
+	else:
+		params = [TFloatI(expected_tfloati)]
 	cursor.execute('INSERT INTO tbl_tfloati (temp) VALUES (%s)', params)
 	cursor.execute('SELECT temp FROM tbl_tfloati WHERE temp=%s', params)
 	result = cursor.fetchone()[0]
-	assert result == TFloatI(expected_tfloati)
+	if isinstance(expected_tfloati, tuple):
+		assert result == TFloatI(*expected_tfloati)
+	else:
+		assert result == TFloatI(expected_tfloati)
 
 
-@pytest.mark.parametrize('expected', [
+@pytest.mark.parametrize('expected_tfloati', [
 	'{10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 30.0@2019-09-03 00:00:00+01}',
 ])
-def test_TFloatI_accessors(cursor, expected):
-	assert TFloatI(expected).duration() == 'InstantSet'
-	# assert TFloatI(expected).getValues() == [floatrange(10.0, 10.0, upper_inc=True),floatrange(20.0, 20.0, upper_inc=True),floatrange(30.0, 30.0, upper_inc=True)]
-	assert TFloatI(expected).startValue() == 10.0
-	assert TFloatI(expected).endValue() == 30.0
-	assert TFloatI(expected).minValue() == 10.0
-	assert TFloatI(expected).maxValue() == 30.0
-	# assert TFloatI(expected).valueRange() == floatrange(10.0, 30.0, upper_inc=True)
-	assert TFloatI(expected).getTime() == \
+def test_tfloati_accessors(cursor, expected_tfloati):
+	assert TFloatI(expected_tfloati).duration() == 'InstantSet'
+	assert TFloatI(expected_tfloati).getValues() == [floatrange(10.0, 10.0, upper_inc=True),
+											 floatrange(20.0, 20.0, upper_inc=True),
+											 floatrange(30.0, 30.0, upper_inc=True)]
+	assert TFloatI(expected_tfloati).startValue() == 10.0
+	assert TFloatI(expected_tfloati).endValue() == 30.0
+	assert TFloatI(expected_tfloati).minValue() == 10.0
+	assert TFloatI(expected_tfloati).maxValue() == 30.0
+	assert TFloatI(expected_tfloati).valueRange() == floatrange(10.0, 30.0, upper_inc=True)
+	assert TFloatI(expected_tfloati).getTime() == \
 		   PeriodSet(
 			   '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
 			   '[2019-09-03 00:00:00+01, 2019-09-03 00:00:00+01]}')
-	assert TFloatI(expected).timespan() == timedelta(2)
-	assert TFloatI(expected).period() == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
-	assert TFloatI(expected).numInstants() == 3
-	assert TFloatI(expected).startInstant() == TFloatInst('10.0@2019-09-01 00:00:00+01')
-	assert TFloatI(expected).endInstant() == TFloatInst('30.0@2019-09-03 00:00:00+01')
-	assert TFloatI(expected).instantN(2) == TFloatInst('20.0@2019-09-02 00:00:00+01')
-	assert TFloatI(expected).instants() == [TFloatInst('10.0@2019-09-01 00:00:00+01'),
+	assert TFloatI(expected_tfloati).timespan() == timedelta(2)
+	assert TFloatI(expected_tfloati).period() == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
+	assert TFloatI(expected_tfloati).numInstants() == 3
+	assert TFloatI(expected_tfloati).startInstant() == TFloatInst('10.0@2019-09-01 00:00:00+01')
+	assert TFloatI(expected_tfloati).endInstant() == TFloatInst('30.0@2019-09-03 00:00:00+01')
+	assert TFloatI(expected_tfloati).instantN(2) == TFloatInst('20.0@2019-09-02 00:00:00+01')
+	assert TFloatI(expected_tfloati).instants() == [TFloatInst('10.0@2019-09-01 00:00:00+01'),
 											TFloatInst('20.0@2019-09-02 00:00:00+01'),
 											TFloatInst('30.0@2019-09-03 00:00:00+01')]
-	assert TFloatI(expected).numTimestamps() == 3
-	assert TFloatI(expected).startTimestamp() == parse('2019-09-01 00:00:00+01')
-	assert TFloatI(expected).endTimestamp() == parse('2019-09-03 00:00:00+01')
-	assert TFloatI(expected).timestampN(2) == parse('2019-09-02 00:00:00+01')
-	assert TFloatI(expected).timestamps() == [parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'),
+	assert TFloatI(expected_tfloati).numTimestamps() == 3
+	assert TFloatI(expected_tfloati).startTimestamp() == parse('2019-09-01 00:00:00+01')
+	assert TFloatI(expected_tfloati).endTimestamp() == parse('2019-09-03 00:00:00+01')
+	assert TFloatI(expected_tfloati).timestampN(2) == parse('2019-09-02 00:00:00+01')
+	assert TFloatI(expected_tfloati).timestamps() == [parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'),
 											  parse('2019-09-03 00:00:00+01')]
-	assert TFloatI(expected).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
-	assert TFloatI(expected).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
-	assert TFloatI(expected).intersectsTimestampset(
+	assert TFloatI(expected_tfloati).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
+	assert TFloatI(expected_tfloati).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
+	assert TFloatI(expected_tfloati).intersectsTimestampset(
 		TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-	assert TFloatI(expected).intersectsTimestampset(
+	assert TFloatI(expected_tfloati).intersectsTimestampset(
 		TimestampSet('{2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01}')) == False
-	assert TFloatI(expected).intersectsPeriod(Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
-	assert TFloatI(expected).intersectsPeriod(Period('(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01)')) == False
-	assert TFloatI(expected).intersectsPeriod(Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
-	assert TFloatI(expected).intersectsPeriodset(
+	assert TFloatI(expected_tfloati).intersectsPeriod(Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
+	assert TFloatI(expected_tfloati).intersectsPeriod(Period('(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01)')) == False
+	assert TFloatI(expected_tfloati).intersectsPeriod(Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
+	assert TFloatI(expected_tfloati).intersectsPeriodset(
 		PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-	assert TFloatI(expected).intersectsPeriodset(
+	assert TFloatI(expected_tfloati).intersectsPeriodset(
 		PeriodSet('{(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01)}')) == False
-	assert TFloatI(expected).intersectsPeriodset(
+	assert TFloatI(expected_tfloati).intersectsPeriodset(
 		PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
 
-@pytest.mark.parametrize('expected_tfloatseq', [
+@pytest.mark.parametrize('expected_tfloats', [
 	'[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]',
 	'Interp=Stepwise;[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]',
-	# ('10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'),
-	# (TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'), TFloatInst('10.0@2019-09-03 00:00:00+01')),
 	['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'],
 	[TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
 	 TFloatInst('10.0@2019-09-03 00:00:00+01')],
+	(['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'], True, True,
+	 'Stepwise'),
+	([TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
+	  TFloatInst('10.0@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
 ])
-def test_tfloatseq_constructor(cursor, expected_tfloatseq):
-	params = [TFloatSeq(expected_tfloatseq)]
+def test_tfloatseq_constructor(cursor, expected_tfloats):
+	if isinstance(expected_tfloats, tuple):
+		params = [TFloatSeq(*expected_tfloats)]
+	else:
+		params = [TFloatSeq(expected_tfloats)]
 	cursor.execute('INSERT INTO tbl_tfloatseq (temp) VALUES (%s)', params)
 	cursor.execute('SELECT temp FROM tbl_tfloatseq WHERE temp=%s', params)
 	result = cursor.fetchone()[0]
-	assert result == TFloatSeq(expected_tfloatseq)
+	if isinstance(expected_tfloats, tuple):
+		assert result == TFloatSeq(*expected_tfloats)
+	else:
+		assert result == TFloatSeq(expected_tfloats)
 
 
-@pytest.mark.parametrize('expected', [
+@pytest.mark.parametrize('expected_tfloatseq', [
 	'[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 30.0@2019-09-03 00:00:00+01]',
 ])
-def test_TFloatSeq_accessors(cursor, expected):
-	assert TFloatSeq(expected).duration() == 'Sequence'
-	# assert TFloatSeq(expected).getValues() == [floatrange(10.0, 10.0, upper_inc=True),floatrange(20.0, 20.0, upper_inc=True),floatrange(30.0, 30.0, upper_inc=True)]
-	assert TFloatSeq(expected).startValue() == 10.0
-	assert TFloatSeq(expected).endValue() == 30.0
-	assert TFloatSeq(expected).minValue() == 10.0
-	assert TFloatSeq(expected).maxValue() == 30.0
-	# assert TFloatSeq(expected).valueRange() == floatrange(10.0, 30.0, upper_inc=True)
-	assert TFloatSeq(expected).getTime() == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]}')
-	assert TFloatSeq(expected).timespan() == timedelta(2)
-	assert TFloatSeq(expected).period() == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
-	assert TFloatSeq(expected).numInstants() == 3
-	assert TFloatSeq(expected).startInstant() == TFloatInst('10.0@2019-09-01 00:00:00+01')
-	assert TFloatSeq(expected).endInstant() == TFloatInst('30.0@2019-09-03 00:00:00+01')
-	assert TFloatSeq(expected).instantN(2) == TFloatInst('20.0@2019-09-02 00:00:00+01')
-	assert TFloatSeq(expected).instants() == \
+def test_tfloatseq_accessors(cursor, expected_tfloatseq):
+	assert TFloatSeq(expected_tfloatseq).duration() == 'Sequence'
+	# assert TFloatSeq(expected_tfloatseq).getValues() == [floatrange(10.0, 30.0, upper_inc=True)]
+	assert TFloatSeq(expected_tfloatseq).startValue() == 10.0
+	assert TFloatSeq(expected_tfloatseq).endValue() == 30.0
+	assert TFloatSeq(expected_tfloatseq).minValue() == 10.0
+	assert TFloatSeq(expected_tfloatseq).maxValue() == 30.0
+	assert TFloatSeq(expected_tfloatseq).valueRange() == floatrange(10.0, 30.0, upper_inc=True)
+	assert TFloatSeq(expected_tfloatseq).getTime() == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]}')
+	assert TFloatSeq(expected_tfloatseq).timespan() == timedelta(2)
+	assert TFloatSeq(expected_tfloatseq).period() == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
+	assert TFloatSeq(expected_tfloatseq).numInstants() == 3
+	assert TFloatSeq(expected_tfloatseq).startInstant() == TFloatInst('10.0@2019-09-01 00:00:00+01')
+	assert TFloatSeq(expected_tfloatseq).endInstant() == TFloatInst('30.0@2019-09-03 00:00:00+01')
+	assert TFloatSeq(expected_tfloatseq).instantN(2) == TFloatInst('20.0@2019-09-02 00:00:00+01')
+	assert TFloatSeq(expected_tfloatseq).instants() == \
 		   [TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
 			TFloatInst('30.0@2019-09-03 00:00:00+01')]
-	assert TFloatSeq(expected).numTimestamps() == 3
-	assert TFloatSeq(expected).startTimestamp() == parse('2019-09-01 00:00:00+01')
-	assert TFloatSeq(expected).endTimestamp() == parse('2019-09-03 00:00:00+01')
-	assert TFloatSeq(expected).timestampN(2) == parse('2019-09-02 00:00:00+01')
-	assert TFloatSeq(expected).timestamps() == [parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'),
-												parse('2019-09-03 00:00:00+01')]
-	assert TFloatSeq(expected).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
-	assert TFloatSeq(expected).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
-	assert TFloatSeq(expected).intersectsTimestampset(
+	assert TFloatSeq(expected_tfloatseq).numTimestamps() == 3
+	assert TFloatSeq(expected_tfloatseq).startTimestamp() == parse('2019-09-01 00:00:00+01')
+	assert TFloatSeq(expected_tfloatseq).endTimestamp() == parse('2019-09-03 00:00:00+01')
+	assert TFloatSeq(expected_tfloatseq).timestampN(2) == parse('2019-09-02 00:00:00+01')
+	assert TFloatSeq(expected_tfloatseq).timestamps() == [parse('2019-09-01 00:00:00+01'),
+														  parse('2019-09-02 00:00:00+01'),
+														  parse('2019-09-03 00:00:00+01')]
+	assert TFloatSeq(expected_tfloatseq).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
+	assert TFloatSeq(expected_tfloatseq).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
+	assert TFloatSeq(expected_tfloatseq).intersectsTimestampset(
 		TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-	assert TFloatSeq(expected).intersectsTimestampset(
+	assert TFloatSeq(expected_tfloatseq).intersectsTimestampset(
 		TimestampSet('{2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01}')) == False
-	assert TFloatSeq(expected).intersectsPeriod(Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
-	assert TFloatSeq(expected).intersectsPeriod(Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
-	assert TFloatSeq(expected).intersectsPeriodset(
+	assert TFloatSeq(expected_tfloatseq).intersectsPeriod(
+		Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
+	assert TFloatSeq(expected_tfloatseq).intersectsPeriod(
+		Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
+	assert TFloatSeq(expected_tfloatseq).intersectsPeriodset(
 		PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-	assert TFloatSeq(expected).intersectsPeriodset(
+	assert TFloatSeq(expected_tfloatseq).intersectsPeriodset(
 		PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
 
@@ -188,61 +208,77 @@ def test_TFloatSeq_accessors(cursor, expected):
 	'{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}',
 	'Interp=Stepwise;{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}',
 	['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'],
-	# (['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], True),
+	(['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Linear'),
+	(['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Stepwise'),
 	[TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),
 	 TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')],
+	([TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),
+	  TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Linear'),
+	([TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),
+	  TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Stepwise'),
 ])
 def test_tfloats_constructor(cursor, expected_tfloats):
-	params = [TFloatS(expected_tfloats)]
+	if isinstance(expected_tfloats, tuple):
+		params = [TFloatS(*expected_tfloats)]
+	else:
+		params = [TFloatS(expected_tfloats)]
 	cursor.execute('INSERT INTO tbl_tfloats (temp) VALUES (%s)', params)
 	cursor.execute('SELECT temp FROM tbl_tfloats WHERE temp=%s', params)
 	result = cursor.fetchone()[0]
-	assert result == TFloatS(expected_tfloats)
+	if isinstance(expected_tfloats, tuple):
+		assert result == TFloatS(*expected_tfloats)
+	else:
+		assert result == TFloatS(expected_tfloats)
 
 
-@pytest.mark.parametrize('expected', [
+@pytest.mark.parametrize('expected_tfloats', [
 	'{[10.0@2019-09-01 00:00:00+01],  [20.0@2019-09-02 00:00:00+01, 30.0@2019-09-03 00:00:00+01]}',
 ])
-def test_TFloatS_accessors(cursor, expected):
-	assert TFloatS(expected).duration() == 'SequenceSet'
-	# assert TFloatS(expected).getValues() == [floatrange(10.0, 10.0, upper_inc=True),floatrange(20.0, 20.0, upper_inc=True),floatrange(30.0, 30.0, upper_inc=True)]
-	assert TFloatS(expected).startValue() == 10.0
-	assert TFloatS(expected).endValue() == 30.0
-	assert TFloatS(expected).minValue() == 10.0
-	assert TFloatS(expected).maxValue() == 30.0
-	# assert TFloatS(expected).valueRange() == floatrange(10.0, 30.0, upper_inc=True)
-	assert TFloatS(expected).getTime() == PeriodSet(
+def test_tfloats_accessors(cursor, expected_tfloats):
+	assert TFloatS(expected_tfloats).duration() == 'SequenceSet'
+	#assert TFloatS(expected_tfloats).getValues() == [floatrange(10.0, 10.0, upper_inc=True),floatrange(20.0, 30.0, 30.0, upper_inc=True)]
+	assert TFloatS(expected_tfloats).startValue() == 10.0
+	assert TFloatS(expected_tfloats).endValue() == 30.0
+	assert TFloatS(expected_tfloats).minValue() == 10.0
+	assert TFloatS(expected_tfloats).maxValue() == 30.0
+	assert TFloatS(expected_tfloats).valueRange() == floatrange(10.0, 30.0, upper_inc=True)
+	assert TFloatS(expected_tfloats).getTime() == PeriodSet(
 		'{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')
-	assert TFloatS(expected).timespan() == timedelta(2)
-	assert TFloatS(expected).period() == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
-	assert TFloatS(expected).numInstants() == 3
-	assert TFloatS(expected).startInstant() == TFloatInst('10.0@2019-09-01 00:00:00+01')
-	assert TFloatS(expected).endInstant() == TFloatInst('30.0@2019-09-03 00:00:00+01')
-	assert TFloatS(expected).instantN(2) == TFloatInst('20.0@2019-09-02 00:00:00+01')
-	assert TFloatS(expected).instants() == [TFloatInst('10.0@2019-09-01 00:00:00+01'),
-											TFloatInst('20.0@2019-09-02 00:00:00+01'),
-											TFloatInst('30.0@2019-09-03 00:00:00+01')]
-	assert TFloatS(expected).numTimestamps() == 3
-	assert TFloatS(expected).startTimestamp() == parse('2019-09-01 00:00:00+01')
-	assert TFloatS(expected).endTimestamp() == parse('2019-09-03 00:00:00+01')
-	assert TFloatS(expected).timestampN(2) == parse('2019-09-02 00:00:00+01')
-	assert TFloatS(expected).timestamps() == [parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'),
-											  parse('2019-09-03 00:00:00+01')]
-	assert TFloatS(expected).numSequences() == 2
-	assert TFloatS(expected).startSequence() == TFloatSeq('[10.0@2019-09-01 00:00:00+01]')
-	assert TFloatS(expected).endSequence() == TFloatSeq('[20.0@2019-09-02 00:00:00+01, 30.0@2019-09-03 00:00:00+01]')
-	assert TFloatS(expected).sequenceN(2) == TFloatSeq('[20.0@2019-09-02 00:00:00+01, 30.0@2019-09-03 00:00:00+01]')
-	assert TFloatS(expected).sequences() == [TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),
-											 TFloatSeq('[20.0@2019-09-02 00:00:00+01, 30.0@2019-09-03 00:00:00+01]')]
-	assert TFloatS(expected).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
-	assert TFloatS(expected).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
-	assert TFloatS(expected).intersectsTimestampset(
+	assert TFloatS(expected_tfloats).timespan() == timedelta(2)
+	assert TFloatS(expected_tfloats).period() == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
+	assert TFloatS(expected_tfloats).numInstants() == 3
+	assert TFloatS(expected_tfloats).startInstant() == TFloatInst('10.0@2019-09-01 00:00:00+01')
+	assert TFloatS(expected_tfloats).endInstant() == TFloatInst('30.0@2019-09-03 00:00:00+01')
+	assert TFloatS(expected_tfloats).instantN(2) == TFloatInst('20.0@2019-09-02 00:00:00+01')
+	assert TFloatS(expected_tfloats).instants() == [TFloatInst('10.0@2019-09-01 00:00:00+01'),
+													TFloatInst('20.0@2019-09-02 00:00:00+01'),
+													TFloatInst('30.0@2019-09-03 00:00:00+01')]
+	assert TFloatS(expected_tfloats).numTimestamps() == 3
+	assert TFloatS(expected_tfloats).startTimestamp() == parse('2019-09-01 00:00:00+01')
+	assert TFloatS(expected_tfloats).endTimestamp() == parse('2019-09-03 00:00:00+01')
+	assert TFloatS(expected_tfloats).timestampN(2) == parse('2019-09-02 00:00:00+01')
+	assert TFloatS(expected_tfloats).timestamps() == [parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'),
+													  parse('2019-09-03 00:00:00+01')]
+	assert TFloatS(expected_tfloats).numSequences() == 2
+	assert TFloatS(expected_tfloats).startSequence() == TFloatSeq('[10.0@2019-09-01 00:00:00+01]')
+	assert TFloatS(expected_tfloats).endSequence() == TFloatSeq(
+		'[20.0@2019-09-02 00:00:00+01, 30.0@2019-09-03 00:00:00+01]')
+	assert TFloatS(expected_tfloats).sequenceN(2) == TFloatSeq(
+		'[20.0@2019-09-02 00:00:00+01, 30.0@2019-09-03 00:00:00+01]')
+	assert TFloatS(expected_tfloats).sequences() == [TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),
+													 TFloatSeq(
+														 '[20.0@2019-09-02 00:00:00+01, 30.0@2019-09-03 00:00:00+01]')]
+	assert TFloatS(expected_tfloats).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
+	assert TFloatS(expected_tfloats).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
+	assert TFloatS(expected_tfloats).intersectsTimestampset(
 		TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-	assert TFloatS(expected).intersectsTimestampset(
+	assert TFloatS(expected_tfloats).intersectsTimestampset(
 		TimestampSet('{2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01}')) == False
-	assert TFloatS(expected).intersectsPeriod(Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
-	assert TFloatS(expected).intersectsPeriod(Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
-	assert TFloatS(expected).intersectsPeriodset(
+	assert TFloatS(expected_tfloats).intersectsPeriod(
+		Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
+	assert TFloatS(expected_tfloats).intersectsPeriod(
+		Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
+	assert TFloatS(expected_tfloats).intersectsPeriodset(
 		PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-	assert TFloatS(expected).intersectsPeriodset(
+	assert TFloatS(expected_tfloats).intersectsPeriodset(
 		PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False

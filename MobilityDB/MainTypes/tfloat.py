@@ -1,10 +1,6 @@
-from spans.types import Range
+from spans.types import floatrange
 from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
 
-
-class floatrange(Range):
-	__slots__ = ()
-	type = float
 
 class TFloat(Temporal):
 	"""
@@ -100,7 +96,7 @@ class TFloatSeq(TemporalSeq, TFloat):
 			min_inc = min in self._instantList[1:-1]
 		if not max_inc:
 			max_inc = max in self._instantList[1:-1]
-		return floatrange(min, max, min_inc, max_inc)
+		return [floatrange(min, max, min_inc, max_inc)]
 
 	def __str__(self):
 		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
@@ -124,11 +120,14 @@ class TFloatS(TemporalS, TFloat):
 		"""
 		Distinct values
 		"""
-		ranges = sorted([seq.getValues() for seq in self._sequenceList])
+		ranges = sorted([seq.valueRange() for seq in self._sequenceList])
+		print("ranges =", ranges)
 		# Normalize list of ranges
 		result = []
 		range = ranges[0]
 		for range1 in ranges[1:]:
+			print("range =", range)
+			print("range1 =", range1)
 			if range.adjacent(range1) or range.overlap(range1):
 				range = range.union(range1)
 			else:

@@ -14,6 +14,9 @@ class TemporalSeq(TemporalInstants):
 	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
 		assert(isinstance(lower_inc, (bool, type(None))))
 		assert(isinstance(upper_inc, (bool, type(None))))
+		assert(isinstance(interp, (str, type(None)))), "ERROR: Invalid interpolation"
+		if isinstance(interp, str):
+			assert(interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
 		self._instantList = []
 		# Constructor with a single argument of type string
 		if isinstance(instantList, str):
@@ -42,8 +45,6 @@ class TemporalSeq(TemporalInstants):
 				self._interp = 'Linear'
 			elif interp == 'Stepwise':
 				self._interp = 'Stepwise'
-			else:
-				raise Exception("ERROR: Invalid interpolation")
 		else:
 			raise Exception("ERROR: Could not parse temporal sequence value")
 		# Verify validity of the resulting instance
