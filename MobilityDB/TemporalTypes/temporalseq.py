@@ -18,15 +18,21 @@ class TemporalSeq(TemporalInstants):
 		if isinstance(interp, str):
 			assert(interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
 		self._instantList = []
-		# Constructor with a single argument of type string
+		# Constructor with a first argument of type string and optional arguments for the bounds and interpolation
 		if isinstance(instantList, str):
 			elements = parse_temporalseq(instantList, 0)
 			for inst in elements[2][0]:
 				self._instantList.append(TemporalSeq.ComponentClass(inst[0], inst[1]))
 			self._lower_inc = elements[2][1]
 			self._upper_inc = elements[2][2]
-			# Set interpolation with the argument value if given
-			self._interp = interp if interp is not None else elements[2][3]
+			# Set interpolation with the argument or the flag from the string if given
+			if interp is not None:
+				self._interp = interp
+			else:
+				if self.__class__.BaseClassDiscrete == True:
+					self._interp = 'Stepwise'
+				else:
+					self._interp = elements[2][3] if elements[2][3] is not None else 'Linear'
 		# Constructor with a first argument of type list and optional arguments for the bounds and interpolation
 		elif isinstance(instantList, list):
 			# List of strings representing instant values
@@ -41,10 +47,11 @@ class TemporalSeq(TemporalInstants):
 				raise Exception("ERROR: Could not parse temporal sequence value")
 			self._lower_inc = lower_inc if lower_inc is not None else True
 			self._upper_inc = upper_inc if upper_inc is not None else False
-			if interp is None or interp == 'Linear':
-				self._interp = 'Linear'
-			elif interp == 'Stepwise':
-				self._interp = 'Stepwise'
+			# Set the interpolation
+			if interp is not None:
+				self._interp = interp
+			else:
+				self._interp = 'Stepwise' if self.__class__.BaseClassDiscrete == True else 'Linear'
 		else:
 			raise Exception("ERROR: Could not parse temporal sequence value")
 		# Verify validity of the resulting instance

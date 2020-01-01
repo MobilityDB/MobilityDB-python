@@ -15,10 +15,8 @@ class TemporalS(Temporal):
 
 	def __init__(self, sequenceList, interp=None):
 		assert(isinstance(interp, (str, type(None)))), "ERROR: Invalid interpolation"
-		if isinstance(interp, str):
+		if isinstance(interp, str) and interp is None:
 			assert(interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
-			if (interp == 'Linear' and self.__class__.BaseClassDiscrete == True):
-				raise Exception("ERROR: Invalid interpolation for discrete base type")
 		self._sequenceList = []
 		# Constructor with a single argument of type string
 		if isinstance(sequenceList, str):
@@ -33,8 +31,14 @@ class TemporalS(Temporal):
 				else:
 					seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2], seq[3]))
 			self._sequenceList= seqList
-			# Set interpolation with the argument value if given
-			self._interp = interp if interp is not None else elements[2][1]
+			# Set interpolation with the argument or the flag from the string if given
+			if interp is not None:
+				self._interp = interp
+			else:
+				if self.__class__.BaseClassDiscrete == True:
+					self._interp = 'Stepwise'
+				else:
+					self._interp = elements[2][1] if elements[2][1] is not None else 'Linear'
 		# Constructor with a single argument of type list
 		elif isinstance(sequenceList, list):
 			# List of strings representing periods
@@ -48,12 +52,10 @@ class TemporalS(Temporal):
 			else:
 				raise Exception("ERROR: Could not parse temporal sequence set value")
 			# Set the interpolation
-			if interp is None or interp == 'Linear':
-				self._interp = 'Linear'
-			elif interp == 'Stepwise':
-				self._interp = 'Stepwise'
+			if interp is not None:
+				self._interp = interp
 			else:
-				raise Exception("ERROR: Invalid interpolation")
+				self._interp = 'Stepwise' if self.__class__.BaseClassDiscrete == True else 'Linear'
 		else:
 			raise Exception("ERROR: Could not parse temporal sequence set value")
 		# Verify validity of the resulting instance
