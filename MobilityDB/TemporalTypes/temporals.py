@@ -1,5 +1,5 @@
 import re
-from MobilityDB.TemporalTypes.temporal_parser import *
+from MobilityDB.TemporalTypes.temporal_parser import parse_temporals
 from parsec import *
 from MobilityDB.TimeTypes.period import Period
 from MobilityDB.TimeTypes.periodset import PeriodSet
@@ -14,6 +14,11 @@ class TemporalS(Temporal):
 	__slots__ = ['_sequenceList', '_interp']
 
 	def __init__(self, sequenceList, interp=None):
+		assert(isinstance(interp, (str, type(None)))), "ERROR: Invalid interpolation"
+		if isinstance(interp, str):
+			assert(interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
+			if (interp == 'Linear' and self.__class__.BaseClassDiscrete == True):
+				raise Exception("ERROR: Invalid interpolation for discrete base type")
 		self._sequenceList = []
 		# Constructor with a single argument of type string
 		if isinstance(sequenceList, str):
@@ -23,7 +28,10 @@ class TemporalS(Temporal):
 				instList = []
 				for inst in seq[0]:
 					instList.append(TemporalS.ComponentClass.ComponentClass(inst[0], inst[1]))
-				seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2], seq[3]))
+				if self.__class__.BaseClassDiscrete == True:
+					seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2]))
+				else:
+					seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2], seq[3]))
 			self._sequenceList= seqList
 			# Set interpolation with the argument value if given
 			self._interp = interp if interp is not None else elements[2][1]

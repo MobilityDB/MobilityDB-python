@@ -76,6 +76,7 @@ class TFloatSeq(TemporalSeq, TFloat):
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
 		TemporalSeq.BaseClass = float
+		TemporalSeq.BaseClassDiscrete = False
 		TemporalSeq.ComponentClass = TFloatInst
 		super().__init__(instantList, lower_inc, upper_inc, interp)
 
@@ -110,6 +111,7 @@ class TFloatS(TemporalS, TFloat):
 	"""
 	def __init__(self, sequenceList, interp=None):
 		TemporalS.BaseClass = float
+		TemporalS.BaseClassDiscrete = False
 		TemporalS.ComponentClass = TFloatSeq
 		super().__init__(sequenceList, interp)
 

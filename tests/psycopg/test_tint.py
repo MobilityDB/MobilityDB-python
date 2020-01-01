@@ -52,9 +52,12 @@ def test_tintinst_accessors(cursor, expected_tintinst):
 		TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
 	assert TIntInst(expected_tintinst).intersectsTimestampset(
 		TimestampSet('{2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01}')) == False
-	assert TIntInst(expected_tintinst).intersectsPeriod(Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
-	assert TIntInst(expected_tintinst).intersectsPeriod(Period('(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == False
-	assert TIntInst(expected_tintinst).intersectsPeriod(Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')) == False
+	assert TIntInst(expected_tintinst).intersectsPeriod(
+		Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
+	assert TIntInst(expected_tintinst).intersectsPeriod(
+		Period('(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == False
+	assert TIntInst(expected_tintinst).intersectsPeriod(
+		Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')) == False
 	assert TIntInst(expected_tintinst).intersectsPeriodset(
 		PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
 	assert TIntInst(expected_tintinst).intersectsPeriodset(
@@ -108,14 +111,14 @@ def test_tinti_accessors(cursor, expected_tinti):
 	assert TIntI(expected_tinti).endInstant() == TIntInst('30@2019-09-03 00:00:00+01')
 	assert TIntI(expected_tinti).instantN(2) == TIntInst('20@2019-09-02 00:00:00+01')
 	assert TIntI(expected_tinti).instants() == [TIntInst('10@2019-09-01 00:00:00+01'),
-										  TIntInst('20@2019-09-02 00:00:00+01'),
-										  TIntInst('30@2019-09-03 00:00:00+01')]
+												TIntInst('20@2019-09-02 00:00:00+01'),
+												TIntInst('30@2019-09-03 00:00:00+01')]
 	assert TIntI(expected_tinti).numTimestamps() == 3
 	assert TIntI(expected_tinti).startTimestamp() == parse('2019-09-01 00:00:00+01')
 	assert TIntI(expected_tinti).endTimestamp() == parse('2019-09-03 00:00:00+01')
 	assert TIntI(expected_tinti).timestampN(2) == parse('2019-09-02 00:00:00+01')
 	assert TIntI(expected_tinti).timestamps() == [parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'),
-											parse('2019-09-03 00:00:00+01')]
+												  parse('2019-09-03 00:00:00+01')]
 	assert TIntI(expected_tinti).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
 	assert TIntI(expected_tinti).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
 	assert TIntI(expected_tinti).intersectsTimestampset(
@@ -133,29 +136,28 @@ def test_tinti_accessors(cursor, expected_tinti):
 		PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
 
-@pytest.mark.parametrize('expected_tints', [
-	'[10@2019-09-01 00:00:00+01, 20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]',
-	# 'Interp=Stepwise;[10@2019-09-01 00:00:00+01, 20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]',
-	# ['10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'],
+@pytest.mark.parametrize('expected_tintseq', [
+	'[10@2019-09-01 00:00:00+01, 20@2019-09-02 00:00:00+01, 20@2019-09-03 00:00:00+01]',
+	# 'Interp=Stepwise;[10@2019-09-01 00:00:00+01, 20@2019-09-02 00:00:00+01, 20@2019-09-03 00:00:00+01]',
+	['10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '20@2019-09-03 00:00:00+01'],
 	[TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'),
 	 TIntInst('20@2019-09-03 00:00:00+01')],
-	# (['10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'], True, True,
-	# 'Stepwise'),
-	# ([TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'),
-	# TIntInst('10@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
+	(['10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'], True, True),
+	([TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'),
+	  TIntInst('10@2019-09-03 00:00:00+01')], True, True),
 ])
-def test_tintseq_constructor(cursor, expected_tints):
-	if isinstance(expected_tints, tuple):
-		params = [TIntSeq(*expected_tints)]
+def test_tintseq_constructor(cursor, expected_tintseq):
+	if isinstance(expected_tintseq, tuple):
+		params = [TIntSeq(*expected_tintseq)]
 	else:
-		params = [TIntSeq(expected_tints)]
+		params = [TIntSeq(expected_tintseq)]
 	cursor.execute('INSERT INTO tbl_tintseq (temp) VALUES (%s)', params)
 	cursor.execute('SELECT temp FROM tbl_tintseq WHERE temp=%s', params)
 	result = cursor.fetchone()[0]
-	if isinstance(expected_tints, tuple):
-		assert result == TIntSeq(*expected_tints)
+	if isinstance(expected_tintseq, tuple):
+		assert result == TIntSeq(*expected_tintseq)
 	else:
-		assert result == TIntSeq(expected_tints)
+		assert result == TIntSeq(expected_tintseq)
 
 
 @pytest.mark.parametrize('expected_tintseq', [
@@ -163,7 +165,7 @@ def test_tintseq_constructor(cursor, expected_tints):
 ])
 def test_tintseq_accessors(cursor, expected_tintseq):
 	assert TIntSeq(expected_tintseq).duration() == 'Sequence'
-	# assert TIntSeq(expected_tintseq).getValues() == [intrange(10, 30, upper_inc=True)]
+	assert TIntSeq(expected_tintseq).getValues() == [10, 20, 30]
 	assert TIntSeq(expected_tintseq).startValue() == 10
 	assert TIntSeq(expected_tintseq).endValue() == 30
 	assert TIntSeq(expected_tintseq).minValue() == 10
@@ -206,14 +208,10 @@ def test_tintseq_accessors(cursor, expected_tintseq):
 	'{[10@2019-09-01 00:00:00+01], [20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]}',
 	# 'Interp=Stepwise;{[10@2019-09-01 00:00:00+01], [20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]}',
 	['[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'],
-	# (['[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'], 'Linear'),
-	# (['[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'], 'Stepwise'),
 	[TIntSeq('[10@2019-09-01 00:00:00+01]'),
 	 TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')],
 	# ([TIntSeq('[10@2019-09-01 00:00:00+01]'),
 	# TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')], 'Linear'),
-	# ([TIntSeq('[10@2019-09-01 00:00:00+01]'),
-	# TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')], 'Stepwise'),
 ])
 def test_tints_constructor(cursor, expected_tints):
 	if isinstance(expected_tints, tuple):
@@ -234,7 +232,7 @@ def test_tints_constructor(cursor, expected_tints):
 ])
 def test_tints_accessors(cursor, expected_tints):
 	assert TIntS(expected_tints).duration() == 'SequenceSet'
-	# assert TIntS(expected_tints).getValues() == [intrange(10, 10, upper_inc=True),intrange(20, 30, 30, upper_inc=True)]
+	assert TIntS(expected_tints).getValues() == [10, 20, 30]
 	assert TIntS(expected_tints).startValue() == 10
 	assert TIntS(expected_tints).endValue() == 30
 	assert TIntS(expected_tints).minValue() == 10

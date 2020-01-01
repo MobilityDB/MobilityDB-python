@@ -55,8 +55,9 @@ class TIntSeq(TemporalSeq, TInt):
 	Temporal integers of sequence duration
 	"""
 
-	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp='Stepwise'):
+	def __init__(self, instantList, lower_inc=None, upper_inc=None):
 		TemporalSeq.BaseClass = int
+		TemporalSeq.BaseClassDiscrete = True
 		TemporalSeq.ComponentClass = TIntInst
 		super().__init__(instantList, lower_inc, upper_inc)
 
@@ -65,19 +66,18 @@ class TIntSeq(TemporalSeq, TInt):
 		return 'Stepwise'
 
 
-
 class TIntS(TemporalS, TInt):
 	"""
 	Temporal integers of sequence set duration
 	"""
 
-	def __init__(self, sequenceList, interp='Stepwise'):
+	def __init__(self, sequenceList):
 		TemporalS.BaseClass = int
+		TemporalS.BaseClassDiscrete = True
 		TemporalS.ComponentClass = TIntSeq
 		super().__init__(sequenceList)
 
 	@classmethod
 	def interpolation(self):
 		return 'Stepwise'
-
 

@@ -1,5 +1,5 @@
 from parsec import *
-from MobilityDB.TemporalTypes.temporal_parser import *
+from MobilityDB.TemporalTypes.temporal_parser import parse_temporalinst
 from datetime import datetime
 from bdateutil.parser import parse
 from .temporal import Temporal

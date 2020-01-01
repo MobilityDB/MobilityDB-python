@@ -50,6 +50,7 @@ class TBoolSeq(TemporalSeq, TBool):
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp='Stepwise'):
 		TemporalSeq.BaseClass = str
+		TemporalSeq.BaseClassDiscrete = True
 		TemporalSeq.ComponentClass = TBoolInst
 		self._interp = 'Stepwise'
 		super().__init__(instantList, lower_inc, upper_inc)
@@ -66,6 +67,7 @@ class TBoolS(TemporalS, TBool):
 
 	def __init__(self, sequenceList, interp='Stepwise'):
 		TemporalS.BaseClass = str
+		TemporalS.BaseClassDiscrete = True
 		TemporalS.ComponentClass = TBoolSeq
 		self._interp = 'Stepwise'
 		super().__init__(sequenceList)
@@ -73,5 +75,4 @@ class TBoolS(TemporalS, TBool):
 	@classmethod
 	def interpolation(self):
 		return 'Stepwise'
-
 

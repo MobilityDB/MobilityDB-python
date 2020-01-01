@@ -1,5 +1,5 @@
 from parsec import *
-from MobilityDB.TemporalTypes.temporal_parser import *
+from MobilityDB.TemporalTypes.temporal_parser import parse_temporalseq
 from MobilityDB.TimeTypes.period import Period
 from MobilityDB.TimeTypes.periodset import PeriodSet
 from MobilityDB.TemporalTypes.temporalinst import TemporalInst

@@ -136,6 +136,7 @@ class TGeomPointSeq(TemporalSeq, TGeomPoint):
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
 		TemporalSeq.BaseClass = Point
+		TemporalSeq.BaseClassDiscrete = False
 		TemporalSeq.ComponentClass = TGeomPointInst
 		super().__init__(instantList, lower_inc, upper_inc, interp)
 
@@ -175,6 +176,7 @@ class TGeomPointS(TemporalS, TGeomPoint):
 
 	def __init__(self, sequenceList, interp=None):
 		TemporalS.BaseClass = Point
+		TemporalS.BaseClassDiscrete = False
 		TemporalS.ComponentClass = TGeomPointSeq
 		super().__init__(sequenceList, interp)
 

@@ -50,6 +50,7 @@ class TTextSeq(TemporalSeq, TText):
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp='Stepwise'):
 		TemporalSeq.BaseClass = str
+		TemporalS.BaseClassDiscrete = True
 		TemporalSeq.ComponentClass = TTextInst
 		super().__init__(instantList, lower_inc, upper_inc, interp)
 
@@ -65,6 +66,7 @@ class TTextS(TemporalS, TText):
 
 	def __init__(self, sequenceList, interp='Stepwise'):
 		TemporalS.BaseClass = str
+		TemporalS.BaseClassDiscrete = True
 		TemporalS.ComponentClass = TTextSeq
 		super().__init__(sequenceList, interp)
 
