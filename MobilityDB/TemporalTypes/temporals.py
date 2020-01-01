@@ -14,9 +14,9 @@ class TemporalS(Temporal):
 	__slots__ = ['_sequenceList', '_interp']
 
 	def __init__(self, sequenceList, interp=None):
-		assert(isinstance(interp, (str, type(None)))), "ERROR: Invalid interpolation"
+		assert (isinstance(interp, (str, type(None)))), "ERROR: Invalid interpolation"
 		if isinstance(interp, str) and interp is None:
-			assert(interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
+			assert (interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
 		self._sequenceList = []
 		# Constructor with a single argument of type string
 		if isinstance(sequenceList, str):
@@ -29,8 +29,9 @@ class TemporalS(Temporal):
 				if self.__class__.BaseClassDiscrete == True:
 					seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2]))
 				else:
-					seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2], seq[3]))
-			self._sequenceList= seqList
+					# seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2], seq[3]))
+					seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2], elements[2][1]))
+			self._sequenceList = seqList
 			# Set interpolation with the argument or the flag from the string if given
 			if interp is not None:
 				self._interp = interp
@@ -63,9 +64,12 @@ class TemporalS(Temporal):
 
 	def _valid(self):
 		if any(x.endTimestamp() >= y.startTimestamp() or \
-			(x.endTimestamp() == y.startTimestamp() and x.upper_inc() and x.lower_inc()) \
-				   for x, y in zip(self._sequenceList, self._sequenceList[1:])):
+					   (x.endTimestamp() == y.startTimestamp() and x.upper_inc() and x.lower_inc()) \
+			   for x, y in zip(self._sequenceList, self._sequenceList[1:])):
 			raise Exception("ERROR: The sequences of a sequence set cannot overlap")
+		if any(x.interpolation() != y.interpolation() \
+			   for x, y in zip(self._sequenceList, self._sequenceList[1:])):
+			raise Exception("ERROR: All sequences of a sequence set must have the same interpolation")
 		return True
 
 	@classmethod
@@ -114,7 +118,7 @@ class TemporalS(Temporal):
 		Period on which the temporal value is defined ignoring the potential time gaps
 		"""
 		return Period(self.startTimestamp(), self.endTimestamp(),
-			self._sequenceList[0]._lower_inc, self._sequenceList[-1]._upper_inc)
+					  self._sequenceList[0]._lower_inc, self._sequenceList[-1]._upper_inc)
 
 	def numInstants(self):
 		"""
@@ -247,7 +251,8 @@ class TemporalS(Temporal):
 		"""
 		Intersects timestamp set?
 		"""
-		return any(seq.intersectsTimestamp(timestamp) for seq in self._sequenceList for timestamp in timestampset._datetimeList)
+		return any(seq.intersectsTimestamp(timestamp) for seq in self._sequenceList for timestamp in
+				   timestampset._datetimeList)
 
 	def intersectsPeriod(self, period):
 		"""
@@ -269,8 +274,11 @@ class TemporalS(Temporal):
 		return False
 
 	def __str__(self):
-		return "'{{{}}}'".format(', '.join('{}'.format(sequence.__str__().replace("'", ""))
-			for sequence in self._sequenceList))
+		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' and self.__class__.BaseClassDiscrete == False else ''
+		seqList_str = "{{{}}}".format(
+			', '.join('{}'.format(sequence.__str__().replace("'", "").replace("Interp=Stepwise;", ""))
+					  for sequence in self._sequenceList))
+		return f"'{interp_str}{seqList_str}'"
 
 	def __repr__(self):
 		return (f'{self.__class__.__name__ }'

@@ -5,6 +5,7 @@ from MobilityDB.TimeTypes.periodset import PeriodSet
 from MobilityDB.TemporalTypes.temporalinst import TemporalInst
 from MobilityDB.TemporalTypes.temporalinstants import TemporalInstants
 
+
 class TemporalSeq(TemporalInstants):
 	"""
 	Abstract class for temporal types of sequence duration
@@ -12,11 +13,11 @@ class TemporalSeq(TemporalInstants):
 	__slots__ = ['_lower_inc', '_upper_inc', '_interp']
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
-		assert(isinstance(lower_inc, (bool, type(None))))
-		assert(isinstance(upper_inc, (bool, type(None))))
-		assert(isinstance(interp, (str, type(None)))), "ERROR: Invalid interpolation"
+		assert (isinstance(lower_inc, (bool, type(None))))
+		assert (isinstance(upper_inc, (bool, type(None))))
+		assert (isinstance(interp, (str, type(None)))), "ERROR: Invalid interpolation"
 		if isinstance(interp, str):
-			assert(interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
+			assert (interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
 		self._instantList = []
 		# Constructor with a first argument of type string and optional arguments for the bounds and interpolation
 		if isinstance(instantList, str):
@@ -63,8 +64,9 @@ class TemporalSeq(TemporalInstants):
 		if any(x._time >= y._time for x, y in zip(self._instantList, self._instantList[1:])):
 			raise Exception("ERROR: The timestamps of a temporal sequence must be increasing")
 		if (self._interp == 'Stepwise' and len(self._instantList) > 1 and not self._upper_inc and
-			self._instantList[-1]._value != self._instantList[-2]._value):
-			raise Exception("ERROR: The last two values of a temporal sequence with exclusive upper bound and stepwise interpolation must be equal")
+					self._instantList[-1]._value != self._instantList[-2]._value):
+			raise Exception(
+				"ERROR: The last two values of a temporal sequence with exclusive upper bound and stepwise interpolation must be equal")
 		return True
 
 	@classmethod
@@ -134,8 +136,8 @@ class TemporalSeq(TemporalInstants):
 		Intersects timestamp?
 		"""
 		return ((self.lower_inc and self._instantList[0]._time == timestamp) or
-			(self.upper_inc and self._instantList[-1]._time == timestamp) or
-			(self._instantList[0]._time < timestamp < self._instantList[-1]._time))
+				(self.upper_inc and self._instantList[-1]._time == timestamp) or
+				(self._instantList[0]._time < timestamp < self._instantList[-1]._time))
 
 	def intersectsTimestampset(self, timestampset):
 		"""
@@ -159,14 +161,15 @@ class TemporalSeq(TemporalInstants):
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
 			if self._instantList == other._instantList and self._lower_inc == other._lower_inc and \
-				self._upper_inc == other._upper_inc and self._interp == other._interp:
+							self._upper_inc == other._upper_inc and self._interp == other._interp:
 				return True
 		return False
 
 	def __str__(self):
+		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' and self.__class__.BaseClassDiscrete == False else ''
 		lower_str = '[' if self._lower_inc else '('
 		upper_str = ']' if self._upper_inc else ')'
-		return (f"'{lower_str}{TemporalInstants.__str__(self)}{upper_str}'")
+		return (f"'{interp_str}{lower_str}{TemporalInstants.__str__(self)}{upper_str}'")
 
 	def __repr__(self):
 		return (f'{self.__class__.__name__ }'

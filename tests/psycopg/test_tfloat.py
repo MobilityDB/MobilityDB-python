@@ -135,7 +135,7 @@ def test_tfloati_accessors(cursor, expected_tfloati):
 		PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
 
-@pytest.mark.parametrize('expected_tfloats', [
+@pytest.mark.parametrize('expected_tfloatseq', [
 	'[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]',
 	'Interp=Stepwise;[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]',
 	['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'],
@@ -146,18 +146,18 @@ def test_tfloati_accessors(cursor, expected_tfloati):
 	([TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
 	  TFloatInst('10.0@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
 ])
-def test_tfloatseq_constructor(cursor, expected_tfloats):
-	if isinstance(expected_tfloats, tuple):
-		params = [TFloatSeq(*expected_tfloats)]
+def test_tfloatseq_constructor(cursor, expected_tfloatseq):
+	if isinstance(expected_tfloatseq, tuple):
+		params = [TFloatSeq(*expected_tfloatseq)]
 	else:
-		params = [TFloatSeq(expected_tfloats)]
+		params = [TFloatSeq(expected_tfloatseq)]
 	cursor.execute('INSERT INTO tbl_tfloatseq (temp) VALUES (%s)', params)
 	cursor.execute('SELECT temp FROM tbl_tfloatseq WHERE temp=%s', params)
 	result = cursor.fetchone()[0]
-	if isinstance(expected_tfloats, tuple):
-		assert result == TFloatSeq(*expected_tfloats)
+	if isinstance(expected_tfloatseq, tuple):
+		assert result == TFloatSeq(*expected_tfloatseq)
 	else:
-		assert result == TFloatSeq(expected_tfloats)
+		assert result == TFloatSeq(expected_tfloatseq)
 
 
 @pytest.mark.parametrize('expected_tfloatseq', [
@@ -209,13 +209,13 @@ def test_tfloatseq_accessors(cursor, expected_tfloatseq):
 	'Interp=Stepwise;{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}',
 	['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'],
 	(['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Linear'),
-	(['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Stepwise'),
+	(['Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Stepwise'),
 	[TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),
 	 TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')],
 	([TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),
 	  TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Linear'),
-	([TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),
-	  TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Stepwise'),
+	([TFloatSeq('Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]'),
+	  TFloatSeq('Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Stepwise'),
 ])
 def test_tfloats_constructor(cursor, expected_tfloats):
 	if isinstance(expected_tfloats, tuple):
