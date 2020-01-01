@@ -58,7 +58,7 @@ class TemporalInstants(Temporal):
 		N-th distinct instant
 		"""
 		# 1-based
-		if 0 <= n < len(self._instantList):
+		if 1 <= n <= len(self._instantList):
 			return self._instantList[n - 1]
 		else:
 			raise Exception("ERROR: Out of range")
@@ -92,7 +92,7 @@ class TemporalInstants(Temporal):
 		N-th timestamp
 		"""
 		# 1-based
-		if 0 <= n < len(self._instantList):
+		if 1 <= n <= len(self._instantList):
 			return self._instantList[n - 1]._time
 		else:
 			raise Exception("ERROR: Out of range")

@@ -302,3 +302,9 @@ print(type(f))
 f = TFloat('{1@2000-01-01, 1@2000-01-02}')
 print(f)
 """
+
+r1 = floatrange(10.0, 10.0, upper_inc=True)
+r2 = floatrange(10.0, 10.0, upper_inc=True)
+print("***", r1)
+print("***", r2)
+print("***", r1 == r2)

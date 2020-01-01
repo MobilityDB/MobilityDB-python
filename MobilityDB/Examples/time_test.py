@@ -177,3 +177,8 @@ print ("Time types equality:", ts1 == ps1)
 print("representantion:", repr(p1))
 print("representantion:", repr(ts1))
 print("representantion:", repr(ps1))
+
+tuple = ('2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01')
+print(tuple)
+p = Period(*tuple)
+print(p)

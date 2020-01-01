@@ -21,7 +21,7 @@ class PeriodSet:
 		if len(argv) == 1 and isinstance(argv[0], str):
 			ps = argv[0].strip()
 			if ps[0] == '{' and ps[-1] == '}':
-				p = re.compile('[\[|\(].*?[^\]\)][\]|\)]')
+				p = re.compile(r'[\[|\(].*?[^\]\)][\]|\)]')
 				periods = p.findall(ps)
 				for period in periods:
 					self._periodList.append(Period(period))
@@ -71,8 +71,8 @@ class PeriodSet:
 		"""
 		Period on which the period set is defined ignoring the potential time gaps
 		"""
-		return Period((self._periodList[0]).lower(), (self._periodList[-1]).lower(),
-					  self._periodList[0].lower_inc(), self._periodList[-1].lower_inc())
+		return Period((self._periodList[0]).lower(), (self._periodList[-1]).upper(),
+					  self._periodList[0].lower_inc(), self._periodList[-1].upper_inc())
 
 	def numTimestamps(self):
 		"""
@@ -97,7 +97,7 @@ class PeriodSet:
 		N-th distinct timestamp
 		"""
 		# 1-based
-		if 0 < n <= len(self.timestamps()):
+		if 1 <= n <= len(self.timestamps()):
 			return (self.timestamps())[n - 1]
 		else:
 			raise Exception("ERROR: there is no value at this index")
@@ -136,7 +136,7 @@ class PeriodSet:
 		N-th period
 		"""
 		# 1-based
-		if 0 <= n < len(self._periodList):
+		if 1 <= n <= len(self._periodList):
 			return self._periodList[n - 1]
 		else:
 			raise Exception("ERROR: Out of range")
