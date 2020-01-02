@@ -59,7 +59,6 @@ class TGeomPointInst(TemporalInst, TGeomPoint):
 
 	def __init__(self, value, time=None):
 		TemporalInst.BaseClass = Point
-		#super().__init__(value, time)
 		# Constructor with a single argument of type string
 		if time is None and isinstance(value, str):
 			splits = value.split("@")
@@ -76,10 +75,13 @@ class TGeomPointInst(TemporalInst, TGeomPoint):
 				raise Exception("ERROR: Could not parse temporal instant value")
 		# Constructor with two arguments of type string
 		elif isinstance(value, str) and isinstance(time, str):
-			idx1 = value.find('(')
-			idx2 = value.find(')')
-			coords = (value[idx1 + 1:idx2]).split(' ')
-			self._value = self.BaseClass(coords)
+			if '(' in value and ')' in value:
+				idx1 = value.find('(')
+				idx2 = value.find(')')
+				coords = (value[idx1 + 1:idx2]).split(' ')
+				self._value = self.BaseClass(coords)
+			else:
+				self._value = Geometry.from_ewkb(value)
 			self._time = parse(time)
 		# Constructor with two arguments of type BaseClass and datetime
 		elif isinstance(value, self.BaseClass) and isinstance(time, datetime):
@@ -157,16 +159,9 @@ class TGeomPointSeq(TemporalSeq, TGeomPoint):
 		"""
 		Distinct values
 		"""
-		values = super().getValues()
-		if len(values) == 1:
-			result = values[0]
-		else:
-			result = LineString(values)
+		values = [inst._value for inst in self._instantList]
+		result = values[0] if len(values) == 1 else LineString(values)
 		return result
-
-	def __str__(self):
-		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
-		return interp_str + super().__str__()
 
 
 class TGeomPointS(TemporalS, TGeomPoint):
@@ -204,8 +199,4 @@ class TGeomPointS(TemporalS, TGeomPoint):
 			return MultiPoint(points)
 		if len(points) == 0 and len(points) != 0:
 			return MultiLineString(lines)
-
-	def __str__(self):
-		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
-		return interp_str + super().__str__()
 

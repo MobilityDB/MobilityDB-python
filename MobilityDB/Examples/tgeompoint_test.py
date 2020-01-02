@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from bdateutil.parser import parse
-from postgis import Point
+from postgis import Point, MultiPoint, LineString, MultiLineString, GeometryCollection
 from MobilityDB import *
 
 
@@ -226,3 +226,8 @@ print(inst.intersectsPeriodset(ps))
 print(ti.intersectsPeriodset(ps))
 print(seq.intersectsPeriodset(ps))
 print(ts.intersectsPeriodset(ps))
+
+p = MultiPoint([(10.0, 10.0),(20.0, 20.0)])
+p = MultiPoint([Point(10.0, 10.0),Point(20.0, 20.0),Point(30.0, 30.0)])
+p = LineString([Point(10.0, 10.0),Point(20.0, 20.0)])
+print(p)

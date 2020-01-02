@@ -99,13 +99,6 @@ class TFloatSeq(TemporalSeq, TFloat):
 			max_inc = max in self._instantList[1:-1]
 		return [floatrange(min, max, min_inc, max_inc)]
 
-	"""
-	def __str__(self):
-		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
-		seq_str= super().__str__().replace("'", "")
-		return f"'{interp_str}{seq_str}'"
-	"""
-
 
 class TFloatS(TemporalS, TFloat):
 	"""
@@ -140,9 +133,4 @@ class TFloatS(TemporalS, TFloat):
 				range = range1
 		result.append(range)
 		return result
-	"""
-	def __str__(self):
-		interp_str = 'Interp=Stepwise;' if self._interp == 'Stepwise' else ''
-		seq_str= super().__str__().replace("'", "")
-		return f"'{interp_str}{seq_str}'"
-	"""
+

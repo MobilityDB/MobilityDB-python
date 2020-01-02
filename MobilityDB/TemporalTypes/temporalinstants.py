@@ -9,7 +9,7 @@ class TemporalInstants(Temporal):
 		"""
 		Distinct values
 		"""
-		return list(set([inst._value for inst in self._instantList]))
+		return list(dict.fromkeys([inst._value for inst in self._instantList]))
 
 	def startValue(self):
 		"""

@@ -234,7 +234,7 @@ def test_ttexts_constructor(cursor, expected_ttexts):
 ])
 def test_ttexts_accessors(cursor, expected_ttexts):
 	assert TTextS(expected_ttexts).duration() == 'SequenceSet'
-	assert TTextS(expected_ttexts).getValues() == ['AA', 'CC', 'BB']
+	assert TTextS(expected_ttexts).getValues() == ['AA', 'BB', 'CC']
 	assert TTextS(expected_ttexts).startValue() == 'AA'
 	assert TTextS(expected_ttexts).endValue() == 'CC'
 	assert TTextS(expected_ttexts).minValue() == 'AA'
