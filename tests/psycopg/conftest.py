@@ -1,7 +1,7 @@
 import pytest
 from MobilityDB import *
 
-db = psycopg2.connect(host='localhost', dbname="mobilitydb", user='mobilitydb', password='')
+db = psycopg2.connect(dbname="test")
 db.autocommit = True
 
 MobilityDBRegister(db)

@@ -15,7 +15,7 @@ at = lexeme(string('@'))
 def parse_temporalinst():
 	value = yield spaces >> regex(r'[^@]+') << spaces
 	yield string('@')
-	time = yield spaces >> regex('[^,}\]\)]+')
+	time = yield spaces >> regex(r'[^,}\]\)]+')
 	return [value, time]
 
 @generate
