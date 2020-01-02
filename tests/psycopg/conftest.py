@@ -11,7 +11,7 @@ time_types = [TimestampSet, Period, PeriodSet]
 box_types = [TBox, STBox]
 duration_suffixes = ['Inst', 'I', 'Seq', 'S']
 duration_types = ['INSTANT', 'INSTANTSET', 'SEQUENCE', 'SEQUENCESET']
-temporal_types = [TBool, TInt, TFloat, TGeomPoint, TGeogPoint]
+temporal_types = [TBool, TInt, TFloat, TText, TGeomPoint, TGeogPoint]
 
 def pytest_configure():
 	for time in time_types:

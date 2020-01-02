@@ -66,7 +66,7 @@ def test_tintinst_accessors(cursor, expected_tintinst):
 		PeriodSet('{[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')) == False
 
 
-@pytest.mark.parametrize('expected_tintinst', [
+@pytest.mark.parametrize('expected_tinti', [
 	'{10@2019-09-01 00:00:00+01, 20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01}',
 	('10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'),
 	(TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'),
@@ -75,18 +75,18 @@ def test_tintinst_accessors(cursor, expected_tintinst):
 	[TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'),
 	 TIntInst('10@2019-09-03 00:00:00+01')],
 ])
-def test_tinti_constructor(cursor, expected_tintinst):
-	if isinstance(expected_tintinst, tuple):
-		params = [TIntI(*expected_tintinst)]
+def test_tinti_constructor(cursor, expected_tinti):
+	if isinstance(expected_tinti, tuple):
+		params = [TIntI(*expected_tinti)]
 	else:
-		params = [TIntI(expected_tintinst)]
+		params = [TIntI(expected_tinti)]
 	cursor.execute('INSERT INTO tbl_tinti (temp) VALUES (%s)', params)
 	cursor.execute('SELECT temp FROM tbl_tinti WHERE temp=%s', params)
 	result = cursor.fetchone()[0]
-	if isinstance(expected_tintinst, tuple):
-		assert result == TIntI(*expected_tintinst)
+	if isinstance(expected_tinti, tuple):
+		assert result == TIntI(*expected_tinti)
 	else:
-		assert result == TIntI(expected_tintinst)
+		assert result == TIntI(expected_tinti)
 
 
 @pytest.mark.parametrize('expected_tinti', [
