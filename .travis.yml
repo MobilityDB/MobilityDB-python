@@ -2,12 +2,17 @@ language: python
 python:
   - 3.6
 
+database:
+    pre:
+    - psql -U ubuntu -c "CREATE DATABASE test;"
+    - psql -U ubuntu -c "create extension postgis" -d test
+    - psql -U ubuntu -c "create extension mobilitydb" -d test
+
 before_install:
   - python --version
   - pip install -U pip
   - pip install -U pytest
   - pip install codecov
-
 install:
   - pip install ".[test]" . # install package + test dependencies
 
