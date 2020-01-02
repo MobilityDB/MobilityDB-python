@@ -21,7 +21,8 @@ setup(
 		'postgis',
 		'pytest',
 		'python-dateutil',
-		'bdateutil'
+		'bdateutil',
+		'parsec'
 	],
 	keywords=['MobilityDB', 'Python'],
 	classifiers=[
