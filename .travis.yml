@@ -4,6 +4,7 @@ python:
 
 database:
     pre:
+    - pg_ctl start
     - psql -U ubuntu -c "CREATE DATABASE test;"
     - psql -U ubuntu -c "create extension postgis" -d test
     - psql -U ubuntu -c "create extension mobilitydb" -d test
@@ -13,6 +14,7 @@ before_install:
   - pip install -U pip
   - pip install -U pytest
   - pip install codecov
+
 install:
   - pip install ".[test]" . # install package + test dependencies
 
