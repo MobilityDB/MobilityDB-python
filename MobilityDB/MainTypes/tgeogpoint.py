@@ -113,6 +113,9 @@ class TGeogPointSeq(TemporalSeq, TGeogPoint):
 		super().__init__(instantList, lower_inc, upper_inc, interp)
 
 	def interpolation(self):
+		"""
+		Interpolation
+		"""
 		return self._interp
 
 	def getValues(self):
@@ -136,6 +139,9 @@ class TGeogPointS(TemporalS, TGeogPoint):
 		super().__init__(sequenceList, interp)
 
 	def interpolation(self):
+		"""
+		Interpolation
+		"""
 		return self._interp
 
 	def getValues(self):

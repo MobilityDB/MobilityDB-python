@@ -81,6 +81,9 @@ class TFloatSeq(TemporalSeq, TFloat):
 		super().__init__(instantList, lower_inc, upper_inc, interp)
 
 	def interpolation(self):
+		"""
+		Interpolation
+		"""
 		return self._interp
 
 	def getValues(self):
@@ -105,13 +108,15 @@ class TFloatS(TemporalS, TFloat):
 	Temporal floats of sequence set duration
 	"""
 	def __init__(self, sequenceList, interp=None):
-		print("$$$ TFloatS sequenceList", sequenceList)
 		TemporalS.BaseClass = float
 		TemporalS.BaseClassDiscrete = False
 		TemporalS.ComponentClass = TFloatSeq
 		super().__init__(sequenceList, interp)
 
 	def interpolation(self):
+		"""
+		Interpolation
+		"""
 		return self._interp
 
 	def getValues(self):
@@ -119,13 +124,10 @@ class TFloatS(TemporalS, TFloat):
 		Distinct values
 		"""
 		ranges = sorted([seq.valueRange() for seq in self._sequenceList])
-		print("ranges =", ranges)
 		# Normalize list of ranges
 		result = []
 		range = ranges[0]
 		for range1 in ranges[1:]:
-			print("range =", range)
-			print("range1 =", range1)
 			if range.adjacent(range1) or range.overlap(range1):
 				range = range.union(range1)
 			else:

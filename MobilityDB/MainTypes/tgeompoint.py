@@ -153,6 +153,9 @@ class TGeomPointSeq(TemporalSeq, TGeomPoint):
 			raise Exception("ERROR: All geometries composing a temporal point must have the same SRID")
 
 	def interpolation(self):
+		"""
+		Interpolation
+		"""
 		return self._interp
 
 	def getValues(self):
@@ -184,6 +187,9 @@ class TGeomPointS(TemporalS, TGeomPoint):
 			raise Exception("ERROR: All geometries composing a temporal point must have the same SRID")
 
 	def interpolation(self):
+		"""
+		Interpolation
+		"""
 		return self._interp
 
 	def getValues(self):
