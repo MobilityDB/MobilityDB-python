@@ -20,7 +20,7 @@ setup(
 		'Spans',
 		'postgis',
 		'pytest',
-		'python-dateutil'
+		'python-dateutil',
 		'bdateutil'
 	],
 	keywords=['MobilityDB', 'Python'],
