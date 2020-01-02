@@ -19,7 +19,9 @@ setup(
 		'psycopg2-binary',
 		'Spans',
 		'postgis',
-		'pytest', 'python-dateutil'
+		'pytest',
+		'python-dateutil'
+		'bdateutil'
 	],
 	keywords=['MobilityDB', 'Python'],
 	classifiers=[
