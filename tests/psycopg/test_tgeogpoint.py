@@ -186,7 +186,6 @@ def test_tgeogpointseq_constructor(cursor, expected_tgeogpointseq):
 ])
 def test_tgeogpointseq_accessors(cursor, expected_tgeogpointseq):
 	assert TGeogPointSeq(expected_tgeogpointseq).duration() == 'Sequence'
-	print("$$$",TGeogPointSeq(expected_tgeogpointseq).getValues())
 	assert TGeogPointSeq(expected_tgeogpointseq).getValues() == LineString([Point(10.0, 10.0),Point(20.0, 20.0),Point(10.0, 10.0)])
 	assert TGeogPointSeq(expected_tgeogpointseq).startValue() == Point(10.0, 10.0)
 	assert TGeogPointSeq(expected_tgeogpointseq).endValue() == Point(10.0, 10.0)

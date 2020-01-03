@@ -186,7 +186,6 @@ def test_tgeompointseq_constructor(cursor, expected_tgeompointseq):
 ])
 def test_tgeompointseq_accessors(cursor, expected_tgeompointseq):
 	assert TGeomPointSeq(expected_tgeompointseq).duration() == 'Sequence'
-	print("$$$",TGeomPointSeq(expected_tgeompointseq).getValues())
 	assert TGeomPointSeq(expected_tgeompointseq).getValues() == LineString([Point(10.0, 10.0),Point(20.0, 20.0),Point(10.0, 10.0)])
 	assert TGeomPointSeq(expected_tgeompointseq).startValue() == Point(10.0, 10.0)
 	assert TGeomPointSeq(expected_tgeompointseq).endValue() == Point(10.0, 10.0)

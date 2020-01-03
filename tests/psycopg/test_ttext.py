@@ -7,7 +7,6 @@ from MobilityDB.MainTypes import TTextInst, TTextI, TTextSeq, TTextS
 from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
 
 
-"""
 @pytest.mark.parametrize('expected_ttextinst', [
 	'AA@2019-09-01 00:00:00+01',
 	('AA', '2019-09-08 00:00:00+01'),
@@ -19,7 +18,6 @@ def test_ttextinst_constructors(cursor, expected_ttextinst):
 	cursor.execute('SELECT temp FROM tbl_ttextinst WHERE temp=%s', params)
 	result = cursor.fetchone()[0]
 	assert result == TTextInst(expected_ttextinst)
-"""
 
 
 @pytest.mark.parametrize('expected_ttextinst', [
@@ -66,7 +64,6 @@ def test_ttextinst_accessors(cursor, expected_ttextinst):
 	assert TTextInst(expected_ttextinst).intersectsPeriodset(
 		PeriodSet('{[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')) == False
 
-"""
 @pytest.mark.parametrize('expected_ttexti', [
 	'{AA@2019-09-01 00:00:00+01, BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01}',
 	('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'),
@@ -88,7 +85,6 @@ def test_ttexti_constructor(cursor, expected_ttexti):
 		assert result == TTextI(*expected_ttexti)
 	else:
 		assert result == TTextI(expected_ttexti)
-"""
 
 
 @pytest.mark.parametrize('expected_ttexti', [
@@ -137,7 +133,6 @@ def test_ttexti_accessors(cursor, expected_ttexti):
 		PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
 
-"""
 @pytest.mark.parametrize('expected_ttextseq', [
 	'[AA@2019-09-01 00:00:00+01, BB@2019-09-02 00:00:00+01, BB@2019-09-03 00:00:00+01]',
 	'Interp=Stepwise;[AA@2019-09-01 00:00:00+01, BB@2019-09-02 00:00:00+01, BB@2019-09-03 00:00:00+01]',
@@ -160,7 +155,6 @@ def test_ttextseq_constructor(cursor, expected_ttextseq):
 		assert result == TTextSeq(*expected_ttextseq)
 	else:
 		assert result == TTextSeq(expected_ttextseq)
-"""
 
 
 @pytest.mark.parametrize('expected_ttextseq', [
@@ -206,7 +200,6 @@ def test_ttextseq_accessors(cursor, expected_ttextseq):
 		PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
 
-"""
 @pytest.mark.parametrize('expected_ttexts', [
 	'{[AA@2019-09-01 00:00:00+01], [BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]}',
 	'Interp=Stepwise;{[AA@2019-09-01 00:00:00+01], [BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]}',
@@ -226,7 +219,6 @@ def test_ttexts_constructor(cursor, expected_ttexts):
 		assert result == TTextS(*expected_ttexts)
 	else:
 		assert result == TTextS(expected_ttexts)
-"""
 
 
 @pytest.mark.parametrize('expected_ttexts', [
