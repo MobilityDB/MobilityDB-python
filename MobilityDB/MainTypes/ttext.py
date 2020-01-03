@@ -29,7 +29,25 @@ class TTextInst(TemporalInst, TText):
 
 	def __init__(self, value, time=None):
 		TemporalInst.BaseClass = str
-		super().__init__(value, time)
+		# Constructor with a single argument of type string
+		if isinstance(value, str) and time is None:
+			couple = parse_temporalinst(value, 0)
+			self._value = type(self).BaseClass(couple[2][0])
+			self._time = parse(couple[2][1])
+		# Constructor with two arguments of type string
+		elif isinstance(value, str) and isinstance(time, str):
+			self._value = self.BaseClass(value)
+			self._time = parse(time)
+		# Constructor with two arguments of type BaseClass and datetime
+		elif isinstance(value, self.BaseClass) and isinstance(time, datetime):
+			self._value = value
+			self._time = time
+		# Constructor with one argument of type list
+		elif isinstance(value, tuple):
+			self._value = self.BaseClass(value[0])
+			self._time = parse(value[1])
+		else:
+			raise Exception("ERROR: Could not parse temporal instant value")
 
 
 class TTextI(TemporalI, TText):
