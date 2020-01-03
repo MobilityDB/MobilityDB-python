@@ -1,5 +1,7 @@
 language: python
 
+dist: xenial
+
 python:
   - 3.6
 
@@ -19,7 +21,7 @@ env:
   - PGPORT=5433
 
 before_script:
-  - psql -c 'create database test;' -U postgres
+  - psql -U postgres -c 'create database test;'
   - psql -U postgres -d test -c "create extension postgis"
   - psql -U postgres -d test -c "create extension mobilitydb"
 
