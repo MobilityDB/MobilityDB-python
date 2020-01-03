@@ -221,7 +221,6 @@ class TemporalS(Temporal):
 		N-th sequence
 		"""
 		# 1-based
-		print("n =", n)
 		if 1 <= n <= len(self._sequenceList):
 			return self._sequenceList[n - 1]
 		else:

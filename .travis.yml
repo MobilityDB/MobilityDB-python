@@ -21,6 +21,7 @@ env:
   - PGPORT=5432
 
 before_script:
+  - pg_ctl start
   - psql -U postgres -c 'create database test;'
   - psql -U postgres -d test -c "create extension postgis"
   - psql -U postgres -d test -c "create extension mobilitydb"
