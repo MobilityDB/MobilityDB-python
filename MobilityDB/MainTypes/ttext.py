@@ -32,10 +32,19 @@ class TTextInst(TemporalInst, TText):
 		# Constructor with a single argument of type string
 		if isinstance(value, str) and time is None:
 			couple = parse_temporalinst(value, 0)
+			# Remove double quotes if present
+			print("###", couple[2][0])
+			if couple[2][0][0] == '"' and couple[2][0][0][-1] == '"':
+				couple[2][0] = couple[2][0][1:-1]
+				print("###", couple[2][0])
 			self._value = type(self).BaseClass(couple[2][0])
 			self._time = parse(couple[2][1])
 		# Constructor with two arguments of type string
 		elif isinstance(value, str) and isinstance(time, str):
+			if value[0] == '"' and value[-1] == '"':
+				print("###", couple[2][0])
+				couple[2][0] = couple[2][0][1:-1]
+				print("###", couple[2][0])
 			self._value = self.BaseClass(value)
 			self._time = parse(time)
 		# Constructor with two arguments of type BaseClass and datetime
