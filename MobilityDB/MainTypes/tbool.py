@@ -21,6 +21,12 @@ class TBool(Temporal):
 				return TBoolI(value)
 		raise Exception("ERROR: Could not parse temporal float value")
 
+	@staticmethod
+	def write(value):
+		if not isinstance(value, TBool):
+			raise ValueError('TBool value must subclass TBool class')
+		return value.__str__().strip("'")
+
 
 class TBoolInst(TemporalInst, TBool):
 	"""
@@ -28,7 +34,7 @@ class TBoolInst(TemporalInst, TBool):
 	"""
 
 	def __init__(self, value, time=None):
-		TemporalInst.BaseClass = str
+		TemporalInst.BaseClass = bool
 		super().__init__(value, time)
 
 
@@ -38,7 +44,7 @@ class TBoolI(TemporalI, TBool):
 	"""
 
 	def __init__(self,  *argv):
-		TemporalI.BaseClass = str
+		TemporalI.BaseClass = bool
 		TemporalI.ComponentClass = TBoolInst
 		super().__init__(*argv)
 
@@ -49,7 +55,7 @@ class TBoolSeq(TemporalSeq, TBool):
 	"""
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp='Stepwise'):
-		TemporalSeq.BaseClass = str
+		TemporalSeq.BaseClass = bool
 		TemporalSeq.BaseClassDiscrete = True
 		TemporalSeq.ComponentClass = TBoolInst
 		self._interp = 'Stepwise'
@@ -66,7 +72,7 @@ class TBoolS(TemporalS, TBool):
 	"""
 
 	def __init__(self, sequenceList, interp='Stepwise'):
-		TemporalS.BaseClass = str
+		TemporalS.BaseClass = bool
 		TemporalS.BaseClassDiscrete = True
 		TemporalS.ComponentClass = TBoolSeq
 		self._interp = 'Stepwise'

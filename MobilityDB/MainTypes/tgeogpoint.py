@@ -37,6 +37,12 @@ class TGeogPoint(Temporal):
 				return TGeogPointI(value)
 		raise Exception("ERROR: Could not parse temporal float value")
 
+	@staticmethod
+	def write(value):
+		if not isinstance(value, TGeogPoint):
+			raise ValueError('TGeogPoint value must subclass TGeogPoint class')
+		return value.__str__().strip("'")
+
 
 class TGeogPointInst(TemporalInst, TGeogPoint):
 	"""

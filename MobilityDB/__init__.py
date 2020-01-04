@@ -1,16 +1,21 @@
-# MobilityDB helpers for psycopg2.
-import psycopg2
-from MobilityDB.MainTypes import *
-from MobilityDB.TimeTypes import *
-from MobilityDB.BoxTypes import *
-from MobilityDB.MobilityDBConnection import MobilityDBRegister, MobilityDB
+from .BoxTypes import *
+from .MainTypes import *
+from .TemporalTypes import *
+from .TimeTypes import *
 
-__all__ = ['psycopg2', 'MobilityDBRegister',
-		   'TGeomPoint', 'TGeomPointInst', 'TGeomPointI', 'TGeomPointSeq', 'TGeomPointS',
-		   'TGeogPoint', 'TGeogPointInst', 'TGeogPointI', 'TGeogPointSeq', 'TGeogPointS',
-		   'TInt', 'TIntInst', 'TIntI', 'TIntSeq', 'TIntS',
-		   'TFloat', 'TFloatInst', 'TFloatI', 'TFloatSeq', 'TFloatS',
-		   'TBool', 'TBoolInst', 'TBoolI', 'TBoolSeq', 'TBoolS',
-		   'TText', 'TTextInst', 'TText', 'TTextSeq', 'TTextS',
-		   'Period', 'TimestampSet', 'PeriodSet',
-		   'TBox', 'STBox']
+
+__all__ = [
+	# BoxTypes
+	'TBox', 'STBox',
+	# MainTypes
+	'TBool', 'TBoolInst', 'TBoolI', 'TBoolSeq', 'TBoolS',
+	'TInt', 'TIntInst', 'TIntI', 'TIntSeq', 'TIntS',
+	'TFloat', 'TFloatInst', 'TFloatI', 'TFloatSeq', 'TFloatS',
+	'TText', 'TTextInst', 'TTextI', 'TTextSeq', 'TTextS',
+	'TGeomPoint', 'TGeomPointInst', 'TGeomPointI', 'TGeomPointSeq', 'TGeomPointS',
+	'TGeogPoint', 'TGeogPointInst', 'TGeogPointI', 'TGeogPointSeq', 'TGeogPointS',
+	# TemporalTypes
+	'Temporal', 'TemporalInst', 'TemporalInstants', 'TemporalI', 'TemporalSeq', 'TemporalS',
+	# TimeTypes
+	'Period', 'TimestampSet', 'PeriodSet'
+	]

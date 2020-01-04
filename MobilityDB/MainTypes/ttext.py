@@ -24,6 +24,12 @@ class TText(Temporal):
 				return TTextI(value)
 		raise Exception("ERROR: Could not parse temporal text value")
 
+	@staticmethod
+	def write(value):
+		if not isinstance(value, TText):
+			raise ValueError('TText value must subclass TText class')
+		return value.__str__().strip("'")
+
 
 class TTextInst(TemporalInst, TText):
 	"""

@@ -1,179 +1,180 @@
+import psycopg2
+from postgis.psycopg import register
 from MobilityDB import *
 
 connection = None
 
 try:
 	# Set the connection parameters to PostgreSQL
-	connection = psycopg2.connect(host='127.0.0.1', database='regtests', user='mobilitydb', password='')
+	connection = psycopg2.connect(host='localhost', database='regtests', user='mobilitydb', password='')
 	connection.autocommit = True
 
 	# Register MobilityDB data types
-	MobilityDBRegister(connection)
+	register(connection)
 
 	cursor = connection.cursor()
 
 	######################
-	# TBoolInst
+	# TTextInst
 	######################
 
-	select_query = "select * from tbl_tboolinst order by k limit 10"
+	select_query = "select * from tbl_ttextinst order by k limit 10"
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tboolinst table using cursor.fetchall\n")
+	print("Selecting rows from tbl_ttextinst table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
 		print("key =", row[0])
-		print("tboolinst =", row[1])
+		print("ttextinst =", row[1])
 		if not row[1]:
 			print("")
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
-	drop_table_query = '''DROP TABLE IF EXISTS tbl_tboolinst_temp;'''
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_ttextinst_temp;'''
 	cursor.execute(drop_table_query)
 	connection.commit()
 	print("Table deleted successfully in PostgreSQL ")
 
-	create_table_query = '''CREATE TABLE tbl_tboolinst_temp
+	create_table_query = '''CREATE TABLE tbl_ttextinst_temp
 		(
 		  k integer PRIMARY KEY,
-		  temp tbool
+		  temp ttext
 		); '''
 
 	cursor.execute(create_table_query)
 	connection.commit()
 	print("Table created successfully in PostgreSQL ")
 
-	postgres_insert_query = ''' INSERT INTO tbl_tboolinst_temp (k, temp) VALUES (%s, %s) '''
+	postgres_insert_query = ''' INSERT INTO tbl_ttextinst_temp (k, temp) VALUES (%s, %s) '''
 	result = cursor.executemany(postgres_insert_query, rows)
 	connection.commit()
 	count = cursor.rowcount
-	print(count, "record(s) inserted successfully into tbl_tboolinst_temp table")
+	print(count, "record(s) inserted successfully into tbl_ttextinst_temp table")
 
 	######################
-	# TBoolI
+	# TTextI
 	######################
 
-	select_query = "select * from tbl_tbooli order by k limit 10"
+	select_query = "select * from tbl_ttexti order by k limit 10"
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tbooli table using cursor.fetchall\n")
+	print("Selecting rows from tbl_ttexti table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
 		print("key =", row[0])
-		print("tbooli =", row[1])
+		print("ttexti =", row[1])
 		if not row[1]:
 			print("")
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
-	drop_table_query = '''DROP TABLE IF EXISTS tbl_tbooli_temp;'''
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_ttexti_temp;'''
 	cursor.execute(drop_table_query)
 	connection.commit()
 	print("Table deleted successfully in PostgreSQL ")
 
-	create_table_query = '''CREATE TABLE tbl_tbooli_temp
+	create_table_query = '''CREATE TABLE tbl_ttexti_temp
 		(
 		  k integer PRIMARY KEY,
-		  temp tbool
+		  temp ttext
 		); '''
 
 	cursor.execute(create_table_query)
 	connection.commit()
 	print("Table created successfully in PostgreSQL ")
 
-	postgres_insert_query = ''' INSERT INTO tbl_tbooli_temp (k, temp) VALUES (%s, %s) '''
+	postgres_insert_query = ''' INSERT INTO tbl_ttexti_temp (k, temp) VALUES (%s, %s) '''
 	result = cursor.executemany(postgres_insert_query, rows)
 	connection.commit()
 	count = cursor.rowcount
-	print(count, "record(s) inserted successfully into tbl_tbooli_temp table")
+	print(count, "record(s) inserted successfully into tbl_ttexti_temp table")
 
 	######################
-	# TBoolSeq
+	# TTextSeq
 	######################
 
-	select_query = "select * from tbl_tboolseq order by k limit 10"
+	select_query = "select * from tbl_ttextseq order by k limit 10"
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tboolseq table using cursor.fetchall\n")
+	print("Selecting rows from tbl_ttextseq table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
 		print("key =", row[0])
-		print("tboolseq =", row[1])
+		print("ttextseq =", row[1])
 		if not row[1]:
 			print("")
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
-	drop_table_query = '''DROP TABLE IF EXISTS tbl_tboolseq_temp;'''
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_ttextseq_temp;'''
 	cursor.execute(drop_table_query)
 	connection.commit()
 	print("Table deleted successfully in PostgreSQL ")
 
-	create_table_query = '''CREATE TABLE tbl_tboolseq_temp
+	create_table_query = '''CREATE TABLE tbl_ttextseq_temp
 		(
 		  k integer PRIMARY KEY,
-		  temp tbool
+		  temp ttext
 		); '''
 
 	cursor.execute(create_table_query)
 	connection.commit()
 	print("Table created successfully in PostgreSQL ")
 
-	postgres_insert_query = ''' INSERT INTO tbl_tboolseq_temp (k, temp) VALUES (%s, %s) '''
+	postgres_insert_query = ''' INSERT INTO tbl_ttextseq_temp (k, temp) VALUES (%s, %s) '''
 	result = cursor.executemany(postgres_insert_query, rows)
 	connection.commit()
 	count = cursor.rowcount
-	print(count, "record(s) inserted successfully into tbl_tboolseq_temp table")
+	print(count, "record(s) inserted successfully into tbl_ttextseq_temp table")
 
 	######################
-	# TBoolS
+	# TTextS
 	######################
 
-	select_query = "select * from tbl_tbools order by k limit 10"
+	select_query = "select * from tbl_ttexts order by k limit 10"
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tbools table using cursor.fetchall\n")
+	print("Selecting rows from tbl_ttexts table using cursor.fetchall\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
 		print("key =", row[0])
-		print("tbools =", row[1])
+		print("ttexts =", row[1])
 		if not row[1]:
 			print("")
 		else:
 			print("startTimestamp =", row[1].startTimestamp(), "\n")
 
-	drop_table_query = '''DROP TABLE IF EXISTS tbl_tbools_temp;'''
+	drop_table_query = '''DROP TABLE IF EXISTS tbl_ttexts_temp;'''
 	cursor.execute(drop_table_query)
 	connection.commit()
 	print("Table deleted successfully in PostgreSQL ")
 
-	create_table_query = '''CREATE TABLE tbl_tbools_temp
+	create_table_query = '''CREATE TABLE tbl_ttexts_temp
 		(
 		  k integer PRIMARY KEY,
-		  temp tbool
+		  temp ttext
 		); '''
 
 	cursor.execute(create_table_query)
 	connection.commit()
 	print("Table created successfully in PostgreSQL ")
 
-	postgres_insert_query = ''' INSERT INTO tbl_tbools_temp (k, temp) VALUES (%s, %s) '''
+	postgres_insert_query = ''' INSERT INTO tbl_ttexts_temp (k, temp) VALUES (%s, %s) '''
 	result = cursor.executemany(postgres_insert_query, rows)
 	connection.commit()
 	count = cursor.rowcount
-	print(count, "record(s) inserted successfully into tbl_tbools_temp table")
+	print(count, "record(s) inserted successfully into tbl_ttexts_temp table")
 
 	print("\n****************************************************************")
-
 
 except (Exception, psycopg2.Error) as error:
 	print("Error while connecting to PostgreSQL", error)

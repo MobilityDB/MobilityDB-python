@@ -34,6 +34,12 @@ class TFloat(Temporal):
 				return TFloatI(value)
 		raise Exception("ERROR: Could not parse temporal float value")
 
+	@staticmethod
+	def write(value):
+		if not isinstance(value, TFloat):
+			raise ValueError('TFloat value must subclass TFloat class')
+		return value.__str__().strip("'")
+
 
 class TFloatInst(TemporalInst, TFloat):
 	"""

@@ -22,6 +22,12 @@ class TInt(Temporal):
 				return TIntI(value)
 		raise Exception("ERROR: Could not parse temporal integer value")
 
+	@staticmethod
+	def write(value):
+		if not isinstance(value, TInt):
+			raise ValueError('TInt value must subclass TInt class')
+		return value.__str__().strip("'")
+
 	def valueRange(self):
 		"""
 		Distinct values

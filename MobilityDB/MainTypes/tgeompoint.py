@@ -51,6 +51,12 @@ class TGeomPoint(Temporal):
 				return TGeomPointI(value)
 		raise Exception("ERROR: Could not parse temporal float value")
 
+	@staticmethod
+	def write(value):
+		if not isinstance(value, TGeomPoint):
+			raise ValueError('TGeomPoint value must subclass TGeomPoint class')
+		return value.__str__().strip("'")
+
 
 class TGeomPointInst(TemporalInst, TGeomPoint):
 	"""

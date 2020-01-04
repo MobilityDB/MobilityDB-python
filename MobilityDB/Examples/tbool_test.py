@@ -7,10 +7,10 @@ from MobilityDB.MainTypes import TBool, TBoolInst, TBoolI, TBoolSeq, TBoolS
 print("\nConstructors for TBoolInst")
 inst = TBoolInst('True@2019-09-08')
 print(inst)
-inst = TBoolInst('A', '2019-09-08')
+inst = TBoolInst('True', '2019-09-08')
 print(inst)
 t = parse('2019-09-08')
-inst = TBoolInst('A', t)
+inst = TBoolInst('True', t)
 print(inst)
 
 print("\nConstructors for TBoolI")

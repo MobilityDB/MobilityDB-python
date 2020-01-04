@@ -1,18 +1,21 @@
 import psycopg2
 from psycopg2 import extensions
-from MobilityDB import *
+from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
+from MobilityDB.BoxTypes import TBox, STBox
+from MobilityDB.MainTypes import TBool, TInt, TFloat, TText, TGeomPoint, TGeogPoint
 
 
 # Suggestion is to have our own connection method to register our types without asking the user to do this step
+"""
 class MobilityDB:
 	@classmethod
 	def connect(cls, host_, database_, user_, password_):
 		conn = psycopg2.connect(host=host_, database=database_, user=user_, password=password_)
-		MobilityDBRegister(conn)
+		register(conn)
 		return conn
+"""
 
-
-def MobilityDBRegister(connection):
+def register(connection):
 	if isinstance(connection, extensions.cursor):
 		# Retrocompat.
 		cursor = connection
