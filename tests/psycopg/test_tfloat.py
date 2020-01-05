@@ -10,7 +10,9 @@ from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
 @pytest.mark.parametrize('expected_tfloatinst', [
 	'10.0@2019-09-01 00:00:00+01',
 	('10.0', '2019-09-08 00:00:00+01'),
+	['10.0', '2019-09-08 00:00:00+01'],
 	(10.0, parse('2019-09-08 00:00:00+01')),
+	[10.0, parse('2019-09-08 00:00:00+01')],
 ])
 def test_tfloatinst_constructors(cursor, expected_tfloatinst):
 	params = [TFloatInst(expected_tfloatinst)]

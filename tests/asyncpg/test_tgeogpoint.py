@@ -1,14 +1,11 @@
 import pytest
-from datetime import datetime, timedelta
-from dateutil.tz import tzoffset
 from bdateutil.parser import parse
 from postgis import Point
-from MobilityDB.MainTypes import TGeomPointInst, TGeomPointI, TGeomPointSeq, TGeomPointS
-from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
+from MobilityDB.MainTypes import TGeogPointInst, TGeogPointI, TGeogPointSeq, TGeogPointS
 
 pytestmark = pytest.mark.asyncio
 
-@pytest.mark.parametrize('expected_tgeompointinst', [
+@pytest.mark.parametrize('expected_tgeogpointinst', [
 	'POINT(10.0 10.0)@2019-09-01 00:00:00+01',
 	'SRID=4326;POINT(10.0 10.0)@2019-09-01 00:00:00+01',
 	('POINT(10.0 10.0)', '2019-09-08 00:00:00+01'),
@@ -20,13 +17,13 @@ pytestmark = pytest.mark.asyncio
 	(Point(10.0, 10.0, srid=4326), parse('2019-09-08 00:00:00+01')),
 	[Point(10.0, 10.0, srid=4326), parse('2019-09-08 00:00:00+01')],
 ])
-async def test_tgeompointinst_constructors(connection, expected_tgeompointinst):
-	params = TGeomPointInst(expected_tgeompointinst)
-	await connection.execute('INSERT INTO tbl_tgeompointinst (temp) VALUES ($1)', params)
-	result = await connection.fetchval('SELECT temp FROM tbl_tgeompointinst WHERE temp=$1', params, column=0)
-	assert result == TGeomPointInst(expected_tgeompointinst)
+async def test_tgeogpointinst_constructors(connection, expected_tgeogpointinst):
+	params = TGeogPointInst(expected_tgeogpointinst)
+	await connection.execute('INSERT INTO tbl_tgeogpointinst (temp) VALUES ($1)', params)
+	result = await connection.fetchval('SELECT temp FROM tbl_tgeogpointinst WHERE temp=$1', params, column=0)
+	assert result == TGeogPointInst(expected_tgeogpointinst)
 
-@pytest.mark.parametrize('expected_tgeompointi', [
+@pytest.mark.parametrize('expected_tgeogpointi', [
 	'{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
 		'Point(10.0 10.0)@2019-09-03 00:00:00+01}',
 	'SRID=4326;{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
@@ -39,32 +36,32 @@ async def test_tgeompointinst_constructors(connection, expected_tgeompointinst):
 		'SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01'),
 	['SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01', 'SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01',
 		'SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01'],
-	(TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-		TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-		TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')),
-	[TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-		TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-		TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')],
-	(TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-		TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-		TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')),
-	[TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-		TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-		TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')],
+	(TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')),
+	[TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')],
+	(TGeogPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeogPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeogPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')),
+	[TGeogPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeogPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeogPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')],
 ])
-async def test_tgeompointi_constructor(connection, expected_tgeompointi):
-	if isinstance(expected_tgeompointi, tuple):
-		params = TGeomPointI(*expected_tgeompointi)
+async def test_tgeogpointi_constructor(connection, expected_tgeogpointi):
+	if isinstance(expected_tgeogpointi, tuple):
+		params = TGeogPointI(*expected_tgeogpointi)
 	else:
-		params = TGeomPointI(expected_tgeompointi)
-	await connection.execute('INSERT INTO tbl_tgeompointi (temp) VALUES ($1)', params)
-	result = await connection.fetchval('SELECT temp FROM tbl_tgeompointi WHERE temp=$1', params)
-	if isinstance(expected_tgeompointi, tuple):
-		assert result == TGeomPointI(*expected_tgeompointi)
+		params = TGeogPointI(expected_tgeogpointi)
+	await connection.execute('INSERT INTO tbl_tgeogpointi (temp) VALUES ($1)', params)
+	result = await connection.fetchval('SELECT temp FROM tbl_tgeogpointi WHERE temp=$1', params)
+	if isinstance(expected_tgeogpointi, tuple):
+		assert result == TGeogPointI(*expected_tgeogpointi)
 	else:
-		assert result == TGeomPointI(expected_tgeompointi)
+		assert result == TGeogPointI(expected_tgeogpointi)
 
-@pytest.mark.parametrize('expected_tgeompointseq', [
+@pytest.mark.parametrize('expected_tgeogpointseq', [
 	'[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
 		'Point(10.0 10.0)@2019-09-03 00:00:00+01]',
 	'SRID=4326;[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
@@ -77,38 +74,38 @@ async def test_tgeompointi_constructor(connection, expected_tgeompointi):
 		'Point(10.0 10.0)@2019-09-03 00:00:00+01'],
 	['SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01', 'SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01',
 		'SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01'],
-	[TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-		TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-		TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')],
-	[TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-		TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-		TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')],
+	[TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')],
+	[TGeogPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeogPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeogPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')],
 	(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
 		'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Stepwise'),
 	(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
 		'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Linear', 4326),
 	(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
 		'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Stepwise', 4326),
-	([TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-		TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-		TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
-	([TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-		TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-		TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
+	([TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
+	([TGeogPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeogPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeogPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
 ])
-async def test_tgeompointseq_constructor(connection, expected_tgeompointseq):
-	if isinstance(expected_tgeompointseq, tuple):
-		params = TGeomPointSeq(*expected_tgeompointseq)
+async def test_tgeogpointseq_constructor(connection, expected_tgeogpointseq):
+	if isinstance(expected_tgeogpointseq, tuple):
+		params = TGeogPointSeq(*expected_tgeogpointseq)
 	else:
-		params = TGeomPointSeq(expected_tgeompointseq)
-	await connection.execute('INSERT INTO tbl_tgeompointseq (temp) VALUES ($1)', params)
-	result = await connection.fetchval('SELECT temp FROM tbl_tgeompointseq WHERE temp=$1', params)
-	if isinstance(expected_tgeompointseq, tuple):
-		assert result == TGeomPointSeq(*expected_tgeompointseq)
+		params = TGeogPointSeq(expected_tgeogpointseq)
+	await connection.execute('INSERT INTO tbl_tgeogpointseq (temp) VALUES ($1)', params)
+	result = await connection.fetchval('SELECT temp FROM tbl_tgeogpointseq WHERE temp=$1', params)
+	if isinstance(expected_tgeogpointseq, tuple):
+		assert result == TGeogPointSeq(*expected_tgeogpointseq)
 	else:
-		assert result == TGeomPointSeq(expected_tgeompointseq)
+		assert result == TGeogPointSeq(expected_tgeogpointseq)
 
-@pytest.mark.parametrize('expected_tgeompoints', [
+@pytest.mark.parametrize('expected_tgeogpoints', [
 	'{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
 		'[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}',
 	'SRID=4326;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
@@ -138,23 +135,23 @@ async def test_tgeompointseq_constructor(connection, expected_tgeompointseq):
 	(['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
 		'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
 		'Stepwise', 4326),
-	[TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
-		TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')],
-	([TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
-		TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear'),
-	([TGeomPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
-		TGeomPointSeq(
+	[TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
+		TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')],
+	([TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
+		TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear'),
+	([TGeogPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
+		TGeogPointSeq(
 			'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')],
 	 'Stepwise'),
 ])
-async def test_tgeompoints_constructor(connection, expected_tgeompoints):
-	if isinstance(expected_tgeompoints, tuple):
-		params = TGeomPointS(*expected_tgeompoints)
+async def test_tgeogpoints_constructor(connection, expected_tgeogpoints):
+	if isinstance(expected_tgeogpoints, tuple):
+		params = TGeogPointS(*expected_tgeogpoints)
 	else:
-		params = TGeomPointS(expected_tgeompoints)
-	await connection.execute('INSERT INTO tbl_tgeompoints (temp) VALUES ($1)', params)
-	result = await connection.fetchval('SELECT temp FROM tbl_tgeompoints WHERE temp=$1', params)
-	if isinstance(expected_tgeompoints, tuple):
-		assert result == TGeomPointS(*expected_tgeompoints)
+		params = TGeogPointS(expected_tgeogpoints)
+	await connection.execute('INSERT INTO tbl_tgeogpoints (temp) VALUES ($1)', params)
+	result = await connection.fetchval('SELECT temp FROM tbl_tgeogpoints WHERE temp=$1', params)
+	if isinstance(expected_tgeogpoints, tuple):
+		assert result == TGeogPointS(*expected_tgeogpoints)
 	else:
-		assert result == TGeomPointS(expected_tgeompoints)
+		assert result == TGeogPointS(expected_tgeogpoints)

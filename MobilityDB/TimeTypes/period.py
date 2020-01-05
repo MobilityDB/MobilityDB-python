@@ -211,10 +211,16 @@ class Period:
 			return None
 		return Period(value)
 
+	@staticmethod
+	def write(value):
+		if not isinstance(value, Period):
+			raise ValueError('Value must be an instance of Period class')
+		return value.__str__().strip("'")
+
 	def __str__(self):
 		lower_str = '[' if self._lower_inc else '('
 		upper_str = ']' if self._upper_inc else ')'
-		return "'" + lower_str + '{}, {}'.format(self._lower, self._upper) + upper_str + "'"
+		return f"'{lower_str}{self._lower}, {self._upper}{upper_str}'"
 
 	def __repr__(self):
 		return (f'{self.__class__.__name__ }'

@@ -175,6 +175,12 @@ class PeriodSet:
 			return None
 		return PeriodSet(value)
 
+	@staticmethod
+	def write(value):
+		if not isinstance(value, PeriodSet):
+			raise ValueError('Value must be an instance of PeriodSet class')
+		return value.__str__().strip("'")
+
 	def __str__(self):
 		return "'{{{}}}'".format(', '.join('{}'.format(period.__str__().replace("'", ""))
 			for period in self._periodList))

@@ -11,7 +11,7 @@ from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
 	'true@2019-09-01 00:00:00+01',
 	('true', '2019-09-08 00:00:00+01'),
 	['true', '2019-09-08 00:00:00+01'],
-	(True, parse('2019-09-08 00:00:00+01')),
+	(True, '2019-09-08 00:00:00+01'),
 	[True, parse('2019-09-08 00:00:00+01')],
 ])
 def test_tboolinst_constructors(cursor, expected_tboolinst):

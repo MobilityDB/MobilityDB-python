@@ -18,12 +18,12 @@ class TBool(Temporal):
 			return TBoolInst(value)
 		elif value[0] == '[' or value[0] == '(':
 			return TBoolSeq(value)
-		elif (value[0] == '{'):
+		elif value[0] == '{':
 			if value[1] == '[' or value[1] == '(':
 				return TBoolS(value)
 			else:
 				return TBoolI(value)
-		raise Exception("ERROR: Could not parse temporal float value")
+		raise Exception("ERROR: Could not parse temporal boolean value")
 
 	@staticmethod
 	def write(value):

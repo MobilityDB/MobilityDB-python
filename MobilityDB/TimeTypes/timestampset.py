@@ -133,6 +133,12 @@ class TimestampSet:
 			return None
 		return TimestampSet(value)
 
+	@staticmethod
+	def write(value):
+		if not isinstance(value, TimestampSet):
+			raise ValueError('Value must be an instance of TimestampSet class')
+		return value.__str__().strip("'")
+
 	def __str__(self):
 		return "'{{{}}}'".format(', '.join('{}'.format(datetime.__str__())
 			for datetime in self._datetimeList))

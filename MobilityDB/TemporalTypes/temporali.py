@@ -12,8 +12,8 @@ class TemporalI(TemporalInstants):
 	"""
 
 	def __init__(self, *argv):
-		# Constructor with a single argument of type string
 		self._instantList = []
+		# Constructor with a single argument of type string
 		if len(argv) == 1 and isinstance(argv[0], str):
 			elements = parse_temporali(argv[0], 0)
 			for inst in elements[2]:

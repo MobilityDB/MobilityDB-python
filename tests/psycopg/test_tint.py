@@ -10,7 +10,9 @@ from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
 @pytest.mark.parametrize('expected_tintinst', [
 	'10@2019-09-01 00:00:00+01',
 	('10', '2019-09-08 00:00:00+01'),
+	['10', '2019-09-08 00:00:00+01'],
 	(10, parse('2019-09-08 00:00:00+01')),
+	[10, parse('2019-09-08 00:00:00+01')],
 ])
 def test_tintinst_constructors(cursor, expected_tintinst):
 	params = [TIntInst(expected_tintinst)]

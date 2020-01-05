@@ -1,10 +1,7 @@
-import re
 from MobilityDB.TemporalTypes.temporal_parser import parse_temporals
-from parsec import *
 from MobilityDB.TimeTypes.period import Period
 from MobilityDB.TimeTypes.periodset import PeriodSet
 from MobilityDB.TemporalTypes.temporal import Temporal
-from MobilityDB.TemporalTypes.temporalseq import TemporalSeq
 
 
 class TemporalS(Temporal):
@@ -26,17 +23,16 @@ class TemporalS(Temporal):
 				instList = []
 				for inst in seq[0]:
 					instList.append(TemporalS.ComponentClass.ComponentClass(inst[0], inst[1]))
-				if self.__class__.BaseClassDiscrete == True:
+				if self.__class__.BaseClassDiscrete:
 					seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2]))
 				else:
-					# seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2], seq[3]))
 					seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2], elements[2][1]))
 			self._sequenceList = seqList
 			# Set interpolation with the argument or the flag from the string if given
 			if interp is not None:
 				self._interp = interp
 			else:
-				if self.__class__.BaseClassDiscrete == True:
+				if self.__class__.BaseClassDiscrete:
 					self._interp = 'Stepwise'
 				else:
 					self._interp = elements[2][1] if elements[2][1] is not None else 'Linear'
@@ -56,7 +52,7 @@ class TemporalS(Temporal):
 			if interp is not None:
 				self._interp = interp
 			else:
-				self._interp = 'Stepwise' if self.__class__.BaseClassDiscrete == True else 'Linear'
+				self._interp = 'Stepwise' if self.__class__.BaseClassDiscrete else 'Linear'
 		else:
 			raise Exception("ERROR: Could not parse temporal sequence set value")
 		# Verify validity of the resulting instance

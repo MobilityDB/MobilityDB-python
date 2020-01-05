@@ -1,10 +1,6 @@
 import pytest
-from datetime import datetime, timedelta
-from dateutil.tz import tzoffset
 from bdateutil.parser import parse
-from spans.types import floatrange
 from MobilityDB.MainTypes import TBoolInst, TBoolI, TBoolSeq, TBoolS
-from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
 
 pytestmark = pytest.mark.asyncio
 
@@ -12,8 +8,8 @@ pytestmark = pytest.mark.asyncio
 	'true@2019-09-01 00:00:00+01',
 	('true', '2019-09-08 00:00:00+01'),
 	['true', '2019-09-08 00:00:00+01'],
-	('true', '2019-09-08 00:00:00+01'),
-	(True, parse('2019-09-08 00:00:00+01')),
+	(True, '2019-09-08 00:00:00+01'),
+	[True, parse('2019-09-08 00:00:00+01')],
 ])
 async def test_tboolinst_constructors(connection, expected_tboolinst):
 	params = TBoolInst(expected_tboolinst)

@@ -9,8 +9,15 @@ from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
 
 @pytest.mark.parametrize('expected_tgeompointinst', [
 	'POINT(10.0 10.0)@2019-09-01 00:00:00+01',
+	'SRID=4326;POINT(10.0 10.0)@2019-09-01 00:00:00+01',
 	('POINT(10.0 10.0)', '2019-09-08 00:00:00+01'),
+	['POINT(10.0 10.0)', '2019-09-08 00:00:00+01'],
+	('SRID=4326;POINT(10.0 10.0)', '2019-09-08 00:00:00+01'),
+	['SRID=4326;POINT(10.0 10.0)', '2019-09-08 00:00:00+01'],
 	(Point(10.0, 10.0), parse('2019-09-08 00:00:00+01')),
+	[Point(10.0, 10.0), parse('2019-09-08 00:00:00+01')],
+	(Point(10.0, 10.0, srid=4326), parse('2019-09-08 00:00:00+01')),
+	[Point(10.0, 10.0, srid=4326), parse('2019-09-08 00:00:00+01')],
 ])
 def test_tgeompointinst_constructors(cursor, expected_tgeompointinst):
 	if isinstance(expected_tgeompointinst, tuple):
@@ -27,9 +34,10 @@ def test_tgeompointinst_constructors(cursor, expected_tgeompointinst):
 
 
 @pytest.mark.parametrize('expected_tgeompointinst', [
-	'POINT(10.0 10.0)@2019-09-01 00:00:00+01',
+	'SRID=4326;POINT(10.0 10.0)@2019-09-01 00:00:00+01',
 ])
 def test_tgeompointinst_accessors(cursor, expected_tgeompointinst):
+	assert TGeomPointInst(expected_tgeompointinst).srid() == 4326
 	assert TGeomPointInst(expected_tgeompointinst).duration() == 'Instant'
 	assert TGeomPointInst(expected_tgeompointinst).getValue() == Point(10.0, 10.0)
 	assert TGeomPointInst(expected_tgeompointinst).getValues() == Point(10.0, 10.0)
@@ -77,17 +85,29 @@ def test_tgeompointinst_accessors(cursor, expected_tgeompointinst):
 
 @pytest.mark.parametrize('expected_tgeompointi', [
 	'{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
-	'Point(10.0 10.0)@2019-09-03 00:00:00+01}',
+		'Point(10.0 10.0)@2019-09-03 00:00:00+01}',
+	'SRID=4326;{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
+		'Point(10.0 10.0)@2019-09-03 00:00:00+01}',
 	('Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
-	 'Point(10.0 10.0)@2019-09-03 00:00:00+01'),
-	(TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-	 TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-	 TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')),
+		'Point(10.0 10.0)@2019-09-03 00:00:00+01'),
 	['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
-	 'Point(10.0 10.0)@2019-09-03 00:00:00+01'],
+		'Point(10.0 10.0)@2019-09-03 00:00:00+01'],
+	('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01', 'SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01',
+		'SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01'),
+	['SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01', 'SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01',
+		'SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01'],
+	(TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')),
 	[TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-	 TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-	 TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')],
+		TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')],
+	(TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')),
+	[TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')],
 ])
 def test_tgeompointi_constructor(cursor, expected_tgeompointi):
 	if isinstance(expected_tgeompointi, tuple):
@@ -104,11 +124,14 @@ def test_tgeompointi_constructor(cursor, expected_tgeompointi):
 
 
 @pytest.mark.parametrize('expected_tgeompointi', [
-	'{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(30.0 30.0)@2019-09-03 00:00:00+01}',
+	'SRID=4326;{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
+		'Point(30.0 30.0)@2019-09-03 00:00:00+01}',
 ])
 def test_tgeompointi_accessors(cursor, expected_tgeompointi):
+	assert TGeomPointI(expected_tgeompointi).srid() == 4326
 	assert TGeomPointI(expected_tgeompointi).duration() == 'InstantSet'
-	# assert TGeomPointI(expected_tgeompointi).getValues() == MultiPoint([Point(10.0, 10.0),Point(20.0, 20.0),Point(30.0, 30.0)])
+	assert TGeomPointI(expected_tgeompointi).getValues() == \
+		   MultiPoint([Point(10.0, 10.0),Point(20.0, 20.0),Point(30.0, 30.0)])
 	assert TGeomPointI(expected_tgeompointi).startValue() == Point(10.0, 10.0)
 	assert TGeomPointI(expected_tgeompointi).endValue() == Point(30.0, 30.0)
 	assert TGeomPointI(expected_tgeompointi).getTime() == \
@@ -153,19 +176,35 @@ def test_tgeompointi_accessors(cursor, expected_tgeompointi):
 
 @pytest.mark.parametrize('expected_tgeompointseq', [
 	'[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
-	'Point(10.0 10.0)@2019-09-03 00:00:00+01]',
+		'Point(10.0 10.0)@2019-09-03 00:00:00+01]',
+	'SRID=4326;[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
+		'Point(10.0 10.0)@2019-09-03 00:00:00+01]',
 	'Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
-	'Point(10.0 10.0)@2019-09-03 00:00:00+01]',
+		'Point(10.0 10.0)@2019-09-03 00:00:00+01]',
+	'SRID=4326;Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
+		'Point(10.0 10.0)@2019-09-03 00:00:00+01]',
 	['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
-	 'Point(10.0 10.0)@2019-09-03 00:00:00+01'],
+		'Point(10.0 10.0)@2019-09-03 00:00:00+01'],
+	['SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01', 'SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01',
+		'SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01'],
 	[TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-	 TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-	 TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')],
+		TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')],
+	[TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')],
 	(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
-	  'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Stepwise'),
+		'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Stepwise'),
+	(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
+		'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Linear', 4326),
+	(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
+		'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Stepwise', 4326),
 	([TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-	  TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-	  TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
+		TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
+	([TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+		TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
+		TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
 ])
 def test_tgeompointseq_constructor(cursor, expected_tgeompointseq):
 	if isinstance(expected_tgeompointseq, tuple):
@@ -180,11 +219,12 @@ def test_tgeompointseq_constructor(cursor, expected_tgeompointseq):
 	else:
 		assert result == TGeomPointSeq(expected_tgeompointseq)
 
-
 @pytest.mark.parametrize('expected_tgeompointseq', [
-	'[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]',
+	'SRID=4326;[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
+	'Point(10.0 10.0)@2019-09-03 00:00:00+01]',
 ])
 def test_tgeompointseq_accessors(cursor, expected_tgeompointseq):
+	assert TGeomPointSeq(expected_tgeompointseq).srid() == 4326
 	assert TGeomPointSeq(expected_tgeompointseq).duration() == 'Sequence'
 	assert TGeomPointSeq(expected_tgeompointseq).getValues() == LineString([Point(10.0, 10.0),Point(20.0, 20.0),Point(10.0, 10.0)])
 	assert TGeomPointSeq(expected_tgeompointseq).startValue() == Point(10.0, 10.0)
@@ -229,23 +269,41 @@ def test_tgeompointseq_accessors(cursor, expected_tgeompointseq):
 
 @pytest.mark.parametrize('expected_tgeompoints', [
 	'{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
-	'[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}',
+		'[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}',
+	'SRID=4326;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
+		'[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}',
 	'Interp=Stepwise;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
-	'[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}',
+		'[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}',
+	'SRID=4326;Interp=Stepwise;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
+		'[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}',
 	['[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
-	 '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
+		'[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
+	['SRID=4326;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+		'SRID=4326;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
 	(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
-	  '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear'),
+		'[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear'),
+	(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+		'[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear', 4326),
+	(['SRID=4326;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+		'SRID=4326;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear'),
+	(['SRID=4326;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+		'SRID=4326;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear', 4326),
 	(['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
-	  'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
-	 'Stepwise'),
+		'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
+		'Stepwise'),
+	(['SRID=4326;Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+		'SRID=4326;Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
+		'Stepwise', 4326),
+	(['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+		'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
+		'Stepwise', 4326),
 	[TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
-	 TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')],
+		TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')],
 	([TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
-	  TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear'),
+		TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear'),
 	([TGeomPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
-	  TGeomPointSeq(
-		  'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')],
+		TGeomPointSeq(
+			'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')],
 	 'Stepwise'),
 ])
 def test_tgeompoints_constructor(cursor, expected_tgeompoints):
@@ -262,10 +320,11 @@ def test_tgeompoints_constructor(cursor, expected_tgeompoints):
 		assert result == TGeomPointS(expected_tgeompoints)
 
 @pytest.mark.parametrize('expected_tgeompoints', [
-	'{[Point(10.0 10.0)@2019-09-01 00:00:00+01],  '
+	'SRID=4326;{[Point(10.0 10.0)@2019-09-01 00:00:00+01],  '
 	'[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(30.0 30.0)@2019-09-03 00:00:00+01]}',
 ])
 def test_tgeompoints_accessors(cursor, expected_tgeompoints):
+	assert TGeomPointS(expected_tgeompoints).srid() == 4326
 	assert TGeomPointS(expected_tgeompoints).duration() == 'SequenceSet'
 	assert TGeomPointS(expected_tgeompoints).getValues() == \
 		GeometryCollection([Point(10.0, 10.0), LineString([Point(20.0, 20.0), Point(30.0, 30.0)])])

@@ -1,6 +1,7 @@
 import pytest
 from MobilityDB import STBox
 
+pytestmark = pytest.mark.asyncio
 
 @pytest.mark.parametrize('expected_stbox', [
 	# Only coordinate (X and Y) dimension
@@ -20,9 +21,10 @@ from MobilityDB import STBox
 	# Only time dimension for geodetic box
 	'GEODSTBOX T((, 2001-01-03 00:00:00+01), (, 2001-01-03 00:00:00+01))',
 ])
-def test_stbox_constructor(cursor, expected_stbox):
+async def test_stbox_constructor(connection, expected_stbox):
 	params = STBox(expected_stbox)
-	cursor.execute("INSERT INTO tbl_stbox (box) VALUES (%s)" % params)
-	cursor.execute("SELECT box FROM tbl_stbox WHERE box=%s" % params)
-	result = cursor.fetchone()[0]
+	print(params.__class__)
+	print(params.xmax())
+	await connection.execute("INSERT INTO tbl_stbox (box) VALUES ($1)", params)
+	result = await connection.fetchval("SELECT box FROM tbl_stbox WHERE box=$1", params, column=0)
 	assert result == STBox(expected_stbox)

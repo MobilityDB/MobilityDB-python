@@ -13,8 +13,8 @@ class TemporalSeq(TemporalInstants):
 	__slots__ = ['_lower_inc', '_upper_inc', '_interp']
 
 	def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
-		assert (isinstance(lower_inc, (bool, type(None))))
-		assert (isinstance(upper_inc, (bool, type(None))))
+		assert (isinstance(lower_inc, (bool, type(None)))), "ERROR: Invalid lower bound flag"
+		assert (isinstance(upper_inc, (bool, type(None)))), "ERROR: Invalid upper bound flag"
 		assert (isinstance(interp, (str, type(None)))), "ERROR: Invalid interpolation"
 		if isinstance(interp, str):
 			assert (interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
@@ -30,7 +30,7 @@ class TemporalSeq(TemporalInstants):
 			if interp is not None:
 				self._interp = interp
 			else:
-				if self.__class__.BaseClassDiscrete == True:
+				if self.__class__.BaseClassDiscrete:
 					self._interp = 'Stepwise'
 				else:
 					self._interp = elements[2][3] if elements[2][3] is not None else 'Linear'
@@ -52,7 +52,7 @@ class TemporalSeq(TemporalInstants):
 			if interp is not None:
 				self._interp = interp
 			else:
-				self._interp = 'Stepwise' if self.__class__.BaseClassDiscrete == True else 'Linear'
+				self._interp = 'Stepwise' if self.__class__.BaseClassDiscrete else 'Linear'
 		else:
 			raise Exception("ERROR: Could not parse temporal sequence value")
 		# Verify validity of the resulting instance

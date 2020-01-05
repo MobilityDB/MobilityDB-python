@@ -15,36 +15,33 @@ class STBox:
 	def __init__(self, *args, geodetic=None):
 		self._xmin = self._xmax = self._ymin = self._ymax = self._zmin = self._zmax = self._tmin = self._tmax = None
 		self._geodetic = geodetic if geodetic is not None else False
-		try:
-			if len(args) == 1 and isinstance(args[0], str):
-				self.parseFromString(args[0])
-			elif len(args) == 2:
-				self._tmin = parse(args[0])
-				self._tmax = parse(args[1])
-				self._xmin = self._xmax = self._ymin = self._ymax = self._zmin = self._zmax = None
-			else:
-				if len(args) >= 4:
-					self._xmin = float(args[0])
-					self._xmax = float(args[int(len(args) / 2)])
-					self._ymin = float(args[1])
-					self._ymax = float(args[1 + int(len(args) / 2)])
-				if len(args) >= 6:
-					try:
-						self._zmin = float(args[2])
-						self._zmax = float(args[2 + int(len(args) / 2)])
-					except:
-						self._tmin = parse(args[2])
-						self._tmax = parse(args[2 + int(len(args) / 2)])
-				if len(args) >= 8:
-					self._tmin = parse(args[int(len(args) / 2) - 1])
-					self._tmax = parse(args[(int(len(args) / 2) - 1) + int(len(args) / 2)])
-		except:
-			raise Exception("ERROR: wrong parameters")
+		if len(args) == 1 and isinstance(args[0], str):
+			self.parseFromString(args[0])
+		elif len(args) == 2:
+			self._tmin = parse(args[0])
+			self._tmax = parse(args[1])
+			self._xmin = self._xmax = self._ymin = self._ymax = self._zmin = self._zmax = None
+		elif len(args) >= 4:
+			self._xmin = float(args[0])
+			self._xmax = float(args[int(len(args) / 2)])
+			self._ymin = float(args[1])
+			self._ymax = float(args[1 + int(len(args) / 2)])
+		elif len(args) >= 6:
+			try:
+				self._zmin = float(args[2])
+				self._zmax = float(args[2 + int(len(args) / 2)])
+			except:
+				self._tmin = parse(args[2])
+				self._tmax = parse(args[2 + int(len(args) / 2)])
+		elif len(args) >= 8:
+			self._tmin = parse(args[int(len(args) / 2) - 1])
+			self._tmax = parse(args[(int(len(args) / 2) - 1) + int(len(args) / 2)])
+		else:
+			raise Exception("ERROR: Cannot parse STBox")
 
 	def parseFromString(self, value):
 		if value is None or not isinstance(value, str):
-			raise Exception("ERROR: wrong parameters")
-
+			raise Exception("ERROR: Cannot parse STBox")
 		values = None
 		if 'GEODSTBOX' in value:
 			self._geodetic = True
@@ -57,7 +54,6 @@ class STBox:
 			hast = True if 'T' in value else False
 		else:
 			raise Exception("ERROR: Input must be STBOX")
-
 		values = value.replace('Z', '').replace('T', ''). replace('(', '').replace(')', '').split(',')
 		# Remove empty or only space strings
 		values = [value for value in values if value != '' and not value.isspace()]
@@ -83,6 +79,12 @@ class STBox:
 			return None
 		return STBox(value)
 
+	@staticmethod
+	def write(value):
+		if not isinstance(value, STBox):
+			raise ValueError('Value must be instance of STBox class')
+		return value.__str__().strip("'")
+
 	# Psycopg2 interface.
 	def __conform__(self, protocol):
 		if protocol is ISQLQuote:
@@ -91,6 +93,60 @@ class STBox:
 	def getquoted(self):
 		return "{}".format(self.__str__())
 	# End Psycopg2 interface.
+
+	def xmin(self):
+		"""
+		Minimum x
+		"""
+		return self._xmin
+
+	def ymin(self):
+		"""
+		Minimum y
+		"""
+		return self._ymin
+
+	def zmin(self):
+		"""
+		Minimum z
+		"""
+		return self._ymin
+
+	def tmin(self):
+		"""
+		Minimum t
+		"""
+		return self._tmin
+
+	def xmax(self):
+		"""
+		Maximum x
+		"""
+		return self._xmax
+
+	def ymax(self):
+		"""
+		Maximum y
+		"""
+		return self._ymax
+
+	def zmax(self):
+		"""
+		Maximum y
+		"""
+		return self._zmax
+
+	def tmax(self):
+		"""
+		Maximum t
+		"""
+		return self._tmax
+
+	def geodetic(self):
+		"""
+		Maximum t
+		"""
+		return self._geodetic
 
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
@@ -127,3 +183,8 @@ class STBox:
 				return "'STBOX T((, %s), (, %s))'" % (self._tmin, self._tmax)
 			else:
 				raise Exception("ERROR: Wrong values")
+
+	def __repr__(self):
+		return (f'{self.__class__.__name__ }'
+				f'({self._xmin!r}, {self._ymin!r}, {self._zmin!r}, {self._tmin!r}, '
+				f'{self._xmax!r}, {self._ymax!r}, {self._zmax!r}, {self._tmax!r}, {self._geodetic!r})')
