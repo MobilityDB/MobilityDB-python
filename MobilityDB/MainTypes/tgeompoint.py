@@ -3,6 +3,7 @@ from datetime import datetime
 from bdateutil.parser import parse
 from postgis import Geometry, Point, MultiPoint, LineString, GeometryCollection, MultiLineString
 from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from MobilityDB.TemporalTypes.temporal_parser import parse_temporalinst
 
 
 # Add method to Point to make the class hashable
@@ -65,36 +66,33 @@ class TGeomPointInst(TemporalInst, TGeomPoint):
 
 	def __init__(self, value, time=None):
 		TemporalInst.BaseClass = Point
-		# Constructor with a single argument of type string
-		if time is None and isinstance(value, str):
-			splits = value.split("@")
-			if len(splits) == 2:
-				if '(' in splits[0] and ')' in splits[0]:
-					idx1 = splits[0].find('(')
-					idx2 = splits[0].find(')')
-					coords = (splits[0][idx1 + 1:idx2]).split(' ')
-					self._value = type(self).BaseClass(coords)
-				else:
-					self._value = Geometry.from_ewkb(splits[0])
-				self._time = parse(splits[1])
+		if(time is None):
+			# Constructor with a single argument of type string
+			if (isinstance(value, str)):
+				couple = parse_temporalinst(value, 0)
+				value = couple[2][0]
+				time = couple[2][1]
+			# Constructor with a single argument of type tuple or list
+			elif (isinstance(value, (tuple, list))):
+				value, time = value
 			else:
 				raise Exception("ERROR: Could not parse temporal instant value")
-		# Constructor with two arguments of type string
-		elif isinstance(value, str) and isinstance(time, str):
+		# Now both value and time are not None
+		assert(isinstance(value, (str, Point)))
+		assert(isinstance(time, (str, datetime)))
+		print("value", value)
+		print("time", time)
+		if isinstance(value, str):
 			if '(' in value and ')' in value:
 				idx1 = value.find('(')
 				idx2 = value.find(')')
 				coords = (value[idx1 + 1:idx2]).split(' ')
-				self._value = self.BaseClass(coords)
+				self._value = Point(coords)
 			else:
 				self._value = Geometry.from_ewkb(value)
-			self._time = parse(time)
-		# Constructor with two arguments of type BaseClass and datetime
-		elif isinstance(value, self.BaseClass) and isinstance(time, datetime):
-			self._value = value
-			self._time = time
 		else:
-			raise Exception("ERROR: Could not parse temporal instant value")
+			self._value = value
+		self._time = parse(time) if isinstance(time, str) else time
 		# Verify validity of the resulting instance
 		self._valid()
 

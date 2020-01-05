@@ -10,8 +10,10 @@ pytestmark = pytest.mark.asyncio
 
 @pytest.mark.parametrize('expected_tfloatinst', [
 	'10.0@2019-09-01 00:00:00+01',
-	#('10.0', '2019-09-08 00:00:00+01'),
-	#(10.0, parse('2019-09-08 00:00:00+01')),
+	('10.0', '2019-09-08 00:00:00+01'),
+	['10.0', '2019-09-08 00:00:00+01'],
+	(10.0, parse('2019-09-08 00:00:00+01')),
+	[10.0, parse('2019-09-08 00:00:00+01')],
 ])
 async def test_tfloatinst_constructors(connection, expected_tfloatinst):
 	params = TFloatInst(expected_tfloatinst)
@@ -19,7 +21,6 @@ async def test_tfloatinst_constructors(connection, expected_tfloatinst):
 	result = await connection.fetchval('SELECT temp FROM tbl_tfloatinst WHERE temp=$1', params, column=0)
 	assert result == TFloatInst(expected_tfloatinst)
 
-"""
 @pytest.mark.parametrize('expected_tfloati', [
 	'{10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01}',
 	('10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'),
@@ -89,4 +90,3 @@ async def test_tfloats_constructor(connection, expected_tfloats):
 		assert result == TFloatS(*expected_tfloats)
 	else:
 		assert result == TFloatS(expected_tfloats)
-"""

@@ -19,7 +19,6 @@ def test_tfloatinst_constructors(cursor, expected_tfloatinst):
 	result = cursor.fetchone()[0]
 	assert result == TFloatInst(expected_tfloatinst)
 
-
 @pytest.mark.parametrize('expected_tfloatinst', [
 	'10.0@2019-09-01 00:00:00+01',
 ])

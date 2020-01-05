@@ -1,4 +1,8 @@
+from parsec import *
+from datetime import datetime
+from bdateutil.parser import parse
 from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from MobilityDB.TemporalTypes.temporal_parser import parse_temporalinst
 
 
 class TBool(Temporal):
@@ -33,9 +37,35 @@ class TBoolInst(TemporalInst, TBool):
 	Temporal booleans of instant duration
 	"""
 
+	"""It is not possible to call super().__init__(value, time) since bool('False') == True
+	and eval('False') == False. Furthermore eval('false') gives an error
+	"""
 	def __init__(self, value, time=None):
 		TemporalInst.BaseClass = bool
-		super().__init__(value, time)
+		if(time is None):
+			# Constructor with a single argument of type string
+			if (isinstance(value, str)):
+				couple = parse_temporalinst(value, 0)
+				value = couple[2][0]
+				time = couple[2][1]
+			# Constructor with a single argument of type tuple or list
+			elif (isinstance(value, (tuple, list))):
+				value, time = value
+			else:
+				raise Exception("ERROR: Could not parse temporal instant value")
+		# Now both value and time are not None
+		assert(isinstance(value, (str, bool)))
+		assert(isinstance(time, (str, datetime)))
+		if isinstance(value, str):
+			if value.lower() == 'true' or value.lower() == 't':
+				self._value = True
+			elif value.lower() == 'false' or value.lower() == 'f':
+				self._value = False
+			else:
+				raise Exception("ERROR: Could not parse temporal instant value")
+		else:
+			self._value =  value
+		self._time = parse(time) if isinstance(time, str) else time
 
 
 class TBoolI(TemporalI, TBool):

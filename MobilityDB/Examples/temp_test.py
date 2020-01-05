@@ -9,26 +9,20 @@ from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
 from MobilityDB.MainTypes import *
 from MobilityDB.BoxTypes import *
 
-t = "True"
-print("eval", eval(t).__class__)
-t = "10"
-print("eval", eval(t).__class__)
-t = "10.1"
-print("eval", eval(t).__class__)
+ti = TGeomPointInst('Point(10.0 10.0)@2019-09-08 00:00:00+01')
+print(ti)
 
-t = True
-print (t.__class__)
+ti = TGeomPointInst(['Point(10.0 10.0)', '2019-09-08 00:00:00+01'])
+print(ti)
 
-inst = TBoolInst('True@2000-01-01')
-print(inst)
+ti = TGeomPointInst(['Point(10.0 10.0)', parse('2019-09-08 00:00:00+01')])
+print(ti)
 
-inst = TBoolInst('True', '2000-01-01')
-print(inst)
-
-inst = TBoolInst(True, parse('2000-01-01'))
-print(inst)
 
 """
+ti = TBoolI('{True@2019-09-01 00:00:00+01, False@2019-09-02 00:00:00+01, True@2019-09-03 00:00:00+01}')
+print(ti)
+
 inst = TBoolInst('True', parse('2000-01-01'))
 print(inst)
 print(inst.BaseClass)

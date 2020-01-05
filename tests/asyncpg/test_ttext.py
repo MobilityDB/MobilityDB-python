@@ -11,7 +11,9 @@ pytestmark = pytest.mark.asyncio
 @pytest.mark.parametrize('expected_ttextinst', [
 	'AA@2019-09-01 00:00:00+01',
 	('AA', '2019-09-08 00:00:00+01'),
+	['AA', '2019-09-08 00:00:00+01'],
 	('AA', parse('2019-09-08 00:00:00+01')),
+	['AA', parse('2019-09-08 00:00:00+01')],
 ])
 async def test_ttextinst_constructors(connection, expected_ttextinst):
 	params = TTextInst(expected_ttextinst)

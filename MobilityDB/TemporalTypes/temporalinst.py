@@ -14,31 +14,22 @@ class TemporalInst(Temporal):
 	__slots__ = ['_value', '_time']
 
 	def __init__(self, value, time=None):
-		# Constructor with a single argument of type string
-		if isinstance(value, str) and time is None:
-			couple = parse_temporalinst(value, 0)
-			self._value = type(self).BaseClass(couple[2][0])
-			self._time = parse(couple[2][1])
-		# Constructor with two arguments
-		elif value is not None and time is not None:
-			if isinstance(value, str):
-				self._value = type(self).BaseClass(value)
-			elif isinstance(value, self.BaseClass):
-				self._value = value
+		if(time is None):
+			# Constructor with a single argument of type string
+			if (isinstance(value, str)):
+				couple = parse_temporalinst(value, 0)
+				value = couple[2][0]
+				time = couple[2][1]
+			# Constructor with a single argument of type tuple or list
+			elif (isinstance(value, (tuple, list))):
+				value, time = value
 			else:
 				raise Exception("ERROR: Could not parse temporal instant value")
-			if isinstance(time, str):
-				self._time = parse(time)
-			elif isinstance(time, datetime):
-				self._time = time
-			else:
-				raise Exception("ERROR: Could not parse temporal instant value")
-		# Constructor with one argument of type list
-		elif isinstance(value, tuple):
-			self._value = self.BaseClass(value[0])
-			self._time = parse(value[1])
-		else:
-			raise Exception("ERROR: Could not parse temporal instant value")
+		# Now both value and time are not None
+		assert(isinstance(value, (str, type(self).BaseClass)))
+		assert(isinstance(time, (str, datetime)))
+		self._value = type(self).BaseClass(value) if isinstance(value, str) else value
+		self._time = parse(time) if isinstance(time, str) else time
 
 	@classmethod
 	def duration(cls):

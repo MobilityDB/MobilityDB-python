@@ -8,9 +8,11 @@ from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
 
 
 @pytest.mark.parametrize('expected_tboolinst', [
-	'True@2019-09-01 00:00:00+01',
-	(True, '2019-09-08 00:00:00+01'),
+	'true@2019-09-01 00:00:00+01',
+	('true', '2019-09-08 00:00:00+01'),
+	['true', '2019-09-08 00:00:00+01'],
 	(True, parse('2019-09-08 00:00:00+01')),
+	[True, parse('2019-09-08 00:00:00+01')],
 ])
 def test_tboolinst_constructors(cursor, expected_tboolinst):
 	params = [TBoolInst(expected_tboolinst)]
@@ -28,8 +30,6 @@ def test_tboolinst_accessors(cursor, expected_tboolinst):
 	assert TBoolInst(expected_tboolinst).getValues() == [True]
 	assert TBoolInst(expected_tboolinst).startValue() == True
 	assert TBoolInst(expected_tboolinst).endValue() == True
-	assert TBoolInst(expected_tboolinst).minValue() == True
-	assert TBoolInst(expected_tboolinst).maxValue() == True
 	assert TBoolInst(expected_tboolinst).getTimestamp() == parse('2019-09-01 00:00:00+01')
 	assert TBoolInst(expected_tboolinst).getTime() == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]}')
 	assert TBoolInst(expected_tboolinst).timespan() == timedelta(0)
@@ -85,7 +85,6 @@ def test_tbooli_constructor(cursor, expected_tbooli):
 	else:
 		assert result == TBoolI(expected_tbooli)
 
-
 @pytest.mark.parametrize('expected_tbooli', [
 	'{true@2019-09-01 00:00:00+01, false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01}',
 ])
@@ -94,8 +93,6 @@ def test_tbooli_accessors(cursor, expected_tbooli):
 	assert TBoolI(expected_tbooli).getValues() == [True, False]
 	assert TBoolI(expected_tbooli).startValue() == True
 	assert TBoolI(expected_tbooli).endValue() == True
-	assert TBoolI(expected_tbooli).minValue() == True
-	assert TBoolI(expected_tbooli).maxValue() == True
 	assert TBoolI(expected_tbooli).getTime() == \
 		   PeriodSet(
 			   '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
@@ -131,7 +128,6 @@ def test_tbooli_accessors(cursor, expected_tbooli):
 	assert TBoolI(expected_tbooli).intersectsPeriodset(
 		PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
-"""
 @pytest.mark.parametrize('expected_tboolseq', [
 	'[true@2019-09-01 00:00:00+01, false@2019-09-02 00:00:00+01, false@2019-09-03 00:00:00+01]',
 	'Interp=Stepwise;[true@2019-09-01 00:00:00+01, false@2019-09-02 00:00:00+01, false@2019-09-03 00:00:00+01]',
@@ -161,11 +157,9 @@ def test_tboolseq_constructor(cursor, expected_tboolseq):
 ])
 def test_tboolseq_accessors(cursor, expected_tboolseq):
 	assert TBoolSeq(expected_tboolseq).duration() == 'Sequence'
-	assert TBoolSeq(expected_tboolseq).getValues() == [True, False, True]
+	assert TBoolSeq(expected_tboolseq).getValues() == [True, False]
 	assert TBoolSeq(expected_tboolseq).startValue() == True
 	assert TBoolSeq(expected_tboolseq).endValue() == True
-	assert TBoolSeq(expected_tboolseq).minValue() == True
-	assert TBoolSeq(expected_tboolseq).maxValue() == True
 	assert TBoolSeq(expected_tboolseq).getTime() == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]}')
 	assert TBoolSeq(expected_tboolseq).timespan() == timedelta(2)
 	assert TBoolSeq(expected_tboolseq).period() == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
@@ -225,11 +219,9 @@ def test_tbools_constructor(cursor, expected_tbools):
 ])
 def test_tbools_accessors(cursor, expected_tbools):
 	assert TBoolS(expected_tbools).duration() == 'SequenceSet'
-	assert TBoolS(expected_tbools).getValues() == [True, False, True]
+	assert TBoolS(expected_tbools).getValues() == [True, False]
 	assert TBoolS(expected_tbools).startValue() == True
 	assert TBoolS(expected_tbools).endValue() == True
-	assert TBoolS(expected_tbools).minValue() == True
-	assert TBoolS(expected_tbools).maxValue() == True
 	assert TBoolS(expected_tbools).getTime() == PeriodSet(
 		'{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')
 	assert TBoolS(expected_tbools).timespan() == timedelta(2)
@@ -270,4 +262,3 @@ def test_tbools_accessors(cursor, expected_tbools):
 		PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
 	assert TBoolS(expected_tbools).intersectsPeriodset(
 		PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
-"""
