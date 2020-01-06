@@ -21,7 +21,7 @@ env:
   - PGPORT=5432
 
 before_script:
-  - systemctl start postgresql
+  # - systemctl start postgresql
   - psql -U postgres -c 'create database test;'
   - psql -U postgres -d test -c "create extension postgis"
   - psql -U postgres -d test -c "create extension mobilitydb"
