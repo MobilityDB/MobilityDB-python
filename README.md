@@ -24,7 +24,7 @@ Using the psycopg2 adapter for PostgreSQL
 
     try:
         # Set the connection parameters to PostgreSQL
-        connection = psycopg2.connect(host='localhost', database='regtests', user='mobilitydb', password='')
+        connection = psycopg2.connect(host='localhost', database='test', user='user', password='pw')
         connection.autocommit = True
 
         # Register MobilityDB data types
