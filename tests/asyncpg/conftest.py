@@ -1,5 +1,6 @@
 import asyncpg
 import pytest
+import os
 from MobilityDB import *
 from MobilityDB.asyncpg import register
 
@@ -13,7 +14,7 @@ temporal_types = [TBool, TInt, TFloat, TText, TGeomPoint, TGeogPoint]
 
 @pytest.yield_fixture
 async def connection():
-	conn = await asyncpg.connect('postgresql://postgres@localhost/test')
+	conn = await asyncpg.connect(dbname=os.getenv('PGDATABASE', 'test'))
 	await register(conn)
 	for time in time_types:
 		await conn.execute(
