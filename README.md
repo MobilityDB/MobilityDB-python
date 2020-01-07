@@ -90,7 +90,10 @@ Using the asyncg adapter for PostgreSQL
     loop = asyncio.get_event_loop()
     loop.run_until_complete(run())
 
+Contributing
+------------
 
+Issues and pull requests are welcome.
 
             
             
