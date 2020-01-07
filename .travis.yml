@@ -29,8 +29,9 @@ before_install:
 
 install:
   - pip install ".[test]" . # install package + test dependencies
-  - while ! psql -l; do ps afxhu | cat; echo "Waiting for MobilityDB to be ready..."; sleep 10; done
-  - psql -l
+
+before_script:
+  - while ! psql -l; do echo "Waiting for MobilityDB to be ready..."; sleep 10; done
 
 script: pytest # run tests
 

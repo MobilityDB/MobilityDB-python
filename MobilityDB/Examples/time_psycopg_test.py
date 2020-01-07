@@ -1,12 +1,13 @@
 import psycopg2
 from MobilityDB.psycopg import register
 from MobilityDB.MainTypes import TFloat, TFloatInst, TFloatI, TFloatSeq, TFloatS
+from . import psycopg_connect
 
 connection = None
 
 try:
 	# Set the connection parameters to PostgreSQL
-	connection = psycopg2.connect(host='localhost', database='regtests', user='mobilitydb', password='')
+	connection = psycopg_connect()
 	connection.autocommit = True
 
 	# Register MobilityDB data types

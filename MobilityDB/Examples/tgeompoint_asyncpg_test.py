@@ -1,12 +1,13 @@
 import asyncio
 import asyncpg
 from MobilityDB.asyncpg import register
+from . import ascnypg_connect
 
 
 async def run():
 
 	# Set the connection parameters to PostgreSQL
-	connection = await asyncpg.connect(host='localhost', database='regtests', user='mobilitydb', password='')
+	connection = await asyncpg_connect()
 
 	try:
 		# Register MobilityDB data types
