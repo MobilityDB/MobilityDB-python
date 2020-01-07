@@ -13,7 +13,7 @@ addons:
 
 env:
   global:
-  - PGPORT=25432
+  - PGPORT=5432
   - PGHOST=127.0.0.1
   - PGDATABASE=mobilitydb
   - PGUSER=docker
@@ -25,11 +25,11 @@ before_install:
   - pip install -U pytest
   - pip install codecov
   - docker pull codewit/mobilitydb
-  - docker run -d -p 25432:5432 codewit/mobilitydb
+  - docker run -d -p 5432:5432 codewit/mobilitydb
 
 install:
   - pip install ".[test]" . # install package + test dependencies
-  - ps afxhu | cat
+  - while ! psql -l; do ps afxhu | cat; echo "Waiting for MobilityDB to be ready..."; sleep 10; done
   - psql -l
 
 script: pytest # run tests
