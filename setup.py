@@ -16,6 +16,7 @@ setup(
 	url='https://github.com/ULB-CoDE-WIT/MobilityDB-Python',
 	download_url='',
 	install_requires=[
+		'asyncpg',
 		'psycopg2-binary',
 		'Spans',
 		'postgis',
