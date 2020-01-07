@@ -19,7 +19,7 @@ async def run():
 		select_query = "select * from tbl_tboolinst order by k limit 10"
 
 		print("\n****************************************************************")
-		print("Selecting rows from tbl_tboolinst table using cursor.fetchall\n")
+		print("Selecting rows from tbl_tboolinst table\n")
 		rows = await connection.fetch(select_query)
 
 		for row in rows:
@@ -55,7 +55,7 @@ async def run():
 		select_query = "select * from tbl_tbooli order by k limit 10"
 
 		print("\n****************************************************************")
-		print("Selecting rows from tbl_tbooli table using cursor.fetchall\n")
+		print("Selecting rows from tbl_tbooli table\n")
 		rows = await connection.fetch(select_query)
 
 		for row in rows:
@@ -91,7 +91,7 @@ async def run():
 		select_query = "select * from tbl_tboolseq order by k limit 10"
 	
 		print("\n****************************************************************")
-		print("Selecting rows from tbl_tboolseq table using cursor.fetchall\n")
+		print("Selecting rows from tbl_tboolseq table\n")
 		rows = await connection.fetch(select_query)
 	
 		for row in rows:
@@ -127,7 +127,7 @@ async def run():
 		select_query = "select * from tbl_tbools order by k limit 10"
 	
 		print("\n****************************************************************")
-		print("Selecting rows from tbl_tbools table using cursor.fetchall\n")
+		print("Selecting rows from tbl_tbools table\n")
 		rows = await connection.fetch(select_query)
 	
 		for row in rows:

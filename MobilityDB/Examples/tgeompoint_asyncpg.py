@@ -19,7 +19,7 @@ async def run():
 		select_query = "select * from tbl_tgeompointinst order by k limit 10"
 
 		print("\n****************************************************************")
-		print("Selecting rows from tbl_tgeompointinst table using cursor.fetchall\n")
+		print("Selecting rows from tbl_tgeompointinst table\n")
 		rows = await connection.fetch(select_query)
 
 		for row in rows:
@@ -55,7 +55,7 @@ async def run():
 		select_query = "select * from tbl_tgeompointi order by k limit 10"
 
 		print("\n****************************************************************")
-		print("Selecting rows from tbl_tgeompointi table using cursor.fetchall\n")
+		print("Selecting rows from tbl_tgeompointi table\n")
 		rows = await connection.fetch(select_query)
 
 		for row in rows:
@@ -91,7 +91,7 @@ async def run():
 		select_query = "select * from tbl_tgeompointseq order by k limit 10"
 	
 		print("\n****************************************************************")
-		print("Selecting rows from tbl_tgeompointseq table using cursor.fetchall\n")
+		print("Selecting rows from tbl_tgeompointseq table\n")
 		rows = await connection.fetch(select_query)
 	
 		for row in rows:
@@ -127,7 +127,7 @@ async def run():
 		select_query = "select * from tbl_tgeompoints order by k limit 10"
 	
 		print("\n****************************************************************")
-		print("Selecting rows from tbl_tgeompoints table using cursor.fetchall\n")
+		print("Selecting rows from tbl_tgeompoints table\n")
 		rows = await connection.fetch(select_query)
 	
 		for row in rows:

@@ -22,7 +22,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tfloatinst table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tfloatinst table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -62,7 +62,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tfloati table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tfloati table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -102,7 +102,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tfloatseq table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tfloatseq table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -142,7 +142,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tfloats table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tfloats table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
