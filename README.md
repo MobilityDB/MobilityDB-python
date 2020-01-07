@@ -1,5 +1,6 @@
 # MobilityDB-Python
-MobilityDB-Python is a python package that is used as an API to access MobilityDB.
+MobilityDB-Python is a Python package that is used as database adapter to access MobilityDB. It supports both the [psycopg2](https://github.com/psycopg/psycopg2) and the [asyncpg](https://github.com/MagicStack/asyncpg) adapters for PostgreSQL and uses the [postgis](https://github.com/tilery/python-postgis) adapter for PostGIS.
+
 
 Install
 ------------
@@ -11,7 +12,10 @@ Requirements
  - MobilityDB
  
 Usage
------------- 
+------------
+
+Using the psycopg2 adapter for PostgreSQL
+
 1- Register MobilityDB extension in PostgreSQL driver:
 
     from MobilityDB import *
@@ -27,7 +31,25 @@ Usage
     
     --Result is an object of TGEOMPOINTSEQ type:
     --TGEOMPOINT '[POINT(1.0 2.0)@2019-09-08 00:00:00+02:00, POINT(0.0 2.0)@2019-09-09 00:00:00+02:00, POINT(1.0 1.0)@2019-09-10 00:00:00+02:00]'
-   
+
+Using the asyncg adapter for PostgreSQL
+
+1- Register MobilityDB extension in PostgreSQL driver:
+
+    from MobilityDB import *
+    connectionObject = psycopg2.connect(host='localhost', database='db', user='postgres', password='')
+    MobilityDBRegister(connectionObject)
+
+2- Retrieve MobilityDB types as python objects:
+
+    --To get MobilityDB tgeompoint(Sequence) type
+    cursor.execute('SELECT tpoint from tpointseq;')
+    colVal = cursor.fetchone()[0]
+    print(colVal)
+
+    --Result is an object of TGEOMPOINTSEQ type:
+    --TGEOMPOINT '[POINT(1.0 2.0)@2019-09-08 00:00:00+02:00, POINT(0.0 2.0)@2019-09-09 00:00:00+02:00, POINT(1.0 1.0)@2019-09-10 00:00:00+02:00]'
+
    1  Functions and Operators for Time Types and Range Types
     
     1.1 Constructor Functions
