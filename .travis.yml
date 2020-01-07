@@ -1,7 +1,5 @@
 language: python
 
-dist: xenial
-
 python:
   - 3.6
 
@@ -31,6 +29,7 @@ before_install:
 
 install:
   - pip install ".[test]" . # install package + test dependencies
+  - env
   - psql -l
 
 script: pytest # run tests
