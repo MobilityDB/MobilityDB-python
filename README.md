@@ -1,5 +1,5 @@
 # MobilityDB-Python
-MobilityDB-Python is a Python package that is used as database adapter to access MobilityDB. It supports both the [psycopg2](https://github.com/psycopg/psycopg2) and the [asyncpg](https://github.com/MagicStack/asyncpg) adapters for PostgreSQL and uses the [postgis](https://github.com/tilery/python-postgis) adapter for PostGIS.
+MobilityDB-Python is a database adapter to access MobilityDB from Python. It supports both the [psycopg2](https://github.com/psycopg/psycopg2) and the [asyncpg](https://github.com/MagicStack/asyncpg) adapters for PostgreSQL and uses the [postgis](https://github.com/tilery/python-postgis) adapter for PostGIS.
 
 
 Install
