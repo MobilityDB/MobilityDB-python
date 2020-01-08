@@ -1,5 +1,5 @@
 # MobilityDB-Python
-MobilityDB-Python is a Python package that is used as database adapter to access MobilityDB. It supports both the [psycopg2](https://github.com/psycopg/psycopg2) and the [asyncpg](https://github.com/MagicStack/asyncpg) adapters for PostgreSQL and uses the [postgis](https://github.com/tilery/python-postgis) adapter for PostGIS.
+MobilityDB-Python is a database adapter to access MobilityDB from Python. It supports both the [psycopg2](https://github.com/psycopg/psycopg2) and the [asyncpg](https://github.com/MagicStack/asyncpg) adapters for PostgreSQL and uses the [postgis](https://github.com/tilery/python-postgis) adapter for PostGIS.
 
 
 Install
@@ -11,91 +11,89 @@ Requirements
  - Python >= 3.0
  - MobilityDB
  
-Usage
+Basic Usage
 ------------
 
 Using the psycopg2 adapter for PostgreSQL
 
-1- Register MobilityDB extension in PostgreSQL driver:
+    import psycopg2
+    from postgis.psycopg import register
+    from MobilityDB.psycopg import register
 
-    from MobilityDB import *
-    connectionObject = psycopg2.connect(host='localhost', database='db', user='postgres', password='')
-    MobilityDBRegister(connectionObject)
+    connectionObject = None
 
-2- Retrieve MobilityDB types as python objects:
+    try:
+        # Set the connection parameters to PostgreSQL
+        connection = psycopg2.connect(host='localhost', database='test', user='user', password='pw')
+        connection.autocommit = True
 
-    --To get MobilityDB tgeompoint(Sequence) type
-    cursor.execute('SELECT tpoint from tpointseq;')
-    colVal = cursor.fetchone()[0]
-    print(colVal)
-    
-    --Result is an object of TGEOMPOINTSEQ type:
-    --TGEOMPOINT '[POINT(1.0 2.0)@2019-09-08 00:00:00+02:00, POINT(0.0 2.0)@2019-09-09 00:00:00+02:00, POINT(1.0 1.0)@2019-09-10 00:00:00+02:00]'
+        # Register MobilityDB data types
+        register(connection)
+
+        # Open a cursor to perform database operations
+        cursor = connection.cursor()
+
+        # Query the database and obtain data as Python objects
+        select_query = "SELECT * FROM tbl_tfloatseq ORDER BY k LIMIT 10"
+        cursor.execute(select_query)
+        rows = cursor.fetchall()
+
+        # Print the obtained rows and call a method on the instances
+        for row in rows:
+            print("key =", row[0])
+            print("tfloatseq =", row[1])
+            if not row[1]:
+                print("")
+            else:
+                print("startTimestamp =", row[1].startTimestamp(), "\n")
+
+    except (Exception, psycopg2.Error) as error:
+        print("Error while connecting to PostgreSQL", error)
+
+    finally:
+        # Close the connection
+        if connectionObject:
+            connectionObject.close()
 
 Using the asyncg adapter for PostgreSQL
 
-1- Register MobilityDB extension in PostgreSQL driver:
+    import asyncio
+    import asyncpg
+    from MobilityDB.asyncpg import register
 
-    from MobilityDB import *
-    connectionObject = psycopg2.connect(host='localhost', database='db', user='postgres', password='')
-    MobilityDBRegister(connectionObject)
 
-2- Retrieve MobilityDB types as python objects:
+    async def run():
+        # Connect to an existing database
+        connection = await asyncpg.connect(host='localhost', database='test', user='user', password='pw')
 
-    --To get MobilityDB tgeompoint(Sequence) type
-    cursor.execute('SELECT tpoint from tpointseq;')
-    colVal = cursor.fetchone()[0]
-    print(colVal)
+        try:
+            # Register MobilityDB data types
+            await register(connection)
 
-    --Result is an object of TGEOMPOINTSEQ type:
-    --TGEOMPOINT '[POINT(1.0 2.0)@2019-09-08 00:00:00+02:00, POINT(0.0 2.0)@2019-09-09 00:00:00+02:00, POINT(1.0 1.0)@2019-09-10 00:00:00+02:00]'
+            # Query the database and obtain data as Python objects
+            select_query = "SELECT * FROM tbl_tgeompointseq ORDER BY k LIMIT 10"
+            rows = await connection.fetch(select_query)
 
-   1  Functions and Operators for Time Types and Range Types
-    
-    1.1 Constructor Functions
-            period(timestamptz, timestamptz, boolean = true, boolean = false):  period
-            timestampset(timestamptz[]):  timestampset
-        
-    1.3  Accessor Functions
-            lower(period):  timestamptz
-            upper(period):  timestamptz
-            lower_inc(period):  boolean
-            upper_inc(period):  boolean
-            numPeriods(periodset):  int
-            startPeriod(periodset):  period
-            endPeriod(periodset):  period
-            periodN(periodset, int):  period
-            periods(periodset):  period[]
-        
-  2  Functions and Operators for Temporal Types
-    
-    2.1  Constructor Functions
-            Constructors for tbox
-                tbox(float, float):  tbox
-                tboxt(timestamptz, timestamptz):  tbox
-                tbox(float, timestamptz, float, timestamptz):  tbox
-            Constructors for stbox
-                stbox(float, float, float, float):  stbox
-                stbox(float, float, float, float, float, float):  stbox
-                stboxt(float, float, timestamptz, float, float, timestamptz):  stbox
-                stbox(float, float, float, timestamptz, float, float, float, timestamptz):  stbox
-                geodstbox(float, float, float, float, float, float):  stbox
-                geodstbox(float, float, float, timestamptz, float, float, float, timestamptz):  stbox
-                stbox(timestamptz, timestamptz):  stbox
-    2.4  Accessor Functions
-            duration(ttype):  {’Instant’, ’InstantSet’, ’Sequence’, ’SequenceSet’}
-            getValue(ttypeinst):  base
-            getValues(ttype):  {base[], floatrange[], geo}
-            timespan(ttype):  period
-            startValue(ttype):  base
-            endValue(ttype):  base
-            numInstants(ttype):  int
-            startInstant(ttype):  ttypeinst
-            endInstant(ttype):  ttypeinst
-            instantN(ttype, int):  ttypeinst
+            # Print the obtained rows and call a method on the instances
+            for row in rows:
+                print("key =", row[0])
+                print("tgeompointseq =", row[1])
+                if not row[1]:
+                    print("")
+                else:
+                    print("startTimestamp =", row[1].startTimestamp(), "\n")
+        finally:
+            # Close the connection
+            await connection.close()
 
-    2.8  Comparison Operators
-            
+    # Launch the process
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run())
+
+Contributing
+------------
+
+Issues and pull requests are welcome.
 
             
             

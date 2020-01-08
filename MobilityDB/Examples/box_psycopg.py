@@ -23,7 +23,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tbox table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tbox table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -63,7 +63,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_stbox table using cursor.fetchall\n")
+	print("Selecting rows from tbl_stbox table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:

@@ -23,7 +23,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tboolinst table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tboolinst table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -63,7 +63,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tbooli table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tbooli table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -103,7 +103,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tboolseq table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tboolseq table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -143,7 +143,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tbools table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tbools table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:

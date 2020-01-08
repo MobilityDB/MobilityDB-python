@@ -23,7 +23,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tgeompointinst table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tgeompointinst table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -63,7 +63,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tgeompointi table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tgeompointi table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -103,7 +103,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tgeompointseq table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tgeompointseq table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -143,7 +143,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tgeompoints table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tgeompoints table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:

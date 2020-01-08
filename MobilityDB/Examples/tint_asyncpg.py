@@ -20,7 +20,7 @@ async def run():
 		select_query = "select * from tbl_tintinst order by k limit 10"
 
 		print("\n****************************************************************")
-		print("Selecting rows from tbl_tintinst table using cursor.fetchall\n")
+		print("Selecting rows from tbl_tintinst table\n")
 		rows = await connection.fetch(select_query)
 
 		for row in rows:
@@ -56,7 +56,7 @@ async def run():
 		select_query = "select * from tbl_tinti order by k limit 10"
 
 		print("\n****************************************************************")
-		print("Selecting rows from tbl_tinti table using cursor.fetchall\n")
+		print("Selecting rows from tbl_tinti table\n")
 		rows = await connection.fetch(select_query)
 
 		for row in rows:
@@ -92,7 +92,7 @@ async def run():
 		select_query = "select * from tbl_tintseq order by k limit 10"
 	
 		print("\n****************************************************************")
-		print("Selecting rows from tbl_tintseq table using cursor.fetchall\n")
+		print("Selecting rows from tbl_tintseq table\n")
 		rows = await connection.fetch(select_query)
 	
 		for row in rows:
@@ -128,7 +128,7 @@ async def run():
 		select_query = "select * from tbl_tints order by k limit 10"
 	
 		print("\n****************************************************************")
-		print("Selecting rows from tbl_tints table using cursor.fetchall\n")
+		print("Selecting rows from tbl_tints table\n")
 		rows = await connection.fetch(select_query)
 	
 		for row in rows:

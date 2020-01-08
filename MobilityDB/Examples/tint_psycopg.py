@@ -23,7 +23,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tintinst table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tintinst table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -63,7 +63,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tinti table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tinti table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -103,7 +103,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tintseq table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tintseq table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
@@ -143,7 +143,7 @@ try:
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
-	print("Selecting rows from tbl_tints table using cursor.fetchall\n")
+	print("Selecting rows from tbl_tints table\n")
 	rows = cursor.fetchall()
 
 	for row in rows:
