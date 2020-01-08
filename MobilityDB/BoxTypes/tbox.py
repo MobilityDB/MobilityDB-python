@@ -1,5 +1,5 @@
+from datetime import datetime
 from dateutil.parser import parse
-import re
 import warnings
 
 try:
@@ -13,24 +13,43 @@ class TBox:
 	__slots__ = ['_xmin', '_tmin', '_xmax', '_tmax']
 
 	def __init__(self, *args):
+		print("*** args", args)
 		if len(args) == 1 and isinstance(args[0], str):
 			self.parseFromString(args[0])
 		elif len(args) == 2:
-			try:
-				self._xmin = float(args[0])
-				self._xmax = float(args[1])
-				self._tmin = None
-				self._tmax = None
-			except:
-				self._xmin = None
-				self._xmax = None
-				self._tmin = parse(args[0])
-				self._tmax = parse(args[1])
+			if isinstance(args[0], str) and isinstance(args[1], str):
+				try:
+					self._xmin = float(args[0])
+					self._xmax = float(args[1])
+					self._tmin = self._tmax = None
+				except:
+					self._tmin = parse(args[0])
+					self._tmax = parse(args[1])
+					self._xmin = self._xmax = None
+			elif isinstance(args[0], float) and isinstance(args[1], float):
+				self._xmin = args[0]
+				self._xmax = args[1]
+				self._tmin = self._tmax = None
+			elif isinstance(args[0], datetime) and isinstance(args[1], datetime):
+				self._tmin = args[0]
+				self._tmax = args[1]
+				self._xmin = self._xmax = None
+			else:
+				raise Exception("ERROR: Cannot parse TBox")
 		elif len(args) == 4:
-			self._xmin = float(args[0])
-			self._tmin = parse(args[1])
-			self._xmax = float(args[2])
-			self._tmax = parse(args[3])
+			if all(isinstance(arg, str) for arg in args):
+				self._xmin = float(args[0])
+				self._tmin = parse(args[1])
+				self._xmax = float(args[2])
+				self._tmax = parse(args[3])
+			elif isinstance(args[0], float) and isinstance(args[1], datetime) and \
+				isinstance(args[2], float) and isinstance(args[3], datetime):
+				self._xmin = args[0]
+				self._tmin = args[1]
+				self._xmax = args[2]
+				self._tmax = args[3]
+			else:
+				raise Exception("ERROR: Cannot parse TBox")
 		else:
 			raise Exception("ERROR: Cannot parse TBox")
 

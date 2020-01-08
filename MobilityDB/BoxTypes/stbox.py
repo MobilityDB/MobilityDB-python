@@ -1,5 +1,5 @@
+from datetime import datetime
 from dateutil.parser import parse
-import re
 import warnings
 
 try:
@@ -12,30 +12,53 @@ except ImportError:
 class STBox:
 	__slots__ = ['_xmin', '_ymin', '_zmin', '_tmin', '_xmax', '_ymax', '_zmax', '_tmax', '_geodetic']
 
-	def __init__(self, *args, geodetic=None):
+	def __init__(self, *args,  geodetic=None):
+		# Initialize arguments to None
 		self._xmin = self._xmax = self._ymin = self._ymax = self._zmin = self._zmax = self._tmin = self._tmax = None
 		self._geodetic = geodetic if geodetic is not None else False
+		# Index of the middle of the list of arguments
+		half = int(len(args) / 2)
 		if len(args) == 1 and isinstance(args[0], str):
 			self.parseFromString(args[0])
 		elif len(args) == 2:
-			self._tmin = parse(args[0])
-			self._tmax = parse(args[1])
-			self._xmin = self._xmax = self._ymin = self._ymax = self._zmin = self._zmax = None
+			if isinstance(args[0], str) and isinstance(args[1], str):
+				self._tmin = parse(args[0])
+				self._tmax = parse(args[1])
+			elif isinstance(args[0], datetime) and isinstance(args[1], datetime):
+				self._tmin = args[0]
+				self._tmax = args[1]
+			else:
+				raise Exception("ERROR: Cannot parse STBox")
 		elif len(args) >= 4:
 			self._xmin = float(args[0])
-			self._xmax = float(args[int(len(args) / 2)])
+			self._xmax = float(args[half])
 			self._ymin = float(args[1])
-			self._ymax = float(args[1 + int(len(args) / 2)])
+			self._ymax = float(args[half + 1])
 		elif len(args) >= 6:
-			try:
+			if isinstance(args[2], str) and isinstance(args[half + 2], str):
+				try:
+					self._zmin = float(args[2])
+					self._zmax = float(args[half + 2])
+				except:
+					self._tmin = parse(args[2])
+					self._tmax = parse(args[half + 2])
+			elif isinstance(args[2], float) and isinstance(args[half + 2], float):
 				self._zmin = float(args[2])
-				self._zmax = float(args[2 + int(len(args) / 2)])
-			except:
-				self._tmin = parse(args[2])
-				self._tmax = parse(args[2 + int(len(args) / 2)])
-		elif len(args) >= 8:
-			self._tmin = parse(args[int(len(args) / 2) - 1])
-			self._tmax = parse(args[(int(len(args) / 2) - 1) + int(len(args) / 2)])
+				self._zmax = float(args[half + 2])
+			elif isinstance(args[2], datetime) and isinstance(args[half + 2], datetime):
+				self._tmin = args[2]
+				self._tmax = args[half + 2]
+			else:
+				raise Exception("ERROR: Cannot parse STBox")
+		elif len(args) == 8:
+			if isinstance(args[3], str) and isinstance(args[7], str):
+				self._tmin = parse(args[3])
+				self._tmax = parse(args[7])
+			elif isinstance(args[3], datetime) and isinstance(args[7], datetime):
+				self._tmin = args[3]
+				self._tmax = args[7]
+			else:
+				raise Exception("ERROR: Cannot parse STBox")
 		else:
 			raise Exception("ERROR: Cannot parse STBox")
 
