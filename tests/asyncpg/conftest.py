@@ -1,8 +1,8 @@
 import asyncpg
 import pytest
 import os
-from MobilityDB import *
-from MobilityDB.asyncpg import register
+from mobilitydb import *
+from mobilitydb.asyncpg import register
 
 
 time_types = [TimestampSet, Period, PeriodSet]

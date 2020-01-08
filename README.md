@@ -18,7 +18,7 @@ Using the psycopg2 adapter for PostgreSQL
 
     import psycopg2
     from postgis.psycopg import register
-    from MobilityDB.psycopg import register
+    from mobilitydb.psycopg import register
 
     connectionObject = None
 
@@ -59,7 +59,7 @@ Using the asyncg adapter for PostgreSQL
 
     import asyncio
     import asyncpg
-    from MobilityDB.asyncpg import register
+    from mobilitydb.asyncpg import register
 
 
     async def run():

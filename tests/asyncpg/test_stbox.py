@@ -1,6 +1,6 @@
 import pytest
 from dateutil.parser import parse
-from MobilityDB import STBox
+from mobilitydb import STBox
 
 pytestmark = pytest.mark.asyncio
 

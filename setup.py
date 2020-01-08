@@ -22,7 +22,6 @@ setup(
 		'postgis',
 		'pytest',
 		'python-dateutil',
-		'bdateutil',
 		'parsec'
 	],
 	keywords=['MobilityDB', 'Python'],

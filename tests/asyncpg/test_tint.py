@@ -1,6 +1,6 @@
 import pytest
-from bdateutil.parser import parse
-from MobilityDB.MainTypes import TIntInst, TIntI, TIntSeq, TIntS
+from dateutil.parser import parse
+from mobilitydb.main import TIntInst, TIntI, TIntSeq, TIntS
 
 pytestmark = pytest.mark.asyncio
 

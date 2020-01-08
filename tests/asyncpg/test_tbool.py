@@ -1,6 +1,6 @@
 import pytest
-from bdateutil.parser import parse
-from MobilityDB.MainTypes import TBoolInst, TBoolI, TBoolSeq, TBoolS
+from dateutil.parser import parse
+from mobilitydb.main import TBoolInst, TBoolI, TBoolSeq, TBoolS
 
 pytestmark = pytest.mark.asyncio
 

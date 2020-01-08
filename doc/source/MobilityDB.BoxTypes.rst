@@ -1,21 +1,21 @@
-MobilityDB.BoxTypes package
+mobilitydb.boxes package
 ===========================
 
 Submodules
 ----------
 
-MobilityDB.BoxTypes.stbox module
+mobilitydb.boxes.stbox module
 --------------------------------
 
-.. automodule:: MobilityDB.BoxTypes.stbox
+.. automodule:: mobilitydb.boxes.stbox
 :members:
        :undoc-members:
                :show-inheritance:
 
-MobilityDB.BoxTypes.tbox module
+mobilitydb.boxes.tbox module
 -------------------------------
 
-.. automodule:: MobilityDB.BoxTypes.tbox
+.. automodule:: mobilitydb.boxes.tbox
 :members:
        :undoc-members:
                :show-inheritance:
@@ -24,7 +24,7 @@ MobilityDB.BoxTypes.tbox module
 Module contents
 ---------------
 
-.. automodule:: MobilityDB.BoxTypes
+.. automodule:: mobilitydb.boxes
 :members:
        :undoc-members:
                :show-inheritance:

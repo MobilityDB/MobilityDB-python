@@ -1,7 +1,7 @@
 import pytest
-from datetime import datetime, timedelta
-from bdateutil.parser import parse
-from MobilityDB import TimestampSet, Period, PeriodSet
+from datetime import timedelta
+from dateutil.parser import parse
+from mobilitydb import TimestampSet, Period, PeriodSet
 
 
 @pytest.mark.parametrize('expected_timestampset', [

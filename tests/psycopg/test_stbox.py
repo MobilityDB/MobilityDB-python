@@ -1,6 +1,6 @@
 import pytest
-from bdateutil import parse
-from MobilityDB import STBox
+from dateutil.parser import parse
+from mobilitydb import STBox
 
 
 @pytest.mark.parametrize('expected_stbox', [

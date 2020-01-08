@@ -1,5 +1,5 @@
-import asyncio
 import asyncpg
+import psycopg2
 import os
 	
 _pghost = os.getenv('PGHOST', 'localhost')

@@ -1,6 +1,6 @@
 import pytest
-from bdateutil.parser import parse
-from MobilityDB.MainTypes import TFloatInst, TFloatI, TFloatSeq, TFloatS
+from dateutil.parser import parse
+from mobilitydb.main import TFloatInst, TFloatI, TFloatSeq, TFloatS
 
 pytestmark = pytest.mark.asyncio
 
