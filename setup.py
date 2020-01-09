@@ -1,19 +1,19 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
 from distutils.core import setup
 
 with open("README.md", "r") as fh:
 	long_description = fh.read()
 
 setup(
-	name='MobilityDB',
+	name='python-mobilitydb',
 	packages=find_packages(),
-	version='0.1',
+	version='0.1.0',
 	license='MIT',
-	description='MobilityDB Driver',
+	description='A database adapter to access MobilityDB from Python',
 	author='MobilityDB Team',
-	author_email='mobilitydb@ulb.ac.be',
+	platforms=["linux"],
 	long_description=long_description,
-	url='https://github.com/ULB-CoDE-WIT/MobilityDB-Python',
+	url='https://github.com/ULB-CoDE-WIT/python-mobilitydb',
 	download_url='',
 	install_requires=[
 		'asyncpg',
@@ -29,11 +29,20 @@ setup(
 	classifiers=[
 		'Development Status :: 3 - Alpha',
 		'Intended Audience :: Developers',
-		'Topic :: Software Development :: Build Tools',
+		'Topic :: Database :: Front-Ends',
+		'Topic :: Software Development :: Libraries :: Python Modules',
+		"Topic :: Scientific/Engineering :: GIS",
 		'License :: OSI Approved :: MIT License',
 		'Programming Language :: Python :: 3',
 		'Programming Language :: Python :: 3.4',
 		'Programming Language :: Python :: 3.5',
 		'Programming Language :: Python :: 3.6',
+		'Programming Language :: Python :: 3.7',
+		'Programming Language :: Python :: 3.8',
+		'Programming Language :: Python :: 3.9',
 	],
+	project_urls={
+		'Source': 'https://github.com/ULB-CoDE-WIT/python-mobilitydb',
+		'Documentation': 'https://docs.mobilitydb.com/nightly/mobilitydb.pdf',
+	}
 )
