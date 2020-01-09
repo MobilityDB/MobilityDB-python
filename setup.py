@@ -22,9 +22,7 @@ setup(
 		'postgis',
 		'pytest',
 		'python-dateutil',
-		'parsec'
-	],
-	tests_requires=[
+		'parsec',
 		'pytest-asyncio'
 	],
 	keywords=['MobilityDB', 'Python'],
