@@ -1,6 +1,5 @@
-python-mobilitydb.boxes
-========================================
+mobilitydb.boxes
+================
 
 .. automodule:: mobilitydb.boxes
     :members:
-    :undoc-members:

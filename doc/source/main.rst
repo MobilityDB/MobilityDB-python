@@ -1,5 +1,5 @@
-python-mobilitydb.main
-========================================
+mobilitydb.main
+===============
 
 .. automodule:: mobilitydb.main
     :show-inheritance:
