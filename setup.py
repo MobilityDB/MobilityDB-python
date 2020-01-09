@@ -13,6 +13,7 @@ setup(
 	author='MobilityDB Team',
 	platforms=["linux"],
 	long_description=long_description,
+	long_description_content_type='text/markdown',
 	url='https://github.com/ULB-CoDE-WIT/python-mobilitydb',
 	download_url='',
 	install_requires=[
@@ -44,5 +45,5 @@ setup(
 	project_urls={
 		'Source': 'https://github.com/ULB-CoDE-WIT/python-mobilitydb',
 		'Documentation': 'https://docs.mobilitydb.com/nightly/mobilitydb.pdf',
-	}
+	},
 )
