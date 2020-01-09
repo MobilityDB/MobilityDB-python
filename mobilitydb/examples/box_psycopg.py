@@ -1,12 +1,12 @@
 import psycopg2
-from postgis.psycopg import register
-from MobilityDB.BoxTypes import TBox, STBox
+from mobilitydb.psycopg import register
+from mobilitydb.examples.db_connect import psycopg_connect
 
 connection = None
 
 try:
 	# Set the connection parameters to PostgreSQL
-	connection = psycopg2.connect(host='localhost', database='regtests', user='mobilitydb', password='')
+	connection = psycopg_connect()
 	connection.autocommit = True
 
 	# Register MobilityDB data types

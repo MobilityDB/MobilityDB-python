@@ -1,5 +1,5 @@
 from spans.types import intrange
-from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
 
 
 class TInt(Temporal):

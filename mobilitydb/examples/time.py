@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
+from mobilitydb.time import TimestampSet, Period, PeriodSet
 
 print("\n# Period")
 
@@ -18,8 +18,8 @@ var = Period('2019-09-08', '2019-09-10', False, True)
 print("Constructor 4 args:", var)
 
 # Accessor functions
-# var1 = var.lower()
-print("lower:", var.lower())
+var1 = var.lower()
+print("lower:", var1)
 var1 = var.upper()
 print("upper:", var1)
 var1 = var.lower_inc()

@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
-from bdateutil.parser import parse
-from spans.types import floatrange
-from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
-from MobilityDB.MainTypes import TFloat, TFloatInst, TFloatI, TFloatSeq, TFloatS
+from dateutil.parser import parse
+from mobilitydb.time import TimestampSet, Period, PeriodSet
+from mobilitydb.main import TFloat, TFloatInst, TFloatI, TFloatSeq, TFloatS
 
 
 print("\nConstructors for TFloatInst")

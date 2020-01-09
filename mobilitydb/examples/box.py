@@ -1,4 +1,4 @@
-from MobilityDB import *
+from mobilitydb import TBox, STBox
 
 print("############################")
 print('# Create new TBOX instances')

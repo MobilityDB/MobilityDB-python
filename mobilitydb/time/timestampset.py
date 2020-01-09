@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from bdateutil.parser import parse
+from dateutil.parser import parse
 from .period import Period
 import warnings
 

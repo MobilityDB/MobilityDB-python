@@ -1,8 +1,8 @@
 from parsec import *
 from datetime import datetime
-from bdateutil.parser import parse
-from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
-from MobilityDB.TemporalTypes.temporal_parser import parse_temporalinst
+from dateutil.parser import parse
+from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
 
 class TBool(Temporal):

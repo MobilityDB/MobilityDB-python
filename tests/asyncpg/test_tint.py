@@ -1,10 +1,6 @@
 import pytest
-from datetime import datetime, timedelta
-from dateutil.tz import tzoffset
-from bdateutil.parser import parse
-from spans.types import floatrange
-from MobilityDB.MainTypes import TIntInst, TIntI, TIntSeq, TIntS
-from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
+from dateutil.parser import parse
+from mobilitydb.main import TIntInst, TIntI, TIntSeq, TIntS
 
 pytestmark = pytest.mark.asyncio
 

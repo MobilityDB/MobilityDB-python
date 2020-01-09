@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
-from bdateutil.parser import parse
+from dateutil.parser import parse
 from spans.types import intrange
-from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
-from MobilityDB.MainTypes import TInt, TIntInst, TIntI, TIntSeq, TIntS
+from mobilitydb.time import TimestampSet, Period, PeriodSet
+from mobilitydb.main import TIntInst, TIntI, TIntSeq, TIntS
 
 
 print("\nConstructors for TFloatInst")

@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
-from bdateutil.parser import parse
-from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
-from MobilityDB.MainTypes import TText, TTextInst, TTextI, TTextSeq, TTextS
+from dateutil.parser import parse
+from mobilitydb.time import TimestampSet, Period, PeriodSet
+from mobilitydb.main import TTextInst, TTextI, TTextSeq, TTextS
 
 print("\nConstructors for TTextInst")
 inst = TTextInst('A@2019-09-08')

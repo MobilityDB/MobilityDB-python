@@ -1,7 +1,6 @@
-from MobilityDB.TemporalTypes.temporal_parser import parse_temporals
-from MobilityDB.TimeTypes.period import Period
-from MobilityDB.TimeTypes.periodset import PeriodSet
-from MobilityDB.TemporalTypes.temporal import Temporal
+from mobilitydb.time import Period, PeriodSet
+from mobilitydb.temporal.temporal import Temporal
+from mobilitydb.temporal.temporal_parser import parse_temporals
 
 
 class TemporalS(Temporal):

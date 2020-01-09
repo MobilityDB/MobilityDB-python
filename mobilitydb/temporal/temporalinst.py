@@ -1,10 +1,9 @@
 from parsec import *
 from datetime import datetime
-from bdateutil.parser import parse
-from .temporal import Temporal
-from MobilityDB.TimeTypes.period import Period
-from MobilityDB.TimeTypes.periodset import PeriodSet
-from MobilityDB.TemporalTypes.temporal_parser import parse_temporalinst
+from dateutil.parser import parse
+from mobilitydb.time import Period, PeriodSet
+from mobilitydb.temporal import Temporal
+from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
 
 class TemporalInst(Temporal):

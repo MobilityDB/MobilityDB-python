@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
-from bdateutil.parser import parse
+from dateutil.parser import parse
 from postgis import Point
-from MobilityDB import *
+from mobilitydb import *
 
 
 print("\nConstructors for TGeogPointInst")

@@ -1,8 +1,7 @@
-import psycopg2
 from psycopg2 import extensions
-from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
-from MobilityDB.BoxTypes import TBox, STBox
-from MobilityDB.MainTypes import TBool, TInt, TFloat, TText, TGeomPoint, TGeogPoint
+from mobilitydb.boxes import TBox, STBox
+from mobilitydb.time import TimestampSet, Period, PeriodSet
+from mobilitydb.main import TBool, TInt, TFloat, TText, TGeomPoint, TGeogPoint
 
 
 # Suggestion is to have our own connection method to register our types without asking the user to do this step

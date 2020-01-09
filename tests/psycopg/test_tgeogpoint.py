@@ -1,10 +1,9 @@
 import pytest
-from datetime import datetime, timedelta
-from dateutil.tz import tzoffset
-from bdateutil.parser import parse
+from datetime import timedelta
+from dateutil.parser import parse
 from postgis import Point, MultiPoint, LineString, MultiLineString, GeometryCollection
-from MobilityDB.MainTypes import TGeogPointInst, TGeogPointI, TGeogPointSeq, TGeogPointS
-from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
+from mobilitydb.time import TimestampSet, Period, PeriodSet
+from mobilitydb.main import TGeogPointInst, TGeogPointI, TGeogPointSeq, TGeogPointS
 
 
 @pytest.mark.parametrize('expected_tgeogpointinst', [

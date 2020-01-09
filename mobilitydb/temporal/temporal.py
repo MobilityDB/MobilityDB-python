@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from MobilityDB.TimeTypes import *
 import warnings
 
 try:

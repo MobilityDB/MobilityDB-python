@@ -1,7 +1,7 @@
 from datetime import datetime
-from bdateutil.parser import parse
-from MobilityDB.TemporalTypes.temporal_parser import parse_temporalinst
-from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from dateutil.parser import parse
+from mobilitydb.temporal.temporal_parser import parse_temporalinst
+from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
 
 
 class TText(Temporal):

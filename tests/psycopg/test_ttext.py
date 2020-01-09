@@ -1,10 +1,8 @@
 import pytest
-from datetime import datetime, timedelta
-from dateutil.tz import tzoffset
-from bdateutil.parser import parse
-from spans.types import intrange
-from MobilityDB.MainTypes import TTextInst, TTextI, TTextSeq, TTextS
-from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
+from datetime import timedelta
+from dateutil.parser import parse
+from mobilitydb.main import TTextInst, TTextI, TTextSeq, TTextS
+from mobilitydb.time import TimestampSet, Period, PeriodSet
 
 
 @pytest.mark.parametrize('expected_ttextinst', [

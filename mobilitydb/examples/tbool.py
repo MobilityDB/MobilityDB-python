@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
-from bdateutil.parser import parse
-from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
-from MobilityDB.MainTypes import TBool, TBoolInst, TBoolI, TBoolSeq, TBoolS
+from dateutil.parser import parse
+from mobilitydb.time import TimestampSet, Period, PeriodSet
+from mobilitydb.main import TBoolInst, TBoolI, TBoolSeq, TBoolS
 
 
 print("\nConstructors for TBoolInst")

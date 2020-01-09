@@ -1,9 +1,10 @@
 import pytest
 import psycopg2
-from MobilityDB import *
-from MobilityDB.psycopg import register
+import os
+from mobilitydb import *
+from mobilitydb.psycopg import register
 
-db = psycopg2.connect(dbname="test")
+db = psycopg2.connect(dbname=os.getenv('PGDATABASE', 'test'))
 db.autocommit = True
 
 register(db)

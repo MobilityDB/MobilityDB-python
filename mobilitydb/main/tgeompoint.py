@@ -1,9 +1,9 @@
 import re
 from datetime import datetime
-from bdateutil.parser import parse
+from dateutil.parser import parse
 from postgis import Geometry, Point, MultiPoint, LineString, GeometryCollection, MultiLineString
-from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
-from MobilityDB.TemporalTypes.temporal_parser import parse_temporalinst, parse_temporali, parse_temporalseq, parse_temporals
+from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal.temporal_parser import parse_temporalinst, parse_temporali, parse_temporalseq, parse_temporals
 
 
 # Add method to Point to make the class hashable

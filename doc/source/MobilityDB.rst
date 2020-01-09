@@ -1,4 +1,4 @@
-MobilityDB package
+mobilitydb package
 ==================
 
 Subpackages
@@ -6,36 +6,17 @@ Subpackages
 
 .. toctree::
 
-   MobilityDB.BoxTypes
-   MobilityDB.Examples
-   MobilityDB.MainTypes
-   MobilityDB.TemporalTypes
-   MobilityDB.TimeTypes
-
-Submodules
-----------
-
-MobilityDB.MobilityDBConnection module
---------------------------------------
-
-.. automodule:: MobilityDB.MobilityDBConnection
-:members:
-       :undoc-members:
-               :show-inheritance:
-
-MobilityDB.MobilityDBReader module
-----------------------------------
-
-.. automodule:: MobilityDB.MobilityDBReader
-:members:
-       :undoc-members:
-               :show-inheritance:
+   mobilitydb.boxes
+   mobilitydb.examples
+   mobilitydb.main
+   mobilitydb.temporal
+   mobilitydb.time
 
 
 Module contents
 ---------------
 
-.. automodule:: MobilityDB
+.. automodule:: mobilitydb
 :members:
        :undoc-members:
                :show-inheritance:

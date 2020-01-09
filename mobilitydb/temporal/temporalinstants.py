@@ -1,5 +1,4 @@
 from .temporal import Temporal
-from .temporalinst import TemporalInst
 
 
 class TemporalInstants(Temporal):

@@ -1,9 +1,6 @@
-from parsec import *
-from MobilityDB.TemporalTypes.temporal_parser import parse_temporalseq
-from MobilityDB.TimeTypes.period import Period
-from MobilityDB.TimeTypes.periodset import PeriodSet
-from MobilityDB.TemporalTypes.temporalinst import TemporalInst
-from MobilityDB.TemporalTypes.temporalinstants import TemporalInstants
+from mobilitydb.time import Period, PeriodSet
+from mobilitydb.temporal import TemporalInstants
+from mobilitydb.temporal.temporal_parser import parse_temporalseq
 
 
 class TemporalSeq(TemporalInstants):

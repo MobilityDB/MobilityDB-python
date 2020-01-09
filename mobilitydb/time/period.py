@@ -1,5 +1,5 @@
 import datetime
-from bdateutil.parser import parse
+from dateutil.parser import parse
 import warnings
 
 try:

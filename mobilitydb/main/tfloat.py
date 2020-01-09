@@ -1,5 +1,5 @@
 from spans.types import floatrange
-from MobilityDB.TemporalTypes import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
 
 
 class TFloat(Temporal):

@@ -1,7 +1,7 @@
 import pytest
-from bdateutil.parser import parse
+from dateutil.parser import parse
 from postgis import Point
-from MobilityDB.MainTypes import TGeogPointInst, TGeogPointI, TGeogPointSeq, TGeogPointS
+from mobilitydb.main import TGeogPointInst, TGeogPointI, TGeogPointSeq, TGeogPointS
 
 pytestmark = pytest.mark.asyncio
 

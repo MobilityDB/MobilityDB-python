@@ -1,10 +1,7 @@
 import pytest
-from datetime import datetime, timedelta
-from dateutil.tz import tzoffset
-from bdateutil.parser import parse
+from dateutil.parser import parse
 from postgis import Point
-from MobilityDB.MainTypes import TGeomPointInst, TGeomPointI, TGeomPointSeq, TGeomPointS
-from MobilityDB.TimeTypes import TimestampSet, Period, PeriodSet
+from mobilitydb.main import TGeomPointInst, TGeomPointI, TGeomPointSeq, TGeomPointS
 
 pytestmark = pytest.mark.asyncio
 

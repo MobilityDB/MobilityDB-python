@@ -1,21 +1,21 @@
-from .BoxTypes import *
-from .MainTypes import *
-from .TemporalTypes import *
-from .TimeTypes import *
+from .boxes import *
+from .main import *
+from .temporal import *
+from .time import *
 
 
 __all__ = [
-	# BoxTypes
+	# boxes
 	'TBox', 'STBox',
-	# MainTypes
+	# main
 	'TBool', 'TBoolInst', 'TBoolI', 'TBoolSeq', 'TBoolS',
 	'TInt', 'TIntInst', 'TIntI', 'TIntSeq', 'TIntS',
 	'TFloat', 'TFloatInst', 'TFloatI', 'TFloatSeq', 'TFloatS',
 	'TText', 'TTextInst', 'TTextI', 'TTextSeq', 'TTextS',
 	'TGeomPoint', 'TGeomPointInst', 'TGeomPointI', 'TGeomPointSeq', 'TGeomPointS',
 	'TGeogPoint', 'TGeogPointInst', 'TGeogPointI', 'TGeogPointSeq', 'TGeogPointS',
-	# TemporalTypes
+	# temporal
 	'Temporal', 'TemporalInst', 'TemporalInstants', 'TemporalI', 'TemporalSeq', 'TemporalS',
-	# TimeTypes
+	# time
 	'Period', 'TimestampSet', 'PeriodSet'
 	]
