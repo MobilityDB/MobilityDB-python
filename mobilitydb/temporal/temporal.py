@@ -11,15 +11,24 @@ except ImportError:
 class Temporal:
 	"""
 	Abstract class for temporal types of any duration
-	The class variables are as follows:
-	* BaseClass: class of the base type, e.g., float
-	* BaseClassDiscrete: whether the base type is discrete, e.g., False for float
-	* Component Class: class of the components, e.g., TFloatInst for
-	  both TFloatI and TFloatSeq or TFloatSeq for TFloatS.
 	"""
+
 	BaseClass = None
+	"""
+	Class of the base type, e.g., float for TFloat
+	"""
+
 	BaseClassDiscrete = None
+	"""
+	Boolean that determines wheter the base type is discrete, e.g., True for int and False for float
+	"""
+
 	ComponentClass = None
+	"""
+	Class of the class of the components, e.g., 
+	(1) TFloatInst for both TFloatI and TFloatSeq
+	(2) TFloatSeq for TFloatS.
+	"""
 
 	@classmethod
 	def duration(cls):
@@ -45,7 +54,7 @@ class Temporal:
 	@abstractmethod
 	def endValue(self):
 		"""
-		Start value
+		End value
 		"""
 		pass
 

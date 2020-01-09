@@ -2,6 +2,9 @@ from .temporal import Temporal
 
 
 class TemporalInstants(Temporal):
+	"""
+	Abstract class for temporal types of instant set or sequence duration
+	"""
 	__slots__ = ['_instantList']
 
 	def getValues(self):
