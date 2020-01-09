@@ -24,6 +24,9 @@ setup(
 		'python-dateutil',
 		'parsec'
 	],
+	tests_requires=[
+		'pytest-asyncio'
+	],
 	keywords=['MobilityDB', 'Python'],
 	classifiers=[
 		'Development Status :: 3 - Alpha',
