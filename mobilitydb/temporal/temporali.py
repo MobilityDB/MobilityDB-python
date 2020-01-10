@@ -47,7 +47,6 @@ class TemporalI(TemporalInstants):
 			raise Exception("ERROR: The timestamps of a temporal instant must be increasing")
 
 	@classmethod
-	@property
 	def duration(cls):
 		return "InstantSet"
 

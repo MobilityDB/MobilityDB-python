@@ -31,7 +31,6 @@ class TemporalInst(Temporal):
 		self._time = parse(time) if isinstance(time, str) else time
 
 	@classmethod
-	@property
 	def duration(cls):
 		return "Instant"
 

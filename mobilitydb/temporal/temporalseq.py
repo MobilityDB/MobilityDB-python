@@ -67,7 +67,6 @@ class TemporalSeq(TemporalInstants):
 		return True
 
 	@classmethod
-	@property
 	def duration(cls):
 		return "Sequence"
 

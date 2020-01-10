@@ -30,7 +30,6 @@ class Temporal:
 	(2) TFloatSeq for TFloatS.
 	"""
 
-	@property
 	@classmethod
 	def duration(cls):
 		"""

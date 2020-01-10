@@ -68,7 +68,6 @@ class TemporalS(Temporal):
 		return True
 
 	@classmethod
-	@property
 	def duration(cls):
 		return "SequenceSet"
 
