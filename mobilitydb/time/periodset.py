@@ -55,81 +55,90 @@ class PeriodSet:
 		self._valid()
 
 	def _valid(self):
-		if any(x.upper() > y.lower() or \
-			(x.upper() == y.lower() and x.upper_inc() and x.lower_inc()) \
+		if any(x.upper > y.lower or \
+			(x.upper == y.lower and x.upper_inc and x.lower_inc) \
 				   for x, y in zip(self._periodList, self._periodList[1:])):
 			raise Exception("ERROR: The periods of a period set cannot overlap")
 		return True
 
+	@property
 	def timespan(self):
 		"""
 		Interval
 		"""
-		return self.endTimestamp() - self.startTimestamp()
+		return self.endTimestamp - self.startTimestamp
 
+	@property
 	def period(self):
 		"""
 		Period on which the period set is defined ignoring the potential time gaps
 		"""
-		return Period((self._periodList[0]).lower(), (self._periodList[-1]).upper(),
-					  self._periodList[0].lower_inc(), self._periodList[-1].upper_inc())
+		return Period((self._periodList[0]).lower, (self._periodList[-1]).upper,
+					  self._periodList[0].lower_inc, self._periodList[-1].upper_inc)
 
+	@property
 	def numTimestamps(self):
 		"""
 		Number of distinct timestamps
 		"""
-		return len(self.timestamps())
+		return len(self.timestamps)
 
+	@property
 	def startTimestamp(self):
 		"""
 		Start timestamp
 		"""
-		return self._periodList[0].lower()
+		return self._periodList[0].lower
 
+	@property
 	def endTimestamp(self):
 		"""
 		End timestamp
 		"""
-		return self._periodList[-1].upper()
+		return self._periodList[-1].upper
 
 	def timestampN(self, n):
 		"""
 		N-th distinct timestamp
 		"""
 		# 1-based
-		if 1 <= n <= len(self.timestamps()):
-			return (self.timestamps())[n - 1]
+		if 1 <= n <= len(self.timestamps):
+			return (self.timestamps)[n - 1]
 		else:
 			raise Exception("ERROR: there is no value at this index")
 
+	@property
 	def timestamps(self):
 		"""
 		Distinct timestamps
 		"""
 		timestampList = []
 		for period in self._periodList:
-			timestampList.append(period.lower())
-			timestampList.append(period.upper())
+			timestampList.append(period.lower)
+			timestampList.append(period.upper)
 		# Remove duplicates
 		return list(dict.fromkeys(timestampList))
 
+	@property
 	def numPeriods(self):
 		"""
 		Number of periods
 		"""
 		return len(self._periodList)
 
+	@property
 	def startPeriod(self):
 		"""
 		Start period
 		"""
 		return self._periodList[0]
 
+	@property
 	def endPeriod(self):
 		"""
 		End period
 		"""
-		return self._periodList[self.numPeriods() - 1]
+		return self._periodList[self.numPeriods - 1]
 
 	def periodN(self, n):
 		"""
@@ -141,6 +150,7 @@ class PeriodSet:
 		else:
 			raise Exception("ERROR: Out of range")
 
+	@property
 	def periods(self):
 		"""
 		Periods

@@ -86,6 +86,7 @@ class TTextSeq(TemporalSeq, TText):
 		super().__init__(instantList, lower_inc, upper_inc, interp)
 
 	@classmethod
+	@property
 	def interpolation(self):
 		return 'Stepwise'
 
@@ -102,6 +103,7 @@ class TTextS(TemporalS, TText):
 		super().__init__(sequenceList, interp)
 
 	@classmethod
+	@property
 	def interpolation(self):
 		return 'Stepwise'
 

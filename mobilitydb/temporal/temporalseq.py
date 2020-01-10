@@ -67,45 +67,53 @@ class TemporalSeq(TemporalInstants):
 		return True
 
 	@classmethod
+	@property
 	def duration(cls):
 		return "Sequence"
 
+	@property
 	def lower_inc(self):
 		"""
 		Is the lower bound of the temporal sequence inclusive?
 		"""
 		return self._lower_inc
 
+	@property
 	def upper_inc(self):
 		"""
 		Is the upper bound of the temporal sequence inclusive?
 		"""
 		return self._upper_inc
 
+	@property
 	def getTime(self):
 		"""
 		Period set on which the temporal value is defined
 		"""
-		return PeriodSet([self.period()])
+		return PeriodSet([self.period])
 
+	@property
 	def period(self):
 		"""
 		Period on which the temporal value is defined ignoring potential time gaps
 		"""
-		return Period(self.startTimestamp(), self.endTimestamp(), self.lower_inc(), self.upper_inc())
+		return Period(self.startTimestamp, self.endTimestamp, self.lower_inc, self.upper_inc)
 
+	@property
 	def numSequences(self):
 		"""
 		Number of sequences
 		"""
 		return 1
 
+	@property
 	def startSequence(self):
 		"""
 		Start sequence
 		"""
 		return self
 
+	@property
 	def endSequence(self):
 		"""
 		End sequence
@@ -122,6 +130,7 @@ class TemporalSeq(TemporalInstants):
 		else:
 			raise Exception("ERROR: Out of range")
 
+	@property
 	def sequences(self):
 		"""
 		Sequences
@@ -146,7 +155,7 @@ class TemporalSeq(TemporalInstants):
 		"""
 		Intersects period?
 		"""
-		return self.period().overlap(period)
+		return self.period.overlap(period)
 
 	def intersectsPeriodset(self, periodset):
 		"""

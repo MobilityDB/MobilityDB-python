@@ -47,42 +47,45 @@ class TemporalI(TemporalInstants):
 			raise Exception("ERROR: The timestamps of a temporal instant must be increasing")
 
 	@classmethod
+	@property
 	def duration(cls):
 		return "InstantSet"
 
+	@property
 	def getTime(self):
 		"""
-		Timestamp
+		Period set on which the temporal value is defined
 		"""
-		return PeriodSet([inst.period() for inst in self._instantList])
+		return PeriodSet([inst.period for inst in self._instantList])
 
+	@property
 	def period(self):
 		"""
-		Period on which the temporal value is defined
+		Period on which the temporal value is defined ignoring the potential time gaps
 		"""
-		return Period(self.startTimestamp(), self.endTimestamp(), True, True)
+		return Period(self.startTimestamp, self.endTimestamp, True, True)
 
 	def intersectsTimestamp(self, timestamp):
 		"""
-		Intersects timestamp
+		Intersects timestamp?
 		"""
 		return any(inst._time == timestamp for inst in self._instantList)
 
 	def intersectsTimestampset(self, timestampset):
 		"""
-		Intersects timestamp set
+		Intersects timestamp set?
 		"""
 		return any(inst._time == timestamp for inst in self._instantList for timestamp in timestampset._datetimeList)
 
 	def intersectsPeriod(self, period):
 		"""
-		Intersects period
+		Intersects period?
 		"""
 		return any(period.contains_timestamp(inst._time) for inst in self._instantList)
 
 	def intersectsPeriodset(self, periodset):
 		"""
-		Intersects period set
+		Intersects period set?
 		"""
 		return any(period.contains_timestamp(inst._time) for inst in self._instantList for period in periodset._periodList)
 

@@ -29,7 +29,7 @@ async def run():
 			if not row[1]:
 				print("")
 			else:
-				print("startTimestamp =", row[1].startTimestamp(), "\n")
+				print("startTimestamp =", row[1].startTimestamp, "\n")
 
 		drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpointinst_temp;'''
 		await connection.execute(drop_table_query)
@@ -65,7 +65,7 @@ async def run():
 			if not row[1]:
 				print("")
 			else:
-				print("startTimestamp =", row[1].startTimestamp(), "\n")
+				print("startTimestamp =", row[1].startTimestamp, "\n")
 
 		drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpointi_temp;'''
 		await connection.execute(drop_table_query)
@@ -101,7 +101,7 @@ async def run():
 			if not row[1]:
 				print("")
 			else:
-				print("startTimestamp =", row[1].startTimestamp(), "\n")
+				print("startTimestamp =", row[1].startTimestamp, "\n")
 	
 		drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpointseq_temp;'''
 		await connection.execute(drop_table_query)
@@ -137,7 +137,7 @@ async def run():
 			if not row[1]:
 				print("")
 			else:
-				print("startTimestamp =", row[1].startTimestamp(), "\n")
+				print("startTimestamp =", row[1].startTimestamp, "\n")
 	
 		drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpoints_temp;'''
 		await connection.execute(drop_table_query)

@@ -7,48 +7,56 @@ class TemporalInstants(Temporal):
 	"""
 	__slots__ = ['_instantList']
 
+	@property
 	def getValues(self):
 		"""
 		Distinct values
 		"""
 		return list(dict.fromkeys([inst._value for inst in self._instantList]))
 
+	@property
 	def startValue(self):
 		"""
 		Start value
 		"""
 		return self._instantList[0]._value
 
+	@property
 	def endValue(self):
 		"""
 		End value
 		"""
 		return self._instantList[-1]._value
 
+	@property
 	def minValue(self):
 		"""
 		Minimum value
 		"""
 		return min(inst._value for inst in self._instantList)
 
+	@property
 	def maxValue(self):
 		"""
 		Maximum value
 		"""
 		return max(inst._value for inst in self._instantList)
 
+	@property
 	def numInstants(self):
 		"""
 		Number of distinct instants
 		"""
 		return len(self._instantList)
 
+	@property
 	def startInstant(self):
 		"""
 		Start instant
 		"""
 		return self._instantList[0]
 
+	@property
 	def endInstant(self):
 		"""
 		End instant
@@ -65,24 +73,28 @@ class TemporalInstants(Temporal):
 		else:
 			raise Exception("ERROR: Out of range")
 
+	@property
 	def instants(self):
 		"""
 		Instants
 		"""
 		return self._instantList
 
+	@property
 	def numTimestamps(self):
 		"""
 		Number of distinct timestamps
 		"""
 		return len(self._instantList)
 
+	@property
 	def startTimestamp(self):
 		"""
 		Start timestamp
 		"""
 		return self._instantList[0]._time
 
+	@property
 	def endTimestamp(self):
 		"""
 		End timestamp
@@ -99,6 +111,7 @@ class TemporalInstants(Temporal):
 		else:
 			raise Exception("ERROR: Out of range")
 
+	@property
 	def timestamps(self):
 		"""
 		Timestamps

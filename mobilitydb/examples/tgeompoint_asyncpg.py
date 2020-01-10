@@ -1,7 +1,7 @@
 import asyncio
 import asyncpg
 from mobilitydb.asyncpg import register
-from mobilitydb.examples.db_connect import ascnypg_connect
+from mobilitydb.examples.db_connect import asyncpg_connect
 
 
 async def run():
@@ -29,7 +29,7 @@ async def run():
 			if not row[1]:
 				print("")
 			else:
-				print("startTimestamp =", row[1].startTimestamp(), "\n")
+				print("startTimestamp =", row[1].startTimestamp, "\n")
 
 		drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeompointinst_temp;'''
 		await connection.execute(drop_table_query)
@@ -65,7 +65,7 @@ async def run():
 			if not row[1]:
 				print("")
 			else:
-				print("startTimestamp =", row[1].startTimestamp(), "\n")
+				print("startTimestamp =", row[1].startTimestamp, "\n")
 
 		drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeompointi_temp;'''
 		await connection.execute(drop_table_query)
@@ -101,7 +101,7 @@ async def run():
 			if not row[1]:
 				print("")
 			else:
-				print("startTimestamp =", row[1].startTimestamp(), "\n")
+				print("startTimestamp =", row[1].startTimestamp, "\n")
 	
 		drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeompointseq_temp;'''
 		await connection.execute(drop_table_query)
@@ -137,7 +137,7 @@ async def run():
 			if not row[1]:
 				print("")
 			else:
-				print("startTimestamp =", row[1].startTimestamp(), "\n")
+				print("startTimestamp =", row[1].startTimestamp, "\n")
 	
 		drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeompoints_temp;'''
 		await connection.execute(drop_table_query)

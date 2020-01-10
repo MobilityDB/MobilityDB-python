@@ -18,15 +18,15 @@ var = Period('2019-09-08', '2019-09-10', False, True)
 print("Constructor 4 args:", var)
 
 # Accessor functions
-var1 = var.lower()
+var1 = var.lower
 print("lower:", var1)
-var1 = var.upper()
+var1 = var.upper
 print("upper:", var1)
-var1 = var.lower_inc()
+var1 = var.lower_inc
 print("lower_inc:", var1)
-var1 = var.upper_inc()
+var1 = var.upper_inc
 print("upper_inc:", var1)
-var1 = var.timespan()
+var1 = var.timespan
 print("timespan:", var1)
 var1 = var.shift(timedelta(days=1))
 print("shift:", var1)
@@ -67,21 +67,21 @@ print("Constructor list of datetimes:", var)
 # var = TimestampSet(t1, t2, t3, t4)
 
 # Accessor functions
-var1 = var.timespan()
+var1 = var.timespan
 print("Timespan:", var1)
-var1 = var.period()
+var1 = var.period
 print("period:", var1)
-var1 = var.numTimestamps()
+var1 = var.numTimestamps
 print("numTimestamps:", var1)
-var1 = var.startTimestamp()
+var1 = var.startTimestamp
 print("startTimestamp:", var1)
-var1 = var.endTimestamp()
+var1 = var.endTimestamp
 print("endTimestamp:", var1)
 var1 = var.timestampN(1)
 print("timestampN(1):", var1)
 var1 = var.timestampN(4)
 print("timestampN(4):", var1)
-var1 = var.timestamps()
+var1 = var.timestamps
 print("timestamps:", var1)
 var1 = var.shift(timedelta(days=1))
 print("shift:", var1)
@@ -116,30 +116,30 @@ print("Constructor list of periods:", var)
 # var = PeriodSet(p1, p2, p3, p4)
 
 # Accessor functions
-var1 = var.timespan()
+var1 = var.timespan
 print("timespan:", var1)
-var1 = var.period()
+var1 = var.period
 print("period:", var1)
-var1 = var.numTimestamps()
+var1 = var.numTimestamps
 print("numTimestamps:", var1)
-var1 = var.startTimestamp()
+var1 = var.startTimestamp
 print("startTimestamp:", var1)
-var1 = var.endTimestamp()
+var1 = var.endTimestamp
 print("endTimestamp:", var1)
 var1 = var.timestampN(1)
 print("timestampN(1):", var1)
-var1 = var.timestamps()
+var1 = var.timestamps
 print("timestamps:", var1)
 
-var1 = var.numPeriods()
+var1 = var.numPeriods
 print("numPeriods:", var1)
-var1 = var.startPeriod()
+var1 = var.startPeriod
 print("startPeriod:", var1)
-var1 = var.endPeriod()
+var1 = var.endPeriod
 print("endPeriod:", var1)
 var1 = var.periodN(1)
 print("periodN(1):", var1)
-var1 = var.periods()
+var1 = var.periods
 print("periods:", var1)
 var1 = var.shift(timedelta(days=1))
 print("shift:", var1)
@@ -177,8 +177,3 @@ print ("Time types equality:", ts1 == ps1)
 print("representantion:", repr(p1))
 print("representantion:", repr(ts1))
 print("representantion:", repr(ps1))
-
-tuple = ('2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01')
-print(tuple)
-p = Period(*tuple)
-print(p)

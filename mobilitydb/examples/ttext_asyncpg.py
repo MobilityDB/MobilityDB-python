@@ -28,7 +28,7 @@ async def run():
 			if not row[1]:
 				print("")
 			else:
-				print("startTimestamp =", row[1].startTimestamp(), "\n")
+				print("startTimestamp =", row[1].startTimestamp, "\n")
 
 		drop_table_query = '''DROP TABLE IF EXISTS tbl_ttextinst_temp;'''
 		await connection.execute(drop_table_query)
@@ -64,7 +64,7 @@ async def run():
 			if not row[1]:
 				print("")
 			else:
-				print("startTimestamp =", row[1].startTimestamp(), "\n")
+				print("startTimestamp =", row[1].startTimestamp, "\n")
 
 		drop_table_query = '''DROP TABLE IF EXISTS tbl_ttexti_temp;'''
 		await connection.execute(drop_table_query)
@@ -100,7 +100,7 @@ async def run():
 			if not row[1]:
 				print("")
 			else:
-				print("startTimestamp =", row[1].startTimestamp(), "\n")
+				print("startTimestamp =", row[1].startTimestamp, "\n")
 	
 		drop_table_query = '''DROP TABLE IF EXISTS tbl_ttextseq_temp;'''
 		await connection.execute(drop_table_query)
@@ -136,7 +136,7 @@ async def run():
 			if not row[1]:
 				print("")
 			else:
-				print("startTimestamp =", row[1].startTimestamp(), "\n")
+				print("startTimestamp =", row[1].startTimestamp, "\n")
 	
 		drop_table_query = '''DROP TABLE IF EXISTS tbl_ttexts_temp;'''
 		await connection.execute(drop_table_query)

@@ -7,11 +7,12 @@ class TFloat(Temporal):
 	Temporal floats of any duration (abstract class)
 	"""
 
+	@property
 	def valueRange(self):
 		"""
 		Distinct values
 		"""
-		return floatrange(self.minValue(), self.maxValue(), True, True)
+		return floatrange(self.minValue, self.maxValue, True, True)
 
 	@staticmethod
 	def read_from_cursor(value, cursor=None):
@@ -50,6 +51,7 @@ class TFloatInst(TemporalInst, TFloat):
 		TemporalInst.BaseClass = float
 		super().__init__(value, time)
 
+	@property
 	def getValues(self):
 		"""
 		Distinct values
@@ -67,11 +69,12 @@ class TFloatI(TemporalI, TFloat):
 		TemporalI.ComponentClass = TFloatInst
 		super().__init__(*argv)
 
+	@property
 	def getValues(self):
 		"""
 		Distinct values
 		"""
-		values = super().getValues()
+		values = super().getValues
 		return [floatrange(value, value, True, True) for value in values]
 
 
@@ -86,20 +89,22 @@ class TFloatSeq(TemporalSeq, TFloat):
 		TemporalSeq.ComponentClass = TFloatInst
 		super().__init__(instantList, lower_inc, upper_inc, interp)
 
+	@property
 	def interpolation(self):
 		"""
 		Interpolation
 		"""
 		return self._interp
 
+	@property
 	def getValues(self):
 		"""
 		Distinct values
 		"""
-		min = self.minValue()
-		max = self.maxValue()
-		lower = self.startValue()
-		upper = self.endValue()
+		min = self.minValue
+		max = self.maxValue
+		lower = self.startValue
+		upper = self.endValue
 		min_inc = min < lower or (min == lower and self.lower_inc)
 		max_inc = max > upper or (max == upper and self.upper_inc)
 		if not min_inc:
@@ -119,17 +124,19 @@ class TFloatS(TemporalS, TFloat):
 		TemporalS.ComponentClass = TFloatSeq
 		super().__init__(sequenceList, interp)
 
+	@property
 	def interpolation(self):
 		"""
 		Interpolation
 		"""
 		return self._interp
 
+	@property
 	def getValues(self):
 		"""
 		Distinct values
 		"""
-		ranges = sorted([seq.valueRange() for seq in self._sequenceList])
+		ranges = sorted([seq.valueRange for seq in self._sequenceList])
 		# Normalize list of ranges
 		result = []
 		range = ranges[0]

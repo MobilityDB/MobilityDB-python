@@ -59,30 +59,35 @@ class TimestampSet:
 		if any(x >= y for x, y in zip(self._datetimeList, self._datetimeList[1:])):
 			raise Exception("ERROR: The timestamps of a timestamp set must be increasing")
 
+	@property
 	def timespan(self):
 		"""
 		Interval
 		"""
 		return self._datetimeList[-1] - self._datetimeList[0]
 
+	@property
 	def period(self):
 		"""
 		Period on which the timestamp set is defined ignoring the potential time gaps
 		"""
 		return Period(self._datetimeList[0], self._datetimeList[-1], True, True)
 
+	@property
 	def numTimestamps(self):
 		"""
 		Number of distinct timestamps
 		"""
 		return len(self._datetimeList)
 
+	@property
 	def startTimestamp(self):
 		"""
 		Start timestamp
 		"""
 		return self._datetimeList[0]
 
+	@property
 	def endTimestamp(self):
 		"""
 		End timestamp
@@ -99,6 +104,7 @@ class TimestampSet:
 		else:
 			raise Exception("ERROR: there is no value at this index")
 
+	@property
 	def timestamps(self):
 		"""
 		Distinct timestamps

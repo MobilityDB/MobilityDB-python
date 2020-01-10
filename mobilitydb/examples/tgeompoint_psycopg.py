@@ -31,7 +31,7 @@ try:
 		if not row[1]:
 			print("")
 		else:
-			print("startTimestamp =", row[1].startTimestamp(), "\n")
+			print("startTimestamp =", row[1].startTimestamp, "\n")
 
 	drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeompointinst_temp;'''
 	cursor.execute(drop_table_query)
@@ -71,7 +71,7 @@ try:
 		if not row[1]:
 			print("")
 		else:
-			print("startTimestamp =", row[1].startTimestamp(), "\n")
+			print("startTimestamp =", row[1].startTimestamp, "\n")
 
 	drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeompointi_temp;'''
 	cursor.execute(drop_table_query)
@@ -111,7 +111,7 @@ try:
 		if not row[1]:
 			print("")
 		else:
-			print("startTimestamp =", row[1].startTimestamp(), "\n")
+			print("startTimestamp =", row[1].startTimestamp, "\n")
 
 	drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeompointseq_temp;'''
 	cursor.execute(drop_table_query)
@@ -151,7 +151,7 @@ try:
 		if not row[1]:
 			print("")
 		else:
-			print("startTimestamp =", row[1].startTimestamp(), "\n")
+			print("startTimestamp =", row[1].startTimestamp, "\n")
 
 	drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeompoints_temp;'''
 	cursor.execute(drop_table_query)

@@ -28,11 +28,12 @@ class TInt(Temporal):
 			raise ValueError('TInt value must subclass TInt class')
 		return value.__str__().strip("'")
 
+	@property
 	def valueRange(self):
 		"""
 		Distinct values
 		"""
-		return intrange(self.minValue(), self.maxValue(), True, True)
+		return intrange(self.minValue, self.maxValue, True, True)
 
 
 class TIntInst(TemporalInst, TInt):
@@ -68,6 +69,7 @@ class TIntSeq(TemporalSeq, TInt):
 		super().__init__(instantList, lower_inc, upper_inc)
 
 	@classmethod
+	@property
 	def interpolation(self):
 		return 'Stepwise'
 
@@ -84,6 +86,7 @@ class TIntS(TemporalS, TInt):
 		super().__init__(sequenceList)
 
 	@classmethod
+	@property
 	def interpolation(self):
 		return 'Stepwise'
 

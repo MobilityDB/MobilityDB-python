@@ -58,91 +58,103 @@ class TemporalS(Temporal):
 		self._valid()
 
 	def _valid(self):
-		if any(x.endTimestamp() >= y.startTimestamp() or \
-					   (x.endTimestamp() == y.startTimestamp() and x.upper_inc() and x.lower_inc()) \
+		if any(x.endTimestamp >= y.startTimestamp or \
+					   (x.endTimestamp == y.startTimestamp and x.upper_inc and x.lower_inc) \
 			   for x, y in zip(self._sequenceList, self._sequenceList[1:])):
 			raise Exception("ERROR: The sequences of a sequence set cannot overlap")
-		if any(x.interpolation() != y.interpolation() \
+		if any(x.interpolation != y.interpolation \
 			   for x, y in zip(self._sequenceList, self._sequenceList[1:])):
 			raise Exception("ERROR: All sequences of a sequence set must have the same interpolation")
 		return True
 
 	@classmethod
+	@property
 	def duration(cls):
 		return "SequenceSet"
 
+	@property
 	def getValues(self):
 		"""
 		Distinct values
 		"""
-		values = [seq.getValues() for seq in self._sequenceList]
+		values = [seq.getValues for seq in self._sequenceList]
 		return list(dict.fromkeys([item for sublist in values for item in sublist]))
 
+	@property
 	def startValue(self):
 		"""
 		Start value
 		"""
-		return self._sequenceList[0].startInstant()._value
+		return self._sequenceList[0].startInstant._value
 
+	@property
 	def endValue(self):
 		"""
 		End value
 		"""
-		return self._sequenceList[-1].endInstant()._value
+		return self._sequenceList[-1].endInstant._value
 
+	@property
 	def minValue(self):
 		"""
 		Minimum value
 		"""
-		return min(seq.minValue() for seq in self._sequenceList)
+		return min(seq.minValue for seq in self._sequenceList)
 
+	@property
 	def maxValue(self):
 		"""
 		Maximum value
 		"""
-		return max(seq.maxValue() for seq in self._sequenceList)
+		return max(seq.maxValue for seq in self._sequenceList)
 
+	@property
 	def getTime(self):
 		"""
 		Period set on which the temporal value is defined
 		"""
-		return PeriodSet([seq.period() for seq in self._sequenceList])
+		return PeriodSet([seq.period for seq in self._sequenceList])
 
+	@property
 	def period(self):
 		"""
 		Period on which the temporal value is defined ignoring the potential time gaps
 		"""
-		return Period(self.startTimestamp(), self.endTimestamp(),
+		return Period(self.startTimestamp, self.endTimestamp,
 					  self._sequenceList[0]._lower_inc, self._sequenceList[-1]._upper_inc)
 
+	@property
 	def numInstants(self):
 		"""
 		Number of distinct instants
 		"""
-		return len(self.instants())
+		return len(self.instants)
 
+	@property
 	def startInstant(self):
 		"""
 		Start instant
 		"""
-		return self._sequenceList[0].startInstant()
+		return self._sequenceList[0].startInstant
 
+	@property
 	def endInstant(self):
 		"""
 		End instant
 		"""
-		return self._sequenceList[-1].endInstant()
+		return self._sequenceList[-1].endInstant
 
 	def instantN(self, n):
 		"""
 		N-th distinct instant
 		"""
 		# 1-based
-		if 1 <= n <= len(self.instants()):
-			return (self.instants())[n - 1]
+		if 1 <= n <= len(self.instants):
+			return (self.instants)[n - 1]
 		else:
 			raise Exception("ERROR: Out of range")
 
+	@property
 	def instants(self):
 		"""
 		Instants
@@ -153,34 +165,38 @@ class TemporalS(Temporal):
 				instantList.append(instant)
 		return instantList
 
+	@property
 	def numTimestamps(self):
 		"""
 		Number of distinct timestamps
 		"""
-		return len(self.timestamps())
+		return len(self.timestamps)
 
+	@property
 	def startTimestamp(self):
 		"""
 		Start timestamp
 		"""
-		return self._sequenceList[0].startInstant().getTimestamp()
+		return self._sequenceList[0].startInstant.getTimestamp
 
+	@property
 	def endTimestamp(self):
 		"""
 		End timestamp
 		"""
-		return self._sequenceList[-1].endInstant().getTimestamp()
+		return self._sequenceList[-1].endInstant.getTimestamp
 
 	def timestampN(self, n):
 		"""
 		N-th timestamp
 		"""
 		# 1-based
-		if 1 <= n <= len(self.timestamps()):
-			return (self.timestamps())[n - 1]
+		if 1 <= n <= len(self.timestamps):
+			return (self.timestamps)[n - 1]
 		else:
 			raise Exception("ERROR: Out of range")
 
+	@property
 	def timestamps(self):
 		"""
 		Timestamps
@@ -188,23 +204,26 @@ class TemporalS(Temporal):
 		timestampList = []
 		for sequence in self._sequenceList:
 			for instant in sequence._instantList:
-				timestampList.append(instant.getTimestamp())
+				timestampList.append(instant.getTimestamp)
 		# Remove duplicates
 		timestampList = list(dict.fromkeys(timestampList))
 		return timestampList
 
+	@property
 	def numSequences(self):
 		"""
 		Number of sequences
 		"""
 		return len(self._sequenceList)
 
+	@property
 	def startSequence(self):
 		"""
 		Start sequence
 		"""
 		return self._sequenceList[0]
 
+	@property
 	def endSequence(self):
 		"""
 		End sequence
@@ -221,6 +240,7 @@ class TemporalS(Temporal):
 		else:
 			raise Exception("ERROR: Out of range")
 
+	@property
 	def sequences(self):
 		"""
 		Sequences

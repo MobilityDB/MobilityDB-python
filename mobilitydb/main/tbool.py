@@ -92,7 +92,11 @@ class TBoolSeq(TemporalSeq, TBool):
 		super().__init__(instantList, lower_inc, upper_inc)
 
 	@classmethod
+	@property
 	def interpolation(self):
+		"""
+		Interpolation
+		"""
 		return 'Stepwise'
 
 
@@ -109,6 +113,10 @@ class TBoolS(TemporalS, TBool):
 		super().__init__(sequenceList)
 
 	@classmethod
+	@property
 	def interpolation(self):
+		"""
+		Interpolation
+		"""
 		return 'Stepwise'
 

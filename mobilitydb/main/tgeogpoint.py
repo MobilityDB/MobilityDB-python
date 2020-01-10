@@ -45,17 +45,19 @@ class TGeogPoint(Temporal):
 			raise ValueError('TGeogPoint value must subclass TGeogPoint class')
 		return value.__str__().strip("'")
 
+	@property
 	def has_z(self):
 		"""
 		Returns True if the temporal point has Z dimension
 		"""
-		return self.startValue().z is not None
+		return self.startValue.z is not None
 
+	@property
 	def srid(self):
 		"""
-		Returns True if the temporal point has Z dimension
+		Returns the SRID
 		"""
-		result = self.startValue().srid if hasattr(self.startValue(), "srid") else None
+		result = self.startValue.srid if hasattr(self.startValue, "srid") else None
 		return result
 
 
@@ -107,6 +109,7 @@ class TGeogPointInst(TemporalInst, TGeogPoint):
 		if self._value.m is not None:
 			raise Exception("ERROR: The geometries composing a temporal point cannot have M dimension")
 
+	@property
 	def getValues(self):
 		"""
 		Distinct values
@@ -173,14 +176,15 @@ class TGeogPointI(TemporalI, TGeogPoint):
 			raise Exception("ERROR: The geographies composing a temporal point must be of the same dimensionality")
 		if any(x._value.m is not None for x in self._instantList):
 			raise Exception("ERROR: The geographies composing a temporal point cannot have M dimension")
-		if any(x.srid() != y.srid() for x, y in zip(self._instantList, self._instantList[1:])):
+		if any(x.srid != y.srid for x, y in zip(self._instantList, self._instantList[1:])):
 			raise Exception("ERROR: The geographies composing a temporal point must have the same SRID")
 
+	@property
 	def getValues(self):
 		"""
 		Distinct values
 		"""
-		values = super().getValues()
+		values = super().getValues
 		return MultiPoint(values)
 
 
@@ -254,16 +258,18 @@ class TGeogPointSeq(TemporalSeq, TGeogPoint):
 			raise Exception("ERROR: The geographies composing a temporal point must be of the same dimensionality")
 		if any(x._value.m is not None for x in self._instantList):
 			raise Exception("ERROR: The geographies composing a temporal point cannot have M dimension")
-		if any(x.srid() != y.srid() for x, y in zip(self._instantList, self._instantList[1:])):
+		if any(x.srid != y.srid for x, y in zip(self._instantList, self._instantList[1:])):
 			raise Exception("ERROR: The geographies composing a temporal point must have the same SRID")
 
 
+	@property
 	def interpolation(self):
 		"""
 		Interpolation
 		"""
 		return self._interp
 
+	@property
 	def getValues(self):
 		"""
 		Distinct values
@@ -343,20 +349,22 @@ class TGeogPointS(TemporalS, TGeogPoint):
 		if any((x.has_z is None and y.has_z is not None) or (x.has_z is not None and y.has_z is None) \
 				for x, y in zip(self._sequenceList, self._sequenceList[1:])):
 			raise Exception("ERROR: The geometries composing a temporal point must be of the same dimensionality")
-		if any(x.srid() != y.srid() for x, y in zip(self._sequenceList, self._sequenceList[1:])):
+		if any(x.srid != y.srid for x, y in zip(self._sequenceList, self._sequenceList[1:])):
 			raise Exception("ERROR: The geometries composing a temporal point must have the same SRID")
 
+	@property
 	def interpolation(self):
 		"""
 		Interpolation
 		"""
 		return self._interp
 
+	@property
 	def getValues(self):
 		"""
 		Distinct values
 		"""
-		values = [seq.getValues() for seq in self._sequenceList]
+		values = [seq.getValues for seq in self._sequenceList]
 		points = [geo for geo in values if isinstance(geo, Point)]
 		lines = [geo for geo in values if isinstance(geo, LineString)]
 		if len(points) != 0 and len(points) != 0:

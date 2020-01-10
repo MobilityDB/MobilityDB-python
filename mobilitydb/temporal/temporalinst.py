@@ -31,75 +31,88 @@ class TemporalInst(Temporal):
 		self._time = parse(time) if isinstance(time, str) else time
 
 	@classmethod
+	@property
 	def duration(cls):
 		return "Instant"
 
+	@property
 	def getValue(self):
 		"""
 		Value
 		"""
 		return self._value
 
+	@property
 	def getValues(self):
 		"""
 		Distinct values
 		"""
 		return [self._value]
 
+	@property
 	def startValue(self):
 		"""
 		Start value
 		"""
 		return self._value
 
+	@property
 	def endValue(self):
 		"""
 		End value
 		"""
 		return self._value
 
+	@property
 	def minValue(self):
 		"""
 		Minimum value
 		"""
 		return self._value
 
+	@property
 	def maxValue(self):
 		"""
 		Maximum value
 		"""
 		return self._value
 
+	@property
 	def getTimestamp(self):
 		"""
 		Timestamp
 		"""
 		return self._time
 
+	@property
 	def getTime(self):
 		"""
 		Period set on which the temporal value is defined
 		"""
 		return PeriodSet([Period(self._time, self._time, True, True)])
 
+	@property
 	def period(self):
 		"""
 		Period on which the temporal value is defined ignoring the potential time gaps
 		"""
 		return Period(self._time, self._time, True, True)
 
+	@property
 	def numInstants(self):
 		"""
 		Number of distinct instants
 		"""
 		return 1
 
+	@property
 	def startInstant(self):
 		"""
 		Start instant
 		"""
 		return self
 
+	@property
 	def endInstant(self):
 		"""
 		End instant
@@ -115,24 +128,28 @@ class TemporalInst(Temporal):
 		else:
 			raise Exception("ERROR: Out of range")
 
+	@property
 	def instants(self):
 		"""
 		Distinct instants
 		"""
 		return [self]
 
+	@property
 	def numTimestamps(self):
 		"""
 		Number of distinct timestamps
 		"""
 		return 1
 
+	@property
 	def startTimestamp(self):
 		"""
 		Start timestamp
 		"""
 		return self._time
 
+	@property
 	def endTimestamp(self):
 		"""
 		End timestamp
@@ -148,6 +165,7 @@ class TemporalInst(Temporal):
 		else:
 			raise Exception("ERROR: Out of range")
 
+	@property
 	def timestamps(self):
 		"""
 		Timestamps

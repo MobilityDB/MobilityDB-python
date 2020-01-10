@@ -18,7 +18,7 @@ try:
 	# TimestampSet
 	######################
 
-	select_query = "select * from tbl_timestampset order by k limit 10"
+	select_query = "SELECT * FROM tbl_timestampset ORDER BY k LIMIT 10"
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
@@ -31,9 +31,9 @@ try:
 		if not row[1]:
 			print("")
 		else:
-			print("timespan =", row[1].timespan(), "\n")
+			print("timespan =", row[1].timespan, "\n")
 
-	drop_table_query = '''DROP TABLE IF EXISTS tbl_timestampset_temp;'''
+	drop_table_query = "DROP TABLE IF EXISTS tbl_timestampset_temp;"
 	cursor.execute(drop_table_query)
 	connection.commit()
 	print("Table deleted successfully in PostgreSQL")
@@ -47,8 +47,8 @@ try:
 	connection.commit()
 	print("Table created successfully in PostgreSQL")
 
-	postgres_insert_query = ''' INSERT INTO tbl_timestampset_temp (k, ts) VALUES (%s, %s) '''
-	result = cursor.executemany(postgres_insert_query, rows)
+	insert_query = "INSERT INTO tbl_timestampset_temp (k, ts) VALUES (%s, %s)"
+	result = cursor.executemany(insert_query, rows)
 	connection.commit()
 	count = cursor.rowcount
 	print(count, "record(s) inserted successfully into tbl_timestampset_temp table")
@@ -57,7 +57,7 @@ try:
 	# Period
 	######################
 
-	select_query = "select * from tbl_period order by k limit 10"
+	select_query = "SELECT * FROM tbl_period ORDER BY k LIMIT 10"
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
@@ -70,9 +70,9 @@ try:
 		if not row[1]:
 			print("")
 		else:
-			print("timespan =", row[1].timespan(), "\n")
+			print("timespan =", row[1].timespan, "\n")
 
-	drop_table_query = '''DROP TABLE IF EXISTS tbl_period_temp;'''
+	drop_table_query = "DROP TABLE IF EXISTS tbl_period_temp;"
 	cursor.execute(drop_table_query)
 	connection.commit()
 	print("Table deleted successfully in PostgreSQL")
@@ -86,8 +86,8 @@ try:
 	connection.commit()
 	print("Table created successfully in PostgreSQL")
 
-	postgres_insert_query = ''' INSERT INTO tbl_period_temp (k, p) VALUES (%s, %s) '''
-	result = cursor.executemany(postgres_insert_query, rows)
+	insert_query = "INSERT INTO tbl_period_temp (k, p) VALUES (%s, %s)"
+	result = cursor.executemany(insert_query, rows)
 	connection.commit()
 	count = cursor.rowcount
 	print(count, "record(s) inserted successfully into tbl_period_temp table")
@@ -96,7 +96,7 @@ try:
 	# PeriodSet
 	######################
 
-	select_query = "select * from tbl_periodset order by k limit 10"
+	select_query = "SELECT * FROM tbl_periodset ORDER BY k LIMIT 10"
 
 	cursor.execute(select_query)
 	print("\n****************************************************************")
@@ -109,10 +109,10 @@ try:
 		if not row[1]:
 			print("")
 		else:
-			print("timespan =", row[1].timespan(), "\n")
+			print("timespan =", row[1].timespan, "\n")
 
 
-	drop_table_query = '''DROP TABLE IF EXISTS tbl_periodset_temp;'''
+	drop_table_query = "DROP TABLE IF EXISTS tbl_periodset_temp;"
 	cursor.execute(drop_table_query)
 	connection.commit()
 	print("Table deleted successfully in PostgreSQL")
@@ -126,8 +126,8 @@ try:
 	connection.commit()
 	print("Table created successfully in PostgreSQL")
 
-	postgres_insert_query = ''' INSERT INTO tbl_periodset_temp (k, ps) VALUES (%s, %s) '''
-	result = cursor.executemany(postgres_insert_query, rows)
+	insert_query = "INSERT INTO tbl_periodset_temp (k, ps) VALUES (%s, %s)"
+	result = cursor.executemany(insert_query, rows)
 	connection.commit()
 	count = cursor.rowcount
 	print(count, "record(s) inserted successfully into tbl_periodset_temp table")

@@ -53,30 +53,35 @@ class Period:
 			raise Exception("ERROR: The lower and upper bounds must be inclusive for an instant period")
 		return True
 
+	@property
 	def lower(self):
 		"""
 		Lower bound
 		"""
 		return self._lower
 
+	@property
 	def upper(self):
 		"""
 		Upper bound
 		"""
 		return self._upper
 
+	@property
 	def lower_inc(self):
 		"""
 		Is the lower bound inclusive?
 		"""
 		return self._lower_inc
 
+	@property
 	def upper_inc(self):
 		"""
 		Is the upper bound inclusive?
 		"""
 		return self._upper_inc
 
+	@property
 	def timespan(self):
 		"""
 		Interval

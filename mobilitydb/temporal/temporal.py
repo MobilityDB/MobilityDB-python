@@ -30,6 +30,7 @@ class Temporal:
 	(2) TFloatSeq for TFloatS.
 	"""
 
+	@property
 	@classmethod
 	def duration(cls):
 		"""
@@ -37,6 +38,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def getValues(self):
 		"""
@@ -44,6 +46,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def startValue(self):
 		"""
@@ -51,6 +54,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def endValue(self):
 		"""
@@ -58,6 +62,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def minValue(self):
 		"""
@@ -65,6 +70,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def maxValue(self):
 		"""
@@ -72,6 +78,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def getTime(self):
 		"""
@@ -79,12 +86,14 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	def timespan(self):
 		"""
 		Interval
 		"""
-		return self.endTimestamp() - self.startTimestamp()
+		return self.endTimestamp - self.startTimestamp
 
+	@property
 	@abstractmethod
 	def period(self):
 		"""
@@ -92,6 +101,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def numInstants(self):
 		"""
@@ -99,6 +109,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def startInstant(self):
 		"""
@@ -106,6 +117,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def endInstant(self):
 		"""
@@ -120,6 +132,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def instants(self):
 		"""
@@ -127,6 +140,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def numTimestamps(self):
 		"""
@@ -134,6 +148,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def startTimestamp(self):
 		"""
@@ -141,6 +156,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def endTimestamp(self):
 		"""
@@ -155,6 +171,7 @@ class Temporal:
 		"""
 		pass
 
+	@property
 	@abstractmethod
 	def timestamps(self):
 		"""
