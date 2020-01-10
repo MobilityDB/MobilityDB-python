@@ -177,3 +177,9 @@ print ("Time types equality:", ts1 == ps1)
 print("representantion:", repr(p1))
 print("representantion:", repr(ts1))
 print("representantion:", repr(ps1))
+
+var = PeriodSet('{[2000-01-01, 2000-01-02], [2000-01-03, 2000-01-04]}')
+print(var.timespan)
+
+# var = TFloat('{[1@2000-01-01, 1@2000-01-02], [1@2000-01-03, 1@2000-01-04]}')
+# print(var)

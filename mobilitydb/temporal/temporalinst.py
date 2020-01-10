@@ -1,5 +1,5 @@
 from parsec import *
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.parser import parse
 from mobilitydb.time import Period, PeriodSet
 from mobilitydb.temporal import Temporal
@@ -32,6 +32,9 @@ class TemporalInst(Temporal):
 
 	@classmethod
 	def duration(cls):
+		"""
+		Duration of the temporal value
+		"""
 		return "Instant"
 
 	@property
@@ -89,6 +92,13 @@ class TemporalInst(Temporal):
 		Period set on which the temporal value is defined
 		"""
 		return PeriodSet([Period(self._time, self._time, True, True)])
+
+	@property
+	def timespan(self):
+		"""
+		Interval on which the temporal value is defined ignoring potential time gaps
+		"""
+		return timedelta(0)
 
 	@property
 	def period(self):
@@ -173,7 +183,7 @@ class TemporalInst(Temporal):
 
 	def shift(self, timedelta):
 		"""
-		Shift
+		Shift the temporal value by a time interval
 		"""
 		self._time += timedelta
 		return self

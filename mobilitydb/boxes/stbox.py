@@ -10,6 +10,12 @@ except ImportError:
 
 
 class STBox:
+	"""
+	Class that represents bounding boxes composed of coordinate and/or time
+	dimensions, where the coordinates may be 2D (X and Y) or 3D (X, Y, and Z).
+	For each dimension, minimum and maximum values are stored. The coordinates
+	may be Cartesian (planar) or geodetic (spherical).
+	"""
 	__slots__ = ['_xmin', '_ymin', '_zmin', '_tmin', '_xmax', '_ymax', '_zmax', '_tmax', '_geodetic']
 
 	def __init__(self, *args,  geodetic=None):
@@ -19,7 +25,7 @@ class STBox:
 		# Index of the middle of the list of arguments
 		half = int(len(args) / 2)
 		if len(args) == 1 and isinstance(args[0], str):
-			self.parseFromString(args[0])
+			self.parse_from_string(args[0])
 		elif len(args) == 2:
 			if isinstance(args[0], str) and isinstance(args[1], str):
 				self._tmin = parse(args[0])
@@ -62,7 +68,7 @@ class STBox:
 		else:
 			raise Exception("ERROR: Cannot parse STBox")
 
-	def parseFromString(self, value):
+	def parse_from_string(self, value):
 		if value is None or not isinstance(value, str):
 			raise Exception("ERROR: Cannot parse STBox")
 		values = None
@@ -117,57 +123,66 @@ class STBox:
 		return "{}".format(self.__str__())
 	# End Psycopg2 interface.
 
+	@property
 	def xmin(self):
 		"""
-		Minimum x
+		Minimum X
 		"""
 		return self._xmin
 
+	@property
 	def ymin(self):
 		"""
-		Minimum y
+		Minimum Y
 		"""
 		return self._ymin
 
+	@property
 	def zmin(self):
 		"""
-		Minimum z
+		Minimum Z
 		"""
 		return self._ymin
 
+	@property
 	def tmin(self):
 		"""
-		Minimum t
+		Minimum T
 		"""
 		return self._tmin
 
+	@property
 	def xmax(self):
 		"""
-		Maximum x
+		Maximum X
 		"""
 		return self._xmax
 
+	@property
 	def ymax(self):
 		"""
-		Maximum y
+		Maximum Y
 		"""
 		return self._ymax
 
+	@property
 	def zmax(self):
 		"""
-		Maximum y
+		Maximum Z
 		"""
 		return self._zmax
 
+	@property
 	def tmax(self):
 		"""
-		Maximum t
+		Maximum T
 		"""
 		return self._tmax
 
+	@property
 	def geodetic(self):
 		"""
-		Maximum t
+		Whether the box is geodetic
 		"""
 		return self._geodetic
 

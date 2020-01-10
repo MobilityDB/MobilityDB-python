@@ -41,7 +41,7 @@ async def test_stbox_constructor(connection, expected_stbox):
 	else:
 		params = STBox(expected_stbox)
 	print(params.__class__)
-	print(params.xmax())
+	print(params.xmax)
 	await connection.execute("INSERT INTO tbl_stbox (box) VALUES ($1)", params)
 	result = await connection.fetchval("SELECT box FROM tbl_stbox WHERE box=$1", params, column=0)
 	if isinstance(expected_stbox, tuple):

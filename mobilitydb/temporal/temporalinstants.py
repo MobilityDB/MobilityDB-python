@@ -120,7 +120,7 @@ class TemporalInstants(Temporal):
 
 	def shift(self, timedelta):
 		"""
-		Shift
+		Shift the temporal value by a time interval
 		"""
 		for inst in self._instantList:
 			inst._time += timedelta

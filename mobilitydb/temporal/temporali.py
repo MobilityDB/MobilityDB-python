@@ -1,3 +1,4 @@
+from datetime import timedelta
 from mobilitydb.time import Period, PeriodSet
 from mobilitydb.temporal import TemporalInstants
 from mobilitydb.temporal.temporal_parser import parse_temporali
@@ -48,6 +49,9 @@ class TemporalI(TemporalInstants):
 
 	@classmethod
 	def duration(cls):
+		"""
+		Duration of the temporal value
+		"""
 		return "InstantSet"
 
 	@property
@@ -56,6 +60,13 @@ class TemporalI(TemporalInstants):
 		Period set on which the temporal value is defined
 		"""
 		return PeriodSet([inst.period for inst in self._instantList])
+
+	@property
+	def timespan(self):
+		"""
+		Interval on which the temporal value is defined ignoring potential time gaps
+		"""
+		return timedelta(0)
 
 	@property
 	def period(self):

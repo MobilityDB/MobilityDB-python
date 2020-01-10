@@ -11,7 +11,7 @@ except ImportError:
 
 class Period:
 	"""
-	Set of contiguous timestamps between a lower and an upper bound. The bounds may be inclusive or not
+	Set of contiguous timestamps between a lower and an upper bound. The bounds may be inclusive or not.
 	"""
 	__slots__ = ['_lower', '_upper', '_lower_inc', '_upper_inc']
 
@@ -84,13 +84,13 @@ class Period:
 	@property
 	def timespan(self):
 		"""
-		Interval
+		Time interval on which the period is defined
 		"""
 		return self._upper - self._lower
 
 	def shift(self, timedelta):
 		"""
-		Shift
+		Shift the period by a time interval
 		"""
 		return Period(self._lower + timedelta, self._upper + timedelta,
 					  self._lower_inc, self._upper_inc)

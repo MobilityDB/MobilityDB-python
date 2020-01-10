@@ -103,7 +103,7 @@ def test_tfloati_accessors(cursor, expected_tfloati):
 		   PeriodSet(
 			   '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
 			   '[2019-09-03 00:00:00+01, 2019-09-03 00:00:00+01]}')
-	assert TFloatI(expected_tfloati).timespan == timedelta(2)
+	assert TFloatI(expected_tfloati).timespan == timedelta(0)
 	assert TFloatI(expected_tfloati).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
 	assert TFloatI(expected_tfloati).numInstants == 3
 	assert TFloatI(expected_tfloati).startInstant == TFloatInst('10.0@2019-09-01 00:00:00+01')
@@ -244,7 +244,7 @@ def test_tfloats_accessors(cursor, expected_tfloats):
 	assert TFloatS(expected_tfloats).valueRange == floatrange(10.0, 30.0, upper_inc=True)
 	assert TFloatS(expected_tfloats).getTime == PeriodSet(
 		'{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')
-	assert TFloatS(expected_tfloats).timespan == timedelta(2)
+	assert TFloatS(expected_tfloats).timespan == timedelta(1)
 	assert TFloatS(expected_tfloats).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
 	assert TFloatS(expected_tfloats).numInstants == 3
 	assert TFloatS(expected_tfloats).startInstant == TFloatInst('10.0@2019-09-01 00:00:00+01')

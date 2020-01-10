@@ -105,7 +105,7 @@ def test_tinti_accessors(cursor, expected_tinti):
 		   PeriodSet(
 			   '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
 			   '[2019-09-03 00:00:00+01, 2019-09-03 00:00:00+01]}')
-	assert TIntI(expected_tinti).timespan == timedelta(2)
+	assert TIntI(expected_tinti).timespan == timedelta(0)
 	assert TIntI(expected_tinti).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
 	assert TIntI(expected_tinti).numInstants == 3
 	assert TIntI(expected_tinti).startInstant == TIntInst('10@2019-09-01 00:00:00+01')
@@ -239,7 +239,7 @@ def test_tints_accessors(cursor, expected_tints):
 	assert TIntS(expected_tints).valueRange == intrange(10, 30, upper_inc=True)
 	assert TIntS(expected_tints).getTime == PeriodSet(
 		'{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')
-	assert TIntS(expected_tints).timespan == timedelta(2)
+	assert TIntS(expected_tints).timespan == timedelta(1)
 	assert TIntS(expected_tints).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
 	assert TIntS(expected_tints).numInstants == 3
 	assert TIntS(expected_tints).startInstant == TIntInst('10@2019-09-01 00:00:00+01')

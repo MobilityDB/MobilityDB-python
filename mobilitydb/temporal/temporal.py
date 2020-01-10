@@ -20,20 +20,22 @@ class Temporal:
 
 	BaseClassDiscrete = None
 	"""
-	Boolean that determines wheter the base type is discrete, e.g., True for int and False for float
+	Boolean that determines whether the base type is discrete, e.g., True for int and False for float
 	"""
 
 	ComponentClass = None
 	"""
-	Class of the class of the components, e.g., 
-	(1) TFloatInst for both TFloatI and TFloatSeq
-	(2) TFloatSeq for TFloatS.
+	Class of the components, e.g., 
+
+	1. TFloatInst for both TFloatI and TFloatSeq
+	2. TFloatSeq for TFloatS.
 	"""
 
 	@classmethod
+	@abstractmethod
 	def duration(cls):
 		"""
-		Duration
+		Duration of the temporal value
 		"""
 		pass
 
@@ -86,11 +88,12 @@ class Temporal:
 		pass
 
 	@property
+	@abstractmethod
 	def timespan(self):
 		"""
-		Interval
+		Interval on which the temporal value is defined ignoring potential time gaps
 		"""
-		return self.endTimestamp - self.startTimestamp
+		pass
 
 	@property
 	@abstractmethod
@@ -181,7 +184,7 @@ class Temporal:
 	@abstractmethod
 	def shift(self, timedelta):
 		"""
-		Shift
+		Shift the temporal value by a time interval
 		"""
 		pass
 

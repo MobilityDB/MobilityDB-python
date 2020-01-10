@@ -95,7 +95,7 @@ def test_tbooli_accessors(cursor, expected_tbooli):
 		   PeriodSet(
 			   '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
 			   '[2019-09-03 00:00:00+01, 2019-09-03 00:00:00+01]}')
-	assert TBoolI(expected_tbooli).timespan == timedelta(2)
+	assert TBoolI(expected_tbooli).timespan == timedelta(0)
 	assert TBoolI(expected_tbooli).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
 	assert TBoolI(expected_tbooli).numInstants == 3
 	assert TBoolI(expected_tbooli).startInstant == TBoolInst('true@2019-09-01 00:00:00+01')
@@ -222,7 +222,7 @@ def test_tbools_accessors(cursor, expected_tbools):
 	assert TBoolS(expected_tbools).endValue == True
 	assert TBoolS(expected_tbools).getTime == PeriodSet(
 		'{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')
-	assert TBoolS(expected_tbools).timespan == timedelta(2)
+	assert TBoolS(expected_tbools).timespan == timedelta(1)
 	assert TBoolS(expected_tbools).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
 	assert TBoolS(expected_tbools).numInstants == 3
 	assert TBoolS(expected_tbools).startInstant == TBoolInst('true@2019-09-01 00:00:00+01')

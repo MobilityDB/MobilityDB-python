@@ -101,7 +101,7 @@ def test_ttexti_accessors(cursor, expected_ttexti):
 		   PeriodSet(
 			   '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
 			   '[2019-09-03 00:00:00+01, 2019-09-03 00:00:00+01]}')
-	assert TTextI(expected_ttexti).timespan == timedelta(2)
+	assert TTextI(expected_ttexti).timespan == timedelta(0)
 	assert TTextI(expected_ttexti).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
 	assert TTextI(expected_ttexti).numInstants == 3
 	assert TTextI(expected_ttexti).startInstant == TTextInst('AA@2019-09-01 00:00:00+01')
@@ -233,7 +233,7 @@ def test_ttexts_accessors(cursor, expected_ttexts):
 	assert TTextS(expected_ttexts).maxValue == 'CC'
 	assert TTextS(expected_ttexts).getTime == PeriodSet(
 		'{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')
-	assert TTextS(expected_ttexts).timespan == timedelta(2)
+	assert TTextS(expected_ttexts).timespan == timedelta(1)
 	assert TTextS(expected_ttexts).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
 	assert TTextS(expected_ttexts).numInstants == 3
 	assert TTextS(expected_ttexts).startInstant == TTextInst('AA@2019-09-01 00:00:00+01')

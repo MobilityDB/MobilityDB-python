@@ -68,6 +68,9 @@ class TemporalSeq(TemporalInstants):
 
 	@classmethod
 	def duration(cls):
+		"""
+		Duration of the temporal value
+		"""
 		return "Sequence"
 
 	@property
@@ -90,6 +93,13 @@ class TemporalSeq(TemporalInstants):
 		Period set on which the temporal value is defined
 		"""
 		return PeriodSet([self.period])
+
+	@property
+	def timespan(self):
+		"""
+		Interval on which the temporal value is defined ignoring potential time gaps
+		"""
+		return self.period.upper - self.period.lower
 
 	@property
 	def period(self):

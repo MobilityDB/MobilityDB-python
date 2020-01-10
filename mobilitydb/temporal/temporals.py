@@ -69,6 +69,9 @@ class TemporalS(Temporal):
 
 	@classmethod
 	def duration(cls):
+		"""
+		Duration of the temporal value
+		"""
 		return "SequenceSet"
 
 	@property
@@ -113,6 +116,16 @@ class TemporalS(Temporal):
 		Period set on which the temporal value is defined
 		"""
 		return PeriodSet([seq.period for seq in self._sequenceList])
+
+	@property
+	def timespan(self):
+		"""
+		Interval on which the period set is defined
+		"""
+		result = self._sequenceList[0].period.timespan
+		for sequence in self._sequenceList[1:]:
+			result = result + sequence.period.timespan
+		return result
 
 	@property
 	def period(self):
@@ -248,7 +261,7 @@ class TemporalS(Temporal):
 
 	def shift(self, timedelta):
 		"""
-		Shift
+		Shift the temporal value by a time interval
 		"""
 		for seq in self._sequenceList:
 			seq = seq.shift(timedelta)

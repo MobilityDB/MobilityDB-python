@@ -64,9 +64,12 @@ class PeriodSet:
 	@property
 	def timespan(self):
 		"""
-		Interval
+		Time interval on which the period set is defined
 		"""
-		return self.endTimestamp - self.startTimestamp
+		result = self._periodList[0].timespan
+		for period in self._periodList[1:]:
+			result = result + period.timespan
+		return result
 
 	@property
 	def period(self):
@@ -159,7 +162,7 @@ class PeriodSet:
 
 	def shift(self, timedelta):
 		"""
-		Shift
+		Shift the period set by a time interval
 		"""
 		return PeriodSet([period.shift(timedelta) for period in self._periodList])
 
