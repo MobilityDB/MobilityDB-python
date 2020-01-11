@@ -62,7 +62,21 @@ class TIntInst(TemporalInst, TInt):
 
 class TIntI(TemporalI, TInt):
     """
-    Temporal integers of instant set duration
+    Class for representing temporal integers of instant set duration.
+
+    ``TIntI`` objects can be created in a number of ways. One possibility is
+    with a single argument of type string as in MobilityDB.
+
+        >>> TIntI('10@2019-09-01')
+
+    Another possibility is to give a tuple or list of arguments,
+    which can be instances of ``str`` or ``TIntInst``.
+
+        >>> TIntI('10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01')
+        >>> TIntI(TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01'))
+        >>> TIntI(['10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'])
+        >>> TIntI([TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')])
+
     """
 
     def __init__(self,  *argv):
@@ -73,7 +87,25 @@ class TIntI(TemporalI, TInt):
 
 class TIntSeq(TemporalSeq, TInt):
     """
-    Temporal integers of sequence duration
+    Class for representing temporal floats of sequence duration.
+
+    ``TIntSeq`` objects can be created in a number of ways. One possibility is
+    with a single argument of type string as in MobilityDB.
+
+        >>> TIntSeq('[10@2019-09-01 00:00:00+01, 20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')
+
+    Another possibility is to give the ``instantList``, ``lower_inc``,
+    ``upper_inc``, and ``interp`` arguments, where
+
+    * the instants in ``instantList`` can be instances of ``str`` or ``TIntInst``,
+    * ``lower_inc`` and ``upper_inc`` are instances of ``bool``, where by default
+    ``lower_inc`` is ``True`` and ``upper_inc`` is ``False``
+
+        >>> TIntSeq(['10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'])
+        >>> TIntSeq([TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')])
+        >>> TIntSeq(['10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'], True, True)
+        >>> TIntSeq([TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')], True, True)
+
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None):
@@ -85,12 +117,29 @@ class TIntSeq(TemporalSeq, TInt):
     @classmethod
     @property
     def interpolation(self):
+        """
+        Interpolation for the temporal sequence
+        """
         return 'Stepwise'
 
 
 class TIntS(TemporalS, TInt):
     """
-    Temporal integers of sequence set duration
+    Class for representing temporal floats of sequence duration.
+
+    ``TIntS`` objects can be created in a number of ways. One possibility is
+    with a single argument of type string as in MobilityDB.
+
+        >>> TIntS('{[10@2019-09-01 00:00:00+01], [20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]}')
+
+    Another possibility is to give the ``instantList``, ``lower_inc``,
+    ``upper_inc``, and ``interp`` arguments, where the sequences in
+    ``sequenceList`` can be instances of ``str`` or ``TIntSeq``.
+
+        >>> TIntS(['[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'])
+        >>> TIntS([TIntSeq('[10@2019-09-01 00:00:00+01]'), TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')])
+        >>> TIntS([TIntSeq('[10@2019-09-01 00:00:00+01]'), TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')])
+
     """
 
     def __init__(self, sequenceList):
@@ -102,5 +151,8 @@ class TIntS(TemporalS, TInt):
     @classmethod
     @property
     def interpolation(self):
+        """
+        Interpolation for the temporal sequence set
+        """
         return 'Stepwise'
 

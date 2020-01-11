@@ -12,6 +12,7 @@ __all__ = [
     'TInt', 'TIntInst', 'TIntI', 'TIntSeq', 'TIntS',
     'TFloat', 'TFloatInst', 'TFloatI', 'TFloatSeq', 'TFloatS',
     'TText', 'TTextInst', 'TTextI', 'TTextSeq', 'TTextS',
+    'TPointInst', 'TPointI', 'TPointSeq', 'TPointS',
     'TGeomPoint', 'TGeomPointInst', 'TGeomPointI', 'TGeomPointSeq', 'TGeomPointS',
     'TGeogPoint', 'TGeogPointInst', 'TGeogPointI', 'TGeogPointSeq', 'TGeogPointS',
     # temporal

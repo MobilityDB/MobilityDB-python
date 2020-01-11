@@ -102,6 +102,9 @@ class TTextSeq(TemporalSeq, TText):
     @classmethod
     @property
     def interpolation(self):
+        """
+        Interpolation for the temporal sequence
+        """
         return 'Stepwise'
 
 
@@ -119,6 +122,9 @@ class TTextS(TemporalS, TText):
     @classmethod
     @property
     def interpolation(self):
+        """
+        Interpolation for the temporal sequence set
+        """
         return 'Stepwise'
 
 

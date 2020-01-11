@@ -75,7 +75,21 @@ class TFloatInst(TemporalInst, TFloat):
 
 class TFloatI(TemporalI, TFloat):
     """
-    Temporal floats of instant set duration
+    Class for representing temporal floats of instant set duration.
+
+    ``TFloatI`` objects can be created in a number of ways. One possibility is
+    with a single argument of type string as in MobilityDB.
+
+        >>> TFloatI('10.0@2019-09-01')
+
+    Another possibility is to give a tuple or list of arguments,
+    which can be instances of ``str`` or ``TFloatInst``.
+
+        >>> TFloatI('10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01')
+        >>> TFloatI(TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'), TFloatInst('10.0@2019-09-03 00:00:00+01'))
+        >>> TFloatI(['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'])
+        >>> TFloatI([TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'), TFloatInst('10.0@2019-09-03 00:00:00+01')])
+
     """
 
     def __init__(self,  *argv):
@@ -94,7 +108,28 @@ class TFloatI(TemporalI, TFloat):
 
 class TFloatSeq(TemporalSeq, TFloat):
     """
-    Temporal floats of sequence duration
+    Class for representing temporal floats of sequence duration.
+
+    ``TFloatSeq`` objects can be created in a number of ways. One possibility is
+    with a single argument of type string as in MobilityDB.
+
+        >>> TFloatSeq('[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')
+        >>> TFloatSeq('Interp=Stepwise;[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')
+
+    Another possibility is to give the ``instantList``, ``lower_inc``,
+    ``upper_inc``, and ``interp`` arguments, where
+
+    * the instants in ``instantList`` can be instances of ``str`` or ``TFloatInst``,
+    * ``lower_inc`` and ``upper_inc`` are instances of ``bool``, where by default
+    ``lower_inc`` is ``True`` and ``upper_inc`` is ``False``, and
+    * ``interp`` which is either ``'Linear'`` or ``'Stepwise'``, the former being
+    the default.
+
+        >>> TFloatSeq(['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'])
+        >>> TFloatSeq([TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'), TFloatInst('10.0@2019-09-03 00:00:00+01')])
+        >>> TFloatSeq(['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'], True, True, 'Stepwise')
+        >>> TFloatSeq([TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'), TFloatInst('10.0@2019-09-03 00:00:00+01')], True, True, 'Stepwise')
+
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
@@ -106,7 +141,7 @@ class TFloatSeq(TemporalSeq, TFloat):
     @property
     def interpolation(self):
         """
-        Interpolation
+        Interpolation for the temporal sequence
         """
         return self._interp
 
@@ -130,8 +165,30 @@ class TFloatSeq(TemporalSeq, TFloat):
 
 class TFloatS(TemporalS, TFloat):
     """
-    Temporal floats of sequence set duration
+    Class for representing temporal floats of sequence duration.
+
+    ``TFloatS`` objects can be created in a number of ways. One possibility is
+    with a single argument of type string as in MobilityDB.
+
+        >>> TFloatS('{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}')
+        >>> TFloatS('Interp=Stepwise;{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}')
+
+    Another possibility is to give the ``instantList``, ``lower_inc``,
+    ``upper_inc``, and ``interp`` arguments, where
+
+    * the sequences in ``sequenceList`` can be instances of ``str`` or ``TFloatSeq``,
+    * ``interp`` can be ``Linear`` or ``Stepwise``, the former being
+    the default.
+
+        >>> TFloatS(['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'])
+        >>> TFloatS(['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Linear')
+        >>> TFloatS(['Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Stepwise')
+        >>> TFloatS([TFloatSeq('[10.0@2019-09-01 00:00:00+01]'), TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')])
+        >>> TFloatS([TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),  TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Linear')
+        >>> TFloatS([TFloatSeq('Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]'), TFloatSeq('Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Stepwise')
+
     """
+
     def __init__(self, sequenceList, interp=None):
         TemporalS.BaseClass = float
         TemporalS.BaseClassDiscrete = False
@@ -141,7 +198,7 @@ class TFloatS(TemporalS, TFloat):
     @property
     def interpolation(self):
         """
-        Interpolation
+        Interpolation for the temporal sequence set
         """
         return self._interp
 

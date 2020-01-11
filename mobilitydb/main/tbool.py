@@ -109,7 +109,7 @@ class TBoolSeq(TemporalSeq, TBool):
     @property
     def interpolation(self):
         """
-        Interpolation
+        Interpolation for the temporal sequence
         """
         return 'Stepwise'
 
@@ -130,7 +130,7 @@ class TBoolS(TemporalS, TBool):
     @property
     def interpolation(self):
         """
-        Interpolation
+        Interpolation for the temporal sequence set
         """
         return 'Stepwise'
 
