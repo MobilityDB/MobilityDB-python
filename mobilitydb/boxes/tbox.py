@@ -33,42 +33,48 @@ class TBox:
     """
     __slots__ = ['_xmin', '_tmin', '_xmax', '_tmax']
 
-    def __init__(self, *args):
-        if len(args) == 1 and isinstance(args[0], str):
-            self.parse_from_string(args[0])
-        elif len(args) == 2:
-            if isinstance(args[0], str) and isinstance(args[1], str):
+    def __init__(self, xmin, tmin=None, xmax=None, tmax=None):
+        if tmin is None and isinstance(xmin, str):
+            self.parse_from_string(xmin)
+        elif tmin is None and isinstance(xmin, (tuple, list)):
+            xmin, tmin, *extra = xmin
+            if extra:
+                xmax, tmax, *extra = extra
+                if extra:
+                    raise Exception("ERROR: Cannot parse TBox")
+        elif xmax is None:
+            # Only two arguments given
+            if isinstance(xmin, str) and isinstance(tmin, str):
                 try:
-                    self._xmin = float(args[0])
-                    self._xmax = float(args[1])
+                    self._xmin = float(xmin)
+                    self._xmax = float(tmin)
                     self._tmin = self._tmax = None
                 except:
-                    self._tmin = parse(args[0])
-                    self._tmax = parse(args[1])
+                    self._tmin = parse(xmin)
+                    self._tmax = parse(tmin)
                     self._xmin = self._xmax = None
-            elif isinstance(args[0], float) and isinstance(args[1], float):
-                self._xmin = args[0]
-                self._xmax = args[1]
+            elif isinstance(xmin, float) and isinstance(tmin, float):
+                self._xmin = xmin
+                self._xmax = tmin
                 self._tmin = self._tmax = None
-            elif isinstance(args[0], datetime) and isinstance(args[1], datetime):
-                self._tmin = args[0]
-                self._tmax = args[1]
+            elif isinstance(xmin, datetime) and isinstance(tmin, datetime):
+                self._tmin = xmin
+                self._tmax = tmin
                 self._xmin = self._xmax = None
             else:
                 raise Exception("ERROR: Cannot parse TBox")
-        elif len(args) == 4:
-            self._xmin = float(args[0])
-            self._xmax = float(args[2])
-            if isinstance(args[1], str) and isinstance(args[3], str):
-                self._tmin = parse(args[1])
-                self._tmax = parse(args[3])
-            elif isinstance(args[1], datetime) and isinstance(args[3], datetime):
-                self._tmin = args[1]
-                self._tmax = args[3]
+        else:
+            # Four arguments given
+            self._xmin = float(xmin)
+            self._xmax = float(xmax)
+            if isinstance(tmin, str) and isinstance(tmax, str):
+                self._tmin = parse(tmin)
+                self._tmax = parse(tmax)
+            elif isinstance(tmin, datetime) and isinstance(tmax, datetime):
+                self._tmin = tmin
+                self._tmax = tmax
             else:
                 raise Exception("ERROR: Cannot parse TBox")
-        else:
-            raise Exception("ERROR: Cannot parse TBox")
 
     def parse_from_string(self, value):
         values = value.replace("TBOX", '')

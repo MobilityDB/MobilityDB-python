@@ -62,26 +62,26 @@ print(var)
 print('\n# Constructors')
 
 # Only coordinate (X and Y) dimension
-var = STBox(1.0, 2.0, 1.0, 2.0)
+var = STBox((1.0, 2.0, 1.0, 2.0))
 print(var)
 # Only coordinate (X, Y and Z) dimension
-var = STBox(1.0, 2.0, 3.0, 1.0, 2.0, 3.0)
+var = STBox((1.0, 2.0, 3.0, 1.0, 2.0, 3.0))
 print(var)
 # Both coordinate (X, Y) and time dimensions
-var = STBox(1.0, 2.0, '2001-01-03', 1.0, 2.0, '2001-01-03')
+var = STBox((1.0, 2.0, '2001-01-03', 1.0, 2.0, '2001-01-03'), dimt=True)
 print(var)
 # Both coordinate (X, Y, and Z) and time dimensions
-var = STBox(1.0, 2.0, 3.0, '2001-01-04', 1.0, 2.0, 3.0, '2001-01-04')
+var = STBox((1.0, 2.0, 3.0, '2001-01-04', 1.0, 2.0, 3.0, '2001-01-04'))
 print(var)
 # Only time dimension
-var = STBox('2001-01-03', '2001-01-03')
+var = STBox(('2001-01-03', '2001-01-03'))
 print(var)
 # Only geodetic coordinate (X, Y and Z) dimension
-var = STBox(1.0, 2.0, 3.0, 1.0, 2.0, 3.0, geodetic=True)
+var = STBox((1.0, 2.0, 3.0, 1.0, 2.0, 3.0), geodetic=True)
 print(var)
 #  Both geodetic coordinate (X, Y, and Z) and time dimensions
-var = STBox(1.0, 2.0, 3.0, '2001-01-04', 1.0, 2.0, 3.0, '2001-01-03', geodetic=True)
+var = STBox((1.0, 2.0, 3.0, '2001-01-04', 1.0, 2.0, 3.0, '2001-01-03'), geodetic=True)
 print(var)
 # Only time dimension for geodetic box
-var = STBox('2001-01-03', '2001-01-03', geodetic=True)
+var = STBox(('2001-01-03', '2001-01-03'), geodetic=True)
 print(var)

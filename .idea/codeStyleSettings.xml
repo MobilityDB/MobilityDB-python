@@ -4,11 +4,6 @@
     <option name="PER_PROJECT_SETTINGS">
       <value>
         <option name="ALIGN_MULTILINE_PARAMETERS_IN_CALLS" value="true" />
-        <codeStyleSettings language="Python">
-          <indentOptions>
-            <option name="USE_TAB_CHARACTER" value="true" />
-          </indentOptions>
-        </codeStyleSettings>
       </value>
     </option>
     <option name="USE_PER_PROJECT_SETTINGS" value="true" />
