@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from dateutil.parser import parse
 from postgis import Point, MultiPoint, LineString, MultiLineString, GeometryCollection
 from mobilitydb.time import TimestampSet, Period, PeriodSet
-from mobilitydb.main import TGeomPointInst, TGeomPointI, TGeomPointSeq, TGeomPointS
+from mobilitydb.main.tpoint import TGeomPointInst, TGeomPointI, TGeomPointSeq, TGeomPointS
 
 
 print("\nConstructors for TGeomPointInst")
@@ -233,3 +233,4 @@ print(inst.srid)
 print(ti.srid)
 print(seq.srid)
 print(ts.srid)
+

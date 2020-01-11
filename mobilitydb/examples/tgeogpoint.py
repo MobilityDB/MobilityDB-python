@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from dateutil.parser import parse
-from postgis import Point
-from mobilitydb import *
+from postgis import Point, MultiPoint, LineString, MultiLineString, GeometryCollection
+from mobilitydb.time import TimestampSet, Period, PeriodSet
+from mobilitydb.main.tpoint import TGeogPointInst, TGeogPointI, TGeogPointSeq, TGeogPointS
 
 
 print("\nConstructors for TGeogPointInst")

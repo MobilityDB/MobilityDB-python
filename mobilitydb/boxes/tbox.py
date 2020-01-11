@@ -22,9 +22,11 @@ class TBox:
         >>> TBox("TBOX((1.0,), (2.0,))")
         >>> TBox("TBOX((, 2000-01-01), (, 2000-01-02))")
 
-    Another possibility is to give the arguments in the following order:
-    ``xmin``, ``tmin``, ``xmax``, ``tmax``, where the arguments can be
-    either strings or instances of ``str`` and ``datetime``.
+    Another possibility is to give the bounds in the following order:
+    ``xmin``, ``tmin``, ``xmax``, ``tmax``, where the bounds can be
+    instances of ``str``, ``float`` and ``datetime``. All arguments
+    are optional but they must be given in pairs for each dimension and at
+    least one pair must be given.
 
         >>> TBox("1.0", "2000-01-01", "2.0", "2000-01-02")
         >>> TBox(1.0, 2.0)

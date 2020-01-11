@@ -5,3 +5,4 @@ mobilitydb.main
     :show-inheritance:
     :members:
     :undoc-members:
+

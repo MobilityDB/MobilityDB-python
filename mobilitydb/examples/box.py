@@ -85,3 +85,4 @@ print(var)
 # Only time dimension for geodetic box
 var = STBox(('2001-01-03', '2001-01-03'), geodetic=True)
 print(var)
+

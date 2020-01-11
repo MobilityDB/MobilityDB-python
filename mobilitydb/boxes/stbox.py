@@ -12,9 +12,43 @@ except ImportError:
 class STBox:
     """
     Class that represents bounding boxes composed of coordinate and/or time
-    dimensions, where the coordinates may be 2D (X and Y) or 3D (X, Y, and Z).
-    For each dimension, minimum and maximum values are stored. The coordinates
-    may be Cartesian (planar) or geodetic (spherical).
+    dimensions, where the coordinates may be 2D (``X`` and ``Y``) or 3D
+    (``X``, ``Y``, and ``Z``). For each dimension, minimum and maximum values
+    are stored. The coordinates may be either Cartesian (planar) or geodetic
+    (spherical).
+
+
+    ``STBox`` objects can be created in a number of ways. One possibility is
+    with a single argument of type string as in MobilityDB.
+
+        >>> "STBOX ((1.0, 2.0), (1.0, 2.0))",
+        >>> "STBOX Z((1.0, 2.0, 3.0), (1.0, 2.0, 3.0))",
+        >>> "STBOX T((1.0, 2.0, 2001-01-03 00:00:00+01), (1.0, 2.0, 2001-01-03 00:00:00+01))",
+        >>> "STBOX ZT((1.0, 2.0, 3.0, 2001-01-04 00:00:00+01), (1.0, 2.0, 3.0, 2001-01-04 00:00:00+01))",
+        >>> "STBOX T(, 2001-01-03 00:00:00+01), (, 2001-01-03 00:00:00+01))",
+        >>> "GEODSTBOX((1.0, 2.0, 3.0), (1.0, 2.0, 3.0))",
+        >>> "GEODSTBOX T((1.0, 2.0, 3.0, 2001-01-03 00:00:00+01), (1.0, 2.0, 3.0, 2001-01-04 00:00:00+01))",
+        >>> "GEODSTBOX T((, 2001-01-03 00:00:00+01), (, 2001-01-03 00:00:00+01))",
+
+    Another possibility is to give the bounds in the following order:
+    ``xmin``, ``ymin``, ``zmin``, ``tmin``, ``xmax``, ``ymax``, ``zmax``,
+    ``tmax``, where the bounds can be instances of ``str``, ``float``
+    and ``datetime``. All arguments are optional but they must be given
+    in pairs for each dimension and at least one pair must be given.
+    When three pairs are given, by default, the third pair will be
+    interpreted as representing the ``Z`` dimension unless the ``dimt``
+    parameter is given. Finally, the ``geodetic`` parameter determines
+    whether the coordinates in the bounds are planar or spherical.
+
+        >>> STBox((1.0, 2.0, 1.0, 2.0))
+        >>> STBox((1.0, 2.0, 3.0, 1.0, 2.0, 3.0))
+        >>> STBox((1.0, 2.0, '2001-01-03', 1.0, 2.0, '2001-01-03'), dimt=True)
+        >>> STBox((1.0, 2.0, 3.0, '2001-01-04', 1.0, 2.0, 3.0, '2001-01-04'))
+        >>> STBox(('2001-01-03', '2001-01-03'))
+        >>> STBox((1.0, 2.0, 3.0, 1.0, 2.0, 3.0), geodetic=True)
+        >>> STBox((1.0, 2.0, 3.0, '2001-01-04', 1.0, 2.0, 3.0, '2001-01-03'), geodetic=True)
+        >>> STBox(('2001-01-03', '2001-01-03'), geodetic=True)
+
     """
     __slots__ = ['_xmin', '_ymin', '_zmin', '_tmin', '_xmax', '_ymax', '_zmax', '_tmax', '_geodetic']
 
@@ -22,7 +56,7 @@ class STBox:
         # Initialize arguments to None and set geodetic if given
         self._xmin = self._ymin = self._zmin = self._tmin = None
         self._xmax = self._ymax = self._zmax = self._tmax = None
-        assert(geodetic is None or isinstance(geodetic, bool)), "Geodetic parameter must be Boolean"
+        assert(geodetic is None or isinstance(geodetic, bool)), "ERROR: Geodetic parameter must be Boolean"
         self._geodetic = geodetic if geodetic is not None else False
         # Unpack the bounds
         if isinstance(bounds, str):
