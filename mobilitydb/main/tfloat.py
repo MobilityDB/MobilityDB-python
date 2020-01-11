@@ -46,7 +46,7 @@ class TFloatInst(TemporalInst, TFloat):
     """
     Class for representing temporal floats of instant duration.
 
-    ``TFloatInst`` objects can be created in a number of ways. One possibility is
+    ``TFloatInst`` objects can be created 
     with a single argument of type string as in MobilityDB.
 
         >>> TFloatInst('10.0@2019-09-01')
@@ -77,7 +77,7 @@ class TFloatI(TemporalI, TFloat):
     """
     Class for representing temporal floats of instant set duration.
 
-    ``TFloatI`` objects can be created in a number of ways. One possibility is
+    ``TFloatI`` objects can be created 
     with a single argument of type string as in MobilityDB.
 
         >>> TFloatI('10.0@2019-09-01')
@@ -110,7 +110,7 @@ class TFloatSeq(TemporalSeq, TFloat):
     """
     Class for representing temporal floats of sequence duration.
 
-    ``TFloatSeq`` objects can be created in a number of ways. One possibility is
+    ``TFloatSeq`` objects can be created 
     with a single argument of type string as in MobilityDB.
 
         >>> TFloatSeq('[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')
@@ -167,7 +167,7 @@ class TFloatS(TemporalS, TFloat):
     """
     Class for representing temporal floats of sequence duration.
 
-    ``TFloatS`` objects can be created in a number of ways. One possibility is
+    ``TFloatS`` objects can be created 
     with a single argument of type string as in MobilityDB.
 
         >>> TFloatS('{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}')

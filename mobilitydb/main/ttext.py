@@ -33,9 +33,9 @@ class TText(Temporal):
 
 class TTextInst(TemporalInst, TText):
     """
-    Class for representing temporal floats of instant duration.
+    Class for representing temporal strings of instant duration.
 
-    ``TTextInst`` objects can be created in a number of ways. One possibility is
+    ``TTextInst`` objects can be created 
     with a single argument of type string as in MobilityDB.
 
         >>> TTextInst('AA@2019-09-01')
@@ -68,8 +68,8 @@ class TTextInst(TemporalInst, TText):
             else:
                 raise Exception("ERROR: Could not parse temporal instant value")
         # Now both value and time are not None
-        assert(isinstance(value, str))
-        assert(isinstance(time, (str, datetime)))
+        assert(isinstance(value, str)), "ERROR: Invalid value argument"
+        assert(isinstance(time, (str, datetime))), "ERROR: Invalid time argument"
         # Remove double quotes if present
         if value[0] == '"' and value[-1] == '"':
             value = value[1:-1]
@@ -79,7 +79,21 @@ class TTextInst(TemporalInst, TText):
 
 class TTextI(TemporalI, TText):
     """
-    Temporal texts of instant set duration
+    Class for representing temporal integers of instant set duration.
+
+    ``TTextI`` objects can be created 
+    with a single argument of type string as in MobilityDB.
+
+        >>> TTextI('AA@2019-09-01')
+
+    Another possibility is to give a tuple or list of arguments,
+    which can be instances of ``str`` or ``TTextInst``.
+
+        >>> TTextI('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01')
+        >>> TTextI(TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01'))
+        >>> TTextI(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
+        >>> TTextI([TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')])
+
     """
 
     def __init__(self,  *argv):
@@ -90,14 +104,32 @@ class TTextI(TemporalI, TText):
 
 class TTextSeq(TemporalSeq, TText):
     """
-    Temporal texts of sequence duration
+    Class for representing temporal floats of sequence duration.
+
+    ``TTextSeq`` objects can be created 
+    with a single argument of type string as in MobilityDB.
+
+        >>> TTextSeq('[AA@2019-09-01 00:00:00+01, BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')
+
+    Another possibility is to give the ``instantList``, ``lower_inc``,
+    and ``upper_inc`` arguments, where
+
+    * the instants in ``instantList`` can be instances of ``str`` or ``TTextInst``,
+    * ``lower_inc`` and ``upper_inc`` are instances of ``bool``, where by default
+    ``lower_inc`` is ``True`` and ``upper_inc`` is ``False``
+
+        >>> TTextSeq(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
+        >>> TTextSeq(TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')])
+        >>> TTextSeq(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'], True, True)
+        >>> TTextSeq([TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')], True, True)
+
     """
 
-    def __init__(self, instantList, lower_inc=None, upper_inc=None, interp='Stepwise'):
+    def __init__(self, instantList, lower_inc=None, upper_inc=None):
         TemporalSeq.BaseClass = str
         TemporalS.BaseClassDiscrete = True
         TemporalSeq.ComponentClass = TTextInst
-        super().__init__(instantList, lower_inc, upper_inc, interp)
+        super().__init__(instantList, lower_inc, upper_inc)
 
     @classmethod
     @property
@@ -110,14 +142,28 @@ class TTextSeq(TemporalSeq, TText):
 
 class TTextS(TemporalS, TText):
     """
-    Temporal texts of sequence set duration
+    Class for representing temporal floats of sequence duration.
+
+    ``TTextS`` objects can be created 
+    with a single argument of type string as in MobilityDB.
+
+        >>> TTextS('{[AA@2019-09-01 00:00:00+01], [BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]}')
+
+    Another possibility is to give the ``instantList``, ``lower_inc``,
+    `and `upper_inc`` arguments, where the sequences in
+    ``sequenceList`` can be instances of ``str`` or ``TTextSeq``.
+
+        >>> TTextS(['[AA@2019-09-01 00:00:00+01]', '[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]'])
+        >>> TTextS([TTextSeq('[AA@2019-09-01 00:00:00+01]'), TTextSeq('[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')])
+        >>> TTextS([TTextSeq('[AA@2019-09-01 00:00:00+01]'), TTextSeq('[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')])
+
     """
 
-    def __init__(self, sequenceList, interp='Stepwise'):
+    def __init__(self, sequenceList):
         TemporalS.BaseClass = str
         TemporalS.BaseClassDiscrete = True
         TemporalS.ComponentClass = TTextSeq
-        super().__init__(sequenceList, interp)
+        super().__init__(sequenceList)
 
     @classmethod
     @property

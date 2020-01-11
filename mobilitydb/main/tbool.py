@@ -7,7 +7,7 @@ from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
 class TBool(Temporal):
     """
-    Abstract class for representing temporal booleans of any duration.
+    Abstract class for representing temporal Booleans of any duration.
     """
 
     @staticmethod
@@ -34,9 +34,9 @@ class TBool(Temporal):
 
 class TBoolInst(TemporalInst, TBool):
     """
-    Class for representing temporal booleans of instant duration.
+    Class for representing temporal Booleans of instant duration.
 
-    ``TBoolInst`` objects can be created in a number of ways. One possibility is
+    ``TBoolInst`` objects can be created 
     with a single argument of type string as in MobilityDB.
 
         >>> TBoolInst('true@2019-09-01')
@@ -51,25 +51,26 @@ class TBoolInst(TemporalInst, TBool):
 
     """
 
-    """It is not possible to call super().__init__(value, time) since bool('False') == True
+    """
+    It is not possible to call super().__init__(value, time) since bool('False') == True
     and eval('False') == False. Furthermore eval('false') gives an error
     """
     def __init__(self, value, time=None):
         TemporalInst.BaseClass = bool
-        if(time is None):
+        if time is None:
             # Constructor with a single argument of type string
-            if (isinstance(value, str)):
+            if isinstance(value, str):
                 couple = parse_temporalinst(value, 0)
                 value = couple[2][0]
                 time = couple[2][1]
             # Constructor with a single argument of type tuple or list
-            elif (isinstance(value, (tuple, list))):
+            elif isinstance(value, (tuple, list)):
                 value, time = value
             else:
                 raise Exception("ERROR: Could not parse temporal instant value")
         # Now both value and time are not None
-        assert(isinstance(value, (str, bool)))
-        assert(isinstance(time, (str, datetime)))
+        assert(isinstance(value, (str, bool))), "ERROR: Invalid value argument"
+        assert(isinstance(time, (str, datetime))), "ERROR: Invalid time argument"
         if isinstance(value, str):
             if value.lower() == 'true' or value.lower() == 't':
                 self._value = True
@@ -84,7 +85,21 @@ class TBoolInst(TemporalInst, TBool):
 
 class TBoolI(TemporalI, TBool):
     """
-    Temporal booleans of instant set duration
+    Class for representing temporal Booleans of instant set duration.
+
+    ``TBoolI`` objects can be created 
+    with a single argument of type string as in MobilityDB.
+
+        >>> TBoolI('AA@2019-09-01')
+
+    Another possibility is to give a tuple or list of arguments,
+    which can be instances of ``str`` or ``TBoolInst``.
+
+        >>> TBoolI('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01')
+        >>> TBoolI(TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01'))
+        >>> TBoolI(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
+        >>> TBoolI([TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01')])
+
     """
 
     def __init__(self,  *argv):
@@ -95,10 +110,27 @@ class TBoolI(TemporalI, TBool):
 
 class TBoolSeq(TemporalSeq, TBool):
     """
-    Temporal booleans of sequence duration
+    Class for representing temporal Booleans of sequence duration.
+
+    ``TBoolSeq`` objects can be created 
+    with a single argument of type string as in MobilityDB.
+
+        >>> TBoolSeq('[true@2019-09-01 00:00:00+01, false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')
+
+    Another possibility is to give the ``instantList``, ``lower_inc``,
+    and ``upper_inc`` arguments, where
+
+    * the instants in ``instantList`` can be instances of ``str`` or ``TBoolInst``,
+    * ``lower_inc`` and ``upper_inc`` are instances of ``bool``, where by default ``lower_inc`` is ``True`` and ``upper_inc`` is ``False``
+
+        >>> TBoolSeq(['true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'true@2019-09-03 00:00:00+01'])
+        >>> TBoolSeq(TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'), TBoolInst('true@2019-09-03 00:00:00+01')])
+        >>> TBoolSeq(['true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'true@2019-09-03 00:00:00+01'], True, True)
+        >>> TBoolSeq([TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'), TBoolInst('true@2019-09-03 00:00:00+01')], True, True)
+
     """
 
-    def __init__(self, instantList, lower_inc=None, upper_inc=None, interp='Stepwise'):
+    def __init__(self, instantList, lower_inc=None, upper_inc=None):
         TemporalSeq.BaseClass = bool
         TemporalSeq.BaseClassDiscrete = True
         TemporalSeq.ComponentClass = TBoolInst
@@ -116,10 +148,24 @@ class TBoolSeq(TemporalSeq, TBool):
 
 class TBoolS(TemporalS, TBool):
     """
-    Temporal booleans of sequence set duration
+    Class for representing temporal Booleans of sequence set duration.
+
+    ``TBoolS`` objects can be created 
+    with a single argument of type string as in MobilityDB.
+
+        >>> TBoolS('{[true@2019-09-01 00:00:00+01], [false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]}')
+
+    Another possibility is to give the ``instantList``, ``lower_inc``,
+    `and `upper_inc`` arguments, where the sequences in
+    ``sequenceList`` can be instances of ``str`` or ``TBoolSeq``.
+
+        >>> TBoolS(['[true@2019-09-01 00:00:00+01]', '[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]'])
+        >>> TBoolS([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
+        >>> TBoolS([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
+
     """
 
-    def __init__(self, sequenceList, interp='Stepwise'):
+    def __init__(self, sequenceList):
         TemporalS.BaseClass = bool
         TemporalS.BaseClassDiscrete = True
         TemporalS.ComponentClass = TBoolSeq

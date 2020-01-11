@@ -15,18 +15,18 @@ class TemporalInst(Temporal):
     def __init__(self, value, time=None):
         if(time is None):
             # Constructor with a single argument of type string
-            if (isinstance(value, str)):
+            if isinstance(value, str):
                 couple = parse_temporalinst(value, 0)
                 value = couple[2][0]
                 time = couple[2][1]
             # Constructor with a single argument of type tuple or list
-            elif (isinstance(value, (tuple, list))):
+            elif isinstance(value, (tuple, list)):
                 value, time = value
             else:
                 raise Exception("ERROR: Could not parse temporal instant value")
         # Now both value and time are not None
-        assert(isinstance(value, (str, type(self).BaseClass)))
-        assert(isinstance(time, (str, datetime)))
+        assert(isinstance(value, (str, type(self).BaseClass))), "ERROR: Invalid value argument"
+        assert(isinstance(time, (str, datetime))), "ERROR: Invalid time argument"
         self._value = type(self).BaseClass(value) if isinstance(value, str) else value
         self._time = parse(time) if isinstance(time, str) else time
 

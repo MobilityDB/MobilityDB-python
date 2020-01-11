@@ -31,16 +31,16 @@ class TInt(Temporal):
     @property
     def valueRange(self):
         """
-        Distinct values
+        Minimun and maximum values represented as an integer range
         """
         return intrange(self.minValue, self.maxValue, True, True)
 
 
 class TIntInst(TemporalInst, TInt):
     """
-    Class for representing temporal floats of instant duration.
+    Class for representing temporal integers of instant duration.
 
-    ``TIntInst`` objects can be created in a number of ways. One possibility is
+    ``TIntInst`` objects can be created 
     with a single argument of type string as in MobilityDB.
 
         >>> TIntInst('10@2019-09-01')
@@ -64,7 +64,7 @@ class TIntI(TemporalI, TInt):
     """
     Class for representing temporal integers of instant set duration.
 
-    ``TIntI`` objects can be created in a number of ways. One possibility is
+    ``TIntI`` objects can be created
     with a single argument of type string as in MobilityDB.
 
         >>> TIntI('10@2019-09-01')
@@ -89,13 +89,13 @@ class TIntSeq(TemporalSeq, TInt):
     """
     Class for representing temporal floats of sequence duration.
 
-    ``TIntSeq`` objects can be created in a number of ways. One possibility is
+    ``TIntSeq`` objects can be created
     with a single argument of type string as in MobilityDB.
 
         >>> TIntSeq('[10@2019-09-01 00:00:00+01, 20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')
 
     Another possibility is to give the ``instantList``, ``lower_inc``,
-    ``upper_inc``, and ``interp`` arguments, where
+    and ``upper_inc`` arguments, where
 
     * the instants in ``instantList`` can be instances of ``str`` or ``TIntInst``,
     * ``lower_inc`` and ``upper_inc`` are instances of ``bool``, where by default
@@ -127,13 +127,13 @@ class TIntS(TemporalS, TInt):
     """
     Class for representing temporal floats of sequence duration.
 
-    ``TIntS`` objects can be created in a number of ways. One possibility is
+    ``TIntS`` objects can be created
     with a single argument of type string as in MobilityDB.
 
         >>> TIntS('{[10@2019-09-01 00:00:00+01], [20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]}')
 
     Another possibility is to give the ``instantList``, ``lower_inc``,
-    ``upper_inc``, and ``interp`` arguments, where the sequences in
+    and ``upper_inc`` arguments, where the sequences in
     ``sequenceList`` can be instances of ``str`` or ``TIntSeq``.
 
         >>> TIntS(['[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'])

@@ -427,7 +427,7 @@ class TGeomPointInst(TPointInst, TGeomPoint):
     """
     Class for representing temporal geometric points of instant duration.
 
-    ``TGeomPointInst`` objects can be created in a number of ways. One possibility is
+    ``TGeomPointInst`` objects can be created 
     with a single argument of type string as in MobilityDB.
 
         >>> TGeomPointInst('Point(10.0 10.0)@2019-09-01')
@@ -453,7 +453,7 @@ class TGeogPointInst(TPointInst, TGeogPoint):
     """
     Class for representing temporal geographic points of instant duration.
 
-    ``TGeogPointInst`` objects can be created in a number of ways. One possibility is
+    ``TGeogPointInst`` objects can be created 
     with a single argument of type string as in MobilityDB.
 
         >>> TGeogPointInst('Point(10.0 10.0)@2019-09-01')
