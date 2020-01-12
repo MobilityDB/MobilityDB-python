@@ -11,13 +11,35 @@ except ImportError:
 
 class Period:
     """
-    Set of contiguous timestamps between a lower and an upper bound. The bounds may be inclusive or not.
+    Class for representing sets of contiguous timestamps between a lower and
+    an upper bound. The bounds may be inclusive or not.
+
+    ``Period`` objects can be created with a single argument of type string
+    as in MobilityDB.
+
+        >>> Period('(2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01)')
+
+    Another possibility is to give a tuple of arguments as follows:
+
+    * ``lower`` and ``upper`` are instances of ``str`` or ``datetime``
+      specifying the bounds,
+    * ``lower_inc`` and ``upper_inc`` are instances of ``bool`` specifying
+      whether the bounds are inclusive or not. By default, ``lower_inc``
+      is ``True`` and ``upper_inc`` is ``False``.
+
+
+        >>> Period('2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01')
+        >>> Period('2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', False, True)
+        >>> Period(parse('2019-09-08 00:00:00+01'), parse('2019-09-10 00:00:00+01'))
+        >>> Period(parse('2019-09-08 00:00:00+01'), parse('2019-09-10 00:00:00+01'), False, True)
+
     """
+
     __slots__ = ['_lower', '_upper', '_lower_inc', '_upper_inc']
 
     def __init__(self, lower, upper=None, lower_inc=None, upper_inc=None):
-        assert(isinstance(lower_inc, (bool, type(None))))
-        assert(isinstance(upper_inc, (bool, type(None))))
+        assert(isinstance(lower_inc, (bool, type(None)))), "ERROR: Invalid lower bound flag"
+        assert(isinstance(upper_inc, (bool, type(None)))), "ERROR: Invalid upper bound flag"
         # Constructor with a single argument of type string
         if upper is None and isinstance(lower, str):
             lower = lower.strip()
@@ -131,7 +153,7 @@ class Period:
 
     def overlap(self, other):
         """
-        Returns True if both period share any timestamps.
+        Do the periods share a timestamp?
         """
         if ((self._cmp_bounds(self._lower, other._lower, True, True, self._lower_inc, other._lower_inc) >= 0 and
                      self._cmp_bounds(self._lower, other._upper, True, False, self._lower_inc, other._upper_inc) <= 0) or
@@ -142,7 +164,7 @@ class Period:
 
     def contains_timestamp(self, datetime):
         """
-        Returns True if the period contains the timestamp.
+        Does the period contain the timestamp?
         """
         if ((self._lower < datetime < self._upper) or
             (self._lower_inc and self._lower == datetime) or

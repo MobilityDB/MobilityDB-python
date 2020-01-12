@@ -11,12 +11,12 @@ except ImportError:
 
 class TBox:
     """
-    Class that represents bounding boxes with value (``X``) and/or time (``T``)
+    Class for representing bounding boxes with value (``X``) and/or time (``T``)
     dimensions.
 
 
-    ``TBox`` objects can be created in a number of ways. One possibility is
-    with a single argument of type string as in MobilityDB.
+    ``TBox`` objects can be created with a single argument of type string
+    as in MobilityDB.
 
         >>> TBox("TBOX((1.0, 2000-01-01), (2.0, 2000-01-02))")
         >>> TBox("TBOX((1.0,), (2.0,))")
@@ -24,8 +24,8 @@ class TBox:
 
     Another possibility is to give the bounds in the following order:
     ``xmin``, ``tmin``, ``xmax``, ``tmax``, where the bounds can be
-    instances of ``str``, ``float`` and ``datetime``. All arguments
-    are optional but they must be given in pairs for each dimension and at
+    instances of ``str``, ``float`` or ``datetime``. All arguments are
+    optional but they must be given in pairs for each dimension and at
     least one pair must be given.
 
         >>> TBox("1.0", "2000-01-01", "2.0", "2000-01-02")

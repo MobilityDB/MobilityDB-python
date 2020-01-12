@@ -5,7 +5,7 @@ from mobilitydb.temporal.temporal_parser import parse_temporalseq
 
 class TemporalSeq(TemporalInstants):
     """
-    Abstract class for temporal types of sequence duration
+    Abstract class for representing temporal values of sequence duration.
     """
     __slots__ = ['_lower_inc', '_upper_inc', '_interp']
 
@@ -69,69 +69,69 @@ class TemporalSeq(TemporalInstants):
     @classmethod
     def duration(cls):
         """
-        Duration of the temporal value
+        Duration of the temporal value, that is, ``'Sequence'``.
         """
         return "Sequence"
 
     @property
     def lower_inc(self):
         """
-        Is the lower bound of the temporal sequence inclusive?
+        Is the lower bound inclusive?
         """
         return self._lower_inc
 
     @property
     def upper_inc(self):
         """
-        Is the upper bound of the temporal sequence inclusive?
+        Is the upper bound inclusive?
         """
         return self._upper_inc
 
     @property
     def getTime(self):
         """
-        Period set on which the temporal value is defined
+        Period set on which the temporal value is defined.
         """
         return PeriodSet([self.period])
 
     @property
     def timespan(self):
         """
-        Interval on which the temporal value is defined ignoring potential time gaps
+        Interval on which the temporal value is defined.
         """
         return self.period.upper - self.period.lower
 
     @property
     def period(self):
         """
-        Period on which the temporal value is defined ignoring potential time gaps
+        Period on which the temporal value is defined.
         """
         return Period(self.startTimestamp, self.endTimestamp, self.lower_inc, self.upper_inc)
 
     @property
     def numSequences(self):
         """
-        Number of sequences
+        Number of sequences.
         """
         return 1
 
     @property
     def startSequence(self):
         """
-        Start sequence
+        Start sequence.
         """
         return self
 
     @property
     def endSequence(self):
         """
-        End sequence
+        End sequence.
         """
         return self
 
     def sequenceN(self, n):
         """
-        N-th sequence
+        N-th sequence.
         """
         # 1-based
         if n == 1:
@@ -142,13 +142,13 @@ class TemporalSeq(TemporalInstants):
     @property
     def sequences(self):
         """
-        Sequences
+        List of sequences.
         """
         return [self]
 
     def intersectsTimestamp(self, timestamp):
         """
-        Intersects timestamp?
+        Does the temporal value intersect the timestamp?
         """
         return ((self.lower_inc and self._instantList[0]._time == timestamp) or
                 (self.upper_inc and self._instantList[-1]._time == timestamp) or
@@ -156,19 +156,19 @@ class TemporalSeq(TemporalInstants):
 
     def intersectsTimestampset(self, timestampset):
         """
-        Intersects timestamp set?
+        Does the temporal value intersect the timestamp set?
         """
         return any(self.intersectsTimestamp(timestamp) for timestamp in timestampset._datetimeList)
 
     def intersectsPeriod(self, period):
         """
-        Intersects period?
+        Does the temporal value intersect the period?
         """
         return self.period.overlap(period)
 
     def intersectsPeriodset(self, periodset):
         """
-        Intersects period set?
+        Does the temporal value intersect the period set?
         """
         return any(self.intersectsPeriod(period) for period in periodset._periodList)
 

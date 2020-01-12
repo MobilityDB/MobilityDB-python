@@ -6,4 +6,3 @@ mobilitydb.main
     :members:
 
 
-

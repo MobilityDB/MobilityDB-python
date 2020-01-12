@@ -72,14 +72,14 @@ class TPointInst(TemporalInst):
     @property
     def getValues(self):
         """
-        Distinct values
+        Geometry representing the values taken by the temporal value.
         """
         return self._value
 
 
 class TPointI(TemporalI):
     """
-    Abstract class for representing temporal points of instant set duration
+    Abstract class for representing temporal points of instant set duration.
     """
 
     def __init__(self,  *argv, srid=None):
@@ -140,7 +140,7 @@ class TPointI(TemporalI):
     @property
     def getValues(self):
         """
-        Distinct values
+        Geometry representing the values taken by the temporal value.
         """
         values = super().getValues
         return MultiPoint(values)
@@ -148,7 +148,7 @@ class TPointI(TemporalI):
 
 class TPointSeq(TemporalSeq):
     """
-    Abstract class for representing temporal points of sequence duration
+    Abstract class for representing temporal points of sequence duration.
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None, srid=None):
@@ -220,14 +220,14 @@ class TPointSeq(TemporalSeq):
     @property
     def interpolation(self):
         """
-        Interpolation for the temporal sequence
+        Interpolation of the temporal value, which is either ``'Linear'`` or ``'Stepwise'``.
         """
         return self._interp
 
     @property
     def getValues(self):
         """
-        Distinct values
+        Geometry representing the values taken by the temporal value.
         """
         values = [inst._value for inst in self._instantList]
         result = values[0] if len(values) == 1 else LineString(values)
@@ -236,7 +236,7 @@ class TPointSeq(TemporalSeq):
 
 class TPointS(TemporalS):
     """
-    Abstract class for representing temporal points of sequence set duration
+    Abstract class for representing temporal points of sequence set duration.
     """
 
     def __init__(self, sequenceList, interp=None, srid=None):
@@ -298,7 +298,7 @@ class TPointS(TemporalS):
 
     def _valid(self):
         super()._valid()
-        if any((x.has_z is None and y.has_z is not None) or (x.has_z is not None and y.has_z is None) \
+        if any((x.hasz is None and y.hasz is not None) or (x.hasz is not None and y.hasz is None) \
                 for x, y in zip(self._sequenceList, self._sequenceList[1:])):
             raise Exception("ERROR: The points composing a temporal point must be of the same dimensionality")
         if any(x.srid != y.srid for x, y in zip(self._sequenceList, self._sequenceList[1:])):
@@ -307,14 +307,14 @@ class TPointS(TemporalS):
     @property
     def interpolation(self):
         """
-        Interpolation for the temporal sequence set
+        Interpolation of the temporal value, which is either ``'Linear'`` or ``'Stepwise'``.
         """
         return self._interp
 
     @property
     def getValues(self):
         """
-        Distinct values
+        Geometry representing the values taken by the temporal value.
         """
         values = [seq.getValues for seq in self._sequenceList]
         points = [geo for geo in values if isinstance(geo, Point)]
@@ -360,16 +360,16 @@ class TGeomPoint(Temporal):
         return value.__str__().strip("'")
 
     @property
-    def has_z(self):
+    def hasz(self):
         """
-        Returns True if the temporal point has Z dimension
+        Does the temporal point has Z dimension?
         """
         return self.startValue.z is not None
 
     @property
     def srid(self):
         """
-        Returns the SRID
+        Returns the SRID.
         """
         result = self.startValue.srid if hasattr(self.startValue, "srid") else None
         return result
@@ -408,16 +408,16 @@ class TGeogPoint(Temporal):
         return value.__str__().strip("'")
 
     @property
-    def has_z(self):
+    def hasz(self):
         """
-        Returns True if the temporal point has Z dimension
+        Does the temporal point has Z dimension?
         """
         return self.startValue.z is not None
 
     @property
     def srid(self):
         """
-        Returns the SRID
+        Returns the SRID.
         """
         result = self.startValue.srid if hasattr(self.startValue, "srid") else None
         return result
@@ -427,15 +427,16 @@ class TGeomPointInst(TPointInst, TGeomPoint):
     """
     Class for representing temporal geometric points of instant duration.
 
-    ``TGeomPointInst`` objects can be created 
-    with a single argument of type string as in MobilityDB.
+    ``TGeomPointInst`` objects can be created with a single argument of type
+    string as in MobilityDB.
 
         >>> TGeomPointInst('Point(10.0 10.0)@2019-09-01')
         >>> TGeomPointInst('SRID=4326,Point(10.0 10.0)@2019-09-01')
 
     Another possibility is to give the ``value`` and the ``time`` arguments,
-    which can be instances of ``str``, ``float`` and ``datetime``.
-    Additionally, the SRID of the
+    which can be instances of ``str``, ``Point`` or ``datetime``.
+    Additionally, the SRID can be specified, it will be 0 by default if not
+    given.
 
         >>> TGeomPointInst('Point(10.0 10.0)', '2019-09-08 00:00:00+01', 4326)
         >>> TGeomPointInst(['Point(10.0 10.0)', '2019-09-08 00:00:00+01', 4326])
@@ -453,13 +454,15 @@ class TGeogPointInst(TPointInst, TGeogPoint):
     """
     Class for representing temporal geographic points of instant duration.
 
-    ``TGeogPointInst`` objects can be created 
-    with a single argument of type string as in MobilityDB.
+    ``TGeogPointInst`` objects can be created with a single argument of type
+    string as in MobilityDB.
 
         >>> TGeogPointInst('Point(10.0 10.0)@2019-09-01')
 
     Another possibility is to give the ``value`` and the ``time`` arguments,
-    which can be instances of ``str``, ``float`` and ``datetime``.
+    which can be instances of ``str``, ``Point`` or ``datetime``.
+    Additionally, the SRID can be specified, it will be 0 by default if not
+    given.
 
         >>> TGeogPointInst('Point(10.0 10.0)', '2019-09-08 00:00:00+01')
         >>> TGeogPointInst(['Point(10.0 10.0)', '2019-09-08 00:00:00+01'])
@@ -475,7 +478,22 @@ class TGeogPointInst(TPointInst, TGeogPoint):
 
 class TGeomPointI(TPointI, TGeomPoint):
     """
-    Class for representing temporal geometric points of instant set duration
+    Class for representing temporal geometric points of instant set duration.
+
+    ``TGeomPointI`` objects can be created with a single argument of type
+    string as in MobilityDB.
+
+        >>> TGeomPointI('Point(10.0 10.0)@2019-09-01')
+
+    Another possibility is to give a tuple or list of arguments specifying
+    the composing instants, which can be instances of ``str`` or
+    ``TGeomPointInst``.
+
+        >>> TGeomPointI('Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01')
+        >>> TGeomPointI(TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01'))
+        >>> TGeomPointI(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'])
+        >>> TGeomPointI([TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')])
+
     """
 
     def __init__(self,  *argv, **kwargs):
@@ -486,7 +504,22 @@ class TGeomPointI(TPointI, TGeomPoint):
 
 class TGeogPointI(TPointI, TGeogPoint):
     """
-    Class for representing temporal geographic points of instant set duration
+    Class for representing temporal geometric points of instant set duration.
+
+    ``TGeogPointI`` objects can be created with a single argument of type
+    string as in MobilityDB.
+
+        >>> TGeogPointI('Point(10.0 10.0)@2019-09-01')
+
+    Another possibility is to give a tuple or list of arguments specifying
+    the composing instants, which can be instances of ``str`` or
+    ``TGeogPointInst``.
+
+        >>> TGeogPointI('Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01')
+        >>> TGeogPointI(TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01'))
+        >>> TGeogPointI(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'])
+        >>> TGeogPointI([TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')])
+
     """
 
     def __init__(self,  *argv, **kwargs):
@@ -497,7 +530,32 @@ class TGeogPointI(TPointI, TGeogPoint):
 
 class TGeomPointSeq(TPointSeq, TGeomPoint):
     """
-    Abstract class for representing temporal points of sequence duration
+    Class for representing temporal geometric points of sequence duration.
+
+    ``TGeomPointSeq`` objects can be created with a single argument of type
+    string as in MobilityDB.
+
+        >>> TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')
+        >>> TGeomPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')
+
+    Another possibility is to give the arguments as follows:
+
+    * ``instantList`` is the list of composing instants, which can be instances
+      of ``str`` or ``TGeogPointInst``,
+    * ``lower_inc`` and ``upper_inc`` are instances of ``bool`` specifying
+      whether the bounds are inclusive or not,  where by default '`lower_inc``
+      is ``True`` and ``upper_inc`` is ``False``,
+    * ``interp`` which is either ``'Linear'`` or ``'Stepwise'``, the former
+      being the default, and
+    * ``srid`` is an integer specifiying the SRID
+
+    Some examples are shown next.
+
+        >>> TGeomPointSeq(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'])
+        >>> TGeomPointSeq([TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')])
+        >>> TGeomPointSeq(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Stepwise')
+        >>> TGeomPointSeq([TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise')
+
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None, srid=None):
@@ -509,7 +567,32 @@ class TGeomPointSeq(TPointSeq, TGeomPoint):
 
 class TGeogPointSeq(TPointSeq, TGeogPoint):
     """
-    Abstract class for representing temporal points of sequence duration
+    Class for representing temporal geographic points of sequence duration.
+
+    ``TGeogPointSeq`` objects can be created with a single argument of type
+    string as in MobilityDB.
+
+        >>> TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')
+        >>> TGeogPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')
+
+    Another possibility is to give the arguments as follows:
+
+    * ``instantList`` is the list of composing instants, which can be instances
+      of ``str`` or ``TGeogPointInst``,
+    * ``lower_inc`` and ``upper_inc`` are instances of ``bool`` specifying
+      whether the bounds are includive or not,  where by default '`lower_inc``
+      is ``True`` and ``upper_inc`` is ``False``, and
+    * ``interp`` which is either ``'Linear'`` or ``'Stepwise'``, the former
+      being the default.
+    * ``srid`` is an integer specifiying the SRID
+
+    Some examples are shown next.
+
+        >>> TGeogPointSeq(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'])
+        >>> TGeogPointSeq([TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')])
+        >>> TGeogPointSeq(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Stepwise')
+        >>> TGeogPointSeq([TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise')
+
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None, srid=None):
@@ -521,7 +604,32 @@ class TGeogPointSeq(TPointSeq, TGeogPoint):
 
 class TGeomPointS(TPointS, TGeomPoint):
     """
-    Class for representing temporal geometric points of sequence set duration
+    Class for representing temporal geometric points of sequence duration.
+
+    ``TGeomPointS`` objects can be created with a single argument of type
+    string as in MobilityDB.
+
+        >>> TGeomPointS('{[Point(10.0 10.0)@2019-09-01 00:00:00+01], [Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}')
+        >>> TGeomPointS('Interp=Stepwise;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], [Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}')
+
+    Another possibility is to give the arguments as follows:
+
+    * ``sequenceList`` is the list of composing sequences, which can be instances
+      of ``str`` or ``TGeomPointSeq``,
+    * ``interp`` can be ``'Linear'`` or ``'Stepwise'``, the former being
+      the default, and
+    * ``srid`` is an integer specifiying the SRID, if will be 0 by default if
+      not given.
+
+    Some examples are shown next.
+
+        >>> TGeomPointS(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'])
+        >>> TGeomPointS(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear')
+        >>> TGeomPointS(['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Stepwise')
+        >>> TGeomPointS([TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')])
+        >>> TGeomPointS([TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),  TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear')
+        >>> TGeomPointS([TGeomPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeomPointSeq('Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Stepwise')
+
     """
 
     def __init__(self, sequenceList, interp=None, srid=None):
@@ -533,7 +641,32 @@ class TGeomPointS(TPointS, TGeomPoint):
 
 class TGeogPointS(TPointS, TGeogPoint):
     """
-    Class for representing temporal geometric points of sequence set duration
+    Class for representing temporal geographic points of sequence duration.
+
+    ``TGeogPointS`` objects can be created with a single argument of type string
+    as in MobilityDB.
+
+        >>> TGeogPointS('{[Point(10.0 10.0)@2019-09-01 00:00:00+01], [Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}')
+        >>> TGeogPointS('Interp=Stepwise;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], [Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}')
+
+    Another possibility is to give the arguments as follows:
+
+    * ``sequenceList`` is the list of composing sequences, which can be instances
+      of ``str`` or ``TGeogPointSeq``,
+    * ``interp`` can be ``'Linear'`` or ``'Stepwise'``, the former being
+      the default, and
+    * ``srid`` is an integer specifiying the SRID, if will be 0 by default if
+      not given.
+
+    Some examples are shown next.
+
+        >>> TGeogPointS(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'])
+        >>> TGeogPointS(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear')
+        >>> TGeogPointS(['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Stepwise')
+        >>> TGeogPointS([TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')])
+        >>> TGeogPointS([TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),  TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear')
+        >>> TGeogPointS([TGeogPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeogPointSeq('Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Stepwise')
+
     """
 
     def __init__(self, sequenceList, interp=None, srid=None):

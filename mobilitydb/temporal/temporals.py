@@ -5,7 +5,7 @@ from mobilitydb.temporal.temporal_parser import parse_temporals
 
 class TemporalS(Temporal):
     """
-    Abstract class for temporal types of sequence set duration
+    Abstract class for representing temporal values of sequence set duration.
     """
     __slots__ = ['_sequenceList', '_interp']
 
@@ -70,14 +70,14 @@ class TemporalS(Temporal):
     @classmethod
     def duration(cls):
         """
-        Duration of the temporal value
+        Duration of the temporal value, that is, ``'SequenceSet'``.
         """
         return "SequenceSet"
 
     @property
     def getValues(self):
         """
-        Distinct values
+        List of distinct values taken by the temporal value.
         """
         values = [seq.getValues for seq in self._sequenceList]
         return list(dict.fromkeys([item for sublist in values for item in sublist]))
@@ -85,42 +85,42 @@ class TemporalS(Temporal):
     @property
     def startValue(self):
         """
-        Start value
+        Start value.
         """
         return self._sequenceList[0].startInstant._value
 
     @property
     def endValue(self):
         """
-        End value
+        End value.
         """
         return self._sequenceList[-1].endInstant._value
 
     @property
     def minValue(self):
         """
-        Minimum value
+        Minimum value.
         """
         return min(seq.minValue for seq in self._sequenceList)
 
     @property
     def maxValue(self):
         """
-        Maximum value
+        Maximum value.
         """
         return max(seq.maxValue for seq in self._sequenceList)
 
     @property
     def getTime(self):
         """
-        Period set on which the temporal value is defined
+        Period set on which the temporal value is defined.
         """
         return PeriodSet([seq.period for seq in self._sequenceList])
 
     @property
     def timespan(self):
         """
-        Interval on which the period set is defined
+        Interval on which the period set is defined.
         """
         result = self._sequenceList[0].period.timespan
         for sequence in self._sequenceList[1:]:
@@ -130,7 +130,7 @@ class TemporalS(Temporal):
     @property
     def period(self):
         """
-        Period on which the temporal value is defined ignoring the potential time gaps
+        Period on which the temporal value is defined ignoring the potential time gaps.
         """
         return Period(self.startTimestamp, self.endTimestamp,
                       self._sequenceList[0]._lower_inc, self._sequenceList[-1]._upper_inc)
@@ -138,27 +138,27 @@ class TemporalS(Temporal):
     @property
     def numInstants(self):
         """
-        Number of distinct instants
+        Number of distinct instants.
         """
         return len(self.instants)
 
     @property
     def startInstant(self):
         """
-        Start instant
+        Start instant.
         """
         return self._sequenceList[0].startInstant
 
     @property
     def endInstant(self):
         """
-        End instant
+        End instant.
         """
         return self._sequenceList[-1].endInstant
 
     def instantN(self, n):
         """
-        N-th distinct instant
+        N-th distinct instant.
         """
         # 1-based
         if 1 <= n <= len(self.instants):
@@ -169,7 +169,7 @@ class TemporalS(Temporal):
     @property
     def instants(self):
         """
-        Instants
+        List of instants.
         """
         instantList = []
         for sequence in self._sequenceList:
@@ -180,27 +180,27 @@ class TemporalS(Temporal):
     @property
     def numTimestamps(self):
         """
-        Number of distinct timestamps
+        Number of distinct timestamps.
         """
         return len(self.timestamps)
 
     @property
     def startTimestamp(self):
         """
-        Start timestamp
+        Start timestamp.
         """
         return self._sequenceList[0].startInstant.getTimestamp
 
     @property
     def endTimestamp(self):
         """
-        End timestamp
+        End timestamp.
         """
         return self._sequenceList[-1].endInstant.getTimestamp
 
     def timestampN(self, n):
         """
-        N-th timestamp
+        N-th distinct timestamp.
         """
         # 1-based
         if 1 <= n <= len(self.timestamps):
@@ -211,7 +211,7 @@ class TemporalS(Temporal):
     @property
     def timestamps(self):
         """
-        Timestamps
+        List of timestamps.
         """
         timestampList = []
         for sequence in self._sequenceList:
@@ -224,27 +224,27 @@ class TemporalS(Temporal):
     @property
     def numSequences(self):
         """
-        Number of sequences
+        Number of sequences.
         """
         return len(self._sequenceList)
 
     @property
     def startSequence(self):
         """
-        Start sequence
+        Start sequence.
         """
         return self._sequenceList[0]
 
     @property
     def endSequence(self):
         """
-        End sequence
+        End sequence.
         """
         return self._sequenceList[-1]
 
     def sequenceN(self, n):
         """
-        N-th sequence
+        N-th sequence.
         """
         # 1-based
         if 1 <= n <= len(self._sequenceList):
@@ -255,13 +255,13 @@ class TemporalS(Temporal):
     @property
     def sequences(self):
         """
-        Sequences
+        List of sequences.
         """
         return self._sequenceList
 
     def shift(self, timedelta):
         """
-        Shift the temporal value by a time interval
+        Shift the temporal value by a time interval.
         """
         for seq in self._sequenceList:
             seq = seq.shift(timedelta)
@@ -269,26 +269,26 @@ class TemporalS(Temporal):
 
     def intersectsTimestamp(self, timestamp):
         """
-        Intersects timestamp?
+        Does the temporal value intersect the timestamp?
         """
         return any(seq.intersectsTimestamp(timestamp) for seq in self._sequenceList)
 
     def intersectsTimestampset(self, timestampset):
         """
-        Intersects timestamp set?
+        Does the temporal value intersect the timestamp set?
         """
         return any(seq.intersectsTimestamp(timestamp) for seq in self._sequenceList for timestamp in
                    timestampset._datetimeList)
 
     def intersectsPeriod(self, period):
         """
-        Intersects period?
+        Does the temporal value intersect the period?
         """
         return any(seq.intersectsPeriod(period) for seq in self._sequenceList)
 
     def intersectsPeriodset(self, periodset):
         """
-        Intersects period set?
+        Does the temporal value intersect the period set?
         """
         return any(seq.intersectsPeriod(period) for seq in self._sequenceList for period in periodset._periodList)
 

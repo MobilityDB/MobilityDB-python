@@ -11,8 +11,24 @@ except ImportError:
 
 class PeriodSet:
     """
-    Set of disjoint period values
+    Class for representing lists of disjoint periods.
+
+    ``PeriodSet`` objects can be created with a single argument of type string
+    as in MobilityDB.
+
+        >>> PeriodSet('{[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01], [2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]}')
+
+    Another possibility is to give a list or tuple specifying the composing
+    periods, which can be instances  of ``str`` or ``Period``. The composing
+    periods must be given in increasing order.
+
+        >>> PeriodSet(['[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]', '[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]'])
+        >>> PeriodSet([Period('[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]'), Period('[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]')])
+        >>> PeriodSet('[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]', '[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]')
+        >>> PeriodSet(Period('[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]'), Period('[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]'))
+
     """
+
     __slots__ = ['_periodList']
 
     def __init__(self, *argv):

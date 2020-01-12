@@ -10,32 +10,34 @@ except ImportError:
 
 class Temporal:
     """
-    Abstract class for temporal types of any duration
+    Abstract class for representing temporal values of any duration.
     """
 
     BaseClass = None
     """
-    Class of the base type, e.g., float for TFloat
+    Class of the base type, for example, ``float`` for ``TFloat``
     """
 
     BaseClassDiscrete = None
     """
-    Boolean that determines whether the base type is discrete, e.g., True for int and False for float
+    Boolean value that states whether the base type is discrete or not, 
+    for example, ``True`` for ``int`` and ``False`` for ``float``
     """
 
     ComponentClass = None
     """
-    Class of the components, e.g., 
+    Class of the components, for example, 
 
-    1. TFloatInst for both TFloatI and TFloatSeq
-    2. TFloatSeq for TFloatS.
+    1. ``TFloatInst`` for both ``TFloatI`` and ``TFloatSeq``
+    2. ``TFloatSeq`` for ``TFloatS``.
     """
 
     @classmethod
     @abstractmethod
     def duration(cls):
         """
-        Duration of the temporal value
+        Duration of the temporal value, that is, one of ``'Instant'``,
+        ``'InstantSet'``, ``'Period'``, or ``'PeriodSet'``.
         """
         pass
 
@@ -43,7 +45,7 @@ class Temporal:
     @abstractmethod
     def getValues(self):
         """
-        Values
+        List of distinct values taken by the temporal value.
         """
         pass
 
@@ -51,7 +53,7 @@ class Temporal:
     @abstractmethod
     def startValue(self):
         """
-        Start value
+        Start value.
         """
         pass
 
@@ -59,7 +61,7 @@ class Temporal:
     @abstractmethod
     def endValue(self):
         """
-        End value
+        End value.
         """
         pass
 
@@ -67,7 +69,7 @@ class Temporal:
     @abstractmethod
     def minValue(self):
         """
-        Minimum value
+        Minimum value.
         """
         pass
 
@@ -75,7 +77,7 @@ class Temporal:
     @abstractmethod
     def maxValue(self):
         """
-        Maximum value
+        Maximum value.
         """
         pass
 
@@ -83,7 +85,7 @@ class Temporal:
     @abstractmethod
     def getTime(self):
         """
-        Period set on which the temporal value is defined
+        Period set on which the temporal value is defined.
         """
         pass
 
@@ -91,7 +93,7 @@ class Temporal:
     @abstractmethod
     def timespan(self):
         """
-        Interval on which the temporal value is defined ignoring potential time gaps
+        Interval on which the temporal value is defined.
         """
         pass
 
@@ -99,7 +101,7 @@ class Temporal:
     @abstractmethod
     def period(self):
         """
-        Period on which the temporal value is defined ignoring potential time gaps
+        Period on which the temporal value is defined ignoring potential time gaps.
         """
         pass
 
@@ -107,7 +109,7 @@ class Temporal:
     @abstractmethod
     def numInstants(self):
         """
-        Number of distinct instants
+        Number of distinct instants.
         """
         pass
 
@@ -115,7 +117,7 @@ class Temporal:
     @abstractmethod
     def startInstant(self):
         """
-         Start instant
+         Start instant.
         """
         pass
 
@@ -123,14 +125,14 @@ class Temporal:
     @abstractmethod
     def endInstant(self):
         """
-        End instant
+        End instant.
         """
         pass
 
     @abstractmethod
     def instantN(self, n):
         """
-        N-th instant
+        N-th instant.
         """
         pass
 
@@ -138,7 +140,7 @@ class Temporal:
     @abstractmethod
     def instants(self):
         """
-        Instants
+        List of instants.
         """
         pass
 
@@ -146,7 +148,7 @@ class Temporal:
     @abstractmethod
     def numTimestamps(self):
         """
-        Number of distinct instants
+        Number of distinct timestamps.
         """
         pass
 
@@ -154,7 +156,7 @@ class Temporal:
     @abstractmethod
     def startTimestamp(self):
         """
-         Start instant
+        Start timestamp.
         """
         pass
 
@@ -162,14 +164,14 @@ class Temporal:
     @abstractmethod
     def endTimestamp(self):
         """
-        End instant
+        End timestamp.
         """
         pass
 
     @abstractmethod
     def timestampN(self, n):
         """
-        N-th timestamp
+        N-th timestamp.
         """
         pass
 
@@ -177,7 +179,7 @@ class Temporal:
     @abstractmethod
     def timestamps(self):
         """
-        Timestamps
+        List of timestamps.
         """
         pass
 
@@ -191,28 +193,28 @@ class Temporal:
     @abstractmethod
     def intersectsTimestamp(self, datetime):
         """
-        Intersects timestamp
+        Does the temporal value intersect the timestamp?
         """
         pass
 
     @abstractmethod
     def intersectsTimestampset(self, timestampset):
         """
-        Intersects timestamp set
+        Does the temporal value intersect the timestamp set?
         """
         pass
 
     @abstractmethod
     def intersectsPeriod(self, period):
         """
-        Intersects period
+        Does the temporal value intersect the period?
         """
         pass
 
     @abstractmethod
     def intersectsPeriodset(self, periodset):
         """
-        Intersects period set
+        Does the temporal value intersect the period set?
         """
         pass
 

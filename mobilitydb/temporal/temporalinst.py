@@ -8,7 +8,7 @@ from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
 class TemporalInst(Temporal):
     """
-    Abstract class for temporal types of instant duration
+    Abstract class for representing temporal values of instant duration.
     """
     __slots__ = ['_value', '_time']
 
@@ -33,104 +33,105 @@ class TemporalInst(Temporal):
     @classmethod
     def duration(cls):
         """
-        Duration of the temporal value
+        Duration of the temporal value, that is, ``'Instant'``.
         """
         return "Instant"
 
     @property
     def getValue(self):
         """
-        Value
+        Value component.
         """
         return self._value
 
     @property
     def getValues(self):
         """
-        Distinct values
+        List of distinct values.
         """
         return [self._value]
 
     @property
     def startValue(self):
         """
-        Start value
+        Start value.
         """
         return self._value
 
     @property
     def endValue(self):
         """
-        End value
+        End value.
         """
         return self._value
 
     @property
     def minValue(self):
         """
-        Minimum value
+        Minimum value.
         """
         return self._value
 
     @property
     def maxValue(self):
         """
-        Maximum value
+        Maximum value.
         """
         return self._value
 
     @property
     def getTimestamp(self):
         """
-        Timestamp
+        Timestamp.
         """
         return self._time
 
     @property
     def getTime(self):
         """
-        Period set on which the temporal value is defined
+        Period set on which the temporal value is defined.
         """
         return PeriodSet([Period(self._time, self._time, True, True)])
 
     @property
     def timespan(self):
         """
-        Interval on which the temporal value is defined ignoring potential time gaps
+        Interval on which the temporal value is defined. It is zero for
+        temporal values of instant duration.
         """
         return timedelta(0)
 
     @property
     def period(self):
         """
-        Period on which the temporal value is defined ignoring the potential time gaps
+        Period on which the temporal value is defined ignoring the potential time gaps.
         """
         return Period(self._time, self._time, True, True)
 
     @property
     def numInstants(self):
         """
-        Number of distinct instants
+        Number of instants.
         """
         return 1
 
     @property
     def startInstant(self):
         """
-        Start instant
+        Start instant.
         """
         return self
 
     @property
     def endInstant(self):
         """
-        End instant
+        End instant.
         """
         return self
 
     def instantN(self, n):
         """
-        N-th distinct instant
+        N-th instant.
         """
         if n == 1:
             return self
@@ -140,34 +141,34 @@ class TemporalInst(Temporal):
     @property
     def instants(self):
         """
-        Distinct instants
+        List of instants.
         """
         return [self]
 
     @property
     def numTimestamps(self):
         """
-        Number of distinct timestamps
+        Number of timestamps.
         """
         return 1
 
     @property
     def startTimestamp(self):
         """
-        Start timestamp
+        Start timestamp.
         """
         return self._time
 
     @property
     def endTimestamp(self):
         """
-        End timestamp
+        End timestamp.
         """
         return self._time
 
     def timestampN(self, n):
         """
-        N-th distinct timestamp
+        N-th timestamp
         """
         if n == 1:
             return self._time
@@ -177,38 +178,38 @@ class TemporalInst(Temporal):
     @property
     def timestamps(self):
         """
-        Timestamps
+        List of timestamps.
         """
         return [self._time]
 
     def shift(self, timedelta):
         """
-        Shift the temporal value by a time interval
+        Shift the temporal value by a time interval.
         """
         self._time += timedelta
         return self
 
     def intersectsTimestamp(self, timestamp):
         """
-        Intersects the timestamp?
+        Does the temporal value intersect the timestamp?
         """
         return self._time == timestamp
 
     def intersectsTimestampset(self, timestampset):
         """
-        Intersects the timestamp set?
+        Does the temporal value intersect the timestamp set?
         """
         return any(self._time == timestamp for timestamp in timestampset._datetimeList)
 
     def intersectsPeriod(self, period):
         """
-        Intersects the period?
+        Does the temporal value intersect the period?
         """
         return period.contains_timestamp(self._time)
 
     def intersectsPeriodset(self, periodset):
         """
-        Intersects the period set?
+        Does the temporal value intersect the period set?
         """
         return any(period.contains_timestamp(self._time) for period in periodset._periodList)
 

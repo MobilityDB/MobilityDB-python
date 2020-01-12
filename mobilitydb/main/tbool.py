@@ -36,13 +36,13 @@ class TBoolInst(TemporalInst, TBool):
     """
     Class for representing temporal Booleans of instant duration.
 
-    ``TBoolInst`` objects can be created 
-    with a single argument of type string as in MobilityDB.
+    ``TBoolInst`` objects can be created with a single argument of type string
+    as in MobilityDB.
 
         >>> TBoolInst('true@2019-09-01')
 
     Another possibility is to give the ``value`` and the ``time`` arguments,
-    which can be instances of ``str``, ``bool`` and ``datetime``.
+    which can be instances of ``str``, ``bool``, or ``datetime``.
 
         >>> TBoolInst('True', '2019-09-08 00:00:00+01')
         >>> TBoolInst(['True', '2019-09-08 00:00:00+01'])
@@ -87,8 +87,8 @@ class TBoolI(TemporalI, TBool):
     """
     Class for representing temporal Booleans of instant set duration.
 
-    ``TBoolI`` objects can be created 
-    with a single argument of type string as in MobilityDB.
+    ``TBoolI`` objects can be created with a single argument of type string
+    as in MobilityDB.
 
         >>> TBoolI('AA@2019-09-01')
 
@@ -112,16 +112,18 @@ class TBoolSeq(TemporalSeq, TBool):
     """
     Class for representing temporal Booleans of sequence duration.
 
-    ``TBoolSeq`` objects can be created 
-    with a single argument of type string as in MobilityDB.
+    ``TBoolSeq`` objects can be created with a single argument of type string
+    as in MobilityDB.
 
         >>> TBoolSeq('[true@2019-09-01 00:00:00+01, false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')
 
-    Another possibility is to give the ``instantList``, ``lower_inc``,
-    and ``upper_inc`` arguments, where
+    Another possibility is to give the arguments as follows.
 
-    * the instants in ``instantList`` can be instances of ``str`` or ``TBoolInst``,
-    * ``lower_inc`` and ``upper_inc`` are instances of ``bool``, where by default ``lower_inc`` is ``True`` and ``upper_inc`` is ``False``
+    * ``instantList`` is the list of composing instants, which can be instances of
+      ``str`` or ``TBoolInst``,
+    * ``lower_inc`` and ``upper_inc`` are instances of ``bool`` specifying
+      whether the bounds are inclusive or not. By default ``lower_inc``
+      is ``True`` and ``upper_inc`` is ``False``.
 
         >>> TBoolSeq(['true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'true@2019-09-03 00:00:00+01'])
         >>> TBoolSeq(TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'), TBoolInst('true@2019-09-03 00:00:00+01')])
@@ -141,7 +143,7 @@ class TBoolSeq(TemporalSeq, TBool):
     @property
     def interpolation(self):
         """
-        Interpolation for the temporal sequence
+        Interpolation of the temporal value, that is, ``'Stepwise'``.
         """
         return 'Stepwise'
 
@@ -150,14 +152,13 @@ class TBoolS(TemporalS, TBool):
     """
     Class for representing temporal Booleans of sequence set duration.
 
-    ``TBoolS`` objects can be created 
-    with a single argument of type string as in MobilityDB.
+    ``TBoolS`` objects can be created with a single argument of type string
+    as in MobilityDB.
 
         >>> TBoolS('{[true@2019-09-01 00:00:00+01], [false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]}')
 
-    Another possibility is to give the ``instantList``, ``lower_inc``,
-    `and `upper_inc`` arguments, where the sequences in
-    ``sequenceList`` can be instances of ``str`` or ``TBoolSeq``.
+    Another possibility is to give the list of composing sequences, which
+    can be instances of ``str`` or ``TBoolSeq``.
 
         >>> TBoolS(['[true@2019-09-01 00:00:00+01]', '[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]'])
         >>> TBoolS([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
@@ -176,7 +177,7 @@ class TBoolS(TemporalS, TBool):
     @property
     def interpolation(self):
         """
-        Interpolation for the temporal sequence set
+        Interpolation of the temporal value, that is, ``'Stepwise'``.
         """
         return 'Stepwise'
 

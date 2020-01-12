@@ -6,7 +6,7 @@ from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, 
 
 class TText(Temporal):
     """
-    Abstract class for representing temporal texts of any duration.
+    Abstract class for representing temporal strings of any duration.
     """
 
     @staticmethod
@@ -41,7 +41,7 @@ class TTextInst(TemporalInst, TText):
         >>> TTextInst('AA@2019-09-01')
 
     Another possibility is to give the ``value`` and the ``time`` arguments,
-    which can be instances of ``str`` and ``datetime``.
+    which can be instances of ``str`` or ``datetime``.
 
         >>> TTextInst('AA', '2019-09-08 00:00:00+01')
         >>> TTextInst(['AA', '2019-09-08 00:00:00+01'])
@@ -79,14 +79,14 @@ class TTextInst(TemporalInst, TText):
 
 class TTextI(TemporalI, TText):
     """
-    Class for representing temporal integers of instant set duration.
+    Class for representing temporal strings of instant set duration.
 
     ``TTextI`` objects can be created 
     with a single argument of type string as in MobilityDB.
 
         >>> TTextI('AA@2019-09-01')
 
-    Another possibility is to give a tuple or list of arguments,
+    Another possibility is to give a tuple or list of composing instants,
     which can be instances of ``str`` or ``TTextInst``.
 
         >>> TTextI('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01')
@@ -104,19 +104,20 @@ class TTextI(TemporalI, TText):
 
 class TTextSeq(TemporalSeq, TText):
     """
-    Class for representing temporal floats of sequence duration.
+    Class for representing temporal strings of sequence duration.
 
     ``TTextSeq`` objects can be created 
     with a single argument of type string as in MobilityDB.
 
         >>> TTextSeq('[AA@2019-09-01 00:00:00+01, BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')
 
-    Another possibility is to give the ``instantList``, ``lower_inc``,
-    and ``upper_inc`` arguments, where
+    Another possibility is to give the arguments as follows:
 
-    * the instants in ``instantList`` can be instances of ``str`` or ``TTextInst``,
-    * ``lower_inc`` and ``upper_inc`` are instances of ``bool``, where by default
-    ``lower_inc`` is ``True`` and ``upper_inc`` is ``False``
+    * ``instantList`` is the list of composing instants, which can be instances of
+      ``str`` or ``TTextInst``,
+    * ``lower_inc`` and ``upper_inc`` are instances of ``bool`` specifying
+      whether the bounds are inclusive or not. By default ``lower_inc``
+      is ``True`` and ``upper_inc`` is ``False``.
 
         >>> TTextSeq(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
         >>> TTextSeq(TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')])
@@ -135,23 +136,21 @@ class TTextSeq(TemporalSeq, TText):
     @property
     def interpolation(self):
         """
-        Interpolation for the temporal sequence
+        Interpolation of the temporal value, that is, ``'Stepwise'``.
         """
         return 'Stepwise'
 
 
 class TTextS(TemporalS, TText):
     """
-    Class for representing temporal floats of sequence duration.
+    Class for representing temporal strings of sequence duration.
 
-    ``TTextS`` objects can be created 
-    with a single argument of type string as in MobilityDB.
+    ``TTextS`` objects can be created with a single argument of typestring as in MobilityDB.
 
         >>> TTextS('{[AA@2019-09-01 00:00:00+01], [BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]}')
 
-    Another possibility is to give the ``instantList``, ``lower_inc``,
-    `and `upper_inc`` arguments, where the sequences in
-    ``sequenceList`` can be instances of ``str`` or ``TTextSeq``.
+    Another possibility is to give the list of composing sequences, which can be
+    instances of ``str`` or ``TTextSeq``.
 
         >>> TTextS(['[AA@2019-09-01 00:00:00+01]', '[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]'])
         >>> TTextS([TTextSeq('[AA@2019-09-01 00:00:00+01]'), TTextSeq('[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')])
@@ -169,7 +168,7 @@ class TTextS(TemporalS, TText):
     @property
     def interpolation(self):
         """
-        Interpolation for the temporal sequence set
+        Interpolation of the temporal value, that is, ``'Stepwise'``.
         """
         return 'Stepwise'
 

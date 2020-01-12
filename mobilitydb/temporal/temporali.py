@@ -6,7 +6,7 @@ from mobilitydb.temporal.temporal_parser import parse_temporali
 
 class TemporalI(TemporalInstants):
     """
-    Abstract class for temporal types of instant set duration
+    Abstract class for representing temporal values of instant set duration.
     """
 
     def __init__(self, *argv):
@@ -50,52 +50,53 @@ class TemporalI(TemporalInstants):
     @classmethod
     def duration(cls):
         """
-        Duration of the temporal value
+        Duration of the temporal value, that is, ``'InstantSet'``.
         """
         return "InstantSet"
 
     @property
     def getTime(self):
         """
-        Period set on which the temporal value is defined
+        Period set on which the temporal value is defined.
         """
         return PeriodSet([inst.period for inst in self._instantList])
 
     @property
     def timespan(self):
         """
-        Interval on which the temporal value is defined ignoring potential time gaps
+        Interval on which the temporal value is defined. It is zero for
+        temporal values of instant set duration.
         """
         return timedelta(0)
 
     @property
     def period(self):
         """
-        Period on which the temporal value is defined ignoring the potential time gaps
+        Period on which the temporal value is defined ignoring the potential time gaps.
         """
         return Period(self.startTimestamp, self.endTimestamp, True, True)
 
     def intersectsTimestamp(self, timestamp):
         """
-        Intersects timestamp?
+        Does the temporal value intersect the timestamp?
         """
         return any(inst._time == timestamp for inst in self._instantList)
 
     def intersectsTimestampset(self, timestampset):
         """
-        Intersects timestamp set?
+        Does the temporal value intersect the timestamp set?
         """
         return any(inst._time == timestamp for inst in self._instantList for timestamp in timestampset._datetimeList)
 
     def intersectsPeriod(self, period):
         """
-        Intersects period?
+        Does the temporal value intersect the period?
         """
         return any(period.contains_timestamp(inst._time) for inst in self._instantList)
 
     def intersectsPeriodset(self, periodset):
         """
-        Intersects period set?
+        Does the temporal value intersect the period set?
         """
         return any(period.contains_timestamp(inst._time) for inst in self._instantList for period in periodset._periodList)
 

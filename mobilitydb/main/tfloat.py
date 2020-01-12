@@ -46,13 +46,13 @@ class TFloatInst(TemporalInst, TFloat):
     """
     Class for representing temporal floats of instant duration.
 
-    ``TFloatInst`` objects can be created 
-    with a single argument of type string as in MobilityDB.
+    ``TFloatInst`` objects can be created with a single argument of type string
+    as in MobilityDB.
 
         >>> TFloatInst('10.0@2019-09-01')
 
     Another possibility is to give the ``value`` and the ``time`` arguments,
-    which can be instances of ``str``, ``float`` and ``datetime``.
+    which can be instances of ``str``, ``float`` or ``datetime``.
 
         >>> TFloatInst('10.0', '2019-09-08 00:00:00+01')
         >>> TFloatInst(['10.0', '2019-09-08 00:00:00+01'])
@@ -68,21 +68,21 @@ class TFloatInst(TemporalInst, TFloat):
     @property
     def getValues(self):
         """
-        Distinct values
+        List of ranges representing the values taken by the temporal value
         """
-        return floatrange(self._value, self._value, True, True)
+        return [floatrange(self._value, self._value, True, True)]
 
 
 class TFloatI(TemporalI, TFloat):
     """
     Class for representing temporal floats of instant set duration.
 
-    ``TFloatI`` objects can be created 
-    with a single argument of type string as in MobilityDB.
+    ``TFloatI`` objects can be created with a single argument of type string
+    as in MobilityDB.
 
         >>> TFloatI('10.0@2019-09-01')
 
-    Another possibility is to give a tuple or list of arguments,
+    Another possibility is to give a tuple or list of composing instants,
     which can be instances of ``str`` or ``TFloatInst``.
 
         >>> TFloatI('10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01')
@@ -100,7 +100,7 @@ class TFloatI(TemporalI, TFloat):
     @property
     def getValues(self):
         """
-        Distinct values
+        List of ranges representing the values taken by the temporal value.
         """
         values = super().getValues
         return [floatrange(value, value, True, True) for value in values]
@@ -110,20 +110,23 @@ class TFloatSeq(TemporalSeq, TFloat):
     """
     Class for representing temporal floats of sequence duration.
 
-    ``TFloatSeq`` objects can be created 
-    with a single argument of type string as in MobilityDB.
+    ``TFloatSeq`` objects can be created with a single argument of type string
+    as in MobilityDB.
 
         >>> TFloatSeq('[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')
         >>> TFloatSeq('Interp=Stepwise;[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')
 
-    Another possibility is to give the ``instantList``, ``lower_inc``,
-    ``upper_inc``, and ``interp`` arguments, where
+    Another possibility is to give the arguments as follows:
 
-    * the instants in ``instantList`` can be instances of ``str`` or ``TFloatInst``,
-    * ``lower_inc`` and ``upper_inc`` are instances of ``bool``, where by default
-    ``lower_inc`` is ``True`` and ``upper_inc`` is ``False``, and
+    * ``instantList`` is the list of composing instants, which can be instances of
+      ``str`` or ``TFloatInst``,
+    * ``lower_inc`` and ``upper_inc`` are instances of ``bool`` specifying
+      whether the bounds are inclusive or not. By default ``lower_inc``
+      is ``True`` and ``upper_inc`` is ``False``.
     * ``interp`` which is either ``'Linear'`` or ``'Stepwise'``, the former being
-    the default.
+      the default.
+
+    Some examples are shown next.
 
         >>> TFloatSeq(['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'])
         >>> TFloatSeq([TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'), TFloatInst('10.0@2019-09-03 00:00:00+01')])
@@ -141,14 +144,14 @@ class TFloatSeq(TemporalSeq, TFloat):
     @property
     def interpolation(self):
         """
-        Interpolation for the temporal sequence
+        Interpolation of the temporal value, which is either ``'Linear'`` or ``'Stepwise'``.
         """
         return self._interp
 
     @property
     def getValues(self):
         """
-        Distinct values
+        List of ranges representing the values taken by the temporal value.
         """
         min = self.minValue
         max = self.maxValue
@@ -167,18 +170,20 @@ class TFloatS(TemporalS, TFloat):
     """
     Class for representing temporal floats of sequence duration.
 
-    ``TFloatS`` objects can be created 
-    with a single argument of type string as in MobilityDB.
+    ``TFloatS`` objects can be created with a single argument of type string
+    as in MobilityDB.
 
         >>> TFloatS('{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}')
         >>> TFloatS('Interp=Stepwise;{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}')
 
-    Another possibility is to give the ``instantList``, ``lower_inc``,
-    ``upper_inc``, and ``interp`` arguments, where
+    Another possibility is to give the arguments as follows:
 
-    * the sequences in ``sequenceList`` can be instances of ``str`` or ``TFloatSeq``,
-    * ``interp`` can be ``Linear`` or ``Stepwise``, the former being
-    the default.
+    * ``sequenceList`` is a list of composing sequences, which can be
+      instances of ``str`` or ``TFloatSeq``,
+    * ``interp`` can be ``'Linear'`` or ``'Stepwise'``, the former being
+      the default.
+
+    Some examples are shown next.
 
         >>> TFloatS(['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'])
         >>> TFloatS(['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Linear')
@@ -198,14 +203,14 @@ class TFloatS(TemporalS, TFloat):
     @property
     def interpolation(self):
         """
-        Interpolation for the temporal sequence set
+        Interpolation of the temporal value, which is either ``'Linear'`` or ``'Stepwise'``.
         """
         return self._interp
 
     @property
     def getValues(self):
         """
-        Distinct values
+        List of ranges representing the values taken by the temporal value
         """
         ranges = sorted([seq.valueRange for seq in self._sequenceList])
         # Normalize list of ranges

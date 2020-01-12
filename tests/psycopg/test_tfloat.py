@@ -26,7 +26,7 @@ def test_tfloatinst_constructors(cursor, expected_tfloatinst):
 def test_tfloatinst_accessors(cursor, expected_tfloatinst):
     assert TFloatInst(expected_tfloatinst).duration() == 'Instant'
     assert TFloatInst(expected_tfloatinst).getValue == 10.0
-    assert TFloatInst(expected_tfloatinst).getValues == floatrange(10.0, 10.0, upper_inc=True)
+    assert TFloatInst(expected_tfloatinst).getValues == [floatrange(10.0, 10.0, upper_inc=True)]
     assert TFloatInst(expected_tfloatinst).startValue == 10.0
     assert TFloatInst(expected_tfloatinst).endValue == 10.0
     assert TFloatInst(expected_tfloatinst).minValue == 10.0

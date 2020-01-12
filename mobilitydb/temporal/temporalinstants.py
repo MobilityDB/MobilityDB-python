@@ -3,69 +3,70 @@ from .temporal import Temporal
 
 class TemporalInstants(Temporal):
     """
-    Abstract class for temporal types of instant set or sequence duration
+    Abstract class for representing temporal values of instant set or
+    sequence duration.
     """
     __slots__ = ['_instantList']
 
     @property
     def getValues(self):
         """
-        Distinct values
+        List of distinct values taken by the temporal value.
         """
         return list(dict.fromkeys([inst._value for inst in self._instantList]))
 
     @property
     def startValue(self):
         """
-        Start value
+        Start value.
         """
         return self._instantList[0]._value
 
     @property
     def endValue(self):
         """
-        End value
+        End value.
         """
         return self._instantList[-1]._value
 
     @property
     def minValue(self):
         """
-        Minimum value
+        Minimum value.
         """
         return min(inst._value for inst in self._instantList)
 
     @property
     def maxValue(self):
         """
-        Maximum value
+        Maximum value.
         """
         return max(inst._value for inst in self._instantList)
 
     @property
     def numInstants(self):
         """
-        Number of distinct instants
+        Number of instants.
         """
         return len(self._instantList)
 
     @property
     def startInstant(self):
         """
-        Start instant
+        Start instant.
         """
         return self._instantList[0]
 
     @property
     def endInstant(self):
         """
-        End instant
+        End instant.
         """
         return self._instantList[-1]
 
     def instantN(self, n):
         """
-        N-th distinct instant
+        N-th instant.
         """
         # 1-based
         if 1 <= n <= len(self._instantList):
@@ -76,34 +77,34 @@ class TemporalInstants(Temporal):
     @property
     def instants(self):
         """
-        Instants
+        List of instants.
         """
         return self._instantList
 
     @property
     def numTimestamps(self):
         """
-        Number of distinct timestamps
+        Number of timestamps.
         """
         return len(self._instantList)
 
     @property
     def startTimestamp(self):
         """
-        Start timestamp
+        Start timestamp.
         """
         return self._instantList[0]._time
 
     @property
     def endTimestamp(self):
         """
-        End timestamp
+        End timestamp.
         """
         return self._instantList[-1]._time
 
     def timestampN(self, n):
         """
-        N-th timestamp
+        N-th timestamp.
         """
         # 1-based
         if 1 <= n <= len(self._instantList):
@@ -114,13 +115,13 @@ class TemporalInstants(Temporal):
     @property
     def timestamps(self):
         """
-        Timestamps
+        List of timestamps.
         """
         return [instant._time for instant in self._instantList]
 
     def shift(self, timedelta):
         """
-        Shift the temporal value by a time interval
+        Shift the temporal value by a time interval.
         """
         for inst in self._instantList:
             inst._time += timedelta

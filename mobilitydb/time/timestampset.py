@@ -12,8 +12,24 @@ except ImportError:
 
 class TimestampSet:
     """
-    Set of disjoint timestamp values
+    Class for representing lists of distinct timestamp values.
+
+    ``TimestampSet`` objects can be created with a single argument of type string
+    as in MobilityDB.
+
+        >>> TimestampSet('{2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01, 2019-09-11 00:00:00+01}')
+
+    Another possibility is to give a tuple or list of composing timestamps,
+    which can be instances of ``str`` or ``datetime``. The composing timestamps
+    must be given in increasing order.
+
+        >>> TimestampSet(['2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', '2019-09-11 00:00:00+01'])
+        >>> TimestampSet([parse('2019-09-08 00:00:00+01'), parse('2019-09-10 00:00:00+01'), parse('2019-09-11 00:00:00+01')])
+        >>> TimestampSet('2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', '2019-09-11 00:00:00+01')
+        >>> TimestampSet(parse('2019-09-08 00:00:00+01'), parse('2019-09-10 00:00:00+01'), parse('2019-09-11 00:00:00+01'))
+
     """
+
     __slots__ = ['_datetimeList']
 
     def __init__(self, *argv):
@@ -69,7 +85,7 @@ class TimestampSet:
     @property
     def numTimestamps(self):
         """
-        Number of distinct timestamps
+        Number of timestamps
         """
         return len(self._datetimeList)
 
@@ -89,7 +105,7 @@ class TimestampSet:
 
     def timestampN(self, n):
         """
-        N-th distinct timestamp
+        N-th timestamp
         """
         # 1-based
         if 0 < n <= len(self._datetimeList):

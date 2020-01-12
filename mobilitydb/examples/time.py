@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from dateutil.parser import parse
 from mobilitydb.time import TimestampSet, Period, PeriodSet
 
 print("\n# Period")
@@ -67,8 +68,6 @@ print("Constructor list of datetimes:", var)
 # var = TimestampSet(t1, t2, t3, t4)
 
 # Accessor functions
-var1 = var.timespan
-print("Timespan:", var1)
 var1 = var.period
 print("period:", var1)
 var1 = var.numTimestamps
@@ -178,8 +177,4 @@ print("representantion:", repr(p1))
 print("representantion:", repr(ts1))
 print("representantion:", repr(ps1))
 
-var = PeriodSet('{[2000-01-01, 2000-01-02], [2000-01-03, 2000-01-04]}')
-print(var.timespan)
 
-# var = TFloat('{[1@2000-01-01, 1@2000-01-02], [1@2000-01-03, 1@2000-01-04]}')
-# print(var)
