@@ -27,6 +27,7 @@ class Period:
       whether the bounds are inclusive or not. By default, ``lower_inc``
       is ``True`` and ``upper_inc`` is ``False``.
 
+    Some examples are given next.
 
         >>> Period('2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01')
         >>> Period('2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', False, True)

@@ -5,4 +5,3 @@ mobilitydb.main
     :show-inheritance:
     :members:
 
-

@@ -119,6 +119,8 @@ class TTextSeq(TemporalSeq, TText):
       whether the bounds are inclusive or not. By default ``lower_inc``
       is ``True`` and ``upper_inc`` is ``False``.
 
+    Some examples are given next.
+
         >>> TTextSeq(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
         >>> TTextSeq(TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')])
         >>> TTextSeq(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'], True, True)
