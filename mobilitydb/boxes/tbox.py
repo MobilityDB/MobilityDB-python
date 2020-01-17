@@ -107,7 +107,7 @@ class TBox:
     @staticmethod
     def write(value):
         if not isinstance(value, TBox):
-            raise ValueError('Value must be instance of TBox class')
+            raise ValueError('Value must be an instance of TBox class')
         return value.__str__().strip("'")
 
     # Psycopg2 interface.

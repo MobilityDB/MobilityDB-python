@@ -31,7 +31,8 @@ class TPointInst(TemporalInst):
                     srid = srid_str
                     value = re.sub(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', '', value)
                 else:
-                    srid = 0
+                    if srid is None:
+                        srid = 0
                 #Parse without the eventual "srid=xxx;" prefix
                 couple = parse_temporalinst(value, 0)
                 value = couple[2][0]
@@ -105,7 +106,7 @@ class TPointI(TemporalI):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in argv[0]):
                 for arg in argv[0]:
-                    self._instantList.append(TemporalI.ComponentClass(arg))
+                    self._instantList.append(TemporalI.ComponentClass(arg, srid=srid))
             # List of instant values
             elif all(isinstance(arg, TemporalI.ComponentClass) for arg in argv[0]):
                 for arg in argv[0]:
@@ -117,7 +118,7 @@ class TPointI(TemporalI):
             # Arguments are of type string
             if all(isinstance(arg, str) for arg in argv):
                 for arg in argv:
-                    self._instantList.append(TemporalI.ComponentClass(arg))
+                    self._instantList.append(TemporalI.ComponentClass(arg, srid=srid))
             # Arguments are of type instant
             elif all(isinstance(arg, TemporalI.ComponentClass) for arg in argv):
                 for arg in argv:
@@ -187,7 +188,7 @@ class TPointSeq(TemporalSeq):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in instantList):
                 for arg in instantList:
-                    self._instantList.append(TemporalSeq.ComponentClass(arg))
+                    self._instantList.append(TemporalSeq.ComponentClass(arg, srid=srid))
             # List of instant values
             elif all(isinstance(arg, TemporalSeq.ComponentClass) for arg in instantList):
                 for arg in instantList:

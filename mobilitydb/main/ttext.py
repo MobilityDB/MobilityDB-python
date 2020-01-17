@@ -27,7 +27,7 @@ class TText(Temporal):
     @staticmethod
     def write(value):
         if not isinstance(value, TText):
-            raise ValueError('TText value must subclass TText class')
+            raise ValueError('Value must be an instance of a subclass of TText')
         return value.__str__().strip("'")
 
 

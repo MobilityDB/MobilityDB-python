@@ -8,8 +8,7 @@ Welcome to python-mobilitydb's documentation!
     :maxdepth: 2
     :caption: Contents:
 
-    time
-    temporal
-    boxes
-    main
+    installation
+    usage
+    reference
 

@@ -25,13 +25,13 @@ class TInt(Temporal):
     @staticmethod
     def write(value):
         if not isinstance(value, TInt):
-            raise ValueError('TInt value must subclass TInt class')
+            raise ValueError('Value must be an instance of a subclass of TInt')
         return value.__str__().strip("'")
 
     @property
     def valueRange(self):
         """
-        Minimun and maximum values represented as an integer range
+        Range of values taken by the temporal value as defined by its minimum and maximum value
         """
         return intrange(self.minValue, self.maxValue, True, True)
 

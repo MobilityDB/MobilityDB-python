@@ -10,7 +10,7 @@ class TFloat(Temporal):
     @property
     def valueRange(self):
         """
-        Distinct values
+        Range of values taken by the temporal value as defined by its minimum and maximum value
         """
         return floatrange(self.minValue, self.maxValue, True, True)
 
@@ -38,7 +38,7 @@ class TFloat(Temporal):
     @staticmethod
     def write(value):
         if not isinstance(value, TFloat):
-            raise ValueError('TFloat value must subclass TFloat class')
+            raise ValueError('Value must be an instance of a subclass of TFloat')
         return value.__str__().strip("'")
 
 

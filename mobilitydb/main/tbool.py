@@ -28,7 +28,7 @@ class TBool(Temporal):
     @staticmethod
     def write(value):
         if not isinstance(value, TBool):
-            raise ValueError('TBool value must subclass TBool class')
+            raise ValueError('Value must be an instance of a subclass of TBool')
         return value.__str__().strip("'")
 
 
