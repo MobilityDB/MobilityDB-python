@@ -3,8 +3,8 @@ Basic usage
 
 ``python-mobilitydb`` is a Python converter to and from the temporal types provided by `MobilityDB <https://docs.mobilitydb.com/nightly/>`_, that is ``tbool``, ``tint``, ``tfloat``, ``ttext``, ``tgeompoint``,  and ``tgeogpoint``.
 
-``TBool``, ``TInt``, ``TText``,
----------------------------------
+``TBool``, ``TInt``, and ``TText``
+----------------------------------
 
 Classes :class:`TBool <mobilitydb.main.TBool>`, :class:`TInt <mobilitydb.main.TInt>`, and :class:`TText <mobilitydb.main.TInt>` represent, respectively, temporal Booleans, temporal integers, and temporal strings. These classes have in common that their base type is discrete. As a consequence of this, their interpolation for the sequence and sequence set duration is stepwise. We illustrate next how to create new instances of the ``TInt`` class, the creation of instances of the ``TBool`` and ``TText`` classes is similar.
 
