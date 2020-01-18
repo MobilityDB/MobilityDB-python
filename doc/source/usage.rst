@@ -6,7 +6,7 @@ Basic usage
 ``TBool``, ``TInt``, and ``TText``
 ----------------------------------
 
-Classes :class:`TBool <mobilitydb.main.TBool>`, :class:`TInt <mobilitydb.main.TInt>`, and :class:`TText <mobilitydb.main.TInt>` represent, respectively, temporal Booleans, temporal integers, and temporal strings. These classes have in common that their base type is discrete. As a consequence of this, their interpolation for the sequence and sequence set duration is stepwise. We illustrate next how to create new instances of the ``TInt`` class, the creation of instances of the ``TBool`` and ``TText`` classes is similar.
+Classes :class:`TBool <mobilitydb.main.TBool>`, :class:`TInt <mobilitydb.main.TInt>`, and :class:`TText <mobilitydb.main.TInt>` represent, respectively, temporal Booleans, temporal integers, and temporal strings. These classes have in common that their base type is discrete. As a consequence of this, the interpolation for the instances of sequence or sequence set duration is stepwise. We illustrate next how to create new instances of the ``TInt`` class, the creation of instances of the ``TBool`` and ``TText`` classes is similar.
 
 New :class:`TInt <mobilitydb.main.TInt>` instances can be created by using one of its subclasses :class:`TIntInst <mobilitydb.main.TIntInst>`, :class:`TIntI <mobilitydb.main.TIntI>`, :class:`TIntSeq <mobilitydb.main.TIntI>`, or :class:`TIntS <mobilitydb.main.TIntS>`.
 
@@ -51,7 +51,9 @@ Finally, new :class:`TIntS <mobilitydb.main.TIntS>` instances can be created eit
 ``TFloat``
 ----------
 
-Class :class:`TFloat <mobilitydb.main.TFloat>` represents temporal floats. New :class:`TFloat <mobilitydb.main.TFloat>` instances can be created by using one of its subclasses :class:`TFloatInst <mobilitydb.main.TFloatInst>`, :class:`TFloatI <mobilitydb.main.TFloatI>`, :class:`TFloatSeq <mobilitydb.main.TFloatI>`, or :class:`TFloatS <mobilitydb.main.TFloatS>`.
+Class :class:`TFloat <mobilitydb.main.TFloat>` represents temporal floats. Since the base type of ``TFloat`` is continuous, the interpolation for instances of the sequence or sequence set duration may be either linear or stepwise, the former being the default.
+
+New :class:`TFloat <mobilitydb.main.TFloat>` instances can be created by using one of its subclasses :class:`TFloatInst <mobilitydb.main.TFloatInst>`, :class:`TFloatI <mobilitydb.main.TFloatI>`, :class:`TFloatSeq <mobilitydb.main.TFloatI>`, or :class:`TFloatS <mobilitydb.main.TFloatS>`.
 
 New :class:`TFloatInst <mobilitydb.main.TFloatInst>` instances can be created either with a single string argument as in MobilityDB or with two arguments: the value and the timestamp.
 
@@ -93,7 +95,7 @@ Finally, new :class:`TFloatS <mobilitydb.main.TFloatS>` instances can be created
 ``TGeomPoint`` and ``TGeogPoint``
 ---------------------------------
 
-Class :class:`TGeomPoint <mobilitydb.main.TGeomPoint>` represents temporal geometric points with Cartesian (planar) coordinates while :class:`TGeogPoint <mobilitydb.main.TGeogPoint>` represents geographic points with geodetic (spherical) coordinates. We illustrate next how to create instances of the ``TGeomPoint`` class, the creation of instances of the ``TGeogPoint`` class is similar.
+Class :class:`TGeomPoint <mobilitydb.main.TGeomPoint>` represents temporal geometric points with Cartesian (planar) coordinates while :class:`TGeogPoint <mobilitydb.main.TGeogPoint>` represents geographic points with geodetic (spherical) coordinates. Since the base type of these classes is continuous, the interpolation for the instances of sequence or sequence set duration may be either linear or stepwise, the former being the default. We illustrate next how to create instances of the ``TGeomPoint`` class, the creation of instances of the ``TGeogPoint`` class is similar.
 
 
 New :class:`TGeomPoint <mobilitydb.main.TGeomPoint>` instances can be created by using one of its subclasses :class:`TGeomPointInst <mobilitydb.main.TGeomPointInst>`, :class:`TGeomPointI <mobilitydb.main.TGeomPointI>`, :class:`TGeomPointSeq <mobilitydb.main.TGeomPointI>`, or :class:`TGeomPointS <mobilitydb.main.TGeomPointS>`.
