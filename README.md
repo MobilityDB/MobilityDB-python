@@ -90,6 +90,16 @@ Using the asyncg adapter for PostgreSQL
     loop = asyncio.get_event_loop()
     loop.run_until_complete(run())
 
+
+Manual
+------
+
+HTML: https://docs.mobilitydb.com/python-mobilitydb/master/
+
+PDF: https://docs.mobilitydb.com/python-mobilitydb/master/python-mobilitydb.pdf
+
+EPUB: https://docs.mobilitydb.com/python-mobilitydb/master/python-mobilitydb.epub
+
 Contributing
 ------------
 
