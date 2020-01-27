@@ -138,7 +138,7 @@ class STBox:
     @staticmethod
     def write(value):
         if not isinstance(value, STBox):
-            raise ValueError('Value must be instance of STBox class')
+            raise ValueError('Value must be an instance of STBox class')
         return value.__str__().strip("'")
 
     # Psycopg2 interface.

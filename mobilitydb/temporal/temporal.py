@@ -37,7 +37,7 @@ class Temporal:
     def duration(cls):
         """
         Duration of the temporal value, that is, one of ``'Instant'``,
-        ``'InstantSet'``, ``'Period'``, or ``'PeriodSet'``.
+        ``'InstantSet'``, ``'Sequence'``, or ``'SequenceSet'``.
         """
         pass
 
