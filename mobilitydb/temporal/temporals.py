@@ -273,24 +273,11 @@ class TemporalS(Temporal):
         """
         return any(seq.intersectsTimestamp(timestamp) for seq in self._sequenceList)
 
-    def intersectsTimestampset(self, timestampset):
-        """
-        Does the temporal value intersect the timestamp set?
-        """
-        return any(seq.intersectsTimestamp(timestamp) for seq in self._sequenceList for timestamp in
-                   timestampset._datetimeList)
-
     def intersectsPeriod(self, period):
         """
         Does the temporal value intersect the period?
         """
         return any(seq.intersectsPeriod(period) for seq in self._sequenceList)
-
-    def intersectsPeriodset(self, periodset):
-        """
-        Does the temporal value intersect the period set?
-        """
-        return any(seq.intersectsPeriod(period) for seq in self._sequenceList for period in periodset._periodList)
 
     # Comparisons are missing
     def __eq__(self, other):
