@@ -2,6 +2,8 @@ import re
 from .period import Period
 import warnings
 
+from pymeos.time import Period as MEOSPeriod
+
 try:
     # Do not make psycopg2 a requirement.
     from psycopg2.extensions import ISQLQuote
@@ -50,7 +52,7 @@ class PeriodSet:
                 for arg in argv[0]:
                     self._periodList.append(Period(arg))
             # List of periods
-            elif all(isinstance(arg, Period) for arg in argv[0]):
+            elif all(isinstance(arg, MEOSPeriod) for arg in argv[0]):
                 for arg in argv[0]:
                     self._periodList.append(arg)
             else:
@@ -62,7 +64,7 @@ class PeriodSet:
                 for arg in argv:
                     self._periodList.append(Period(arg))
             # Arguments are of type period
-            elif all(isinstance(arg, Period) for arg in argv):
+            elif all(isinstance(arg, MEOSPeriod) for arg in argv):
                 for arg in argv:
                     self._periodList.append(arg)
             else:

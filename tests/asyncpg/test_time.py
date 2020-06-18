@@ -45,6 +45,9 @@ async def test_period_constructor(connection, expected_period):
     else:
         assert result == Period(expected_period)
 
+# for test_period_constructor_bad_arguments check psycopg2 tests
+# they would be redudant here as they fail even before we reach postgres driver
+
 @pytest.mark.parametrize('expected_periodset', [
     '{[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]}',
     '{[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01], [2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]}',
