@@ -33,6 +33,10 @@ from mobilitydb import STBox
     # Only time dimension for geodetic box
     'GEODSTBOX T((, 2001-01-03 00:00:00+01), (, 2001-01-03 00:00:00+01))',
     {'bounds': ('2001-01-01 00:00:00+01', '2001-01-02 00:00:00+01'), 'geodetic': True},
+    # With SRID
+    'SRID=5676;STBOX T((1.0, 2.0, 2001-01-04 00:00:00+01), (1.0, 2.0, 2001-01-04 00:00:00+01))',
+    'SRID=4326;GEODSTBOX((1.0, 2.0, 3.0), (1.0, 2.0, 3.0))',
+    {'bounds': (1.0, 2.0, 3.0, '2001-01-01 00:00:00+01', 4.0, 5.0, 6.0, '2001-01-02 00:00:00+01'), 'geodetic': True, 'srid': 4326},
 ])
 def test_stbox_constructor(cursor, expected_stbox):
     if isinstance(expected_stbox, dict):
