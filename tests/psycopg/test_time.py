@@ -98,12 +98,9 @@ def test_period_accessors(cursor, expected_period):
 @pytest.mark.parametrize('expected_periodset', [
     '{[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]}',
     '{[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01], [2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]}',
-    ['[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]', '[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]'],
-    [Period('[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]'),
-     Period('[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]')],
-    ('[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]', '[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]'),
-    (Period('[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]'),
-     Period('[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]')),
+    {'[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]', '[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]'},
+    {Period('[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]'),
+     Period('[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]')},
 ])
 def test_periodset_constructor(cursor, expected_periodset):
     if isinstance(expected_periodset, tuple):
@@ -127,15 +124,15 @@ def test_PeriodSet_accessors(cursor, expected_periodset):
     assert PeriodSet(expected_periodset).numTimestamps == 3
     assert PeriodSet(expected_periodset).startTimestamp == parse('2019-09-01 00:00:00+01')
     assert PeriodSet(expected_periodset).endTimestamp == parse('2019-09-03 00:00:00+01')
-    assert PeriodSet(expected_periodset).timestampN(2) == parse('2019-09-02 00:00:00+01')
+    assert PeriodSet(expected_periodset).timestampN(1) == parse('2019-09-02 00:00:00+01')
     assert PeriodSet(expected_periodset).timestamps == \
-           [parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'), parse('2019-09-03 00:00:00+01')]
+           {parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'), parse('2019-09-03 00:00:00+01')}
     assert PeriodSet(expected_periodset).numPeriods == 2
     assert PeriodSet(expected_periodset).startPeriod == Period('[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]')
     assert PeriodSet(expected_periodset).endPeriod == Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')
-    assert PeriodSet(expected_periodset).periodN(2) == Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')
-    assert PeriodSet(expected_periodset).periods == [Period('[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]'),
-                                                       Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')]
+    assert PeriodSet(expected_periodset).periodN(1) == Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')
+    assert PeriodSet(expected_periodset).periods == {Period('[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]'),
+                                                       Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')}
     assert PeriodSet(expected_periodset).shift(timedelta(days=1)) == \
            PeriodSet('{[2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01],  '
                      '[2019-09-03 00:00:00+01, 2019-09-04 00:00:00+01]}')

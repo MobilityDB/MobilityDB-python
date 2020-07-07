@@ -92,7 +92,7 @@ class TemporalSeq(TemporalInstants):
         """
         Period set on which the temporal value is defined.
         """
-        return PeriodSet([self.period])
+        return PeriodSet({self.period})
 
     @property
     def timespan(self):
@@ -170,7 +170,7 @@ class TemporalSeq(TemporalInstants):
         """
         Does the temporal value intersect the period set?
         """
-        return any(self.intersectsPeriod(period) for period in periodset._periodList)
+        return any(self.intersectsPeriod(period) for period in periodset.periods)
 
     # Comparisons are missing
     def __eq__(self, other):

@@ -91,24 +91,17 @@ print("\n# PeriodSet")
 var = PeriodSet('{[2019-09-08, 2019-09-10], [2019-09-11, 2019-09-12), \
     [2019-09-13,2019-09-13], (2019-09-14, 2019-09-15]}')
 print("Constructor string: ", var)
-# Constructor with multiple arguments of type string
-var = PeriodSet('[2019-09-08, 2019-09-10]', '[2019-09-11, 2019-09-12)', \
-                '[2019-09-13,2019-09-13]', '(2019-09-14, 2019-09-15)')
-print("Constructor strings:", var)
-# Constructor with multiple arguments of type period
+# Constructor with a single argument of type list of periods
 p1 = Period('[2019-09-08, 2019-09-10]')
 p2 = Period('[2019-09-11, 2019-09-12)')
 p3 = Period('[2019-09-13,2019-09-13]')
 p4 = Period('(2019-09-14, 2019-09-15)')
-var = PeriodSet(p1, p2, p3, p4)
-print("Constructor periods:", var)
-# Constructor with a single argument of type list of strings
-var = PeriodSet(['[2019-09-08, 2019-09-10]', '[2019-09-11, 2019-09-12)', \
-                 '[2019-09-13,2019-09-13]', '(2019-09-14, 2019-09-15)'])
-print("Constructor list of strings:", var)
-# Constructor with a single argument of type list of periods
-var = PeriodSet([p1, p2, p3, p4])
+var = PeriodSet({p1, p2, p3, p4})
 print("Constructor list of periods:", var)
+# Constructor with a single argument of type list of strings
+var = PeriodSet({'[2019-09-08, 2019-09-10]', '[2019-09-11, 2019-09-12)', \
+                 '[2019-09-13, 2019-09-13]', '(2019-09-14, 2019-09-15)'})
+print("Constructor list of strings:", var)
 
 # Error
 # t4 = datetime.strptime('2019-09-11', '%Y-%m-%d')
