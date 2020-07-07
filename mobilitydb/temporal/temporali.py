@@ -86,7 +86,7 @@ class TemporalI(TemporalInstants):
         """
         Does the temporal value intersect the timestamp set?
         """
-        return any(inst._time == timestamp for inst in self._instantList for timestamp in timestampset._datetimeList)
+        return any(inst._time == timestamp for inst in self._instantList for timestamp in timestampset.timestamps)
 
     def intersectsPeriod(self, period):
         """

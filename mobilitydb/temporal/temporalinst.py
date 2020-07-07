@@ -199,7 +199,7 @@ class TemporalInst(Temporal):
         """
         Does the temporal value intersect the timestamp set?
         """
-        return any(self._time == timestamp for timestamp in timestampset._datetimeList)
+        return any(self._time == timestamp for timestamp in timestampset.timestamps)
 
     def intersectsPeriod(self, period):
         """

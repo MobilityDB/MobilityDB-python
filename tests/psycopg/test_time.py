@@ -6,10 +6,8 @@ from mobilitydb import TimestampSet, Period, PeriodSet
 
 @pytest.mark.parametrize('expected_timestampset', [
     '{2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01, 2019-09-11 00:00:00+01}',
-    ['2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', '2019-09-11 00:00:00+01'],
-    [parse('2019-09-08 00:00:00+01'), parse('2019-09-10 00:00:00+01'), parse('2019-09-11 00:00:00+01')],
-    ('2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', '2019-09-11 00:00:00+01'),
-    (parse('2019-09-08 00:00:00+01'), parse('2019-09-10 00:00:00+01'), parse('2019-09-11 00:00:00+01')),
+    {'2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', '2019-09-11 00:00:00+01'},
+    {parse('2019-09-08 00:00:00+01'), parse('2019-09-10 00:00:00+01'), parse('2019-09-11 00:00:00+01')},
 ])
 def test_timestampset_constructor(cursor, expected_timestampset):
     if isinstance(expected_timestampset, tuple):
@@ -32,9 +30,9 @@ def test_TimestampSet_accessors(cursor, expected_timestampset):
     assert TimestampSet(expected_timestampset).numTimestamps == 3
     assert TimestampSet(expected_timestampset).startTimestamp == parse('2019-09-01 00:00:00+01')
     assert TimestampSet(expected_timestampset).endTimestamp == parse('2019-09-03 00:00:00+01')
-    assert TimestampSet(expected_timestampset).timestampN(2) == parse('2019-09-02 00:00:00+01')
+    assert TimestampSet(expected_timestampset).timestampN(1) == parse('2019-09-02 00:00:00+01')
     assert TimestampSet(expected_timestampset).timestamps == \
-           [parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'), parse('2019-09-03 00:00:00+01')]
+           {parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'), parse('2019-09-03 00:00:00+01')}
     assert TimestampSet(expected_timestampset).shift(timedelta(days=1)) == \
            TimestampSet('{2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01, 2019-09-04 00:00:00+01}')
 

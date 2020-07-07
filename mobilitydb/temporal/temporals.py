@@ -278,7 +278,7 @@ class TemporalS(Temporal):
         Does the temporal value intersect the timestamp set?
         """
         return any(seq.intersectsTimestamp(timestamp) for seq in self._sequenceList for timestamp in
-                   timestampset._datetimeList)
+                   timestampset.timestamps)
 
     def intersectsPeriod(self, period):
         """
