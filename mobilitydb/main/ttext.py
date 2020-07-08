@@ -3,6 +3,8 @@ from dateutil.parser import parse
 from mobilitydb.temporal.temporal_parser import parse_temporalinst
 from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
 
+from pymeos.temporal import TInstantText, TInstantSetText, TSequenceText, TSequenceSetText
+
 
 class TText(Temporal):
     """
@@ -28,10 +30,10 @@ class TText(Temporal):
     def write(value):
         if not isinstance(value, TText):
             raise ValueError('Value must be an instance of a subclass of TText')
-        return value.__str__().strip("'")
+        return value.__str__()
 
 
-class TTextInst(TemporalInst, TText):
+class TTextInst(TInstantText, TText):
     """
     Class for representing temporal strings of instant duration.
 
@@ -50,34 +52,12 @@ class TTextInst(TemporalInst, TText):
 
     """
 
-    """It is not possible to call super().__init__(value, time) since it is necessary
-    to strip the eventual double quotes enclosing the value
-    """
-
-    def __init__(self, value, time=None):
-        TemporalInst.BaseClass = str
-        if(time is None):
-            # Constructor with a single argument of type string
-            if (isinstance(value, str)):
-                couple = parse_temporalinst(value, 0)
-                value = couple[2][0]
-                time = couple[2][1]
-            # Constructor with a single argument of type tuple or list
-            elif (isinstance(value, (tuple, list))):
-                value, time = value
-            else:
-                raise Exception("ERROR: Could not parse temporal instant value")
-        # Now both value and time are not None
-        assert(isinstance(value, str)), "ERROR: Invalid value argument"
-        assert(isinstance(time, (str, datetime))), "ERROR: Invalid time argument"
-        # Remove double quotes if present
-        if value[0] == '"' and value[-1] == '"':
-            value = value[1:-1]
-        self.getValue = value
-        self.getTimestamp = parse(time) if isinstance(time, str) else time
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.getValue!r}, {self.getTimestamp!r})')
 
 
-class TTextI(TemporalI, TText):
+class TTextI(TInstantSetText, TText):
     """
     Class for representing temporal strings of instant set duration.
 
@@ -86,13 +66,11 @@ class TTextI(TemporalI, TText):
 
         >>> TTextI('AA@2019-09-01')
 
-    Another possibility is to give a tuple or list of composing instants,
+    Another possibility is to give a set of composing instants,
     which can be instances of ``str`` or ``TTextInst``.
 
-        >>> TTextI('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01')
-        >>> TTextI(TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01'))
-        >>> TTextI(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
-        >>> TTextI([TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')])
+        >>> TTextI({'AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'})
+        >>> TTextI({TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')})
 
     """
 
@@ -101,8 +79,12 @@ class TTextI(TemporalI, TText):
         TemporalI.ComponentClass = TTextInst
         super().__init__(*argv)
 
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.instants!r})')
 
-class TTextSeq(TemporalSeq, TText):
+
+class TTextSeq(TSequenceText, TText):
     """
     Class for representing temporal strings of sequence duration.
 
@@ -113,7 +95,7 @@ class TTextSeq(TemporalSeq, TText):
 
     Another possibility is to give the arguments as follows:
 
-    * ``instantList`` is the list of composing instants, which can be instances of
+    * ``instants`` is the set of composing instants, which can be instances of
       ``str`` or ``TTextInst``,
     * ``lower_inc`` and ``upper_inc`` are instances of ``bool`` specifying
       whether the bounds are inclusive or not. By default ``lower_inc``
@@ -121,18 +103,22 @@ class TTextSeq(TemporalSeq, TText):
 
     Some examples are given next.
 
-        >>> TTextSeq(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
-        >>> TTextSeq(TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')])
-        >>> TTextSeq(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'], True, True)
-        >>> TTextSeq([TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')], True, True)
+        >>> TTextSeq({'AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'})
+        >>> TTextSeq({TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')})
+        >>> TTextSeq({'AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'}, True, True)
+        >>> TTextSeq({TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')}, True, True)
 
     """
 
-    def __init__(self, instantList, lower_inc=None, upper_inc=None):
+    def __init__(self, instants, lower_inc=None, upper_inc=None):
+        # TODO interp
         TemporalSeq.BaseClass = str
         TemporalS.BaseClassDiscrete = True
         TemporalSeq.ComponentClass = TTextInst
-        super().__init__(instantList, lower_inc, upper_inc)
+        if isinstance(instants, str):
+            super().__init__(instants)
+        else:
+            super().__init__(instants, lower_inc, upper_inc)
 
     @classmethod
     @property
@@ -142,8 +128,12 @@ class TTextSeq(TemporalSeq, TText):
         """
         return 'Stepwise'
 
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r})')
 
-class TTextS(TemporalS, TText):
+
+class TTextS(TSequenceSetText, TText):
     """
     Class for representing temporal strings of sequence duration.
 
@@ -154,17 +144,16 @@ class TTextS(TemporalS, TText):
     Another possibility is to give the list of composing sequences, which can be
     instances of ``str`` or ``TTextSeq``.
 
-        >>> TTextS(['[AA@2019-09-01 00:00:00+01]', '[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]'])
-        >>> TTextS([TTextSeq('[AA@2019-09-01 00:00:00+01]'), TTextSeq('[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')])
-        >>> TTextS([TTextSeq('[AA@2019-09-01 00:00:00+01]'), TTextSeq('[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')])
+        >>> TTextS({'[AA@2019-09-01 00:00:00+01]', '[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]'})
+        >>> TTextS({TTextSeq('[AA@2019-09-01 00:00:00+01]'), TTextSeq('[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')})
 
     """
 
-    def __init__(self, sequenceList):
+    def __init__(self, sequences):
         TemporalS.BaseClass = str
         TemporalS.BaseClassDiscrete = True
         TemporalS.ComponentClass = TTextSeq
-        super().__init__(sequenceList)
+        super().__init__(sequences)
 
     @classmethod
     @property
