@@ -4,6 +4,8 @@ from dateutil.parser import parse
 from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
 from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
+from pymeos.temporal import TInstantBool, TInstantSetBool, TSequenceBool, TSequenceSetBool
+
 
 class TBool(Temporal):
     """
@@ -29,10 +31,10 @@ class TBool(Temporal):
     def write(value):
         if not isinstance(value, TBool):
             raise ValueError('Value must be an instance of a subclass of TBool')
-        return value.__str__().strip("'")
+        return value.__str__()
 
 
-class TBoolInst(TemporalInst, TBool):
+class TBoolInst(TInstantBool, TBool):
     """
     Class for representing temporal Booleans of instant duration.
 
@@ -51,39 +53,12 @@ class TBoolInst(TemporalInst, TBool):
 
     """
 
-    """
-    It is not possible to call super().__init__(value, time) since bool('False') == True
-    and eval('False') == False. Furthermore eval('false') gives an error
-    """
-    def __init__(self, value, time=None):
-        TemporalInst.BaseClass = bool
-        if time is None:
-            # Constructor with a single argument of type string
-            if isinstance(value, str):
-                couple = parse_temporalinst(value, 0)
-                value = couple[2][0]
-                time = couple[2][1]
-            # Constructor with a single argument of type tuple or list
-            elif isinstance(value, (tuple, list)):
-                value, time = value
-            else:
-                raise Exception("ERROR: Could not parse temporal instant value")
-        # Now both value and time are not None
-        assert(isinstance(value, (str, bool))), "ERROR: Invalid value argument"
-        assert(isinstance(time, (str, datetime))), "ERROR: Invalid time argument"
-        if isinstance(value, str):
-            if value.lower() == 'true' or value.lower() == 't':
-                self.getValue = True
-            elif value.lower() == 'false' or value.lower() == 'f':
-                self.getValue = False
-            else:
-                raise Exception("ERROR: Could not parse temporal instant value")
-        else:
-            self.getValue =  value
-        self.getTimestamp = parse(time) if isinstance(time, str) else time
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.getValue!r}, {self.getTimestamp!r})')
 
 
-class TBoolI(TemporalI, TBool):
+class TBoolI(TInstantSetBool, TBool):
     """
     Class for representing temporal Booleans of instant set duration.
 
@@ -92,13 +67,11 @@ class TBoolI(TemporalI, TBool):
 
         >>> TBoolI('AA@2019-09-01')
 
-    Another possibility is to give a tuple or list of arguments,
+    Another possibility is to give a set of arguments,
     which can be instances of ``str`` or ``TBoolInst``.
 
-        >>> TBoolI('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01')
-        >>> TBoolI(TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01'))
-        >>> TBoolI(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
-        >>> TBoolI([TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01')])
+        >>> TBoolI({'AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'})
+        >>> TBoolI({TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01')})
 
     """
 
@@ -107,8 +80,12 @@ class TBoolI(TemporalI, TBool):
         TemporalI.ComponentClass = TBoolInst
         super().__init__(*argv)
 
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.instants!r})')
 
-class TBoolSeq(TemporalSeq, TBool):
+
+class TBoolSeq(TSequenceBool, TBool):
     """
     Class for representing temporal Booleans of sequence duration.
 
@@ -119,7 +96,7 @@ class TBoolSeq(TemporalSeq, TBool):
 
     Another possibility is to give the arguments as follows.
 
-    * ``instantList`` is the list of composing instants, which can be instances of
+    * ``instants`` is the set of composing instants, which can be instances of
       ``str`` or ``TBoolInst``,
     * ``lower_inc`` and ``upper_inc`` are instances of ``bool`` specifying
       whether the bounds are inclusive or not. By default ``lower_inc``
@@ -127,19 +104,23 @@ class TBoolSeq(TemporalSeq, TBool):
 
     Some examples are given next.
 
-        >>> TBoolSeq(['true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'true@2019-09-03 00:00:00+01'])
-        >>> TBoolSeq(TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'), TBoolInst('true@2019-09-03 00:00:00+01')])
-        >>> TBoolSeq(['true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'true@2019-09-03 00:00:00+01'], True, True)
-        >>> TBoolSeq([TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'), TBoolInst('true@2019-09-03 00:00:00+01')], True, True)
+        >>> TBoolSeq({'true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'true@2019-09-03 00:00:00+01'})
+        >>> TBoolSeq({TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'), TBoolInst('true@2019-09-03 00:00:00+01')})
+        >>> TBoolSeq({'true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'true@2019-09-03 00:00:00+01'}, True, True)
+        >>> TBoolSeq({TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'), TBoolInst('true@2019-09-03 00:00:00+01')}, True, True)
 
     """
 
-    def __init__(self, instantList, lower_inc=None, upper_inc=None):
+    def __init__(self, instants, lower_inc=None, upper_inc=None):
+        # TODO interp
         TemporalSeq.BaseClass = bool
         TemporalSeq.BaseClassDiscrete = True
         TemporalSeq.ComponentClass = TBoolInst
         self._interp = 'Stepwise'
-        super().__init__(instantList, lower_inc, upper_inc)
+        if isinstance(instants, str):
+            super().__init__(instants)
+        else:
+            super().__init__(instants, lower_inc, upper_inc)
 
     @classmethod
     @property
@@ -149,8 +130,11 @@ class TBoolSeq(TemporalSeq, TBool):
         """
         return 'Stepwise'
 
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r})')
 
-class TBoolS(TemporalS, TBool):
+class TBoolS(TSequenceSetBool, TBool):
     """
     Class for representing temporal Booleans of sequence set duration.
 
@@ -159,21 +143,20 @@ class TBoolS(TemporalS, TBool):
 
         >>> TBoolS('{[true@2019-09-01 00:00:00+01], [false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]}')
 
-    Another possibility is to give the list of composing sequences, which
+    Another possibility is to give the set of composing sequences, which
     can be instances of ``str`` or ``TBoolSeq``.
 
-        >>> TBoolS(['[true@2019-09-01 00:00:00+01]', '[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]'])
-        >>> TBoolS([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
-        >>> TBoolS([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
+        >>> TBoolS({'[true@2019-09-01 00:00:00+01]', '[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]'})
+        >>> TBoolS({TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')})
 
     """
 
-    def __init__(self, sequenceList):
+    def __init__(self, sequences):
         TemporalS.BaseClass = bool
         TemporalS.BaseClassDiscrete = True
         TemporalS.ComponentClass = TBoolSeq
         self._interp = 'Stepwise'
-        super().__init__(sequenceList)
+        super().__init__(sequences)
 
     @classmethod
     @property
@@ -182,4 +165,8 @@ class TBoolS(TemporalS, TBool):
         Interpolation of the temporal value, that is, ``'Stepwise'``.
         """
         return 'Stepwise'
+
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.sequences!r})')
 

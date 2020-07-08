@@ -7,9 +7,7 @@ pytestmark = pytest.mark.asyncio
 @pytest.mark.parametrize('expected_tboolinst', [
     'true@2019-09-01 00:00:00+01',
     ('true', '2019-09-08 00:00:00+01'),
-    ['true', '2019-09-08 00:00:00+01'],
-    (True, '2019-09-08 00:00:00+01'),
-    [True, parse('2019-09-08 00:00:00+01')],
+    (True, parse('2019-09-08 00:00:00+01')),
 ])
 async def test_tboolinst_constructors(connection, expected_tboolinst):
     params = TBoolInst(expected_tboolinst)
@@ -19,12 +17,9 @@ async def test_tboolinst_constructors(connection, expected_tboolinst):
 
 @pytest.mark.parametrize('expected_tbooli', [
     '{true@2019-09-01 00:00:00+01, false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01}',
-    ('true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'true@2019-09-03 00:00:00+01'),
-    (TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'),
-     TBoolInst('true@2019-09-03 00:00:00+01')),
-    ['true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'true@2019-09-03 00:00:00+01'],
-    [TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'),
-     TBoolInst('true@2019-09-03 00:00:00+01')],
+    {'true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'true@2019-09-03 00:00:00+01'},
+    {TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'),
+     TBoolInst('true@2019-09-03 00:00:00+01')},
 ])
 async def test_tbooli_constructor(connection, expected_tbooli):
     if isinstance(expected_tbooli, tuple):
@@ -40,9 +35,9 @@ async def test_tbooli_constructor(connection, expected_tbooli):
 
 @pytest.mark.parametrize('expected_tboolseq', [
     '[true@2019-09-01 00:00:00+01, false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]',
-    ['true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'false@2019-09-03 00:00:00+01'],
-    [TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'),
-     TBoolInst('false@2019-09-03 00:00:00+01')],
+    {'true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'false@2019-09-03 00:00:00+01'},
+    {TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'),
+     TBoolInst('false@2019-09-03 00:00:00+01')},
 ])
 async def test_tboolseq_constructor(connection, expected_tboolseq):
     if isinstance(expected_tboolseq, tuple):
@@ -58,9 +53,9 @@ async def test_tboolseq_constructor(connection, expected_tboolseq):
 
 @pytest.mark.parametrize('expected_tbools', [
     '{[true@2019-09-01 00:00:00+01], [false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]}',
-    ['[true@2019-09-01 00:00:00+01]', '[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]'],
-    [TBoolSeq('[true@2019-09-01 00:00:00+01]'),
-     TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')],
+    {'[true@2019-09-01 00:00:00+01]', '[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]'},
+    {TBoolSeq('[true@2019-09-01 00:00:00+01]'),
+     TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')},
 ])
 async def test_tbools_constructor(connection, expected_tbools):
     if isinstance(expected_tbools, tuple):
