@@ -87,14 +87,14 @@ class TemporalS(Temporal):
         """
         Start value.
         """
-        return self._sequenceList[0].startInstant._value
+        return self._sequenceList[0].startInstant.getValue
 
     @property
     def endValue(self):
         """
         End value.
         """
-        return self._sequenceList[-1].endInstant._value
+        return self._sequenceList[-1].endInstant.getValue
 
     @property
     def minValue(self):
@@ -273,7 +273,7 @@ class TemporalS(Temporal):
         """
         return any(seq.intersectsTimestamp(timestamp) for seq in self._sequenceList)
 
-    def intersectsTimestampset(self, timestampset):
+    def intersectsTimestampSet(self, timestampset):
         """
         Does the temporal value intersect the timestamp set?
         """
@@ -286,7 +286,7 @@ class TemporalS(Temporal):
         """
         return any(seq.intersectsPeriod(period) for seq in self._sequenceList)
 
-    def intersectsPeriodset(self, periodset):
+    def intersectsPeriodSet(self, periodset):
         """
         Does the temporal value intersect the period set?
         """

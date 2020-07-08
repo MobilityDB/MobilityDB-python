@@ -70,7 +70,7 @@ class TFloatInst(TemporalInst, TFloat):
         """
         List of ranges representing the values taken by the temporal value
         """
-        return [floatrange(self._value, self._value, True, True)]
+        return [floatrange(self.getValue, self.getValue, True, True)]
 
 
 class TFloatI(TemporalI, TFloat):

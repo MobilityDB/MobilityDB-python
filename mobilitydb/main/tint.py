@@ -1,6 +1,8 @@
 from spans.types import intrange
 from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
 
+from pymeos.temporal import TInstantInt, TInstantSetInt, TSequenceInt, TSequenceSetInt
+
 
 class TInt(Temporal):
     """
@@ -26,7 +28,7 @@ class TInt(Temporal):
     def write(value):
         if not isinstance(value, TInt):
             raise ValueError('Value must be an instance of a subclass of TInt')
-        return value.__str__().strip("'")
+        return value.__str__()
 
     @property
     def valueRange(self):
@@ -36,7 +38,7 @@ class TInt(Temporal):
         return intrange(self.minValue, self.maxValue, True, True)
 
 
-class TIntInst(TemporalInst, TInt):
+class TIntInst(TInstantInt, TInt):
     """
     Class for representing temporal integers of instant duration.
 
@@ -55,12 +57,12 @@ class TIntInst(TemporalInst, TInt):
 
     """
 
-    def __init__(self, value, time=None):
-        TemporalInst.BaseClass = int
-        super().__init__(value, time)
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.getValue!r}, {self.getTimestamp!r})')
 
 
-class TIntI(TemporalI, TInt):
+class TIntI(TInstantSetInt, TInt):
     """
     Class for representing temporal integers of instant set duration.
 
@@ -69,13 +71,11 @@ class TIntI(TemporalI, TInt):
 
         >>> TIntI('10@2019-09-01')
 
-    Another possibility is to give a tuple or list of composing instants,
+    Another possibility is to give a tuple or set of composing instants,
     which can be instances of ``str`` or ``TIntInst``.
 
-        >>> TIntI('10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01')
-        >>> TIntI(TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01'))
-        >>> TIntI(['10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'])
-        >>> TIntI([TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')])
+        >>> TIntI({'10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'})
+        >>> TIntI({TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')})
 
     """
 
@@ -84,8 +84,12 @@ class TIntI(TemporalI, TInt):
         TemporalI.ComponentClass = TIntInst
         super().__init__(*argv)
 
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.instants!r})')
 
-class TIntSeq(TemporalSeq, TInt):
+
+class TIntSeq(TSequenceInt, TInt):
     """
     Class for representing temporal integers of sequence duration.
 
@@ -96,7 +100,7 @@ class TIntSeq(TemporalSeq, TInt):
 
     Another possibility is to give the arguments as follows:
 
-    * ``instantList`` is the list of composing instants, which can be instances of
+    * ``instants`` is the set of composing instants, which can be instances of
       ``str`` or ``TIntInst``,
     * ``lower_inc`` and ``upper_inc`` are instances of ``bool`` specifying
       whether the bounds are inclusive or not. By default ``lower_inc``
@@ -104,18 +108,21 @@ class TIntSeq(TemporalSeq, TInt):
 
     Some examples are given next.
 
-        >>> TIntSeq(['10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'])
-        >>> TIntSeq([TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')])
-        >>> TIntSeq(['10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'], True, True)
-        >>> TIntSeq([TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')], True, True)
+        >>> TIntSeq({'10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'})
+        >>> TIntSeq({TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')})
+        >>> TIntSeq({'10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'}, True, True)
+        >>> TIntSeq({TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')}, True, True)
 
     """
 
-    def __init__(self, instantList, lower_inc=None, upper_inc=None):
+    def __init__(self, instants, lower_inc=None, upper_inc=None):
         TemporalSeq.BaseClass = int
         TemporalSeq.BaseClassDiscrete = True
         TemporalSeq.ComponentClass = TIntInst
-        super().__init__(instantList, lower_inc, upper_inc)
+        if isinstance(instants, str):
+            super().__init__(instants)
+        else:
+            super().__init__(instants, lower_inc, upper_inc)
 
     @classmethod
     @property
@@ -125,8 +132,14 @@ class TIntSeq(TemporalSeq, TInt):
         """
         return 'Stepwise'
 
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r})')
+                # TODO interp
+                # f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r}, {self._interp!r})')
 
-class TIntS(TemporalS, TInt):
+
+class TIntS(TSequenceSetInt, TInt):
     """
     Class for representing temporal integers of sequence duration.
 
@@ -135,20 +148,20 @@ class TIntS(TemporalS, TInt):
 
         >>> TIntS('{[10@2019-09-01 00:00:00+01], [20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]}')
 
-    Another possibility is to give the list of composing sequences, which
+    Another possibility is to give the set of composing sequences, which
     can be instances of ``str`` or ``TIntSeq``.
 
-        >>> TIntS(['[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'])
-        >>> TIntS([TIntSeq('[10@2019-09-01 00:00:00+01]'), TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')])
-        >>> TIntS([TIntSeq('[10@2019-09-01 00:00:00+01]'), TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')])
+        >>> TIntS({'[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'})
+        >>> TIntS({TIntSeq('[10@2019-09-01 00:00:00+01]'), TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')})
+        >>> TIntS({TIntSeq('[10@2019-09-01 00:00:00+01]'), TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')})
 
     """
 
-    def __init__(self, sequenceList):
+    def __init__(self, sequences):
         TemporalS.BaseClass = int
         TemporalS.BaseClassDiscrete = True
         TemporalS.ComponentClass = TIntSeq
-        super().__init__(sequenceList)
+        super().__init__(sequences)
 
     @classmethod
     @property

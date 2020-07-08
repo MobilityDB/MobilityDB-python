@@ -73,8 +73,8 @@ class TTextInst(TemporalInst, TText):
         # Remove double quotes if present
         if value[0] == '"' and value[-1] == '"':
             value = value[1:-1]
-        self._value = value
-        self._time = parse(time) if isinstance(time, str) else time
+        self.getValue = value
+        self.getTimestamp = parse(time) if isinstance(time, str) else time
 
 
 class TTextI(TemporalI, TText):

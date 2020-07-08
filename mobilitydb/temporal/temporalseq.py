@@ -58,10 +58,10 @@ class TemporalSeq(TemporalInstants):
     def _valid(self):
         if len(self._instantList) == 1 and (not self._lower_inc or not self._lower_inc):
             raise Exception("ERROR: The lower and upper bounds must be inclusive for an instant temporal sequence")
-        if any(x._time >= y._time for x, y in zip(self._instantList, self._instantList[1:])):
+        if any(x.getTimestamp >= y.getTimestamp for x, y in zip(self._instantList, self._instantList[1:])):
             raise Exception("ERROR: The timestamps of a temporal sequence must be increasing")
         if (self._interp == 'Stepwise' and len(self._instantList) > 1 and not self._upper_inc and
-                    self._instantList[-1]._value != self._instantList[-2]._value):
+                    self._instantList[-1].getValue != self._instantList[-2].getValue):
             raise Exception(
                 "ERROR: The last two values of a temporal sequence with exclusive upper bound and stepwise interpolation must be equal")
         return True
@@ -150,11 +150,11 @@ class TemporalSeq(TemporalInstants):
         """
         Does the temporal value intersect the timestamp?
         """
-        return ((self.lower_inc and self._instantList[0]._time == timestamp) or
-                (self.upper_inc and self._instantList[-1]._time == timestamp) or
-                (self._instantList[0]._time < timestamp < self._instantList[-1]._time))
+        return ((self.lower_inc and self._instantList[0].getTimestamp == timestamp) or
+                (self.upper_inc and self._instantList[-1].getTimestamp == timestamp) or
+                (self._instantList[0].getTimestamp < timestamp < self._instantList[-1].getTimestamp))
 
-    def intersectsTimestampset(self, timestampset):
+    def intersectsTimestampSet(self, timestampset):
         """
         Does the temporal value intersect the timestamp set?
         """
@@ -166,7 +166,7 @@ class TemporalSeq(TemporalInstants):
         """
         return self.period.overlap(period)
 
-    def intersectsPeriodset(self, periodset):
+    def intersectsPeriodSet(self, periodset):
         """
         Does the temporal value intersect the period set?
         """

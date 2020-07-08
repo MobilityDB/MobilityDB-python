@@ -27,8 +27,8 @@ class TemporalInst(Temporal):
         # Now both value and time are not None
         assert(isinstance(value, (str, type(self).BaseClass))), "ERROR: Invalid value argument"
         assert(isinstance(time, (str, datetime))), "ERROR: Invalid time argument"
-        self._value = type(self).BaseClass(value) if isinstance(value, str) else value
-        self._time = parse(time) if isinstance(time, str) else time
+        self.getValue = type(self).BaseClass(value) if isinstance(value, str) else value
+        self.getTimestamp = parse(time) if isinstance(time, str) else time
 
     @classmethod
     def duration(cls):
@@ -42,56 +42,56 @@ class TemporalInst(Temporal):
         """
         Value component.
         """
-        return self._value
+        return self.getValue
 
     @property
     def getValues(self):
         """
         List of distinct values.
         """
-        return [self._value]
+        return [self.getValue]
 
     @property
     def startValue(self):
         """
         Start value.
         """
-        return self._value
+        return self.getValue
 
     @property
     def endValue(self):
         """
         End value.
         """
-        return self._value
+        return self.getValue
 
     @property
     def minValue(self):
         """
         Minimum value.
         """
-        return self._value
+        return self.getValue
 
     @property
     def maxValue(self):
         """
         Maximum value.
         """
-        return self._value
+        return self.getValue
 
     @property
     def getTimestamp(self):
         """
         Timestamp.
         """
-        return self._time
+        return self.getTimestamp
 
     @property
     def getTime(self):
         """
         Period set on which the temporal value is defined.
         """
-        return PeriodSet({Period(self._time, self._time, True, True)})
+        return PeriodSet({Period(self.getTimestamp, self.getTimestamp, True, True)})
 
     @property
     def timespan(self):
@@ -106,7 +106,7 @@ class TemporalInst(Temporal):
         """
         Period on which the temporal value is defined ignoring the potential time gaps.
         """
-        return Period(self._time, self._time, True, True)
+        return Period(self.getTimestamp, self.getTimestamp, True, True)
 
     @property
     def numInstants(self):
@@ -157,21 +157,21 @@ class TemporalInst(Temporal):
         """
         Start timestamp.
         """
-        return self._time
+        return self.getTimestamp
 
     @property
     def endTimestamp(self):
         """
         End timestamp.
         """
-        return self._time
+        return self.getTimestamp
 
     def timestampN(self, n):
         """
         N-th timestamp
         """
         if n == 1:
-            return self._time
+            return self.getTimestamp
         else:
             raise Exception("ERROR: Out of range")
 
@@ -180,50 +180,50 @@ class TemporalInst(Temporal):
         """
         List of timestamps.
         """
-        return [self._time]
+        return [self.getTimestamp]
 
     def shift(self, timedelta):
         """
         Shift the temporal value by a time interval.
         """
-        self._time += timedelta
+        self.getTimestamp += timedelta
         return self
 
     def intersectsTimestamp(self, timestamp):
         """
         Does the temporal value intersect the timestamp?
         """
-        return self._time == timestamp
+        return self.getTimestamp == timestamp
 
-    def intersectsTimestampset(self, timestampset):
+    def intersectsTimestampSet(self, timestampset):
         """
         Does the temporal value intersect the timestamp set?
         """
-        return any(self._time == timestamp for timestamp in timestampset.timestamps)
+        return any(self.getTimestamp == timestamp for timestamp in timestampset.timestamps)
 
     def intersectsPeriod(self, period):
         """
         Does the temporal value intersect the period?
         """
-        return period.contains_timestamp(self._time)
+        return period.contains_timestamp(self.getTimestamp)
 
-    def intersectsPeriodset(self, periodset):
+    def intersectsPeriodSet(self, periodset):
         """
         Does the temporal value intersect the period set?
         """
-        return any(period.contains_timestamp(self._time) for period in periodset.periods)
+        return any(period.contains_timestamp(self.getTimestamp) for period in periodset.periods)
 
     # Comparisons are missing
     def __eq__(self, other):
         if isinstance(other, self.__class__):
-            if self._value == other._value and self._time == other._time:
+            if self.getValue == other.getValue and self.getTimestamp == other.getTimestamp:
                 return True
         return False
 
     def __str__(self):
-        return (f"'{self._value!s}@{self._time!s}'")
+        return (f"'{self.getValue!s}@{self.getTimestamp!s}'")
 
     def __repr__(self):
         return (f'{self.__class__.__name__ }'
-                f'({self._value!r}, {self._time!r})')
+                f'({self.getValue!r}, {self.getTimestamp!r})')
 

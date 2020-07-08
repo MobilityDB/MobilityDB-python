@@ -198,7 +198,7 @@ class Temporal:
         pass
 
     @abstractmethod
-    def intersectsTimestampset(self, timestampset):
+    def intersectsTimestampSet(self, timestampset):
         """
         Does the temporal value intersect the timestamp set?
         """
@@ -212,7 +212,7 @@ class Temporal:
         pass
 
     @abstractmethod
-    def intersectsPeriodset(self, periodset):
+    def intersectsPeriodSet(self, periodset):
         """
         Does the temporal value intersect the period set?
         """
@@ -224,7 +224,7 @@ class Temporal:
             return self
 
     def getquoted(self):
-        return "{}".format(self.__str__())
+        return "'{}'".format(self.__str__())
     # End Psycopg2 interface.
 
     # Comparisons are missing

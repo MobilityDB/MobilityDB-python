@@ -48,18 +48,18 @@ def test_tfloatinst_accessors(cursor, expected_tfloatinst):
     assert TFloatInst(expected_tfloatinst).timestamps == [parse('2019-09-01 00:00:00+01')]
     assert TFloatInst(expected_tfloatinst).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
     assert TFloatInst(expected_tfloatinst).intersectsTimestamp(parse('2019-09-02 00:00:00+01')) == False
-    assert TFloatInst(expected_tfloatinst).intersectsTimestampset(
+    assert TFloatInst(expected_tfloatinst).intersectsTimestampSet(
         TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-    assert TFloatInst(expected_tfloatinst).intersectsTimestampset(
+    assert TFloatInst(expected_tfloatinst).intersectsTimestampSet(
         TimestampSet('{2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01}')) == False
     assert TFloatInst(expected_tfloatinst).intersectsPeriod(Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
     assert TFloatInst(expected_tfloatinst).intersectsPeriod(Period('(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == False
     assert TFloatInst(expected_tfloatinst).intersectsPeriod(Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')) == False
-    assert TFloatInst(expected_tfloatinst).intersectsPeriodset(
+    assert TFloatInst(expected_tfloatinst).intersectsPeriodSet(
         PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-    assert TFloatInst(expected_tfloatinst).intersectsPeriodset(
+    assert TFloatInst(expected_tfloatinst).intersectsPeriodSet(
         PeriodSet('{(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == False
-    assert TFloatInst(expected_tfloatinst).intersectsPeriodset(
+    assert TFloatInst(expected_tfloatinst).intersectsPeriodSet(
         PeriodSet('{[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')) == False
 
 
@@ -120,18 +120,18 @@ def test_tfloati_accessors(cursor, expected_tfloati):
                                               parse('2019-09-03 00:00:00+01')]
     assert TFloatI(expected_tfloati).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
     assert TFloatI(expected_tfloati).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
-    assert TFloatI(expected_tfloati).intersectsTimestampset(
+    assert TFloatI(expected_tfloati).intersectsTimestampSet(
         TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-    assert TFloatI(expected_tfloati).intersectsTimestampset(
+    assert TFloatI(expected_tfloati).intersectsTimestampSet(
         TimestampSet('{2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01}')) == False
     assert TFloatI(expected_tfloati).intersectsPeriod(Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
     assert TFloatI(expected_tfloati).intersectsPeriod(Period('(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01)')) == False
     assert TFloatI(expected_tfloati).intersectsPeriod(Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
-    assert TFloatI(expected_tfloati).intersectsPeriodset(
+    assert TFloatI(expected_tfloati).intersectsPeriodSet(
         PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-    assert TFloatI(expected_tfloati).intersectsPeriodset(
+    assert TFloatI(expected_tfloati).intersectsPeriodSet(
         PeriodSet('{(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01)}')) == False
-    assert TFloatI(expected_tfloati).intersectsPeriodset(
+    assert TFloatI(expected_tfloati).intersectsPeriodSet(
         PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
 
@@ -190,17 +190,17 @@ def test_tfloatseq_accessors(cursor, expected_tfloatseq):
                                                           parse('2019-09-03 00:00:00+01')]
     assert TFloatSeq(expected_tfloatseq).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
     assert TFloatSeq(expected_tfloatseq).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
-    assert TFloatSeq(expected_tfloatseq).intersectsTimestampset(
+    assert TFloatSeq(expected_tfloatseq).intersectsTimestampSet(
         TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-    assert TFloatSeq(expected_tfloatseq).intersectsTimestampset(
+    assert TFloatSeq(expected_tfloatseq).intersectsTimestampSet(
         TimestampSet('{2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01}')) == False
     assert TFloatSeq(expected_tfloatseq).intersectsPeriod(
         Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
     assert TFloatSeq(expected_tfloatseq).intersectsPeriod(
         Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
-    assert TFloatSeq(expected_tfloatseq).intersectsPeriodset(
+    assert TFloatSeq(expected_tfloatseq).intersectsPeriodSet(
         PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-    assert TFloatSeq(expected_tfloatseq).intersectsPeriodset(
+    assert TFloatSeq(expected_tfloatseq).intersectsPeriodSet(
         PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
 
@@ -270,15 +270,15 @@ def test_tfloats_accessors(cursor, expected_tfloats):
                                                          '[20.0@2019-09-02 00:00:00+01, 30.0@2019-09-03 00:00:00+01]')]
     assert TFloatS(expected_tfloats).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
     assert TFloatS(expected_tfloats).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
-    assert TFloatS(expected_tfloats).intersectsTimestampset(
+    assert TFloatS(expected_tfloats).intersectsTimestampSet(
         TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-    assert TFloatS(expected_tfloats).intersectsTimestampset(
+    assert TFloatS(expected_tfloats).intersectsTimestampSet(
         TimestampSet('{2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01}')) == False
     assert TFloatS(expected_tfloats).intersectsPeriod(
         Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
     assert TFloatS(expected_tfloats).intersectsPeriod(
         Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
-    assert TFloatS(expected_tfloats).intersectsPeriodset(
+    assert TFloatS(expected_tfloats).intersectsPeriodSet(
         PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-    assert TFloatS(expected_tfloats).intersectsPeriodset(
+    assert TFloatS(expected_tfloats).intersectsPeriodSet(
         PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False

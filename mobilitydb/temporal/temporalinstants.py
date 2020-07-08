@@ -13,35 +13,35 @@ class TemporalInstants(Temporal):
         """
         List of distinct values taken by the temporal value.
         """
-        return list(dict.fromkeys([inst._value for inst in self._instantList]))
+        return list(dict.fromkeys([inst.getValue for inst in self._instantList]))
 
     @property
     def startValue(self):
         """
         Start value.
         """
-        return self._instantList[0]._value
+        return self._instantList[0].getValue
 
     @property
     def endValue(self):
         """
         End value.
         """
-        return self._instantList[-1]._value
+        return self._instantList[-1].getValue
 
     @property
     def minValue(self):
         """
         Minimum value.
         """
-        return min(inst._value for inst in self._instantList)
+        return min(inst.getValue for inst in self._instantList)
 
     @property
     def maxValue(self):
         """
         Maximum value.
         """
-        return max(inst._value for inst in self._instantList)
+        return max(inst.getValue for inst in self._instantList)
 
     @property
     def numInstants(self):
@@ -93,14 +93,14 @@ class TemporalInstants(Temporal):
         """
         Start timestamp.
         """
-        return self._instantList[0]._time
+        return self._instantList[0].getTimestamp
 
     @property
     def endTimestamp(self):
         """
         End timestamp.
         """
-        return self._instantList[-1]._time
+        return self._instantList[-1].getTimestamp
 
     def timestampN(self, n):
         """
@@ -108,7 +108,7 @@ class TemporalInstants(Temporal):
         """
         # 1-based
         if 1 <= n <= len(self._instantList):
-            return self._instantList[n - 1]._time
+            return self._instantList[n - 1].getTimestamp
         else:
             raise Exception("ERROR: Out of range")
 
@@ -117,14 +117,14 @@ class TemporalInstants(Temporal):
         """
         List of timestamps.
         """
-        return [instant._time for instant in self._instantList]
+        return [instant.getTimestamp for instant in self._instantList]
 
     def shift(self, timedelta):
         """
         Shift the temporal value by a time interval.
         """
         for inst in self._instantList:
-            inst._time += timedelta
+            inst.getTimestamp += timedelta
         return self
 
     def __str__(self):

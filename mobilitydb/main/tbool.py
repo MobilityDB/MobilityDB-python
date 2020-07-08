@@ -73,14 +73,14 @@ class TBoolInst(TemporalInst, TBool):
         assert(isinstance(time, (str, datetime))), "ERROR: Invalid time argument"
         if isinstance(value, str):
             if value.lower() == 'true' or value.lower() == 't':
-                self._value = True
+                self.getValue = True
             elif value.lower() == 'false' or value.lower() == 'f':
-                self._value = False
+                self.getValue = False
             else:
                 raise Exception("ERROR: Could not parse temporal instant value")
         else:
-            self._value =  value
-        self._time = parse(time) if isinstance(time, str) else time
+            self.getValue =  value
+        self.getTimestamp = parse(time) if isinstance(time, str) else time
 
 
 class TBoolI(TemporalI, TBool):

@@ -57,17 +57,17 @@ class TPointInst(TemporalInst):
                 idx1 = value.find('(')
                 idx2 = value.find(')')
                 coords = (value[idx1 + 1:idx2]).split(' ')
-                self._value = Point(coords, srid=srid)
+                self.getValue = Point(coords, srid=srid)
             else:
-                self._value = Geometry.from_ewkb(value)
+                self.getValue = Geometry.from_ewkb(value)
         else:
-            self._value = value
-        self._time = parse(time) if isinstance(time, str) else time
+            self.getValue = value
+        self.getTimestamp = parse(time) if isinstance(time, str) else time
         # Verify validity of the resulting instance
         self._valid()
 
     def _valid(self):
-        if self._value.m is not None:
+        if self.getValue.m is not None:
             raise Exception("ERROR: The points composing a temporal point cannot have M dimension")
 
     @property
@@ -75,7 +75,7 @@ class TPointInst(TemporalInst):
         """
         Geometry representing the values taken by the temporal value.
         """
-        return self._value
+        return self.getValue
 
 
 class TPointI(TemporalI):
@@ -130,10 +130,10 @@ class TPointI(TemporalI):
 
     def _valid(self):
         super()._valid()
-        if any((x._value.z is None and y._value.z is not None) or (x._value.z is not None and y._value.z is None) \
+        if any((x.getValue.z is None and y.getValue.z is not None) or (x.getValue.z is not None and y.getValue.z is None) \
                 for x, y in zip(self._instantList, self._instantList[1:])):
             raise Exception("ERROR: The points composing a temporal point must be of the same dimensionality")
-        if any(x._value.m is not None for x in self._instantList):
+        if any(x.getValue.m is not None for x in self._instantList):
             raise Exception("ERROR: The points composing a temporal point cannot have M dimension")
         if any(x.srid != y.srid for x, y in zip(self._instantList, self._instantList[1:])):
             raise Exception("ERROR: The points composing a temporal point must have the same SRID")
@@ -209,10 +209,10 @@ class TPointSeq(TemporalSeq):
 
     def _valid(self):
         super()._valid()
-        if any((x._value.z is None and y._value.z is not None) or (x._value.z is not None and y._value.z is None) \
+        if any((x.getValue.z is None and y.getValue.z is not None) or (x.getValue.z is not None and y.getValue.z is None) \
                 for x, y in zip(self._instantList, self._instantList[1:])):
             raise Exception("ERROR: The points composing a temporal point must be of the same dimensionality")
-        if any(x._value.m is not None for x in self._instantList):
+        if any(x.getValue.m is not None for x in self._instantList):
             raise Exception("ERROR: The points composing a temporal point cannot have M dimension")
         if any(x.srid != y.srid for x, y in zip(self._instantList, self._instantList[1:])):
             raise Exception("ERROR: The points composing a temporal point must have the same SRID")
@@ -230,7 +230,7 @@ class TPointSeq(TemporalSeq):
         """
         Geometry representing the values taken by the temporal value.
         """
-        values = [inst._value for inst in self._instantList]
+        values = [inst.getValue for inst in self._instantList]
         result = values[0] if len(values) == 1 else LineString(values)
         return result
 

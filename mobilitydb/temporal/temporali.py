@@ -44,7 +44,7 @@ class TemporalI(TemporalInstants):
         self._valid()
 
     def _valid(self):
-        if any(x._time > y._time for x, y in zip(self._instantList, self._instantList[1:])):
+        if any(x.getTimestamp > y.getTimestamp for x, y in zip(self._instantList, self._instantList[1:])):
             raise Exception("ERROR: The timestamps of a temporal instant must be increasing")
 
     @classmethod
@@ -80,25 +80,25 @@ class TemporalI(TemporalInstants):
         """
         Does the temporal value intersect the timestamp?
         """
-        return any(inst._time == timestamp for inst in self._instantList)
+        return any(inst.getTimestamp == timestamp for inst in self._instantList)
 
-    def intersectsTimestampset(self, timestampset):
+    def intersectsTimestampSet(self, timestampset):
         """
         Does the temporal value intersect the timestamp set?
         """
-        return any(inst._time == timestamp for inst in self._instantList for timestamp in timestampset.timestamps)
+        return any(inst.getTimestamp == timestamp for inst in self._instantList for timestamp in timestampset.timestamps)
 
     def intersectsPeriod(self, period):
         """
         Does the temporal value intersect the period?
         """
-        return any(period.contains_timestamp(inst._time) for inst in self._instantList)
+        return any(period.contains_timestamp(inst.getTimestamp) for inst in self._instantList)
 
-    def intersectsPeriodset(self, periodset):
+    def intersectsPeriodSet(self, periodset):
         """
         Does the temporal value intersect the period set?
         """
-        return any(period.contains_timestamp(inst._time) for inst in self._instantList for period in periodset.periods)
+        return any(period.contains_timestamp(inst.getTimestamp) for inst in self._instantList for period in periodset.periods)
 
     # Comparisons are missing
     def __eq__(self, other):

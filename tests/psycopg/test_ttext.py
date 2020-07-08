@@ -47,9 +47,9 @@ def test_ttextinst_accessors(cursor, expected_ttextinst):
     assert TTextInst(expected_ttextinst).timestamps == [parse('2019-09-01 00:00:00+01')]
     assert TTextInst(expected_ttextinst).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
     assert TTextInst(expected_ttextinst).intersectsTimestamp(parse('2019-09-02 00:00:00+01')) == False
-    assert TTextInst(expected_ttextinst).intersectsTimestampset(
+    assert TTextInst(expected_ttextinst).intersectsTimestampSet(
         TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-    assert TTextInst(expected_ttextinst).intersectsTimestampset(
+    assert TTextInst(expected_ttextinst).intersectsTimestampSet(
         TimestampSet('{2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01}')) == False
     assert TTextInst(expected_ttextinst).intersectsPeriod(
         Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
@@ -57,11 +57,11 @@ def test_ttextinst_accessors(cursor, expected_ttextinst):
         Period('(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == False
     assert TTextInst(expected_ttextinst).intersectsPeriod(
         Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')) == False
-    assert TTextInst(expected_ttextinst).intersectsPeriodset(
+    assert TTextInst(expected_ttextinst).intersectsPeriodSet(
         PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-    assert TTextInst(expected_ttextinst).intersectsPeriodset(
+    assert TTextInst(expected_ttextinst).intersectsPeriodSet(
         PeriodSet('{(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == False
-    assert TTextInst(expected_ttextinst).intersectsPeriodset(
+    assert TTextInst(expected_ttextinst).intersectsPeriodSet(
         PeriodSet('{[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')) == False
 
 @pytest.mark.parametrize('expected_ttexti', [
@@ -118,18 +118,18 @@ def test_ttexti_accessors(cursor, expected_ttexti):
                                                   parse('2019-09-03 00:00:00+01')]
     assert TTextI(expected_ttexti).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
     assert TTextI(expected_ttexti).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
-    assert TTextI(expected_ttexti).intersectsTimestampset(
+    assert TTextI(expected_ttexti).intersectsTimestampSet(
         TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-    assert TTextI(expected_ttexti).intersectsTimestampset(
+    assert TTextI(expected_ttexti).intersectsTimestampSet(
         TimestampSet('{2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01}')) == False
     assert TTextI(expected_ttexti).intersectsPeriod(Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
     assert TTextI(expected_ttexti).intersectsPeriod(Period('(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01)')) == False
     assert TTextI(expected_ttexti).intersectsPeriod(Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
-    assert TTextI(expected_ttexti).intersectsPeriodset(
+    assert TTextI(expected_ttexti).intersectsPeriodSet(
         PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-    assert TTextI(expected_ttexti).intersectsPeriodset(
+    assert TTextI(expected_ttexti).intersectsPeriodSet(
         PeriodSet('{(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01)}')) == False
-    assert TTextI(expected_ttexti).intersectsPeriodset(
+    assert TTextI(expected_ttexti).intersectsPeriodSet(
         PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
 
@@ -186,17 +186,17 @@ def test_ttextseq_accessors(cursor, expected_ttextseq):
                                                       parse('2019-09-03 00:00:00+01')]
     assert TTextSeq(expected_ttextseq).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
     assert TTextSeq(expected_ttextseq).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
-    assert TTextSeq(expected_ttextseq).intersectsTimestampset(
+    assert TTextSeq(expected_ttextseq).intersectsTimestampSet(
         TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-    assert TTextSeq(expected_ttextseq).intersectsTimestampset(
+    assert TTextSeq(expected_ttextseq).intersectsTimestampSet(
         TimestampSet('{2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01}')) == False
     assert TTextSeq(expected_ttextseq).intersectsPeriod(
         Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
     assert TTextSeq(expected_ttextseq).intersectsPeriod(
         Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
-    assert TTextSeq(expected_ttextseq).intersectsPeriodset(
+    assert TTextSeq(expected_ttextseq).intersectsPeriodSet(
         PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-    assert TTextSeq(expected_ttextseq).intersectsPeriodset(
+    assert TTextSeq(expected_ttextseq).intersectsPeriodSet(
         PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
 
@@ -259,15 +259,15 @@ def test_ttexts_accessors(cursor, expected_ttexts):
                                                      '[BB@2019-09-02 00:00:00+01, CC@2019-09-03 00:00:00+01]')]
     assert TTextS(expected_ttexts).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
     assert TTextS(expected_ttexts).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
-    assert TTextS(expected_ttexts).intersectsTimestampset(
+    assert TTextS(expected_ttexts).intersectsTimestampSet(
         TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-    assert TTextS(expected_ttexts).intersectsTimestampset(
+    assert TTextS(expected_ttexts).intersectsTimestampSet(
         TimestampSet('{2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01}')) == False
     assert TTextS(expected_ttexts).intersectsPeriod(
         Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
     assert TTextS(expected_ttexts).intersectsPeriod(
         Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
-    assert TTextS(expected_ttexts).intersectsPeriodset(
+    assert TTextS(expected_ttexts).intersectsPeriodSet(
         PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-    assert TTextS(expected_ttexts).intersectsPeriodset(
+    assert TTextS(expected_ttexts).intersectsPeriodSet(
         PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
