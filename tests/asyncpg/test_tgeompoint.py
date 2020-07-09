@@ -1,7 +1,9 @@
 import pytest
 from dateutil.parser import parse
-from postgis import Point
 from mobilitydb.main import TGeomPointInst, TGeomPointI, TGeomPointSeq, TGeomPointS
+
+# TODO right now in PyMEOS, Geometry means Point - but does it need to be?
+from pymeos import Geometry as Point
 
 pytestmark = pytest.mark.asyncio
 
@@ -9,13 +11,10 @@ pytestmark = pytest.mark.asyncio
     'POINT(10.0 10.0)@2019-09-01 00:00:00+01',
     'SRID=4326;POINT(10.0 10.0)@2019-09-01 00:00:00+01',
     ('POINT(10.0 10.0)', '2019-09-08 00:00:00+01'),
-    ['POINT(10.0 10.0)', '2019-09-08 00:00:00+01'],
     ('SRID=4326;POINT(10.0 10.0)', '2019-09-08 00:00:00+01'),
-    ['SRID=4326;POINT(10.0 10.0)', '2019-09-08 00:00:00+01'],
     (Point(10.0, 10.0), parse('2019-09-08 00:00:00+01')),
-    [Point(10.0, 10.0), parse('2019-09-08 00:00:00+01')],
-    (Point(10.0, 10.0, srid=4326), parse('2019-09-08 00:00:00+01')),
-    [Point(10.0, 10.0, srid=4326), parse('2019-09-08 00:00:00+01')],
+    # TODO PyMEOS doesn't support SRID (yet)
+    # (Point(10.0, 10.0, srid=4326), parse('2019-09-08 00:00:00+01')),
 ])
 async def test_tgeompointinst_constructors(connection, expected_tgeompointinst):
     params = TGeomPointInst(expected_tgeompointinst)
@@ -28,32 +27,23 @@ async def test_tgeompointinst_constructors(connection, expected_tgeompointinst):
         'Point(10.0 10.0)@2019-09-03 00:00:00+01}',
     'SRID=4326;{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
         'Point(10.0 10.0)@2019-09-03 00:00:00+01}',
-    ('Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
-        'Point(10.0 10.0)@2019-09-03 00:00:00+01'),
-    ['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
-        'Point(10.0 10.0)@2019-09-03 00:00:00+01'],
-    ('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01', 'SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01',
-        'SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01'),
-    ['SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01', 'SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01',
-        'SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01'],
-    (TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+    {'Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
+        'Point(10.0 10.0)@2019-09-03 00:00:00+01'},
+    {'SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01', 'SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01',
+        'SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01'},
+    {TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
         TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-        TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')),
-    [TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-        TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-        TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')],
-    (TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+        TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')},
+    {TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
         TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-        TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')),
-    [TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
-        TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-        TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')],
+        TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')},
 ])
 async def test_tgeompointi_constructor(connection, expected_tgeompointi):
     if isinstance(expected_tgeompointi, tuple):
         params = TGeomPointI(*expected_tgeompointi)
     else:
         params = TGeomPointI(expected_tgeompointi)
+    print(params)
     await connection.execute('INSERT INTO tbl_tgeompointi (temp) VALUES ($1)', params)
     result = await connection.fetchval('SELECT temp FROM tbl_tgeompointi WHERE temp=$1', params)
     if isinstance(expected_tgeompointi, tuple):
@@ -70,28 +60,28 @@ async def test_tgeompointi_constructor(connection, expected_tgeompointi):
         'Point(10.0 10.0)@2019-09-03 00:00:00+01]',
     'SRID=4326;Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
         'Point(10.0 10.0)@2019-09-03 00:00:00+01]',
-    ['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
-        'Point(10.0 10.0)@2019-09-03 00:00:00+01'],
-    ['SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01', 'SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01',
-        'SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01'],
-    [TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+    {'Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
+        'Point(10.0 10.0)@2019-09-03 00:00:00+01'},
+    {'SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01', 'SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01',
+        'SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01'},
+    {TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
         TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-        TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')],
-    [TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+        TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')},
+    {TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
         TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-        TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')],
-    (['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
-        'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Stepwise'),
-    (['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
-        'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Linear', 4326),
-    (['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
-        'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Stepwise', 4326),
-    ([TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+        TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')},
+    ({'Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
+        'Point(10.0 10.0)@2019-09-03 00:00:00+01'}, True, True, 'Stepwise'),
+    ({'Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
+        'Point(10.0 10.0)@2019-09-03 00:00:00+01'}, True, True, 'Linear', 4326),
+    ({'Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01',
+        'Point(10.0 10.0)@2019-09-03 00:00:00+01'}, True, True, 'Stepwise', 4326),
+    ({TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
         TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-        TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
-    ([TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+        TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')}, True, True, 'Stepwise'),
+    ({TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-01 00:00:00+01'),
         TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
-        TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
+        TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')}, True, True, 'Stepwise'),
 ])
 async def test_tgeompointseq_constructor(connection, expected_tgeompointseq):
     if isinstance(expected_tgeompointseq, tuple):
@@ -114,34 +104,34 @@ async def test_tgeompointseq_constructor(connection, expected_tgeompointseq):
         '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}',
     'SRID=4326;Interp=Stepwise;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
         '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}',
-    ['[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
-        '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
-    ['SRID=4326;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
-        'SRID=4326;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
-    (['[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
-        '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear'),
-    (['[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
-        '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear', 4326),
-    (['SRID=4326;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
-        'SRID=4326;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear'),
-    (['SRID=4326;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
-        'SRID=4326;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear', 4326),
-    (['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
-        'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
+    {'[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+        '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'},
+    {'SRID=4326;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+        'SRID=4326;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'},
+    ({'[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+        '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'}, 'Linear'),
+    ({'[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+        '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'}, 'Linear', 4326),
+    ({'SRID=4326;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+        'SRID=4326;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'}, 'Linear'),
+    ({'SRID=4326;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+        'SRID=4326;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'}, 'Linear', 4326),
+    ({'Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+        'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'},
         'Stepwise'),
-    (['SRID=4326;Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
-        'SRID=4326;Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
+    ({'SRID=4326;Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+        'SRID=4326;Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'},
         'Stepwise', 4326),
-    (['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
-        'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'],
+    ({'Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]',
+        'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'},
         'Stepwise', 4326),
-    [TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
-        TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')],
-    ([TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
-        TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear'),
-    ([TGeomPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
+    {TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
+        TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')},
+    ({TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
+        TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')}, 'Linear'),
+    ({TGeomPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
         TGeomPointSeq(
-            'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')],
+            'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')},
      'Stepwise'),
 ])
 async def test_tgeompoints_constructor(connection, expected_tgeompoints):

@@ -2,8 +2,11 @@ import re
 from datetime import datetime
 from dateutil.parser import parse
 from postgis import Geometry, Point, MultiPoint, LineString, GeometryCollection, MultiLineString
-from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal
 from mobilitydb.temporal.temporal_parser import parse_temporalinst, parse_temporali, parse_temporalseq, parse_temporals
+
+from pymeos import Geometry as MEOSGeometry
+from pymeos.temporal import TInstantGeom, TInstantSetGeom, TSequenceGeom, TSequenceSetGeom
 
 
 # Add method to Point to make the class hashable
@@ -12,8 +15,17 @@ def __hash__(self):
 
 setattr(Point, '__hash__', __hash__)
 
+# TODO do this at PyMEOS level
+setattr(MEOSGeometry, '__hash__', lambda self: hash(str(self)))
 
-class TPointInst(TemporalInst):
+def to_coords(geom):
+    """
+    Converts a MEOS Geometry object to a tuple of (x, y) values
+    """
+    return (geom.x, geom.y)
+
+
+class TPointInst(TInstantGeom):
     """
     Abstract class for representing temporal points of instant duration.
     """
@@ -48,27 +60,31 @@ class TPointInst(TemporalInst):
                 raise Exception("ERROR: Could not parse temporal instant value")
         if srid is None:
             srid = 0
+
         # Now value, time, and srid are not None
-        assert(isinstance(value, (str, Point))), "ERROR: Invalid value argument"
+        assert(isinstance(value, (str, Point, MEOSGeometry))), "ERROR: Invalid value argument"
         assert(isinstance(time, (str, datetime))), "ERROR: Invalid time argument"
         assert(isinstance(srid, (str, int))), "ERROR: Invalid SRID"
+
         if isinstance(value, str):
             if '(' in value and ')' in value:
                 idx1 = value.find('(')
                 idx2 = value.find(')')
                 coords = (value[idx1 + 1:idx2]).split(' ')
-                self.getValue = Point(coords, srid=srid)
+                value = Point(coords)
+                self._srid = srid
             else:
-                self.getValue = Geometry.from_ewkb(value)
-        else:
-            self.getValue = value
-        self.getTimestamp = parse(time) if isinstance(time, str) else time
+                value = Geometry.from_ewkb(value)
+                pass
+
+        if isinstance(value, Point):
+            value = MEOSGeometry(value.wkt)
+
+        self._value = value
+        self._timestamp = parse(time) if isinstance(time, str) else time
         # Verify validity of the resulting instance
         self._valid()
-
-    def _valid(self):
-        if self.getValue.m is not None:
-            raise Exception("ERROR: The points composing a temporal point cannot have M dimension")
+        super().__init__(self._value, self._timestamp)
 
     @property
     def getValues(self):
@@ -77,14 +93,26 @@ class TPointInst(TemporalInst):
         """
         return self.getValue
 
+    def _valid(self):
+        # TODO
+        # if self.getValue.m is not None:
+        #     raise Exception("ERROR: The points composing a temporal point cannot have M dimension")
+        pass
 
-class TPointI(TemporalI):
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.getValue!r}, {self.getTimestamp!r})')
+
+
+class TPointI(TInstantSetGeom):
     """
     Abstract class for representing temporal points of instant set duration.
     """
 
+    BaseClass = MEOSGeometry
+
     def __init__(self,  *argv, srid=None):
-        self._instantList = []
+        _instants = set()
         # Constructor with a single argument of type string
         if len(argv) == 1 and isinstance(argv[0], str):
             # If srid is given
@@ -94,23 +122,23 @@ class TPointI(TemporalI):
                 if srid is not None and srid_str != srid:
                     raise Exception(f"ERROR: SRID mismatch: {srid_str} vs {srid}")
                 srid = srid_str
-                instantList = re.sub(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', '', argv[0])
+                instants = re.sub(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', '', argv[0])
             else:
-                instantList = argv[0]
+                instants = argv[0]
             # Parse without the eventual "srid=xxx;" prefix
-            elements = parse_temporali(instantList, 0)
+            elements = parse_temporali(instants, 0)
             for inst in elements[2]:
-                self._instantList.append(TemporalI.ComponentClass(inst[0], inst[1], srid=srid))
-        # Constructor with a single argument of type list
-        elif len(argv) == 1 and isinstance(argv[0], list):
+                _instants.add(self.ComponentClass(inst[0], inst[1], srid=srid))
+        # Constructor with a single argument of type set
+        elif len(argv) == 1 and isinstance(argv[0], set):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in argv[0]):
                 for arg in argv[0]:
-                    self._instantList.append(TemporalI.ComponentClass(arg, srid=srid))
+                    _instants.add(self.ComponentClass(arg, srid=srid))
             # List of instant values
-            elif all(isinstance(arg, TemporalI.ComponentClass) for arg in argv[0]):
+            elif all(isinstance(arg, self.ComponentClass) for arg in argv[0]):
                 for arg in argv[0]:
-                    self._instantList.append(arg)
+                    _instants.add(arg)
             else:
                 raise Exception("ERROR: Could not parse temporal instant set value")
         # Constructor with multiple arguments
@@ -118,81 +146,93 @@ class TPointI(TemporalI):
             # Arguments are of type string
             if all(isinstance(arg, str) for arg in argv):
                 for arg in argv:
-                    self._instantList.append(TemporalI.ComponentClass(arg, srid=srid))
+                    _instants.add(self.ComponentClass(arg, srid=srid))
             # Arguments are of type instant
-            elif all(isinstance(arg, TemporalI.ComponentClass) for arg in argv):
+            elif all(isinstance(arg, self.ComponentClass) for arg in argv):
                 for arg in argv:
-                    self._instantList.append(arg)
+                    _instants.add(arg)
             else:
                 raise Exception("ERROR: Could not parse temporal instant set value")
+
         # Verify validity of the resulting instance
         self._valid()
 
+        super().__init__(_instants)
+
     def _valid(self):
-        super()._valid()
-        if any((x.getValue.z is None and y.getValue.z is not None) or (x.getValue.z is not None and y.getValue.z is None) \
-                for x, y in zip(self._instantList, self._instantList[1:])):
-            raise Exception("ERROR: The points composing a temporal point must be of the same dimensionality")
-        if any(x.getValue.m is not None for x in self._instantList):
-            raise Exception("ERROR: The points composing a temporal point cannot have M dimension")
-        if any(x.srid != y.srid for x, y in zip(self._instantList, self._instantList[1:])):
-            raise Exception("ERROR: The points composing a temporal point must have the same SRID")
+        # TODO
+        # super()._valid()
+        # if any((x.getValue.z is None and y.getValue.z is not None) or (x.getValue.z is not None and y.getValue.z is None) \
+        #         for x, y in zip(self.instants, self.instants[1:])):
+        #     raise Exception("ERROR: The points composing a temporal point must be of the same dimensionality")
+        # if any(x.getValue.m is not None for x in self.instants):
+        #     raise Exception("ERROR: The points composing a temporal point cannot have M dimension")
+        # if any(x.srid != y.srid for x, y in zip(self.instants, self.instants[1:])):
+        #     raise Exception("ERROR: The points composing a temporal point must have the same SRID")
+        pass
 
     @property
     def getValues(self):
         """
         Geometry representing the values taken by the temporal value.
         """
-        values = super().getValues
+        values = sorted([to_coords(v.getValue) for v in self.instants])
         return MultiPoint(values)
 
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.instants!r})')
 
-class TPointSeq(TemporalSeq):
+
+class TPointSeq(TSequenceGeom):
     """
     Abstract class for representing temporal points of sequence duration.
     """
 
-    def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None, srid=None):
+    BaseClass = MEOSGeometry
+    BaseClassDiscrete = False
+
+    def __init__(self, instants, lower_inc=None, upper_inc=None, interp=None, srid=None):
         assert (isinstance(lower_inc, (bool, type(None)))), "ERROR: Invalid lower bound flag"
         assert (isinstance(upper_inc, (bool, type(None)))), "ERROR: Invalid upper bound flag"
         assert (isinstance(interp, (str, type(None)))), "ERROR: Invalid interpolation"
         if isinstance(interp, str):
             assert (interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
-        self._instantList = []
+        _instants = set()
         # Constructor with a first argument of type string and optional arguments for the bounds and interpolation
-        if isinstance(instantList, str):
+        if isinstance(instants, str):
             # If srid is given
-            if re.match(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', instantList):
+            if re.match(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', instants):
                 # Get the srid and remove the "srid=xxx;" prefix
-                srid_str = int(re.search(r'(\d+)', instantList).group())
+                srid_str = int(re.search(r'(\d+)', instants).group())
                 if srid is not None and srid_str != srid:
                     raise Exception(f"ERROR: SRID mismatch: {srid_str} vs {srid}")
                 srid = srid_str
-                instantList = re.sub(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', '', instantList)
+                instants = re.sub(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', '', instants)
             # Parse without the eventual "srid=xxx;" prefix
-            elements = parse_temporalseq(instantList, 0)
+            elements = parse_temporalseq(instants, 0)
             for inst in elements[2][0]:
-                self._instantList.append(TemporalSeq.ComponentClass(inst[0], inst[1], srid=srid))
+                _instants.add(self.ComponentClass(inst[0], inst[1], srid=srid))
             self._lower_inc = elements[2][1]
             self._upper_inc = elements[2][2]
             # Set interpolation with the argument or the flag from the string if given
             if interp is not None:
                 self._interp = interp
             else:
-                if self.__class__.BaseClassDiscrete:
+                if self.BaseClassDiscrete:
                     self._interp = 'Stepwise'
                 else:
                     self._interp = elements[2][3] if elements[2][3] is not None else 'Linear'
-        # Constructor with a first argument of type list and optional arguments for the bounds and interpolation
-        elif isinstance(instantList, list):
+        # Constructor with a first argument of type set and optional arguments for the bounds and interpolation
+        elif isinstance(instants, set):
             # List of strings representing instant values
-            if all(isinstance(arg, str) for arg in instantList):
-                for arg in instantList:
-                    self._instantList.append(TemporalSeq.ComponentClass(arg, srid=srid))
+            if all(isinstance(arg, str) for arg in instants):
+                for arg in instants:
+                    _instants.add(self.ComponentClass(arg, srid=srid))
             # List of instant values
-            elif all(isinstance(arg, TemporalSeq.ComponentClass) for arg in instantList):
-                for arg in instantList:
-                    self._instantList.append(arg)
+            elif all(isinstance(arg, self.ComponentClass) for arg in instants):
+                for arg in instants:
+                    _instants.add(arg)
             else:
                 raise Exception("ERROR: Could not parse temporal sequence value")
             self._lower_inc = lower_inc if lower_inc is not None else True
@@ -201,21 +241,24 @@ class TPointSeq(TemporalSeq):
             if interp is not None:
                 self._interp = interp
             else:
-                self._interp = 'Stepwise' if self.__class__.BaseClassDiscrete else 'Linear'
+                self._interp = 'Stepwise' if self.BaseClassDiscrete else 'Linear'
         else:
             raise Exception("ERROR: Could not parse temporal sequence value")
         # Verify validity of the resulting instance
         self._valid()
+        super().__init__(_instants, self._lower_inc, self._upper_inc)
 
     def _valid(self):
-        super()._valid()
-        if any((x.getValue.z is None and y.getValue.z is not None) or (x.getValue.z is not None and y.getValue.z is None) \
-                for x, y in zip(self._instantList, self._instantList[1:])):
-            raise Exception("ERROR: The points composing a temporal point must be of the same dimensionality")
-        if any(x.getValue.m is not None for x in self._instantList):
-            raise Exception("ERROR: The points composing a temporal point cannot have M dimension")
-        if any(x.srid != y.srid for x, y in zip(self._instantList, self._instantList[1:])):
-            raise Exception("ERROR: The points composing a temporal point must have the same SRID")
+        # TODO
+        # super()._valid()
+        # if any((x.getValue.z is None and y.getValue.z is not None) or (x.getValue.z is not None and y.getValue.z is None) \
+        #         for x, y in zip(self.instants, self.instants[1:])):
+        #     raise Exception("ERROR: The points composing a temporal point must be of the same dimensionality")
+        # if any(x.getValue.m is not None for x in self.instants):
+        #     raise Exception("ERROR: The points composing a temporal point cannot have M dimension")
+        # if any(x.srid != y.srid for x, y in zip(self.instants, self.instants[1:])):
+        #     raise Exception("ERROR: The points composing a temporal point must have the same SRID")
+        pass
 
 
     @property
@@ -230,80 +273,90 @@ class TPointSeq(TemporalSeq):
         """
         Geometry representing the values taken by the temporal value.
         """
-        values = [inst.getValue for inst in self._instantList]
-        result = values[0] if len(values) == 1 else LineString(values)
+        values = [to_coords(inst.getValue) for inst in sorted(self.instants)]
+        result = Point(values[0]) if len(values) == 1 else LineString(values)
         return result
 
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r})')
 
-class TPointS(TemporalS):
+
+class TPointS(TSequenceSetGeom):
     """
     Abstract class for representing temporal points of sequence set duration.
     """
 
-    def __init__(self, sequenceList, interp=None, srid=None):
+    BaseClass = MEOSGeometry
+    BaseClassDiscrete = False
+
+    def __init__(self, sequences, interp=None, srid=None):
         assert (isinstance(interp, (str, type(None)))), "ERROR: Invalid interpolation"
         if isinstance(interp, str) and interp is None:
             assert (interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
-        self._sequenceList = []
+        _sequences = set()
         # Constructor with a single argument of type string
-        if isinstance(sequenceList, str):
+        if isinstance(sequences, str):
             # If srid is given
-            if re.match(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', sequenceList):
+            if re.match(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', sequences):
                 # Get the srid and remove the "srid=xxx;" prefix
-                srid_str = int(re.search(r'(\d+)', sequenceList).group())
+                srid_str = int(re.search(r'(\d+)', sequences).group())
                 if srid is not None and srid_str != srid:
                     raise Exception(f"ERROR: SRID mismatch: {srid_str} vs {srid}")
                 srid = srid_str
-                sequenceList = re.sub(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', '', sequenceList)
+                sequences = re.sub(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', '', sequences)
             # Parse without the eventual "srid=xxx;" prefix
-            elements = parse_temporals(sequenceList, 0)
-            seqList = []
+            elements = parse_temporals(sequences, 0)
+            seqs = set()
             for seq in elements[2][0]:
-                instList = []
+                insts = set()
                 for inst in seq[0]:
-                    instList.append(TemporalS.ComponentClass.ComponentClass(inst[0], inst[1], srid=srid))
-                if self.__class__.BaseClassDiscrete:
-                    seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2]))
+                    insts.add(self.ComponentClass.ComponentClass(inst[0], inst[1], srid=srid))
+                if self.BaseClassDiscrete:
+                    seqs.add(self.ComponentClass(insts, seq[1], seq[2]))
                 else:
-                    seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2], elements[2][1], srid=srid))
-            self._sequenceList = seqList
+                    seqs.add(self.ComponentClass(insts, seq[1], seq[2], elements[2][1], srid=srid))
+            _sequences = seqs
             # Set interpolation with the argument or the flag from the string if given
             if interp is not None:
                 self._interp = interp
             else:
-                if self.__class__.BaseClassDiscrete:
+                if self.BaseClassDiscrete:
                     self._interp = 'Stepwise'
                 else:
                     self._interp = elements[2][1] if elements[2][1] is not None else 'Linear'
-        # Constructor with a single argument of type list
-        elif isinstance(sequenceList, list):
+        # Constructor with a single argument of type set
+        elif isinstance(sequences, set):
             # List of strings representing periods
-            if all(isinstance(sequence, str) for sequence in sequenceList):
-                for sequence in sequenceList:
-                    self._sequenceList.append(self.__class__.ComponentClass(sequence))
+            if all(isinstance(sequence, str) for sequence in sequences):
+                for sequence in sequences:
+                    _sequences.add(self.ComponentClass(sequence))
             # List of periods
-            elif all(isinstance(sequence, self.__class__.ComponentClass) for sequence in sequenceList):
-                for sequence in sequenceList:
-                    self._sequenceList.append(sequence)
+            elif all(isinstance(sequence, self.ComponentClass) for sequence in sequences):
+                for sequence in sequences:
+                    _sequences.add(sequence)
             else:
                 raise Exception("ERROR: Could not parse temporal sequence set value")
             # Set the interpolation
             if interp is not None:
                 self._interp = interp
             else:
-                self._interp = 'Stepwise' if self.__class__.BaseClassDiscrete else 'Linear'
+                self._interp = 'Stepwise' if self.BaseClassDiscrete else 'Linear'
         else:
             raise Exception("ERROR: Could not parse temporal sequence set value")
         # Verify validity of the resulting instance
         self._valid()
+        super().__init__(_sequences)
 
     def _valid(self):
-        super()._valid()
-        if any((x.hasz is None and y.hasz is not None) or (x.hasz is not None and y.hasz is None) \
-                for x, y in zip(self._sequenceList, self._sequenceList[1:])):
-            raise Exception("ERROR: The points composing a temporal point must be of the same dimensionality")
-        if any(x.srid != y.srid for x, y in zip(self._sequenceList, self._sequenceList[1:])):
-            raise Exception("ERROR: The points composing a temporal point must have the same SRID")
+        # TODO
+        # super()._valid()
+        # if any((x.hasz is None and y.hasz is not None) or (x.hasz is not None and y.hasz is None) \
+        #         for x, y in zip(self._sequenceList, self._sequenceList[1:])):
+        #     raise Exception("ERROR: The points composing a temporal point must be of the same dimensionality")
+        # if any(x.srid != y.srid for x, y in zip(self._sequenceList, self._sequenceList[1:])):
+        #     raise Exception("ERROR: The points composing a temporal point must have the same SRID")
+        pass
 
     @property
     def interpolation(self):
@@ -317,15 +370,23 @@ class TPointS(TemporalS):
         """
         Geometry representing the values taken by the temporal value.
         """
-        values = [seq.getValues for seq in self._sequenceList]
+        def seq_to_geom(seq):
+            values = [to_coords(inst.getValue) for inst in sorted(seq.instants)]
+            return Point(values[0]) if len(values) == 1 else LineString(values)
+
+        values = [seq_to_geom(seq) for seq in self.sequences]
         points = [geo for geo in values if isinstance(geo, Point)]
         lines = [geo for geo in values if isinstance(geo, LineString)]
-        if len(points) != 0 and len(points) != 0:
+        if len(points) != 0 and len(lines) != 0:
             return GeometryCollection(points + lines)
-        if len(points) != 0 and len(points) == 0:
+        if len(points) != 0 and len(lines) == 0:
             return MultiPoint(points)
-        if len(points) == 0 and len(points) != 0:
+        if len(points) == 0 and len(lines) != 0:
             return MultiLineString(lines)
+
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.sequences!r})')
 
 
 class TGeomPoint(Temporal):
@@ -358,7 +419,7 @@ class TGeomPoint(Temporal):
     def write(value):
         if not isinstance(value, TGeomPoint):
             raise ValueError('Value must an instance of a subclass of TGeomPoint')
-        return value.__str__().strip("'")
+        return value.__str__()
 
     @property
     def hasz(self):
@@ -406,7 +467,7 @@ class TGeogPoint(Temporal):
     def write(value):
         if not isinstance(value, TGeogPoint):
             raise ValueError('Value must an instance of a subclass of TGeogPoint')
-        return value.__str__().strip("'")
+        return value.__str__()
 
     @property
     def hasz(self):
@@ -446,9 +507,7 @@ class TGeomPointInst(TPointInst, TGeomPoint):
 
     """
 
-    def __init__(self, value, time=None, srid=None):
-        TemporalInst.BaseClass = Point
-        super().__init__(value, time, srid)
+    pass
 
 
 class TGeogPointInst(TPointInst, TGeogPoint):
@@ -472,9 +531,7 @@ class TGeogPointInst(TPointInst, TGeogPoint):
 
     """
 
-    def __init__(self, value, time=None, srid=None):
-        TemporalInst.BaseClass = Point
-        super().__init__(value, time, srid)
+    pass
 
 
 class TGeomPointI(TPointI, TGeomPoint):
@@ -486,21 +543,16 @@ class TGeomPointI(TPointI, TGeomPoint):
 
         >>> TGeomPointI('Point(10.0 10.0)@2019-09-01')
 
-    Another possibility is to give a tuple or list of arguments specifying
+    Another possibility is to give a set of arguments specifying
     the composing instants, which can be instances of ``str`` or
     ``TGeomPointInst``.
 
-        >>> TGeomPointI('Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01')
-        >>> TGeomPointI(TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01'))
-        >>> TGeomPointI(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'])
-        >>> TGeomPointI([TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')])
+        >>> TGeomPointI({'Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'})
+        >>> TGeomPointI({TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')})
 
     """
 
-    def __init__(self,  *argv, **kwargs):
-        TemporalI.BaseClass = Point
-        TemporalI.ComponentClass = TGeomPointInst
-        super().__init__(*argv, **kwargs)
+    ComponentClass = TGeomPointInst
 
 
 class TGeogPointI(TPointI, TGeogPoint):
@@ -512,21 +564,16 @@ class TGeogPointI(TPointI, TGeogPoint):
 
         >>> TGeogPointI('Point(10.0 10.0)@2019-09-01')
 
-    Another possibility is to give a tuple or list of arguments specifying
+    Another possibility is to give a set of arguments specifying
     the composing instants, which can be instances of ``str`` or
     ``TGeogPointInst``.
 
-        >>> TGeogPointI('Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01')
-        >>> TGeogPointI(TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01'))
-        >>> TGeogPointI(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'])
-        >>> TGeogPointI([TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')])
+        >>> TGeogPointI({'Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'})
+        >>> TGeogPointI({TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')})
 
     """
 
-    def __init__(self,  *argv, **kwargs):
-        TemporalI.BaseClass = Point
-        TemporalI.ComponentClass = TGeogPointInst
-        super().__init__(*argv, **kwargs)
+    ComponentClass = TGeogPointInst
 
 
 class TGeomPointSeq(TPointSeq, TGeomPoint):
@@ -541,7 +588,7 @@ class TGeomPointSeq(TPointSeq, TGeomPoint):
 
     Another possibility is to give the arguments as follows:
 
-    * ``instantList`` is the list of composing instants, which can be instances
+    * ``instants`` is the set of composing instants, which can be instances
       of ``str`` or ``TGeogPointInst``,
     * ``lower_inc`` and ``upper_inc`` are instances of ``bool`` specifying
       whether the bounds are inclusive or not,  where by default '`lower_inc``
@@ -552,18 +599,14 @@ class TGeomPointSeq(TPointSeq, TGeomPoint):
 
     Some examples are shown next.
 
-        >>> TGeomPointSeq(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'])
-        >>> TGeomPointSeq([TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')])
-        >>> TGeomPointSeq(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Stepwise')
-        >>> TGeomPointSeq([TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise')
+        >>> TGeomPointSeq({'Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'})
+        >>> TGeomPointSeq({TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')})
+        >>> TGeomPointSeq({'Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'}, True, True, 'Stepwise')
+        >>> TGeomPointSeq({TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')}, True, True, 'Stepwise')
 
     """
 
-    def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None, srid=None):
-        TemporalSeq.BaseClass = Point
-        TemporalSeq.BaseClassDiscrete = False
-        TemporalSeq.ComponentClass = TGeomPointInst
-        super().__init__(instantList, lower_inc, upper_inc, interp, srid)
+    ComponentClass = TGeomPointInst
 
 
 class TGeogPointSeq(TPointSeq, TGeogPoint):
@@ -578,7 +621,7 @@ class TGeogPointSeq(TPointSeq, TGeogPoint):
 
     Another possibility is to give the arguments as follows:
 
-    * ``instantList`` is the list of composing instants, which can be instances
+    * ``instants`` is the set of composing instants, which can be instances
       of ``str`` or ``TGeogPointInst``,
     * ``lower_inc`` and ``upper_inc`` are instances of ``bool`` specifying
       whether the bounds are includive or not,  where by default '`lower_inc``
@@ -589,18 +632,14 @@ class TGeogPointSeq(TPointSeq, TGeogPoint):
 
     Some examples are shown next.
 
-        >>> TGeogPointSeq(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'])
-        >>> TGeogPointSeq([TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')])
-        >>> TGeogPointSeq(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'], True, True, 'Stepwise')
-        >>> TGeogPointSeq([TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')], True, True, 'Stepwise')
+        >>> TGeogPointSeq({'Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'})
+        >>> TGeogPointSeq({TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')})
+        >>> TGeogPointSeq({'Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'}, True, True, 'Stepwise')
+        >>> TGeogPointSeq({TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')}, True, True, 'Stepwise')
 
     """
 
-    def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None, srid=None):
-        TemporalSeq.BaseClass = Point
-        TemporalSeq.BaseClassDiscrete = False
-        TemporalSeq.ComponentClass = TGeogPointInst
-        super().__init__(instantList, lower_inc, upper_inc, interp, srid)
+    ComponentClass = TGeogPointInst
 
 
 class TGeomPointS(TPointS, TGeomPoint):
@@ -615,7 +654,7 @@ class TGeomPointS(TPointS, TGeomPoint):
 
     Another possibility is to give the arguments as follows:
 
-    * ``sequenceList`` is the list of composing sequences, which can be instances
+    * ``sequences`` is the set of composing sequences, which can be instances
       of ``str`` or ``TGeomPointSeq``,
     * ``interp`` can be ``'Linear'`` or ``'Stepwise'``, the former being
       the default, and
@@ -624,20 +663,16 @@ class TGeomPointS(TPointS, TGeomPoint):
 
     Some examples are shown next.
 
-        >>> TGeomPointS(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'])
-        >>> TGeomPointS(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear')
-        >>> TGeomPointS(['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Stepwise')
-        >>> TGeomPointS([TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')])
-        >>> TGeomPointS([TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),  TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear')
-        >>> TGeomPointS([TGeomPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeomPointSeq('Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Stepwise')
+        >>> TGeomPointS({'[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'})
+        >>> TGeomPointS({'[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'}, 'Linear')
+        >>> TGeomPointS({'Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'}, 'Stepwise')
+        >>> TGeomPointS({TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')})
+        >>> TGeomPointS({TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')}, 'Linear')
+        >>> TGeomPointS({TGeomPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeomPointSeq('Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')}, 'Stepwise')
 
     """
 
-    def __init__(self, sequenceList, interp=None, srid=None):
-        TemporalS.BaseClass = Point
-        TemporalS.BaseClassDiscrete = False
-        TemporalS.ComponentClass = TGeomPointSeq
-        super().__init__(sequenceList, interp, srid)
+    ComponentClass = TGeomPointSeq
 
 
 class TGeogPointS(TPointS, TGeogPoint):
@@ -652,7 +687,7 @@ class TGeogPointS(TPointS, TGeogPoint):
 
     Another possibility is to give the arguments as follows:
 
-    * ``sequenceList`` is the list of composing sequences, which can be instances
+    * ``sequences`` is the set of composing sequences, which can be instances
       of ``str`` or ``TGeogPointSeq``,
     * ``interp`` can be ``'Linear'`` or ``'Stepwise'``, the former being
       the default, and
@@ -661,17 +696,13 @@ class TGeogPointS(TPointS, TGeogPoint):
 
     Some examples are shown next.
 
-        >>> TGeogPointS(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'])
-        >>> TGeogPointS(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear')
-        >>> TGeogPointS(['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Stepwise')
-        >>> TGeogPointS([TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')])
-        >>> TGeogPointS([TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),  TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear')
-        >>> TGeogPointS([TGeogPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeogPointSeq('Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Stepwise')
+        >>> TGeogPointS({'[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'})
+        >>> TGeogPointS({'[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'}, 'Linear')
+        >>> TGeogPointS({'Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'}, 'Stepwise')
+        >>> TGeogPointS({TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')})
+        >>> TGeogPointS({TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')}, 'Linear')
+        >>> TGeogPointS({TGeogPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeogPointSeq('Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')}, 'Stepwise')
 
     """
 
-    def __init__(self, sequenceList, interp=None, srid=None):
-        TemporalS.BaseClass = Point
-        TemporalS.BaseClassDiscrete = False
-        TemporalS.ComponentClass = TGeogPointSeq
-        super().__init__(sequenceList, interp, srid)
+    ComponentClass = TGeogPointSeq
