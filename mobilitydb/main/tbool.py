@@ -1,7 +1,7 @@
 from parsec import *
 from datetime import datetime
 from dateutil.parser import parse
-from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal
 from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
 from pymeos.temporal import TInstantBool, TInstantSetBool, TSequenceBool, TSequenceSetBool
@@ -75,11 +75,6 @@ class TBoolI(TInstantSetBool, TBool):
 
     """
 
-    def __init__(self,  *argv):
-        TemporalI.BaseClass = bool
-        TemporalI.ComponentClass = TBoolInst
-        super().__init__(*argv)
-
     def __repr__(self):
         return (f'{self.__class__.__name__ }'
                 f'({self.instants!r})')
@@ -112,10 +107,7 @@ class TBoolSeq(TSequenceBool, TBool):
     """
 
     def __init__(self, instants, lower_inc=None, upper_inc=None):
-        # TODO interp
-        TemporalSeq.BaseClass = bool
-        TemporalSeq.BaseClassDiscrete = True
-        TemporalSeq.ComponentClass = TBoolInst
+        # TODO pass interp to PyMEOS and handle there
         self._interp = 'Stepwise'
         if isinstance(instants, str):
             super().__init__(instants)
@@ -150,13 +142,6 @@ class TBoolS(TSequenceSetBool, TBool):
         >>> TBoolS({TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')})
 
     """
-
-    def __init__(self, sequences):
-        TemporalS.BaseClass = bool
-        TemporalS.BaseClassDiscrete = True
-        TemporalS.ComponentClass = TBoolSeq
-        self._interp = 'Stepwise'
-        super().__init__(sequences)
 
     @classmethod
     @property

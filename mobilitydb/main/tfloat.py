@@ -1,5 +1,5 @@
 from spans.types import floatrange
-from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal
 
 from pymeos.temporal import TInstantFloat, TInstantSetFloat, TSequenceFloat, TSequenceSetFloat
 
@@ -14,6 +14,8 @@ class TFloat(Temporal):
         """
         Range of values taken by the temporal value as defined by its minimum and maximum value
         """
+        # Should we return postgis's floatrange or PyMEOS's RangeFloat?
+        # Note that because of duck typing both are substitutable for each other
         return floatrange(self.minValue, self.maxValue, True, True)
 
     @staticmethod
@@ -85,11 +87,6 @@ class TFloatI(TInstantSetFloat, TFloat):
 
     """
 
-    def __init__(self,  *argv):
-        TemporalI.BaseClass = float
-        TemporalI.ComponentClass = TFloatInst
-        super().__init__(*argv)
-
     def __repr__(self):
         return (f'{self.__class__.__name__ }'
                 f'({self.instants!r})')
@@ -126,9 +123,6 @@ class TFloatSeq(TSequenceFloat, TFloat):
 
     def __init__(self, instants, lower_inc=None, upper_inc=None, interp=None):
         # TODO support interp
-        TemporalSeq.BaseClass = float
-        TemporalSeq.BaseClassDiscrete = False
-        TemporalSeq.ComponentClass = TFloatInst
         if isinstance(instants, str):
             super().__init__(instants)
         else:
@@ -144,7 +138,6 @@ class TFloatSeq(TSequenceFloat, TFloat):
     def __repr__(self):
         return (f'{self.__class__.__name__ }'
                 f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r})')
-                # f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r}, {self._interp!r})')
 
 
 class TFloatS(TSequenceSetFloat, TFloat):
@@ -177,9 +170,6 @@ class TFloatS(TSequenceSetFloat, TFloat):
 
     def __init__(self, sequences, interp=None):
         # TODO support interp
-        TemporalS.BaseClass = float
-        TemporalS.BaseClassDiscrete = False
-        TemporalS.ComponentClass = TFloatSeq
         super().__init__(sequences)
 
     @property
@@ -188,4 +178,8 @@ class TFloatS(TSequenceSetFloat, TFloat):
         Interpolation of the temporal value, which is either ``'Linear'`` or ``'Stepwise'``.
         """
         return self._interp
+
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.sequences!r})')
 

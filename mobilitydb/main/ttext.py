@@ -1,7 +1,7 @@
 from datetime import datetime
 from dateutil.parser import parse
 from mobilitydb.temporal.temporal_parser import parse_temporalinst
-from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal
 
 from pymeos.temporal import TInstantText, TInstantSetText, TSequenceText, TSequenceSetText
 
@@ -74,11 +74,6 @@ class TTextI(TInstantSetText, TText):
 
     """
 
-    def __init__(self,  *argv):
-        TemporalI.BaseClass = str
-        TemporalI.ComponentClass = TTextInst
-        super().__init__(*argv)
-
     def __repr__(self):
         return (f'{self.__class__.__name__ }'
                 f'({self.instants!r})')
@@ -111,10 +106,6 @@ class TTextSeq(TSequenceText, TText):
     """
 
     def __init__(self, instants, lower_inc=None, upper_inc=None):
-        # TODO interp
-        TemporalSeq.BaseClass = str
-        TemporalS.BaseClassDiscrete = True
-        TemporalSeq.ComponentClass = TTextInst
         if isinstance(instants, str):
             super().__init__(instants)
         else:
@@ -149,12 +140,6 @@ class TTextS(TSequenceSetText, TText):
 
     """
 
-    def __init__(self, sequences):
-        TemporalS.BaseClass = str
-        TemporalS.BaseClassDiscrete = True
-        TemporalS.ComponentClass = TTextSeq
-        super().__init__(sequences)
-
     @classmethod
     @property
     def interpolation(self):
@@ -162,5 +147,9 @@ class TTextS(TSequenceSetText, TText):
         Interpolation of the temporal value, that is, ``'Stepwise'``.
         """
         return 'Stepwise'
+
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.sequences!r})')
 
 

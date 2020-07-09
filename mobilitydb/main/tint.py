@@ -1,5 +1,5 @@
 from spans.types import intrange
-from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal
 
 from pymeos.temporal import TInstantInt, TInstantSetInt, TSequenceInt, TSequenceSetInt
 
@@ -35,6 +35,8 @@ class TInt(Temporal):
         """
         Range of values taken by the temporal value as defined by its minimum and maximum value
         """
+        # Should we return postgis's intrange or PyMEOS's RangeInt?
+        # Note that because of duck typing both are substitutable for each other
         return intrange(self.minValue, self.maxValue, True, True)
 
 
@@ -79,11 +81,6 @@ class TIntI(TInstantSetInt, TInt):
 
     """
 
-    def __init__(self,  *argv):
-        TemporalI.BaseClass = int
-        TemporalI.ComponentClass = TIntInst
-        super().__init__(*argv)
-
     def __repr__(self):
         return (f'{self.__class__.__name__ }'
                 f'({self.instants!r})')
@@ -116,9 +113,7 @@ class TIntSeq(TSequenceInt, TInt):
     """
 
     def __init__(self, instants, lower_inc=None, upper_inc=None):
-        TemporalSeq.BaseClass = int
-        TemporalSeq.BaseClassDiscrete = True
-        TemporalSeq.ComponentClass = TIntInst
+        # TODO interp
         if isinstance(instants, str):
             super().__init__(instants)
         else:
@@ -135,8 +130,6 @@ class TIntSeq(TSequenceInt, TInt):
     def __repr__(self):
         return (f'{self.__class__.__name__ }'
                 f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r})')
-                # TODO interp
-                # f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r}, {self._interp!r})')
 
 
 class TIntS(TSequenceSetInt, TInt):
@@ -153,15 +146,8 @@ class TIntS(TSequenceSetInt, TInt):
 
         >>> TIntS({'[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'})
         >>> TIntS({TIntSeq('[10@2019-09-01 00:00:00+01]'), TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')})
-        >>> TIntS({TIntSeq('[10@2019-09-01 00:00:00+01]'), TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')})
 
     """
-
-    def __init__(self, sequences):
-        TemporalS.BaseClass = int
-        TemporalS.BaseClassDiscrete = True
-        TemporalS.ComponentClass = TIntSeq
-        super().__init__(sequences)
 
     @classmethod
     @property
@@ -170,4 +156,8 @@ class TIntS(TSequenceSetInt, TInt):
         Interpolation of the temporal value, that is, ``'Stepwise'``.
         """
         return 'Stepwise'
+
+    def __repr__(self):
+        return (f'{self.__class__.__name__ }'
+                f'({self.sequences!r})')
 
