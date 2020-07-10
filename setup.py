@@ -19,6 +19,7 @@ setup(
     install_requires=[
         'asyncpg',
         'psycopg2-binary',
+        'pymeos',
         'Spans',
         'postgis',
         'pytest',
