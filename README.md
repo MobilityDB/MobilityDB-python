@@ -1,5 +1,5 @@
-# python-mobilitydb
-python-mobilitydb is a database adapter to access [MobilityDB](https://github.com/ULB-CoDE-WIT/MobilityDB) from Python. It supports both the [psycopg2](https://github.com/psycopg/psycopg2) and the [asyncpg](https://github.com/MagicStack/asyncpg) adapters for PostgreSQL and uses the [postgis](https://github.com/tilery/python-postgis) adapter for PostGIS.
+# MobilityDB-python
+MobilityDB-python is a database adapter to access [MobilityDB](https://github.com/MobilityDB/MobilityDB) from Python. It supports both the [psycopg2](https://github.com/psycopg/psycopg2) and the [asyncpg](https://github.com/MagicStack/asyncpg) adapters for PostgreSQL and uses the [postgis](https://github.com/tilery/python-postgis) adapter for PostGIS.
 
 
 Install
@@ -103,11 +103,11 @@ EPUB: https://docs.mobilitydb.com/python-mobilitydb/master/python-mobilitydb.epu
 Contributing
 ------------
 
-[Issues](https://github.com/ULB-CoDE-WIT/python-mobilitydb/issues) and [Pull Requests](https://github.com/ULB-CoDE-WIT/python-mobilitydb/pulls) are welcome.
+[Issues](https://github.com/MobilityDB/MobilityDB-python/issues) and [Pull Requests](https://github.com/MobilityDB/MobilityDB-python/pulls) are welcome.
 
 Related Project
 ---------------
 
-[MobilityDB SQLAlchemy](https://github.com/adonmo/mobilitydb-sqlalchemy) is another package that provides extensions to [SQLAlchemy](https://www.sqlalchemy.org/) for interacting with [MobilityDB](https://github.com/ULB-CoDE-WIT/MobilityDB). 
+[MobilityDB SQLAlchemy](https://github.com/adonmo/mobilitydb-sqlalchemy) is another package that provides extensions to [SQLAlchemy](https://www.sqlalchemy.org/) for interacting with [MobilityDB](https://github.com/MobilityDB/MobilityDB). 
 
         
