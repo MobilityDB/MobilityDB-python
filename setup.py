@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='python-mobilitydb',
+    name='MobilityDB-python',
     packages=find_packages(),
     version='0.1.1',
     license='MIT',
@@ -14,7 +14,7 @@ setup(
     platforms=["linux"],
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/ULB-CoDE-WIT/python-mobilitydb',
+    url='https://github.com/MobilityDB/MobilityDB-python',
     download_url='',
     install_requires=[
         'asyncpg',
@@ -43,7 +43,7 @@ setup(
         'Programming Language :: Python :: 3.9',
     ],
     project_urls={
-        'Source': 'https://github.com/ULB-CoDE-WIT/python-mobilitydb',
+        'Source': 'https://github.com/MobilityDB/MobilityDB-python',
         'Documentation': 'https://docs.mobilitydb.com/nightly/mobilitydb.pdf',
     },
 )
