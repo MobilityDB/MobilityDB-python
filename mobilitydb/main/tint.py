@@ -128,11 +128,3 @@ class TIntS(TSequenceSetInt, TInt):
 
     """
 
-    @classmethod
-    @property
-    def interpolation(self):
-        """
-        Interpolation of the temporal value, that is, ``'Stepwise'``.
-        """
-        return 'Stepwise'
-

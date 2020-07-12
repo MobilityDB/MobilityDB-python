@@ -151,13 +151,8 @@ class TFloatS(TSequenceSetFloat, TFloat):
     """
 
     def __init__(self, sequences, interp=None):
-        # TODO support interp
-        super().__init__(sequences)
-
-    @property
-    def interpolation(self):
-        """
-        Interpolation of the temporal value, which is either ``'Linear'`` or ``'Stepwise'``.
-        """
-        return self._interp
+        if isinstance(sequences, str) or interp is None:
+            super().__init__(sequences)
+        else:
+            super().__init__(sequences, Interpolation.__members__.get(interp))
 

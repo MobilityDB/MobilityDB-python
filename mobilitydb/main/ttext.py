@@ -120,12 +120,4 @@ class TTextS(TSequenceSetText, TText):
 
     """
 
-    @classmethod
-    @property
-    def interpolation(self):
-        """
-        Interpolation of the temporal value, that is, ``'Stepwise'``.
-        """
-        return 'Stepwise'
-
 

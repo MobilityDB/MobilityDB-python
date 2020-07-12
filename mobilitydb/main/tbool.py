@@ -122,11 +122,3 @@ class TBoolS(TSequenceSetBool, TBool):
 
     """
 
-    @classmethod
-    @property
-    def interpolation(self):
-        """
-        Interpolation of the temporal value, that is, ``'Stepwise'``.
-        """
-        return 'Stepwise'
-
