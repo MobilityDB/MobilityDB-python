@@ -1,6 +1,7 @@
-from spans.types import floatrange
 from mobilitydb.temporal import Temporal
 
+from pymeos.io import DeserializerFloat
+from pymeos.range import RangeFloat
 from pymeos.temporal import Interpolation, TInstantFloat, TInstantSetFloat, TSequenceFloat, TSequenceSetFloat
 
 
@@ -9,41 +10,15 @@ class TFloat(Temporal):
     Abstract class for representing temporal floats of any duration.
     """
 
+    pymeos_deserializer_type = DeserializerFloat
+    pymeos_range_type = RangeFloat
+
     @property
     def valueRange(self):
         """
         Range of values taken by the temporal value as defined by its minimum and maximum value
         """
-        # Should we return postgis's floatrange or PyMEOS's RangeFloat?
-        # Note that because of duck typing both are substitutable for each other
-        return floatrange(self.minValue, self.maxValue, True, True)
-
-    @staticmethod
-    def read_from_cursor(value, cursor=None):
-        if not value:
-            return None
-        if value.startswith('Interp=Stepwise;'):
-            value1 = value.replace('Interp=Stepwise;', '')
-            if value1[0] == '{':
-                return TFloatS(value)
-            else:
-                return TFloatSeq(value)
-        elif value[0] != '{' and value[0] != '[' and value[0] != '(':
-            return TFloatInst(value)
-        elif value[0] == '[' or value[0] == '(':
-            return TFloatSeq(value)
-        elif value[0] == '{':
-            if value[1] == '[' or value[1] == '(':
-                return TFloatS(value)
-            else:
-                return TFloatI(value)
-        raise Exception("ERROR: Could not parse temporal float value")
-
-    @staticmethod
-    def write(value):
-        if not isinstance(value, TFloat):
-            raise ValueError('Value must be an instance of a subclass of TFloat')
-        return value.__str__()
+        return RangeFloat(self.minValue, self.maxValue, True, True)
 
 
 class TFloatInst(TInstantFloat, TFloat):

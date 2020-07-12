@@ -8,7 +8,7 @@ Requirements
 
 * `psycopg2 <http://initd.org/psycopg/docs/>`_ or `asyncpg <https://magicstack.github.io/asyncpg/>`_ to connect to PostgreSQL,
 * `postgis <https://github.com/tilery/python-postgis>`_ to connect to PostGIS,
-* `Spans <https://spans.readthedocs.io/>`_ for an implementation of PostgreSQL’s range types,
+* `PyMEOS <https://pymeos.netlify.app/>`_ for an implementation of MobilityDB’s types,
 * `python-dateutil <http://labix.org/python-dateutil>`_ for extensions to the standard datetime module,
 * `parsec <https://pythonhosted.org/parsec/>`_ for parsing.
 

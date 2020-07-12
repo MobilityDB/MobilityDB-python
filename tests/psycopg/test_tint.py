@@ -1,7 +1,6 @@
 import pytest
 from datetime import timedelta
 from dateutil.parser import parse
-from spans.types import intrange
 from mobilitydb.time import TimestampSet, Period, PeriodSet
 from mobilitydb.main import TIntInst, TIntI, TIntSeq, TIntS
 
@@ -34,7 +33,7 @@ def test_tintinst_accessors(cursor, expected_tintinst):
     assert TIntInst(expected_tintinst).endValue == 10
     assert TIntInst(expected_tintinst).minValue == 10
     assert TIntInst(expected_tintinst).maxValue == 10
-    assert TIntInst(expected_tintinst).valueRange == intrange(10, 10, upper_inc=True)
+    assert TIntInst(expected_tintinst).valueRange == RangeInt(10, 10, upper_inc=True)
     assert TIntInst(expected_tintinst).getTimestamp == parse('2019-09-01 00:00:00+01')
     assert TIntInst(expected_tintinst).getTime == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]}')
     assert TIntInst(expected_tintinst).timespan == timedelta(0)
@@ -100,7 +99,7 @@ def test_tinti_accessors(cursor, expected_tinti):
     assert TIntI(expected_tinti).endValue == 30
     assert TIntI(expected_tinti).minValue == 10
     assert TIntI(expected_tinti).maxValue == 30
-    assert TIntI(expected_tinti).valueRange == intrange(10, 30, upper_inc=True)
+    assert TIntI(expected_tinti).valueRange == RangeInt(10, 30, upper_inc=True)
     assert TIntI(expected_tinti).getTime == \
            PeriodSet(
                '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
@@ -169,7 +168,7 @@ def test_tintseq_accessors(cursor, expected_tintseq):
     assert TIntSeq(expected_tintseq).endValue == 30
     assert TIntSeq(expected_tintseq).minValue == 10
     assert TIntSeq(expected_tintseq).maxValue == 30
-    assert TIntSeq(expected_tintseq).valueRange == intrange(10, 30, upper_inc=True)
+    assert TIntSeq(expected_tintseq).valueRange == RangeInt(10, 30, upper_inc=True)
     assert TIntSeq(expected_tintseq).getTime == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]}')
     assert TIntSeq(expected_tintseq).timespan == timedelta(2)
     assert TIntSeq(expected_tintseq).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
@@ -205,8 +204,7 @@ def test_tintseq_accessors(cursor, expected_tintseq):
 
 @pytest.mark.parametrize('expected_tints', [
     '{[10@2019-09-01 00:00:00+01], [20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]}',
-    # PyMEOS doesn't support interpolation yet
-    # 'Interp=Stepwise;{[10@2019-09-01 00:00:00+01], [20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]}',
+    'Interp=Stepwise;{[10@2019-09-01 00:00:00+01], [20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]}',
     {'[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'},
     {TIntSeq('[10@2019-09-01 00:00:00+01]'),
      TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')},
@@ -236,7 +234,7 @@ def test_tints_accessors(cursor, expected_tints):
     assert TIntS(expected_tints).endValue == 30
     assert TIntS(expected_tints).minValue == 10
     assert TIntS(expected_tints).maxValue == 30
-    assert TIntS(expected_tints).valueRange == intrange(10, 30, upper_inc=True)
+    assert TIntS(expected_tints).valueRange == RangeInt(10, 30, upper_inc=True)
     assert TIntS(expected_tints).getTime == PeriodSet(
         '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')
     assert TIntS(expected_tints).timespan == timedelta(1)

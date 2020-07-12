@@ -20,7 +20,6 @@ setup(
         'asyncpg',
         'psycopg2-binary',
         'pymeos',
-        'Spans',
         'postgis',
         'pytest',
         'python-dateutil',

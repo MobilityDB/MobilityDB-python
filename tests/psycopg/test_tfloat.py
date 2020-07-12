@@ -1,7 +1,6 @@
 import pytest
 from datetime import timedelta
 from dateutil.parser import parse
-from spans.types import floatrange
 from mobilitydb.time import TimestampSet, Period, PeriodSet
 from mobilitydb.main import TFloatInst, TFloatI, TFloatSeq, TFloatS
 
@@ -32,7 +31,7 @@ def test_tfloatinst_accessors(cursor, expected_tfloatinst):
     assert TFloatInst(expected_tfloatinst).endValue == 10.0
     assert TFloatInst(expected_tfloatinst).minValue == 10.0
     assert TFloatInst(expected_tfloatinst).maxValue == 10.0
-    assert TFloatInst(expected_tfloatinst).valueRange == floatrange(10.0, 10.0, upper_inc=True)
+    assert TFloatInst(expected_tfloatinst).valueRange == RangeFloat(10.0, 10.0, upper_inc=True)
     assert TFloatInst(expected_tfloatinst).getTimestamp == parse('2019-09-01 00:00:00+01')
     assert TFloatInst(expected_tfloatinst).getTime == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]}')
     assert TFloatInst(expected_tfloatinst).timespan == timedelta(0)
@@ -97,7 +96,7 @@ def test_tfloati_accessors(cursor, expected_tfloati):
     assert TFloatI(expected_tfloati).endValue == 30.0
     assert TFloatI(expected_tfloati).minValue == 10.0
     assert TFloatI(expected_tfloati).maxValue == 30.0
-    assert TFloatI(expected_tfloati).valueRange == floatrange(10.0, 30.0, upper_inc=True)
+    assert TFloatI(expected_tfloati).valueRange == RangeFloat(10.0, 30.0, upper_inc=True)
     assert TFloatI(expected_tfloati).getTime == \
            PeriodSet(
                '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
@@ -170,7 +169,7 @@ def test_tfloatseq_accessors(cursor, expected_tfloatseq):
     assert TFloatSeq(expected_tfloatseq).endValue == 30.0
     assert TFloatSeq(expected_tfloatseq).minValue == 10.0
     assert TFloatSeq(expected_tfloatseq).maxValue == 30.0
-    assert TFloatSeq(expected_tfloatseq).valueRange == floatrange(10.0, 30.0, upper_inc=True)
+    assert TFloatSeq(expected_tfloatseq).valueRange == RangeFloat(10.0, 30.0, upper_inc=True)
     assert TFloatSeq(expected_tfloatseq).getTime == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]}')
     assert TFloatSeq(expected_tfloatseq).timespan == timedelta(2)
     assert TFloatSeq(expected_tfloatseq).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
@@ -242,7 +241,7 @@ def test_tfloats_accessors(cursor, expected_tfloats):
     assert TFloatS(expected_tfloats).endValue == 30.0
     assert TFloatS(expected_tfloats).minValue == 10.0
     assert TFloatS(expected_tfloats).maxValue == 30.0
-    assert TFloatS(expected_tfloats).valueRange == floatrange(10.0, 30.0, upper_inc=True)
+    assert TFloatS(expected_tfloats).valueRange == RangeFloat(10.0, 30.0, upper_inc=True)
     assert TFloatS(expected_tfloats).getTime == PeriodSet(
         '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')
     assert TFloatS(expected_tfloats).timespan == timedelta(1)

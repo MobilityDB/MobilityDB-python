@@ -4,6 +4,8 @@ from dateutil.parser import parse
 from mobilitydb.temporal import Temporal
 from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
+from pymeos.io import DeserializerBool
+from pymeos.range import RangeBool
 from pymeos.temporal import Interpolation, TInstantBool, TInstantSetBool, TSequenceBool, TSequenceSetBool
 
 
@@ -12,26 +14,8 @@ class TBool(Temporal):
     Abstract class for representing temporal Booleans of any duration.
     """
 
-    @staticmethod
-    def read_from_cursor(value, cursor=None):
-        if not value:
-            return None
-        if value[0] != '{' and value[0] != '[' and value[0] != '(':
-            return TBoolInst(value)
-        elif value[0] == '[' or value[0] == '(':
-            return TBoolSeq(value)
-        elif value[0] == '{':
-            if value[1] == '[' or value[1] == '(':
-                return TBoolS(value)
-            else:
-                return TBoolI(value)
-        raise Exception("ERROR: Could not parse temporal boolean value")
-
-    @staticmethod
-    def write(value):
-        if not isinstance(value, TBool):
-            raise ValueError('Value must be an instance of a subclass of TBool')
-        return value.__str__()
+    pymeos_deserializer_type = DeserializerBool
+    pymeos_range_type = RangeBool
 
 
 class TBoolInst(TInstantBool, TBool):

@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 from dateutil.parser import parse
-from spans.types import intrange
 from mobilitydb.time import TimestampSet, Period, PeriodSet
 from mobilitydb.main import TIntInst, TIntI, TIntSeq, TIntS
 

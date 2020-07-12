@@ -1,6 +1,7 @@
-from spans.types import intrange
 from mobilitydb.temporal import Temporal
 
+from pymeos.io import DeserializerInt
+from pymeos.range import RangeInt
 from pymeos.temporal import TInstantInt, TInstantSetInt, TSequenceInt, TSequenceSetInt
 
 
@@ -9,35 +10,15 @@ class TInt(Temporal):
     Abstract class for representing temporal integers of any duration.
     """
 
-    @staticmethod
-    def read_from_cursor(value, cursor=None):
-        if not value:
-            return None
-        if value[0] != '{' and value[0] != '[' and value[0] != '(':
-            return TIntInst(value)
-        elif value[0] == '[' or value[0] == '(':
-            return TIntSeq(value)
-        elif value[0] == '{':
-            if value[1] == '[' or value[1] == '(':
-                return TIntS(value)
-            else:
-                return TIntI(value)
-        raise Exception("ERROR: Could not parse temporal integer value")
-
-    @staticmethod
-    def write(value):
-        if not isinstance(value, TInt):
-            raise ValueError('Value must be an instance of a subclass of TInt')
-        return value.__str__()
+    pymeos_deserializer_type = DeserializerInt
+    pymeos_range_type = RangeInt
 
     @property
     def valueRange(self):
         """
         Range of values taken by the temporal value as defined by its minimum and maximum value
         """
-        # Should we return postgis's intrange or PyMEOS's RangeInt?
-        # Note that because of duck typing both are substitutable for each other
-        return intrange(self.minValue, self.maxValue, True, True)
+        return RangeInt(self.minValue, self.maxValue, True, True)
 
 
 class TIntInst(TInstantInt, TInt):
