@@ -99,10 +99,6 @@ class TPointInst(TInstantGeom):
         #     raise Exception("ERROR: The points composing a temporal point cannot have M dimension")
         pass
 
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.getValue!r}, {self.getTimestamp!r})')
-
 
 class TPointI(TInstantSetGeom):
     """
@@ -178,10 +174,6 @@ class TPointI(TInstantSetGeom):
         """
         values = sorted([to_coords(v.getValue) for v in self.instants])
         return MultiPoint(values)
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.instants!r})')
 
 
 class TPointSeq(TSequenceGeom):
@@ -260,14 +252,6 @@ class TPointSeq(TSequenceGeom):
         #     raise Exception("ERROR: The points composing a temporal point must have the same SRID")
         pass
 
-
-    @property
-    def interpolation(self):
-        """
-        Interpolation of the temporal value, which is either ``'Linear'`` or ``'Stepwise'``.
-        """
-        return self._interp
-
     @property
     def getValues(self):
         """
@@ -276,10 +260,6 @@ class TPointSeq(TSequenceGeom):
         values = [to_coords(inst.getValue) for inst in sorted(self.instants)]
         result = Point(values[0]) if len(values) == 1 else LineString(values)
         return result
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r})')
 
 
 class TPointS(TSequenceSetGeom):
@@ -383,10 +363,6 @@ class TPointS(TSequenceSetGeom):
             return MultiPoint(points)
         if len(points) == 0 and len(lines) != 0:
             return MultiLineString(lines)
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.sequences!r})')
 
 
 class TGeomPoint(Temporal):

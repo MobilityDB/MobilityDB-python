@@ -128,7 +128,7 @@ def test_tbooli_accessors(cursor, expected_tbooli):
 
 @pytest.mark.parametrize('expected_tboolseq', [
     '[true@2019-09-01 00:00:00+01, false@2019-09-02 00:00:00+01, false@2019-09-03 00:00:00+01]',
-    # 'Interp=Stepwise;[true@2019-09-01 00:00:00+01, false@2019-09-02 00:00:00+01, false@2019-09-03 00:00:00+01]',
+    'Interp=Stepwise;[true@2019-09-01 00:00:00+01, false@2019-09-02 00:00:00+01, false@2019-09-03 00:00:00+01]',
     {'true@2019-09-01 00:00:00+01', 'false@2019-09-02 00:00:00+01', 'false@2019-09-03 00:00:00+01'},
     {TBoolInst('true@2019-09-01 00:00:00+01'), TBoolInst('false@2019-09-02 00:00:00+01'),
      TBoolInst('false@2019-09-03 00:00:00+01')},

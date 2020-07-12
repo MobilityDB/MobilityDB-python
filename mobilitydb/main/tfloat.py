@@ -1,7 +1,7 @@
 from spans.types import floatrange
 from mobilitydb.temporal import Temporal
 
-from pymeos.temporal import TInstantFloat, TInstantSetFloat, TSequenceFloat, TSequenceSetFloat
+from pymeos.temporal import Interpolation, TInstantFloat, TInstantSetFloat, TSequenceFloat, TSequenceSetFloat
 
 
 class TFloat(Temporal):
@@ -65,10 +65,6 @@ class TFloatInst(TInstantFloat, TFloat):
 
     """
 
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.getValue!r}, {self.getTimestamp!r})')
-
 
 class TFloatI(TInstantSetFloat, TFloat):
     """
@@ -86,10 +82,6 @@ class TFloatI(TInstantSetFloat, TFloat):
         >>> TFloatI({TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'), TFloatInst('10.0@2019-09-03 00:00:00+01')})
 
     """
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.instants!r})')
 
 
 class TFloatSeq(TSequenceFloat, TFloat):
@@ -122,22 +114,12 @@ class TFloatSeq(TSequenceFloat, TFloat):
     """
 
     def __init__(self, instants, lower_inc=None, upper_inc=None, interp=None):
-        # TODO support interp
-        if isinstance(instants, str):
+        if isinstance(instants, str) or lower_inc is None:
             super().__init__(instants)
-        else:
+        elif interp is None:
             super().__init__(instants, lower_inc, upper_inc)
-
-    @property
-    def interpolation(self):
-        """
-        Interpolation of the temporal value, which is either ``'Linear'`` or ``'Stepwise'``.
-        """
-        return self._interp
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r})')
+        else:
+            super().__init__(instants, lower_inc, upper_inc, Interpolation.__members__.get(interp, None))
 
 
 class TFloatS(TSequenceSetFloat, TFloat):
@@ -178,8 +160,4 @@ class TFloatS(TSequenceSetFloat, TFloat):
         Interpolation of the temporal value, which is either ``'Linear'`` or ``'Stepwise'``.
         """
         return self._interp
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.sequences!r})')
 

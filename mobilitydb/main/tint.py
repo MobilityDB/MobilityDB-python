@@ -59,10 +59,6 @@ class TIntInst(TInstantInt, TInt):
 
     """
 
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.getValue!r}, {self.getTimestamp!r})')
-
 
 class TIntI(TInstantSetInt, TInt):
     """
@@ -80,10 +76,6 @@ class TIntI(TInstantSetInt, TInt):
         >>> TIntI({TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')})
 
     """
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.instants!r})')
 
 
 class TIntSeq(TSequenceInt, TInt):
@@ -113,23 +105,10 @@ class TIntSeq(TSequenceInt, TInt):
     """
 
     def __init__(self, instants, lower_inc=None, upper_inc=None):
-        # TODO interp
         if isinstance(instants, str):
             super().__init__(instants)
         else:
             super().__init__(instants, lower_inc, upper_inc)
-
-    @classmethod
-    @property
-    def interpolation(self):
-        """
-        Interpolation of the temporal value, that is, ``'Stepwise'``.
-        """
-        return 'Stepwise'
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r})')
 
 
 class TIntS(TSequenceSetInt, TInt):
@@ -156,8 +135,4 @@ class TIntS(TSequenceSetInt, TInt):
         Interpolation of the temporal value, that is, ``'Stepwise'``.
         """
         return 'Stepwise'
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.sequences!r})')
 

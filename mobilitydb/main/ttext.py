@@ -52,10 +52,6 @@ class TTextInst(TInstantText, TText):
 
     """
 
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.getValue!r}, {self.getTimestamp!r})')
-
 
 class TTextI(TInstantSetText, TText):
     """
@@ -73,10 +69,6 @@ class TTextI(TInstantSetText, TText):
         >>> TTextI({TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')})
 
     """
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.instants!r})')
 
 
 class TTextSeq(TSequenceText, TText):
@@ -111,18 +103,6 @@ class TTextSeq(TSequenceText, TText):
         else:
             super().__init__(instants, lower_inc, upper_inc)
 
-    @classmethod
-    @property
-    def interpolation(self):
-        """
-        Interpolation of the temporal value, that is, ``'Stepwise'``.
-        """
-        return 'Stepwise'
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r})')
-
 
 class TTextS(TSequenceSetText, TText):
     """
@@ -147,9 +127,5 @@ class TTextS(TSequenceSetText, TText):
         Interpolation of the temporal value, that is, ``'Stepwise'``.
         """
         return 'Stepwise'
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.sequences!r})')
 
 

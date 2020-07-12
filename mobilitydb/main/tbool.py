@@ -4,7 +4,7 @@ from dateutil.parser import parse
 from mobilitydb.temporal import Temporal
 from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
-from pymeos.temporal import TInstantBool, TInstantSetBool, TSequenceBool, TSequenceSetBool
+from pymeos.temporal import Interpolation, TInstantBool, TInstantSetBool, TSequenceBool, TSequenceSetBool
 
 
 class TBool(Temporal):
@@ -53,10 +53,6 @@ class TBoolInst(TInstantBool, TBool):
 
     """
 
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.getValue!r}, {self.getTimestamp!r})')
-
 
 class TBoolI(TInstantSetBool, TBool):
     """
@@ -74,10 +70,6 @@ class TBoolI(TInstantSetBool, TBool):
         >>> TBoolI({TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01')})
 
     """
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.instants!r})')
 
 
 class TBoolSeq(TSequenceBool, TBool):
@@ -107,24 +99,11 @@ class TBoolSeq(TSequenceBool, TBool):
     """
 
     def __init__(self, instants, lower_inc=None, upper_inc=None):
-        # TODO pass interp to PyMEOS and handle there
-        self._interp = 'Stepwise'
         if isinstance(instants, str):
             super().__init__(instants)
         else:
             super().__init__(instants, lower_inc, upper_inc)
 
-    @classmethod
-    @property
-    def interpolation(self):
-        """
-        Interpolation of the temporal value, that is, ``'Stepwise'``.
-        """
-        return 'Stepwise'
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.instants!r}, {self.lower_inc!r}, {self.upper_inc!r})')
 
 class TBoolS(TSequenceSetBool, TBool):
     """
@@ -150,8 +129,4 @@ class TBoolS(TSequenceSetBool, TBool):
         Interpolation of the temporal value, that is, ``'Stepwise'``.
         """
         return 'Stepwise'
-
-    def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.sequences!r})')
 
