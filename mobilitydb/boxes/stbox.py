@@ -15,7 +15,7 @@ class STBox:
     dimensions, where the coordinates may be in 2D (``X`` and ``Y``) or in 3D
     (``X``, ``Y``, and ``Z``). For each dimension, minimum and maximum values
     are stored. The coordinates may be either Cartesian (planar) or geodetic
-    (spherical).
+    (spherical). Additionally, the SRID of coordinates can be specified.
 
 
     ``STBox`` objects can be created with a single argument of type string
@@ -29,6 +29,8 @@ class STBox:
         >>> "GEODSTBOX((1.0, 2.0, 3.0), (1.0, 2.0, 3.0))",
         >>> "GEODSTBOX T((1.0, 2.0, 3.0, 2001-01-03 00:00:00+01), (1.0, 2.0, 3.0, 2001-01-04 00:00:00+01))",
         >>> "GEODSTBOX T((, 2001-01-03 00:00:00+01), (, 2001-01-03 00:00:00+01))",
+        >>> "SRID=5676;STBOX T((1.0, 2.0, 2001-01-04), (1.0, 2.0, 2001-01-04))",
+        >>> "SRID=4326;GEODSTBOX((1.0, 2.0, 3.0), (1.0, 2.0, 3.0))",
 
     Another possibility is to give the bounds in the following order:
     ``xmin``, ``ymin``, ``zmin``, ``tmin``, ``xmax``, ``ymax``, ``zmax``,
@@ -47,17 +49,20 @@ class STBox:
         >>> STBox(('2001-01-03', '2001-01-03'))
         >>> STBox((1.0, 2.0, 3.0, 1.0, 2.0, 3.0), geodetic=True)
         >>> STBox((1.0, 2.0, 3.0, '2001-01-04', 1.0, 2.0, 3.0, '2001-01-03'), geodetic=True)
+        >>> STBox((1.0, 2.0, 3.0, '2001-01-04', 1.0, 2.0, 3.0, '2001-01-03'), geodetic=True, srid=4326)
         >>> STBox(('2001-01-03', '2001-01-03'), geodetic=True)
 
     """
-    __slots__ = ['_xmin', '_ymin', '_zmin', '_tmin', '_xmax', '_ymax', '_zmax', '_tmax', '_geodetic']
+    __slots__ = ['_xmin', '_ymin', '_zmin', '_tmin', '_xmax', '_ymax', '_zmax', '_tmax', '_geodetic', '_srid']
 
-    def __init__(self, bounds, dimt=None, geodetic=None):
+    def __init__(self, bounds, dimt=None, geodetic=None, srid=None):
         # Initialize arguments to None and set geodetic if given
         self._xmin = self._ymin = self._zmin = self._tmin = None
         self._xmax = self._ymax = self._zmax = self._tmax = None
         assert(geodetic is None or isinstance(geodetic, bool)), "ERROR: Geodetic parameter must be Boolean"
         self._geodetic = geodetic if geodetic is not None else False
+        assert(srid is None or isinstance(srid, int)), "ERROR: SRID parameter must be Integer"
+        self._srid = srid if srid is not None else False
         # Unpack the bounds
         if isinstance(bounds, str):
             self.parse_from_string(bounds)
@@ -98,7 +103,17 @@ class STBox:
     def parse_from_string(self, value):
         if value is None or not isinstance(value, str):
             raise Exception("ERROR: Cannot parse STBox")
+        value = value.strip()
         values = None
+
+        # SRID, if specified would be at start of the value. Example:
+        #   SRID=4326;GEODSTBOX((1.0, 2.0, 3.0), (1.0, 2.0, 3.0))
+        if value.startswith("SRID"):
+            srid, _stbox = value.split(";")
+            srid = int(srid.split('=')[1])
+            self._srid = srid
+            value = _stbox
+
         if 'GEODSTBOX' in value:
             self._geodetic = True
             value = value.replace("GEODSTBOX", '')
@@ -110,9 +125,11 @@ class STBox:
             hast = True if 'T' in value else False
         else:
             raise Exception("ERROR: Input must be STBOX")
+
         values = value.replace('Z', '').replace('T', ''). replace('(', '').replace(')', '').split(',')
         # Remove empty or only space strings
         values = [value for value in values if value != '' and not value.isspace()]
+
         if len(values) == 2:
             self._tmin = parse(values[0])
             self._tmax = parse(values[1])
@@ -213,6 +230,13 @@ class STBox:
         """
         return self._geodetic
 
+    @property
+    def srid(self):
+        """
+        SRID of the geographic coordinates
+        """
+        return self._srid
+
     def __eq__(self, other):
         if isinstance(other, self.__class__):
             return self._xmin == other._xmin and self._ymin == other._ymin and self._zmin == other._zmin and \
@@ -221,35 +245,36 @@ class STBox:
         return False
 
     def __str__(self):
+        srid_prefix = ('SRID=%s;' % self._srid) if self._srid else ''
         if self._geodetic:
             if self._tmin is not None:
                 if self._xmin is not None:
-                    return "'GEODSTBOX T((%s, %s, %s, %s), (%s, %s, %s, %s))'" % \
-                        (self._xmin, self._ymin, self._zmin, self._tmin, self._xmax, self._ymax, self._zmax, self._tmax)
+                    return "'%sGEODSTBOX T((%s, %s, %s, %s), (%s, %s, %s, %s))'" % \
+                        (srid_prefix, self._xmin, self._ymin, self._zmin, self._tmin, self._xmax, self._ymax, self._zmax, self._tmax)
                 else:
-                    return "'GEODSTBOX T((, %s), (, %s))'" % (self._tmin, self._tmax)
+                    return "'%sGEODSTBOX T((, %s), (, %s))'" % (srid_prefix, self._tmin, self._tmax)
             else:
-                return "'GEODSTBOX((%s, %s, %s), (%s, %s, %s))'" % \
-                    (self._xmin, self._ymin, self._zmin, self._xmax, self._ymax, self._zmax)
+                return "'%sGEODSTBOX((%s, %s, %s), (%s, %s, %s))'" % \
+                    (srid_prefix, self._xmin, self._ymin, self._zmin, self._xmax, self._ymax, self._zmax)
         else:
             if self._xmin is not None and self._zmin is not None and self._tmin is not None:
-                return "'STBOX ZT((%s, %s, %s, %s), (%s, %s, %s, %s))'" % \
-                    (self._xmin, self._ymin, self._zmin, self._tmin, self._xmax, self._ymax, self._zmax, self._tmax)
+                return "'%sSTBOX ZT((%s, %s, %s, %s), (%s, %s, %s, %s))'" % \
+                    (srid_prefix, self._xmin, self._ymin, self._zmin, self._tmin, self._xmax, self._ymax, self._zmax, self._tmax)
             elif self._xmin is not None and self._zmin is not None and self._tmin is None:
-                return "'STBOX Z((%s, %s, %s), (%s, %s, %s))'" % \
-                    (self._xmin, self._ymin, self._zmin, self._xmax, self._ymax, self._zmax)
+                return "'%sSTBOX Z((%s, %s, %s), (%s, %s, %s))'" % \
+                    (srid_prefix, self._xmin, self._ymin, self._zmin, self._xmax, self._ymax, self._zmax)
             elif self._xmin is not None and self._zmin is None and self._tmin is not None:
-                return "'STBOX T((%s, %s, %s), (%s, %s, %s))'" % \
-                    (self._xmin, self._ymin, self._tmin, self._xmax, self._ymax, self._tmax)
+                return "'%sSTBOX T((%s, %s, %s), (%s, %s, %s))'" % \
+                    (srid_prefix, self._xmin, self._ymin, self._tmin, self._xmax, self._ymax, self._tmax)
             elif self._xmin is not None and self._zmin is None and self._tmin is None:
-                return "'STBOX ((%s, %s), (%s, %s))'" % \
-                       (self._xmin, self._ymin, self._xmax, self._ymax)
+                return "'%sSTBOX ((%s, %s), (%s, %s))'" % \
+                       (srid_prefix, self._xmin, self._ymin, self._xmax, self._ymax)
             elif self._xmin is None and self._zmin is None and self._tmin is not None:
-                return "'STBOX T((, %s), (, %s))'" % (self._tmin, self._tmax)
+                return "'%sSTBOX T((, %s), (, %s))'" % (srid_prefix, self._tmin, self._tmax)
             else:
                 raise Exception("ERROR: Wrong values")
 
     def __repr__(self):
         return (f'{self.__class__.__name__ }'
                 f'({self._xmin!r}, {self._ymin!r}, {self._zmin!r}, {self._tmin!r}, '
-                f'{self._xmax!r}, {self._ymax!r}, {self._zmax!r}, {self._tmax!r}, {self._geodetic!r})')
+                f'{self._xmax!r}, {self._ymax!r}, {self._zmax!r}, {self._tmax!r}, {self._geodetic!r}, {self._srid!r})')
