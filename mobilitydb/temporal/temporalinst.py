@@ -195,23 +195,11 @@ class TemporalInst(Temporal):
         """
         return self._time == timestamp
 
-    def intersectsTimestampset(self, timestampset):
-        """
-        Does the temporal value intersect the timestamp set?
-        """
-        return any(self._time == timestamp for timestamp in timestampset._datetimeList)
-
     def intersectsPeriod(self, period):
         """
         Does the temporal value intersect the period?
         """
         return period.contains_timestamp(self._time)
-
-    def intersectsPeriodset(self, periodset):
-        """
-        Does the temporal value intersect the period set?
-        """
-        return any(period.contains_timestamp(self._time) for period in periodset._periodList)
 
     # Comparisons are missing
     def __eq__(self, other):

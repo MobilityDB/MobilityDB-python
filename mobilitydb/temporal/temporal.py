@@ -197,12 +197,11 @@ class Temporal:
         """
         pass
 
-    @abstractmethod
     def intersectsTimestampset(self, timestampset):
         """
         Does the temporal value intersect the timestamp set?
         """
-        pass
+        return any(self.intersectsTimestamp(timestamp) for timestamp in timestampset._datetimeList)
 
     @abstractmethod
     def intersectsPeriod(self, period):
@@ -211,12 +210,11 @@ class Temporal:
         """
         pass
 
-    @abstractmethod
     def intersectsPeriodset(self, periodset):
         """
         Does the temporal value intersect the period set?
         """
-        pass
+        return any(self.intersectsPeriod(period) for period in periodset._periodList)
 
     # Psycopg2 interface.
     def __conform__(self, protocol):

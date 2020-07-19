@@ -150,27 +150,13 @@ class TemporalSeq(TemporalInstants):
         """
         Does the temporal value intersect the timestamp?
         """
-        return ((self.lower_inc and self._instantList[0]._time == timestamp) or
-                (self.upper_inc and self._instantList[-1]._time == timestamp) or
-                (self._instantList[0]._time < timestamp < self._instantList[-1]._time))
-
-    def intersectsTimestampset(self, timestampset):
-        """
-        Does the temporal value intersect the timestamp set?
-        """
-        return any(self.intersectsTimestamp(timestamp) for timestamp in timestampset._datetimeList)
+        return self.period.contains_timestamp(timestamp)
 
     def intersectsPeriod(self, period):
         """
         Does the temporal value intersect the period?
         """
         return self.period.overlap(period)
-
-    def intersectsPeriodset(self, periodset):
-        """
-        Does the temporal value intersect the period set?
-        """
-        return any(self.intersectsPeriod(period) for period in periodset._periodList)
 
     # Comparisons are missing
     def __eq__(self, other):
