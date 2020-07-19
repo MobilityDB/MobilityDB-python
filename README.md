@@ -5,7 +5,7 @@ MobilityDB-python is a database adapter to access [MobilityDB](https://github.co
 Install
 ------------
 ```sh
-$ pip install python-mobilitydb
+pip install python-mobilitydb
 ```
 
 Requirements
@@ -22,7 +22,7 @@ Using the psycopg2 adapter for PostgreSQL
 import psycopg2
 from mobilitydb.psycopg import register
 
-connectionObject = None
+connection = None
 
 try:
     # Set the connection parameters to PostgreSQL
@@ -54,8 +54,8 @@ except (Exception, psycopg2.Error) as error:
 
 finally:
     # Close the connection
-    if connectionObject:
-        connectionObject.close()
+    if connection:
+        connection.close()
 ```
 
 Using the asyncg adapter for PostgreSQL
