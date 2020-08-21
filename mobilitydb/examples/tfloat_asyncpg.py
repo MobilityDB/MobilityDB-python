@@ -67,11 +67,11 @@ async def run():
             else:
                 print("startTimestamp =", row[1].startTimestamp, "\n")
 
-        drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloati_temp;'''
+        drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloatinstset_temp;'''
         await connection.execute(drop_table_query)
         print("Table deleted successfully in PostgreSQL ")
     
-        create_table_query = '''CREATE TABLE tbl_tfloati_temp
+        create_table_query = '''CREATE TABLE tbl_tfloatinstset_temp
             (
               k integer PRIMARY KEY,
               temp tfloat
@@ -80,10 +80,10 @@ async def run():
         await connection.execute(create_table_query)
         print("Table created successfully in PostgreSQL ")
     
-        postgres_insert_query = ''' INSERT INTO tbl_tfloati_temp (k, temp) VALUES ($1, $2) '''
+        postgres_insert_query = ''' INSERT INTO tbl_tfloatinstset_temp (k, temp) VALUES ($1, $2) '''
         await connection.executemany(postgres_insert_query, rows)
         #count = cursor.rowcount
-        print(len(rows), "record(s) inserted successfully into tbl_tfloati_temp table")
+        print(len(rows), "record(s) inserted successfully into tbl_tfloatinstset_temp table")
 
         ######################
         # TFloatSeq
@@ -139,11 +139,11 @@ async def run():
             else:
                 print("startTimestamp =", row[1].startTimestamp, "\n")
     
-        drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloats_temp;'''
+        drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloatseqset_temp;'''
         await connection.execute(drop_table_query)
         print("Table deleted successfully in PostgreSQL ")
     
-        create_table_query = '''CREATE TABLE tbl_tfloats_temp
+        create_table_query = '''CREATE TABLE tbl_tfloatseqset_temp
             (
               k integer PRIMARY KEY,
               temp tfloat
@@ -152,10 +152,10 @@ async def run():
         await connection.execute(create_table_query)
         print("Table created successfully in PostgreSQL ")
     
-        postgres_insert_query = ''' INSERT INTO tbl_tfloats_temp (k, temp) VALUES ($1, $2) '''
+        postgres_insert_query = ''' INSERT INTO tbl_tfloatseqset_temp (k, temp) VALUES ($1, $2) '''
         await connection.executemany(postgres_insert_query, rows)
         # count = cursor.rowcount
-        print(len(rows), "record(s) inserted successfully into tbl_tfloats_temp table")
+        print(len(rows), "record(s) inserted successfully into tbl_tfloatseqset_temp table")
     
         print("\n****************************************************************")
 

@@ -1,7 +1,7 @@
 import pytest
 from dateutil.parser import parse
 from postgis import Point
-from mobilitydb.main import TGeogPointInst, TGeogPointI, TGeogPointSeq, TGeogPointS
+from mobilitydb.main import TGeogPointInst, TGeogPointInstSet, TGeogPointSeq, TGeogPointSeqSet
 
 pytestmark = pytest.mark.asyncio
 
@@ -49,17 +49,17 @@ async def test_tgeogpointinst_constructors(connection, expected_tgeogpointinst):
         TGeogPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
         TGeogPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')],
 ])
-async def test_tgeogpointi_constructor(connection, expected_tgeogpointi):
-    if isinstance(expected_tgeogpointi, tuple):
-        params = TGeogPointI(*expected_tgeogpointi)
+async def test_tgeogpointinstset_constructor(connection, expected_tgeogpointinstset):
+    if isinstance(expected_tgeogpointinstset, tuple):
+        params = TGeogPointInstSet(*expected_tgeogpointinstset)
     else:
-        params = TGeogPointI(expected_tgeogpointi)
-    await connection.execute('INSERT INTO tbl_tgeogpointi (temp) VALUES ($1)', params)
-    result = await connection.fetchval('SELECT temp FROM tbl_tgeogpointi WHERE temp=$1', params)
-    if isinstance(expected_tgeogpointi, tuple):
-        assert result == TGeogPointI(*expected_tgeogpointi)
+        params = TGeogPointInstSet(expected_tgeogpointinstset)
+    await connection.execute('INSERT INTO tbl_tgeogpointinstset (temp) VALUES ($1)', params)
+    result = await connection.fetchval('SELECT temp FROM tbl_tgeogpointinstset WHERE temp=$1', params)
+    if isinstance(expected_tgeogpointinstset, tuple):
+        assert result == TGeogPointInstSet(*expected_tgeogpointinstset)
     else:
-        assert result == TGeogPointI(expected_tgeogpointi)
+        assert result == TGeogPointInstSet(expected_tgeogpointinstset)
 
 @pytest.mark.parametrize('expected_tgeogpointseq', [
     '[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
@@ -105,7 +105,7 @@ async def test_tgeogpointseq_constructor(connection, expected_tgeogpointseq):
     else:
         assert result == TGeogPointSeq(expected_tgeogpointseq)
 
-@pytest.mark.parametrize('expected_tgeogpoints', [
+@pytest.mark.parametrize('expected_tgeogpointseqset', [
     '{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
         '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}',
     'SRID=4326;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
@@ -144,14 +144,14 @@ async def test_tgeogpointseq_constructor(connection, expected_tgeogpointseq):
             'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')],
      'Stepwise'),
 ])
-async def test_tgeogpoints_constructor(connection, expected_tgeogpoints):
-    if isinstance(expected_tgeogpoints, tuple):
-        params = TGeogPointS(*expected_tgeogpoints)
+async def test_tgeogpointseqset_constructor(connection, expected_tgeogpointseqset):
+    if isinstance(expected_tgeogpointseqset, tuple):
+        params = TGeogPointSeqSet(*expected_tgeogpointseqset)
     else:
-        params = TGeogPointS(expected_tgeogpoints)
-    await connection.execute('INSERT INTO tbl_tgeogpoints (temp) VALUES ($1)', params)
-    result = await connection.fetchval('SELECT temp FROM tbl_tgeogpoints WHERE temp=$1', params)
-    if isinstance(expected_tgeogpoints, tuple):
-        assert result == TGeogPointS(*expected_tgeogpoints)
+        params = TGeogPointSeqSet(expected_tgeogpointseqset)
+    await connection.execute('INSERT INTO tbl_tgeogpointseqset (temp) VALUES ($1)', params)
+    result = await connection.fetchval('SELECT temp FROM tbl_tgeogpointseqset WHERE temp=$1', params)
+    if isinstance(expected_tgeogpointseqset, tuple):
+        assert result == TGeogPointSeqSet(*expected_tgeogpointseqset)
     else:
-        assert result == TGeogPointS(expected_tgeogpoints)
+        assert result == TGeogPointSeqSet(expected_tgeogpointseqset)

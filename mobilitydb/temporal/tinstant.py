@@ -27,7 +27,7 @@ class TInstant(Temporal):
         # Now both value and time are not None
         assert(isinstance(value, (str, type(self).BaseClass))), "ERROR: Invalid value argument"
         assert(isinstance(time, (str, datetime))), "ERROR: Invalid time argument"
-        self._value = type(self).BaseClass(value) if isinstance(value, str) else value
+        self._value = type(self).BaseClasSeqSet(value) if isinstance(value, str) else value
         self._time = parse(time) if isinstance(time, str) else time
 
     @classmethod

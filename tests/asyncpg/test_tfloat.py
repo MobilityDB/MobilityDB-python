@@ -1,6 +1,6 @@
 import pytest
 from dateutil.parser import parse
-from mobilitydb.main import TFloatInst, TFloatI, TFloatSeq, TFloatS
+from mobilitydb.main import TFloatInst, TFloatInstSet, TFloatSeq, TFloatSeqSet
 
 pytestmark = pytest.mark.asyncio
 
@@ -17,7 +17,7 @@ async def test_tfloatinst_constructors(connection, expected_tfloatinst):
     result = await connection.fetchval('SELECT temp FROM tbl_tfloatinst WHERE temp=$1', params, column=0)
     assert result == TFloatInst(expected_tfloatinst)
 
-@pytest.mark.parametrize('expected_tfloati', [
+@pytest.mark.parametrize('expected_tfloatinstseq', [
     '{10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01}',
     ('10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'),
     (TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
@@ -26,17 +26,17 @@ async def test_tfloatinst_constructors(connection, expected_tfloatinst):
     [TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
      TFloatInst('10.0@2019-09-03 00:00:00+01')],
 ])
-async def test_tfloati_constructor(connection, expected_tfloati):
-    if isinstance(expected_tfloati, tuple):
-        params = TFloatI(*expected_tfloati)
+async def test_tfloatinstseq_constructor(connection, expected_tfloatinstset):
+    if isinstance(expected_tfloatinstseq, tuple):
+        params = TFloatInstSet(*expected_tfloatinstset)
     else:
-        params = TFloatI(expected_tfloati)
-    await connection.execute('INSERT INTO tbl_tfloati (temp) VALUES ($1)', params)
-    result = await connection.fetchval('SELECT temp FROM tbl_tfloati WHERE temp=$1', params)
-    if isinstance(expected_tfloati, tuple):
-        assert result == TFloatI(*expected_tfloati)
+        params = TFloatInstSet(expected_tfloatinstset)
+    await connection.execute('INSERT INTO tbl_tfloatinstset (temp) VALUES ($1)', params)
+    result = await connection.fetchval('SELECT temp FROM tbl_tfloatinstset WHERE temp=$1', params)
+    if isinstance(expected_tfloatinstseq, tuple):
+        assert result == TFloatInstSet(*expected_tfloatinstset)
     else:
-        assert result == TFloatI(expected_tfloati)
+        assert result == TFloatInstSet(expected_tfloatinstset)
 
 @pytest.mark.parametrize('expected_tfloatseq', [
     '[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]',
@@ -54,14 +54,14 @@ async def test_tfloatseq_constructor(connection, expected_tfloatseq):
         params = TFloatSeq(*expected_tfloatseq)
     else:
         params = TFloatSeq(expected_tfloatseq)
-    await connection.execute('INSERT INTO tbl_tfloatseq (temp) VALUES ($1)', params)
-    result = await connection.fetchval('SELECT temp FROM tbl_tfloatseq WHERE temp=$1', params)
+    await connection.execute('INSERT INTO tbl_tfloatseqseteq (temp) VALUES ($1)', params)
+    result = await connection.fetchval('SELECT temp FROM tbl_tfloatseqseteq WHERE temp=$1', params)
     if isinstance(expected_tfloatseq, tuple):
         assert result == TFloatSeq(*expected_tfloatseq)
     else:
         assert result == TFloatSeq(expected_tfloatseq)
 
-@pytest.mark.parametrize('expected_tfloats', [
+@pytest.mark.parametrize('expected_tfloatseqset', [
     '{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}',
     'Interp=Stepwise;{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}',
     ['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'],
@@ -75,14 +75,14 @@ async def test_tfloatseq_constructor(connection, expected_tfloatseq):
     ([TFloatSeq('Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]'),
       TFloatSeq('Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Stepwise'),
 ])
-async def test_tfloats_constructor(connection, expected_tfloats):
-    if isinstance(expected_tfloats, tuple):
-        params = TFloatS(*expected_tfloats)
+async def test_tfloatseqset_constructor(connection, expected_tfloatseqset):
+    if isinstance(expected_tfloatseqset, tuple):
+        params = TFloatSeqSet(*expected_tfloatseqset)
     else:
-        params = TFloatS(expected_tfloats)
-    await connection.execute('INSERT INTO tbl_tfloats (temp) VALUES ($1)', params)
-    result = await connection.fetchval('SELECT temp FROM tbl_tfloats WHERE temp=$1', params)
-    if isinstance(expected_tfloats, tuple):
-        assert result == TFloatS(*expected_tfloats)
+        params = TFloatSeqSet(expected_tfloatseqset)
+    await connection.execute('INSERT INTO tbl_tfloatseqset (temp) VALUES ($1)', params)
+    result = await connection.fetchval('SELECT temp FROM tbl_tfloatseqset WHERE temp=$1', params)
+    if isinstance(expected_tfloatseqset, tuple):
+        assert result == TFloatSeqSet(*expected_tfloatseqset)
     else:
-        assert result == TFloatS(expected_tfloats)
+        assert result == TFloatSeqSet(expected_tfloatseqset)

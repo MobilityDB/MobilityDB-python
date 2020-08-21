@@ -3,7 +3,7 @@ from datetime import datetime
 from dateutil.parser import parse
 from postgis import Geometry, Point, MultiPoint, LineString, GeometryCollection, MultiLineString
 from mobilitydb.temporal import Temporal, TInstant, TInstantSet, TSequence, TSequenceSet
-from mobilitydb.temporal.temporal_parser import parse_temporalinst, parse_temporali, parse_temporalseq, parse_temporals
+from mobilitydb.temporal.temporal_parser import parse_temporalinst, parse_temporalinstset, parse_temporalseq, parse_temporalseqset
 
 
 # Add method to Point to make the class hashable
@@ -78,7 +78,7 @@ class TPointInst(TInstant):
         return self._value
 
 
-class TPointI(TInstantSet):
+class TPointInstSet(TInstantSet):
     """
     Abstract class for representing temporal points of instant set duration.
     """
@@ -98,15 +98,15 @@ class TPointI(TInstantSet):
             else:
                 instantList = argv[0]
             # Parse without the eventual "srid=xxx;" prefix
-            elements = parse_temporali(instantList, 0)
+            elements = parse_temporalInstSet(instantList, 0)
             for inst in elements[2]:
-                self._instantList.append(TInstantSet.ComponentClass(inst[0], inst[1], srid=srid))
+                self._instantList.append(TInstantSet.ComponentClasSeqSet(inst[0], inst[1], srid=srid))
         # Constructor with a single argument of type list
         elif len(argv) == 1 and isinstance(argv[0], list):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in argv[0]):
                 for arg in argv[0]:
-                    self._instantList.append(TInstantSet.ComponentClass(arg, srid=srid))
+                    self._instantList.append(TInstantSet.ComponentClasSeqSet(arg, srid=srid))
             # List of instant values
             elif all(isinstance(arg, TInstantSet.ComponentClass) for arg in argv[0]):
                 for arg in argv[0]:
@@ -118,7 +118,7 @@ class TPointI(TInstantSet):
             # Arguments are of type string
             if all(isinstance(arg, str) for arg in argv):
                 for arg in argv:
-                    self._instantList.append(TInstantSet.ComponentClass(arg, srid=srid))
+                    self._instantList.append(TInstantSet.ComponentClasSeqSet(arg, srid=srid))
             # Arguments are of type instant
             elif all(isinstance(arg, TInstantSet.ComponentClass) for arg in argv):
                 for arg in argv:
@@ -172,7 +172,7 @@ class TPointSeq(TSequence):
             # Parse without the eventual "srid=xxx;" prefix
             elements = parse_temporalseq(instantList, 0)
             for inst in elements[2][0]:
-                self._instantList.append(TSequence.ComponentClass(inst[0], inst[1], srid=srid))
+                self._instantList.append(TSequence.ComponentClasSeqSet(inst[0], inst[1], srid=srid))
             self._lower_inc = elements[2][1]
             self._upper_inc = elements[2][2]
             # Set interpolation with the argument or the flag from the string if given
@@ -188,7 +188,7 @@ class TPointSeq(TSequence):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in instantList):
                 for arg in instantList:
-                    self._instantList.append(TSequence.ComponentClass(arg, srid=srid))
+                    self._instantList.append(TSequence.ComponentClasSeqSet(arg, srid=srid))
             # List of instant values
             elif all(isinstance(arg, TSequence.ComponentClass) for arg in instantList):
                 for arg in instantList:
@@ -235,7 +235,7 @@ class TPointSeq(TSequence):
         return result
 
 
-class TPointS(TSequenceSet):
+class TPointSeqSet(TSequenceSet):
     """
     Abstract class for representing temporal points of sequence set duration.
     """
@@ -256,16 +256,16 @@ class TPointS(TSequenceSet):
                 srid = srid_str
                 sequenceList = re.sub(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', '', sequenceList)
             # Parse without the eventual "srid=xxx;" prefix
-            elements = parse_temporals(sequenceList, 0)
+            elements = parse_temporalSeqSet(sequenceList, 0)
             seqList = []
             for seq in elements[2][0]:
                 instList = []
                 for inst in seq[0]:
-                    instList.append(TSequenceSet.ComponentClass.ComponentClass(inst[0], inst[1], srid=srid))
+                    instList.append(TSequenceSet.ComponentClass.ComponentClasSeqSet(inst[0], inst[1], srid=srid))
                 if self.__class__.BaseClassDiscrete:
-                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2]))
+                    seqList.append(TSequenceSet.ComponentClasSeqSet(instList, seq[1], seq[2]))
                 else:
-                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2], elements[2][1], srid=srid))
+                    seqList.append(TSequenceSet.ComponentClasSeqSet(instList, seq[1], seq[2], elements[2][1], srid=srid))
             self._sequenceList = seqList
             # Set interpolation with the argument or the flag from the string if given
             if interp is not None:
@@ -280,7 +280,7 @@ class TPointS(TSequenceSet):
             # List of strings representing periods
             if all(isinstance(sequence, str) for sequence in sequenceList):
                 for sequence in sequenceList:
-                    self._sequenceList.append(self.__class__.ComponentClass(sequence))
+                    self._sequenceList.append(self.__class__.ComponentClasSeqSet(sequence))
             # List of periods
             elif all(isinstance(sequence, self.__class__.ComponentClass) for sequence in sequenceList):
                 for sequence in sequenceList:
@@ -340,7 +340,7 @@ class TGeomPoint(Temporal):
         if value.startswith('Interp=Stepwise;'):
             value1 = value.replace('Interp=Stepwise;', '')
             if value1[0] == '{':
-                return TGeomPointS(value)
+                return TGeomPointSeqSet(value)
             else:
                 return TGeomPointSeq(value)
         elif value[0] != '{' and value[0] != '[' and value[0] != '(':
@@ -349,9 +349,9 @@ class TGeomPoint(Temporal):
             return TGeomPointSeq(value)
         elif value[0] == '{':
             if value[1] == '[' or value[1] == '(':
-                return TGeomPointS(value)
+                return TGeomPointSeqSet(value)
             else:
-                return TGeomPointI(value)
+                return TGeomPointInstSet(value)
         raise Exception("ERROR: Could not parse temporal point value")
 
     @staticmethod
@@ -388,7 +388,7 @@ class TGeogPoint(Temporal):
         if value.startswith('Interp=Stepwise;'):
             value1 = value.replace('Interp=Stepwise;', '')
             if value1[0] == '{':
-                return TGeogPointS(value)
+                return TGeogPointSeqSet(value)
             else:
                 return TGeogPointSeq(value)
         elif value[0] != '{' and value[0] != '[' and value[0] != '(':
@@ -397,9 +397,9 @@ class TGeogPoint(Temporal):
             return TGeogPointSeq(value)
         elif value[0] == '{':
             if value[1] == '[' or value[1] == '(':
-                return TGeogPointS(value)
+                return TGeogPointSeqSet(value)
             else:
-                return TGeogPointI(value)
+                return TGeogPointInstSet(value)
         raise Exception("ERROR: Could not parse temporal point value")
 
     @staticmethod
@@ -477,23 +477,23 @@ class TGeogPointInst(TPointInst, TGeogPoint):
         super().__init__(value, time, srid)
 
 
-class TGeomPointI(TPointI, TGeomPoint):
+class TGeomPointInstSet(TPointInstSet, TGeomPoint):
     """
     Class for representing temporal geometric points of instant set duration.
 
-    ``TGeomPointI`` objects can be created with a single argument of type
+    ``TGeomPointInstSet`` objects can be created with a single argument of type
     string as in MobilityDB.
 
-        >>> TGeomPointI('Point(10.0 10.0)@2019-09-01')
+        >>> TGeomPointInstSet('Point(10.0 10.0)@2019-09-01')
 
     Another possibility is to give a tuple or list of arguments specifying
     the composing instants, which can be instances of ``str`` or
     ``TGeomPointInst``.
 
-        >>> TGeomPointI('Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01')
-        >>> TGeomPointI(TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01'))
-        >>> TGeomPointI(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'])
-        >>> TGeomPointI([TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')])
+        >>> TGeomPointInstSet('Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01')
+        >>> TGeomPointInstSet(TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01'))
+        >>> TGeomPointInstSet(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'])
+        >>> TGeomPointInstSet([TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeomPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeomPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')])
 
     """
 
@@ -503,23 +503,23 @@ class TGeomPointI(TPointI, TGeomPoint):
         super().__init__(*argv, **kwargs)
 
 
-class TGeogPointI(TPointI, TGeogPoint):
+class TGeogPointInstSet(TPointInstSet, TGeogPoint):
     """
     Class for representing temporal geometric points of instant set duration.
 
-    ``TGeogPointI`` objects can be created with a single argument of type
+    ``TGeogPointInstSet`` objects can be created with a single argument of type
     string as in MobilityDB.
 
-        >>> TGeogPointI('Point(10.0 10.0)@2019-09-01')
+        >>> TGeogPointInstSet('Point(10.0 10.0)@2019-09-01')
 
     Another possibility is to give a tuple or list of arguments specifying
     the composing instants, which can be instances of ``str`` or
     ``TGeogPointInst``.
 
-        >>> TGeogPointI('Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01')
-        >>> TGeogPointI(TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01'))
-        >>> TGeogPointI(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'])
-        >>> TGeogPointI([TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')])
+        >>> TGeogPointInstSet('Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01')
+        >>> TGeogPointInstSet(TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01'))
+        >>> TGeogPointInstSet(['Point(10.0 10.0)@2019-09-01 00:00:00+01', 'Point(20.0 20.0)@2019-09-02 00:00:00+01', 'Point(10.0 10.0)@2019-09-03 00:00:00+01'])
+        >>> TGeogPointInstSet([TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'), TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'), TGeogPointInst('Point(10.0 10.0)@2019-09-03 00:00:00+01')])
 
     """
 
@@ -603,15 +603,15 @@ class TGeogPointSeq(TPointSeq, TGeogPoint):
         super().__init__(instantList, lower_inc, upper_inc, interp, srid)
 
 
-class TGeomPointS(TPointS, TGeomPoint):
+class TGeomPointSeqSet(TPointSeqSet, TGeomPoint):
     """
     Class for representing temporal geometric points of sequence duration.
 
-    ``TGeomPointS`` objects can be created with a single argument of type
+    ``TGeomPointSeqSet`` objects can be created with a single argument of type
     string as in MobilityDB.
 
-        >>> TGeomPointS('{[Point(10.0 10.0)@2019-09-01 00:00:00+01], [Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}')
-        >>> TGeomPointS('Interp=Stepwise;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], [Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}')
+        >>> TGeomPointSeqSet('{[Point(10.0 10.0)@2019-09-01 00:00:00+01], [Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}')
+        >>> TGeomPointSeqSet('Interp=Stepwise;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], [Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}')
 
     Another possibility is to give the arguments as follows:
 
@@ -624,12 +624,12 @@ class TGeomPointS(TPointS, TGeomPoint):
 
     Some examples are shown next.
 
-        >>> TGeomPointS(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'])
-        >>> TGeomPointS(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear')
-        >>> TGeomPointS(['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Stepwise')
-        >>> TGeomPointS([TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')])
-        >>> TGeomPointS([TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),  TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear')
-        >>> TGeomPointS([TGeomPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeomPointSeq('Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Stepwise')
+        >>> TGeomPointSeqSet(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'])
+        >>> TGeomPointSeqSet(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear')
+        >>> TGeomPointSeqSet(['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Stepwise')
+        >>> TGeomPointSeqSet([TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')])
+        >>> TGeomPointSeqSet([TGeomPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),  TGeomPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear')
+        >>> TGeomPointSeqSet([TGeomPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeomPointSeq('Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Stepwise')
 
     """
 
@@ -640,15 +640,15 @@ class TGeomPointS(TPointS, TGeomPoint):
         super().__init__(sequenceList, interp, srid)
 
 
-class TGeogPointS(TPointS, TGeogPoint):
+class TGeogPointSeqSet(TPointSeqSet, TGeogPoint):
     """
     Class for representing temporal geographic points of sequence duration.
 
-    ``TGeogPointS`` objects can be created with a single argument of type string
+    ``TGeogPointSeqSet`` objects can be created with a single argument of type string
     as in MobilityDB.
 
-        >>> TGeogPointS('{[Point(10.0 10.0)@2019-09-01 00:00:00+01], [Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}')
-        >>> TGeogPointS('Interp=Stepwise;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], [Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}')
+        >>> TGeogPointSeqSet('{[Point(10.0 10.0)@2019-09-01 00:00:00+01], [Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}')
+        >>> TGeogPointSeqSet('Interp=Stepwise;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], [Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}')
 
     Another possibility is to give the arguments as follows:
 
@@ -661,12 +661,12 @@ class TGeogPointS(TPointS, TGeogPoint):
 
     Some examples are shown next.
 
-        >>> TGeogPointS(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'])
-        >>> TGeogPointS(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear')
-        >>> TGeogPointS(['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Stepwise')
-        >>> TGeogPointS([TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')])
-        >>> TGeogPointS([TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),  TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear')
-        >>> TGeogPointS([TGeogPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeogPointSeq('Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Stepwise')
+        >>> TGeogPointSeqSet(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'])
+        >>> TGeogPointSeqSet(['[Point(10.0 10.0)@2019-09-01 00:00:00+01]', '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Linear')
+        >>> TGeogPointSeqSet(['Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]'], 'Stepwise')
+        >>> TGeogPointSeqSet([TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')])
+        >>> TGeogPointSeqSet([TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),  TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Linear')
+        >>> TGeogPointSeqSet([TGeogPointSeq('Interp=Stepwise;[Point(10.0 10.0)@2019-09-01 00:00:00+01]'), TGeogPointSeq('Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')], 'Stepwise')
 
     """
 

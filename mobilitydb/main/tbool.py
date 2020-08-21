@@ -20,9 +20,9 @@ class TBool(Temporal):
             return TBoolSeq(value)
         elif value[0] == '{':
             if value[1] == '[' or value[1] == '(':
-                return TBoolS(value)
+                return TBoolSeqSet(value)
             else:
-                return TBoolI(value)
+                return TBoolInstSet(value)
         raise Exception("ERROR: Could not parse temporal boolean value")
 
     @staticmethod
@@ -83,22 +83,22 @@ class TBoolInst(TInstant, TBool):
         self._time = parse(time) if isinstance(time, str) else time
 
 
-class TBoolI(TInstantSet, TBool):
+class TBoolInstSet(TInstantSet, TBool):
     """
     Class for representing temporal Booleans of instant set duration.
 
-    ``TBoolI`` objects can be created with a single argument of type string
+    ``TBoolInstSet`` objects can be created with a single argument of type string
     as in MobilityDB.
 
-        >>> TBoolI('AA@2019-09-01')
+        >>> TBoolInstSet('AA@2019-09-01')
 
     Another possibility is to give a tuple or list of arguments,
     which can be instances of ``str`` or ``TBoolInst``.
 
-        >>> TBoolI('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01')
-        >>> TBoolI(TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01'))
-        >>> TBoolI(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
-        >>> TBoolI([TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01')])
+        >>> TBoolInstSet('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01')
+        >>> TBoolInstSet(TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01'))
+        >>> TBoolInstSet(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
+        >>> TBoolInstSet([TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01')])
 
     """
 
@@ -150,21 +150,21 @@ class TBoolSeq(TSequence, TBool):
         return 'Stepwise'
 
 
-class TBoolS(TSequenceSet, TBool):
+class TBoolSeqSet(TSequenceSet, TBool):
     """
     Class for representing temporal Booleans of sequence set duration.
 
-    ``TBoolS`` objects can be created with a single argument of type string
+    ``TBoolSeqSet`` objects can be created with a single argument of type string
     as in MobilityDB.
 
-        >>> TBoolS('{[true@2019-09-01 00:00:00+01], [false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]}')
+        >>> TBoolSeqSet('{[true@2019-09-01 00:00:00+01], [false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]}')
 
     Another possibility is to give the list of composing sequences, which
     can be instances of ``str`` or ``TBoolSeq``.
 
-        >>> TBoolS(['[true@2019-09-01 00:00:00+01]', '[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]'])
-        >>> TBoolS([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
-        >>> TBoolS([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
+        >>> TBoolSeqSet(['[true@2019-09-01 00:00:00+01]', '[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]'])
+        >>> TBoolSeqSet([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
+        >>> TBoolSeqSet([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
 
     """
 

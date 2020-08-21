@@ -21,7 +21,7 @@ class TFloat(Temporal):
         if value.startswith('Interp=Stepwise;'):
             value1 = value.replace('Interp=Stepwise;', '')
             if value1[0] == '{':
-                return TFloatS(value)
+                return TFloatSeqSet(value)
             else:
                 return TFloatSeq(value)
         elif value[0] != '{' and value[0] != '[' and value[0] != '(':
@@ -30,9 +30,9 @@ class TFloat(Temporal):
             return TFloatSeq(value)
         elif value[0] == '{':
             if value[1] == '[' or value[1] == '(':
-                return TFloatS(value)
+                return TFloatSeqSet(value)
             else:
-                return TFloatI(value)
+                return TFloatInstSet(value)
         raise Exception("ERROR: Could not parse temporal float value")
 
     @staticmethod
@@ -73,22 +73,22 @@ class TFloatInst(TInstant, TFloat):
         return [floatrange(self._value, self._value, True, True)]
 
 
-class TFloatI(TInstantSet, TFloat):
+class TFloatInstSet(TInstantSet, TFloat):
     """
     Class for representing temporal floats of instant set duration.
 
-    ``TFloatI`` objects can be created with a single argument of type string
+    ``TFloatInstSet`` objects can be created with a single argument of type string
     as in MobilityDB.
 
-        >>> TFloatI('10.0@2019-09-01')
+        >>> TFloatInstSet('10.0@2019-09-01')
 
     Another possibility is to give a tuple or list of composing instants,
     which can be instances of ``str`` or ``TFloatInst``.
 
-        >>> TFloatI('10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01')
-        >>> TFloatI(TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'), TFloatInst('10.0@2019-09-03 00:00:00+01'))
-        >>> TFloatI(['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'])
-        >>> TFloatI([TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'), TFloatInst('10.0@2019-09-03 00:00:00+01')])
+        >>> TFloatInstSet('10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01')
+        >>> TFloatInstSet(TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'), TFloatInst('10.0@2019-09-03 00:00:00+01'))
+        >>> TFloatInstSet(['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'])
+        >>> TFloatInstSet([TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'), TFloatInst('10.0@2019-09-03 00:00:00+01')])
 
     """
 
@@ -166,15 +166,15 @@ class TFloatSeq(TSequence, TFloat):
         return [floatrange(min, max, min_inc, max_inc)]
 
 
-class TFloatS(TSequenceSet, TFloat):
+class TFloatSeqSet(TSequenceSet, TFloat):
     """
     Class for representing temporal floats of sequence duration.
 
-    ``TFloatS`` objects can be created with a single argument of type string
+    ``TFloatSeqSet`` objects can be created with a single argument of type string
     as in MobilityDB.
 
-        >>> TFloatS('{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}')
-        >>> TFloatS('Interp=Stepwise;{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}')
+        >>> TFloatSeqSet('{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}')
+        >>> TFloatSeqSet('Interp=Stepwise;{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}')
 
     Another possibility is to give the arguments as follows:
 
@@ -185,12 +185,12 @@ class TFloatS(TSequenceSet, TFloat):
 
     Some examples are shown next.
 
-        >>> TFloatS(['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'])
-        >>> TFloatS(['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Linear')
-        >>> TFloatS(['Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Stepwise')
-        >>> TFloatS([TFloatSeq('[10.0@2019-09-01 00:00:00+01]'), TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')])
-        >>> TFloatS([TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),  TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Linear')
-        >>> TFloatS([TFloatSeq('Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]'), TFloatSeq('Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Stepwise')
+        >>> TFloatSeqSet(['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'])
+        >>> TFloatSeqSet(['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Linear')
+        >>> TFloatSeqSet(['Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]', 'Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Stepwise')
+        >>> TFloatSeqSet([TFloatSeq('[10.0@2019-09-01 00:00:00+01]'), TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')])
+        >>> TFloatSeqSet([TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),  TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Linear')
+        >>> TFloatSeqSet([TFloatSeq('Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]'), TFloatSeq('Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Stepwise')
 
     """
 

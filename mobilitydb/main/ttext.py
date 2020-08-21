@@ -19,9 +19,9 @@ class TText(Temporal):
             return TTextSeq(value)
         elif value[0] == '{':
             if value[1] == '[' or value[1] == '(':
-                return TTextS(value)
+                return TTextSeqSet(value)
             else:
-                return TTextI(value)
+                return TTextInstSet(value)
         raise Exception("ERROR: Could not parse temporal text value")
 
     @staticmethod
@@ -77,22 +77,22 @@ class TTextInst(TInstant, TText):
         self._time = parse(time) if isinstance(time, str) else time
 
 
-class TTextI(TInstantSet, TText):
+class TTextInstSet(TInstantSet, TText):
     """
     Class for representing temporal strings of instant set duration.
 
-    ``TTextI`` objects can be created 
+    ``TTextInstSet`` objects can be created 
     with a single argument of type string as in MobilityDB.
 
-        >>> TTextI('AA@2019-09-01')
+        >>> TTextInstSet('AA@2019-09-01')
 
     Another possibility is to give a tuple or list of composing instants,
     which can be instances of ``str`` or ``TTextInst``.
 
-        >>> TTextI('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01')
-        >>> TTextI(TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01'))
-        >>> TTextI(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
-        >>> TTextI([TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')])
+        >>> TTextInstSet('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01')
+        >>> TTextInstSet(TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01'))
+        >>> TTextInstSet(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
+        >>> TTextInstSet([TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'), TTextInst('AA@2019-09-03 00:00:00+01')])
 
     """
 
@@ -143,20 +143,20 @@ class TTextSeq(TSequence, TText):
         return 'Stepwise'
 
 
-class TTextS(TSequenceSet, TText):
+class TTextSeqSet(TSequenceSet, TText):
     """
     Class for representing temporal strings of sequence duration.
 
-    ``TTextS`` objects can be created with a single argument of typestring as in MobilityDB.
+    ``TTextSeqSet`` objects can be created with a single argument of typestring as in MobilityDB.
 
-        >>> TTextS('{[AA@2019-09-01 00:00:00+01], [BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]}')
+        >>> TTextSeqSet('{[AA@2019-09-01 00:00:00+01], [BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]}')
 
     Another possibility is to give the list of composing sequences, which can be
     instances of ``str`` or ``TTextSeq``.
 
-        >>> TTextS(['[AA@2019-09-01 00:00:00+01]', '[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]'])
-        >>> TTextS([TTextSeq('[AA@2019-09-01 00:00:00+01]'), TTextSeq('[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')])
-        >>> TTextS([TTextSeq('[AA@2019-09-01 00:00:00+01]'), TTextSeq('[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')])
+        >>> TTextSeqSet(['[AA@2019-09-01 00:00:00+01]', '[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]'])
+        >>> TTextSeqSet([TTextSeq('[AA@2019-09-01 00:00:00+01]'), TTextSeq('[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')])
+        >>> TTextSeqSet([TTextSeq('[AA@2019-09-01 00:00:00+01]'), TTextSeq('[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')])
 
     """
 

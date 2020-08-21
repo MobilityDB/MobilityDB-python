@@ -67,11 +67,11 @@ async def run():
             else:
                 print("startTimestamp =", row[1].startTimestamp, "\n")
 
-        drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpointi_temp;'''
+        drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpointinstset_temp;'''
         await connection.execute(drop_table_query)
         print("Table deleted successfully in PostgreSQL ")
     
-        create_table_query = '''CREATE TABLE tbl_tgeogpointi_temp
+        create_table_query = '''CREATE TABLE tbl_tgeogpointinstset_temp
             (
               k integer PRIMARY KEY,
               temp tgeogpoint
@@ -80,10 +80,10 @@ async def run():
         await connection.execute(create_table_query)
         print("Table created successfully in PostgreSQL ")
     
-        postgres_insert_query = ''' INSERT INTO tbl_tgeogpointi_temp (k, temp) VALUES ($1, $2) '''
+        postgres_insert_query = ''' INSERT INTO tbl_tgeogpointinstset_temp (k, temp) VALUES ($1, $2) '''
         await connection.executemany(postgres_insert_query, rows)
         #count = cursor.rowcount
-        print(len(rows), "record(s) inserted successfully into tbl_tgeogpointi_temp table")
+        print(len(rows), "record(s) inserted successfully into tbl_tgeogpointinstset_temp table")
 
         ######################
         # TGeogPointSeq
@@ -139,11 +139,11 @@ async def run():
             else:
                 print("startTimestamp =", row[1].startTimestamp, "\n")
     
-        drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpoints_temp;'''
+        drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpointseqset_temp;'''
         await connection.execute(drop_table_query)
         print("Table deleted successfully in PostgreSQL ")
     
-        create_table_query = '''CREATE TABLE tbl_tgeogpoints_temp
+        create_table_query = '''CREATE TABLE tbl_tgeogpointseqset_temp
             (
               k integer PRIMARY KEY,
               temp tgeogpoint
@@ -152,10 +152,10 @@ async def run():
         await connection.execute(create_table_query)
         print("Table created successfully in PostgreSQL ")
     
-        postgres_insert_query = ''' INSERT INTO tbl_tgeogpoints_temp (k, temp) VALUES ($1, $2) '''
+        postgres_insert_query = ''' INSERT INTO tbl_tgeogpointseqset_temp (k, temp) VALUES ($1, $2) '''
         await connection.executemany(postgres_insert_query, rows)
         # count = cursor.rowcount
-        print(len(rows), "record(s) inserted successfully into tbl_tgeogpoints_temp table")
+        print(len(rows), "record(s) inserted successfully into tbl_tgeogpointseqset_temp table")
     
         print("\n****************************************************************")
 

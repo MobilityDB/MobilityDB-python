@@ -119,7 +119,7 @@ class Period:
                       self._lower_inc, self._upper_inc)
 
     @staticmethod
-    def _cmp_bounds(t1, t2, lower1, lower2, inclusive1, inclusive2):
+    def _cmp_boundSeqSet(t1, t2, lower1, lower2, inclusive1, inclusive2):
         # Compare the values
         if t1 < t2:
             return -1
@@ -156,10 +156,10 @@ class Period:
         """
         Do the periods share a timestamp?
         """
-        if ((self._cmp_bounds(self._lower, other._lower, True, True, self._lower_inc, other._lower_inc) >= 0 and
-                     self._cmp_bounds(self._lower, other._upper, True, False, self._lower_inc, other._upper_inc) <= 0) or
-            (self._cmp_bounds(other._lower, self._lower, True, True, other._lower_inc, self._lower_inc) >= 0 and
-                     self._cmp_bounds(other._lower, self._upper, True, False, other._lower_inc, self._upper_inc) <= 0)):
+        if ((self._cmp_boundSeqSet(self._lower, other._lower, True, True, self._lower_inc, other._lower_inc) >= 0 and
+                     self._cmp_boundSeqSet(self._lower, other._upper, True, False, self._lower_inc, other._upper_inc) <= 0) or
+            (self._cmp_boundSeqSet(other._lower, self._lower, True, True, other._lower_inc, self._lower_inc) >= 0 and
+                     self._cmp_boundSeqSet(other._lower, self._upper, True, False, other._lower_inc, self._upper_inc) <= 0)):
             return True
         return False
 
