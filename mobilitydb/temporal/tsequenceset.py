@@ -16,7 +16,7 @@ class TSequenceSet(Temporal):
         self._sequenceList = []
         # Constructor with a single argument of type string
         if isinstance(sequenceList, str):
-            elements = parse_temporalSeqSet(sequenceList, 0)
+            elements = parse_temporalseqset(sequenceList, 0)
             seqList = []
             for seq in elements[2][0]:
                 instList = []

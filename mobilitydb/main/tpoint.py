@@ -98,7 +98,7 @@ class TPointInstSet(TInstantSet):
             else:
                 instantList = argv[0]
             # Parse without the eventual "srid=xxx;" prefix
-            elements = parse_temporalInstSet(instantList, 0)
+            elements = parse_temporalinstset(instantList, 0)
             for inst in elements[2]:
                 self._instantList.append(TInstantSet.ComponentClass(inst[0], inst[1], srid=srid))
         # Constructor with a single argument of type list
@@ -256,7 +256,7 @@ class TPointSeqSet(TSequenceSet):
                 srid = srid_str
                 sequenceList = re.sub(r'^(SRID|srid)\s*=\s*\d+\s*(;|,)\s*', '', sequenceList)
             # Parse without the eventual "srid=xxx;" prefix
-            elements = parse_temporalSeqSet(sequenceList, 0)
+            elements = parse_temporalseqset(sequenceList, 0)
             seqList = []
             for seq in elements[2][0]:
                 instList = []

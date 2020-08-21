@@ -13,7 +13,7 @@ class TInstantSet(TemporalInstants):
         self._instantList = []
         # Constructor with a single argument of type string
         if len(argv) == 1 and isinstance(argv[0], str):
-            elements = parse_temporalInstSet(argv[0], 0)
+            elements = parse_temporalinstset(argv[0], 0)
             for inst in elements[2]:
                 self._instantList.append(TInstantSet.ComponentClass(inst[0], inst[1]))
         # Constructor with a single argument of type list
