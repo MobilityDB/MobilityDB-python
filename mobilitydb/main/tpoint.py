@@ -2,7 +2,7 @@ import re
 from datetime import datetime
 from dateutil.parser import parse
 from postgis import Geometry, Point, MultiPoint, LineString, GeometryCollection, MultiLineString
-from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal, TInstant, TInstantSet, TSequence, TSequenceSet
 from mobilitydb.temporal.temporal_parser import parse_temporalinst, parse_temporali, parse_temporalseq, parse_temporals
 
 
@@ -13,7 +13,7 @@ def __hash__(self):
 setattr(Point, '__hash__', __hash__)
 
 
-class TPointInst(TemporalInst):
+class TPointInst(TInstant):
     """
     Abstract class for representing temporal points of instant duration.
     """
@@ -78,7 +78,7 @@ class TPointInst(TemporalInst):
         return self._value
 
 
-class TPointI(TemporalI):
+class TPointI(TInstantSet):
     """
     Abstract class for representing temporal points of instant set duration.
     """
@@ -100,15 +100,15 @@ class TPointI(TemporalI):
             # Parse without the eventual "srid=xxx;" prefix
             elements = parse_temporali(instantList, 0)
             for inst in elements[2]:
-                self._instantList.append(TemporalI.ComponentClass(inst[0], inst[1], srid=srid))
+                self._instantList.append(TInstantSet.ComponentClass(inst[0], inst[1], srid=srid))
         # Constructor with a single argument of type list
         elif len(argv) == 1 and isinstance(argv[0], list):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in argv[0]):
                 for arg in argv[0]:
-                    self._instantList.append(TemporalI.ComponentClass(arg, srid=srid))
+                    self._instantList.append(TInstantSet.ComponentClass(arg, srid=srid))
             # List of instant values
-            elif all(isinstance(arg, TemporalI.ComponentClass) for arg in argv[0]):
+            elif all(isinstance(arg, TInstantSet.ComponentClass) for arg in argv[0]):
                 for arg in argv[0]:
                     self._instantList.append(arg)
             else:
@@ -118,9 +118,9 @@ class TPointI(TemporalI):
             # Arguments are of type string
             if all(isinstance(arg, str) for arg in argv):
                 for arg in argv:
-                    self._instantList.append(TemporalI.ComponentClass(arg, srid=srid))
+                    self._instantList.append(TInstantSet.ComponentClass(arg, srid=srid))
             # Arguments are of type instant
-            elif all(isinstance(arg, TemporalI.ComponentClass) for arg in argv):
+            elif all(isinstance(arg, TInstantSet.ComponentClass) for arg in argv):
                 for arg in argv:
                     self._instantList.append(arg)
             else:
@@ -147,7 +147,7 @@ class TPointI(TemporalI):
         return MultiPoint(values)
 
 
-class TPointSeq(TemporalSeq):
+class TPointSeq(TSequence):
     """
     Abstract class for representing temporal points of sequence duration.
     """
@@ -172,7 +172,7 @@ class TPointSeq(TemporalSeq):
             # Parse without the eventual "srid=xxx;" prefix
             elements = parse_temporalseq(instantList, 0)
             for inst in elements[2][0]:
-                self._instantList.append(TemporalSeq.ComponentClass(inst[0], inst[1], srid=srid))
+                self._instantList.append(TSequence.ComponentClass(inst[0], inst[1], srid=srid))
             self._lower_inc = elements[2][1]
             self._upper_inc = elements[2][2]
             # Set interpolation with the argument or the flag from the string if given
@@ -188,9 +188,9 @@ class TPointSeq(TemporalSeq):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in instantList):
                 for arg in instantList:
-                    self._instantList.append(TemporalSeq.ComponentClass(arg, srid=srid))
+                    self._instantList.append(TSequence.ComponentClass(arg, srid=srid))
             # List of instant values
-            elif all(isinstance(arg, TemporalSeq.ComponentClass) for arg in instantList):
+            elif all(isinstance(arg, TSequence.ComponentClass) for arg in instantList):
                 for arg in instantList:
                     self._instantList.append(arg)
             else:
@@ -235,7 +235,7 @@ class TPointSeq(TemporalSeq):
         return result
 
 
-class TPointS(TemporalS):
+class TPointS(TSequenceSet):
     """
     Abstract class for representing temporal points of sequence set duration.
     """
@@ -261,11 +261,11 @@ class TPointS(TemporalS):
             for seq in elements[2][0]:
                 instList = []
                 for inst in seq[0]:
-                    instList.append(TemporalS.ComponentClass.ComponentClass(inst[0], inst[1], srid=srid))
+                    instList.append(TSequenceSet.ComponentClass.ComponentClass(inst[0], inst[1], srid=srid))
                 if self.__class__.BaseClassDiscrete:
-                    seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2]))
+                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2]))
                 else:
-                    seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2], elements[2][1], srid=srid))
+                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2], elements[2][1], srid=srid))
             self._sequenceList = seqList
             # Set interpolation with the argument or the flag from the string if given
             if interp is not None:
@@ -447,7 +447,7 @@ class TGeomPointInst(TPointInst, TGeomPoint):
     """
 
     def __init__(self, value, time=None, srid=None):
-        TemporalInst.BaseClass = Point
+        TInstant.BaseClass = Point
         super().__init__(value, time, srid)
 
 
@@ -473,7 +473,7 @@ class TGeogPointInst(TPointInst, TGeogPoint):
     """
 
     def __init__(self, value, time=None, srid=None):
-        TemporalInst.BaseClass = Point
+        TInstant.BaseClass = Point
         super().__init__(value, time, srid)
 
 
@@ -498,8 +498,8 @@ class TGeomPointI(TPointI, TGeomPoint):
     """
 
     def __init__(self,  *argv, **kwargs):
-        TemporalI.BaseClass = Point
-        TemporalI.ComponentClass = TGeomPointInst
+        TInstantSet.BaseClass = Point
+        TInstantSet.ComponentClass = TGeomPointInst
         super().__init__(*argv, **kwargs)
 
 
@@ -524,8 +524,8 @@ class TGeogPointI(TPointI, TGeogPoint):
     """
 
     def __init__(self,  *argv, **kwargs):
-        TemporalI.BaseClass = Point
-        TemporalI.ComponentClass = TGeogPointInst
+        TInstantSet.BaseClass = Point
+        TInstantSet.ComponentClass = TGeogPointInst
         super().__init__(*argv, **kwargs)
 
 
@@ -560,9 +560,9 @@ class TGeomPointSeq(TPointSeq, TGeomPoint):
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None, srid=None):
-        TemporalSeq.BaseClass = Point
-        TemporalSeq.BaseClassDiscrete = False
-        TemporalSeq.ComponentClass = TGeomPointInst
+        TSequence.BaseClass = Point
+        TSequence.BaseClassDiscrete = False
+        TSequence.ComponentClass = TGeomPointInst
         super().__init__(instantList, lower_inc, upper_inc, interp, srid)
 
 
@@ -597,9 +597,9 @@ class TGeogPointSeq(TPointSeq, TGeogPoint):
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None, srid=None):
-        TemporalSeq.BaseClass = Point
-        TemporalSeq.BaseClassDiscrete = False
-        TemporalSeq.ComponentClass = TGeogPointInst
+        TSequence.BaseClass = Point
+        TSequence.BaseClassDiscrete = False
+        TSequence.ComponentClass = TGeogPointInst
         super().__init__(instantList, lower_inc, upper_inc, interp, srid)
 
 
@@ -634,9 +634,9 @@ class TGeomPointS(TPointS, TGeomPoint):
     """
 
     def __init__(self, sequenceList, interp=None, srid=None):
-        TemporalS.BaseClass = Point
-        TemporalS.BaseClassDiscrete = False
-        TemporalS.ComponentClass = TGeomPointSeq
+        TSequenceSet.BaseClass = Point
+        TSequenceSet.BaseClassDiscrete = False
+        TSequenceSet.ComponentClass = TGeomPointSeq
         super().__init__(sequenceList, interp, srid)
 
 
@@ -671,7 +671,7 @@ class TGeogPointS(TPointS, TGeogPoint):
     """
 
     def __init__(self, sequenceList, interp=None, srid=None):
-        TemporalS.BaseClass = Point
-        TemporalS.BaseClassDiscrete = False
-        TemporalS.ComponentClass = TGeogPointSeq
+        TSequenceSet.BaseClass = Point
+        TSequenceSet.BaseClassDiscrete = False
+        TSequenceSet.ComponentClass = TGeogPointSeq
         super().__init__(sequenceList, interp, srid)

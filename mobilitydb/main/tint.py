@@ -1,5 +1,5 @@
 from spans.types import intrange
-from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal, TInstant, TInstantSet, TSequence, TSequenceSet
 
 
 class TInt(Temporal):
@@ -36,7 +36,7 @@ class TInt(Temporal):
         return intrange(self.minValue, self.maxValue, True, True)
 
 
-class TIntInst(TemporalInst, TInt):
+class TIntInst(TInstant, TInt):
     """
     Class for representing temporal integers of instant duration.
 
@@ -56,11 +56,11 @@ class TIntInst(TemporalInst, TInt):
     """
 
     def __init__(self, value, time=None):
-        TemporalInst.BaseClass = int
+        TInstant.BaseClass = int
         super().__init__(value, time)
 
 
-class TIntI(TemporalI, TInt):
+class TIntI(TInstantSet, TInt):
     """
     Class for representing temporal integers of instant set duration.
 
@@ -80,12 +80,12 @@ class TIntI(TemporalI, TInt):
     """
 
     def __init__(self,  *argv):
-        TemporalI.BaseClass = int
-        TemporalI.ComponentClass = TIntInst
+        TInstantSet.BaseClass = int
+        TInstantSet.ComponentClass = TIntInst
         super().__init__(*argv)
 
 
-class TIntSeq(TemporalSeq, TInt):
+class TIntSeq(TSequence, TInt):
     """
     Class for representing temporal integers of sequence duration.
 
@@ -112,9 +112,9 @@ class TIntSeq(TemporalSeq, TInt):
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None):
-        TemporalSeq.BaseClass = int
-        TemporalSeq.BaseClassDiscrete = True
-        TemporalSeq.ComponentClass = TIntInst
+        TSequence.BaseClass = int
+        TSequence.BaseClassDiscrete = True
+        TSequence.ComponentClass = TIntInst
         super().__init__(instantList, lower_inc, upper_inc)
 
     @classmethod
@@ -126,7 +126,7 @@ class TIntSeq(TemporalSeq, TInt):
         return 'Stepwise'
 
 
-class TIntS(TemporalS, TInt):
+class TIntS(TSequenceSet, TInt):
     """
     Class for representing temporal integers of sequence duration.
 
@@ -145,9 +145,9 @@ class TIntS(TemporalS, TInt):
     """
 
     def __init__(self, sequenceList):
-        TemporalS.BaseClass = int
-        TemporalS.BaseClassDiscrete = True
-        TemporalS.ComponentClass = TIntSeq
+        TSequenceSet.BaseClass = int
+        TSequenceSet.BaseClassDiscrete = True
+        TSequenceSet.ComponentClass = TIntSeq
         super().__init__(sequenceList)
 
     @classmethod

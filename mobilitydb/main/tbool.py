@@ -1,7 +1,7 @@
 from parsec import *
 from datetime import datetime
 from dateutil.parser import parse
-from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal, TInstant, TInstantSet, TSequence, TSequenceSet
 from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
 
@@ -32,7 +32,7 @@ class TBool(Temporal):
         return value.__str__().strip("'")
 
 
-class TBoolInst(TemporalInst, TBool):
+class TBoolInst(TInstant, TBool):
     """
     Class for representing temporal Booleans of instant duration.
 
@@ -56,7 +56,7 @@ class TBoolInst(TemporalInst, TBool):
     and eval('False') == False. Furthermore eval('false') gives an error
     """
     def __init__(self, value, time=None):
-        TemporalInst.BaseClass = bool
+        TInstant.BaseClass = bool
         if time is None:
             # Constructor with a single argument of type string
             if isinstance(value, str):
@@ -83,7 +83,7 @@ class TBoolInst(TemporalInst, TBool):
         self._time = parse(time) if isinstance(time, str) else time
 
 
-class TBoolI(TemporalI, TBool):
+class TBoolI(TInstantSet, TBool):
     """
     Class for representing temporal Booleans of instant set duration.
 
@@ -103,12 +103,12 @@ class TBoolI(TemporalI, TBool):
     """
 
     def __init__(self,  *argv):
-        TemporalI.BaseClass = bool
-        TemporalI.ComponentClass = TBoolInst
+        TInstantSet.BaseClass = bool
+        TInstantSet.ComponentClass = TBoolInst
         super().__init__(*argv)
 
 
-class TBoolSeq(TemporalSeq, TBool):
+class TBoolSeq(TSequence, TBool):
     """
     Class for representing temporal Booleans of sequence duration.
 
@@ -135,9 +135,9 @@ class TBoolSeq(TemporalSeq, TBool):
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None):
-        TemporalSeq.BaseClass = bool
-        TemporalSeq.BaseClassDiscrete = True
-        TemporalSeq.ComponentClass = TBoolInst
+        TSequence.BaseClass = bool
+        TSequence.BaseClassDiscrete = True
+        TSequence.ComponentClass = TBoolInst
         self._interp = 'Stepwise'
         super().__init__(instantList, lower_inc, upper_inc)
 
@@ -150,7 +150,7 @@ class TBoolSeq(TemporalSeq, TBool):
         return 'Stepwise'
 
 
-class TBoolS(TemporalS, TBool):
+class TBoolS(TSequenceSet, TBool):
     """
     Class for representing temporal Booleans of sequence set duration.
 
@@ -169,9 +169,9 @@ class TBoolS(TemporalS, TBool):
     """
 
     def __init__(self, sequenceList):
-        TemporalS.BaseClass = bool
-        TemporalS.BaseClassDiscrete = True
-        TemporalS.ComponentClass = TBoolSeq
+        TSequenceSet.BaseClass = bool
+        TSequenceSet.BaseClassDiscrete = True
+        TSequenceSet.ComponentClass = TBoolSeq
         self._interp = 'Stepwise'
         super().__init__(sequenceList)
 

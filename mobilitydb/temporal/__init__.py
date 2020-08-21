@@ -1,8 +1,8 @@
 from .temporal import Temporal
-from .temporalinst import TemporalInst
+from .temporalinst import TInstant
 from .temporalinstants import TemporalInstants
-from .temporali import TemporalI
-from .temporalseq import TemporalSeq
-from .temporals import TemporalS
+from .temporali import TInstantSet
+from .temporalseq import TSequence
+from .temporals import TSequenceSet
 
-__all__ = ['Temporal', 'TemporalInst', 'TemporalInstants', 'TemporalI', 'TemporalSeq', 'TemporalS']
+__all__ = ['Temporal', 'TInstant', 'TemporalInstants', 'TInstantSet', 'TSequence', 'TSequenceSet']

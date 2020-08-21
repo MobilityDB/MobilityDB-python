@@ -1,5 +1,5 @@
 from spans.types import floatrange
-from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal, TInstant, TInstantSet, TSequence, TSequenceSet
 
 
 class TFloat(Temporal):
@@ -42,7 +42,7 @@ class TFloat(Temporal):
         return value.__str__().strip("'")
 
 
-class TFloatInst(TemporalInst, TFloat):
+class TFloatInst(TInstant, TFloat):
     """
     Class for representing temporal floats of instant duration.
 
@@ -62,7 +62,7 @@ class TFloatInst(TemporalInst, TFloat):
     """
 
     def __init__(self, value, time=None):
-        TemporalInst.BaseClass = float
+        TInstant.BaseClass = float
         super().__init__(value, time)
 
     @property
@@ -73,7 +73,7 @@ class TFloatInst(TemporalInst, TFloat):
         return [floatrange(self._value, self._value, True, True)]
 
 
-class TFloatI(TemporalI, TFloat):
+class TFloatI(TInstantSet, TFloat):
     """
     Class for representing temporal floats of instant set duration.
 
@@ -93,8 +93,8 @@ class TFloatI(TemporalI, TFloat):
     """
 
     def __init__(self,  *argv):
-        TemporalI.BaseClass = float
-        TemporalI.ComponentClass = TFloatInst
+        TInstantSet.BaseClass = float
+        TInstantSet.ComponentClass = TFloatInst
         super().__init__(*argv)
 
     @property
@@ -106,7 +106,7 @@ class TFloatI(TemporalI, TFloat):
         return [floatrange(value, value, True, True) for value in values]
 
 
-class TFloatSeq(TemporalSeq, TFloat):
+class TFloatSeq(TSequence, TFloat):
     """
     Class for representing temporal floats of sequence duration.
 
@@ -136,9 +136,9 @@ class TFloatSeq(TemporalSeq, TFloat):
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
-        TemporalSeq.BaseClass = float
-        TemporalSeq.BaseClassDiscrete = False
-        TemporalSeq.ComponentClass = TFloatInst
+        TSequence.BaseClass = float
+        TSequence.BaseClassDiscrete = False
+        TSequence.ComponentClass = TFloatInst
         super().__init__(instantList, lower_inc, upper_inc, interp)
 
     @property
@@ -166,7 +166,7 @@ class TFloatSeq(TemporalSeq, TFloat):
         return [floatrange(min, max, min_inc, max_inc)]
 
 
-class TFloatS(TemporalS, TFloat):
+class TFloatS(TSequenceSet, TFloat):
     """
     Class for representing temporal floats of sequence duration.
 
@@ -195,9 +195,9 @@ class TFloatS(TemporalS, TFloat):
     """
 
     def __init__(self, sequenceList, interp=None):
-        TemporalS.BaseClass = float
-        TemporalS.BaseClassDiscrete = False
-        TemporalS.ComponentClass = TFloatSeq
+        TSequenceSet.BaseClass = float
+        TSequenceSet.BaseClassDiscrete = False
+        TSequenceSet.ComponentClass = TFloatSeq
         super().__init__(sequenceList, interp)
 
     @property

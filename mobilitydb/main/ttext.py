@@ -1,7 +1,7 @@
 from datetime import datetime
 from dateutil.parser import parse
 from mobilitydb.temporal.temporal_parser import parse_temporalinst
-from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal, TInstant, TInstantSet, TSequence, TSequenceSet
 
 
 class TText(Temporal):
@@ -31,7 +31,7 @@ class TText(Temporal):
         return value.__str__().strip("'")
 
 
-class TTextInst(TemporalInst, TText):
+class TTextInst(TInstant, TText):
     """
     Class for representing temporal strings of instant duration.
 
@@ -55,7 +55,7 @@ class TTextInst(TemporalInst, TText):
     """
 
     def __init__(self, value, time=None):
-        TemporalInst.BaseClass = str
+        TInstant.BaseClass = str
         if(time is None):
             # Constructor with a single argument of type string
             if (isinstance(value, str)):
@@ -77,7 +77,7 @@ class TTextInst(TemporalInst, TText):
         self._time = parse(time) if isinstance(time, str) else time
 
 
-class TTextI(TemporalI, TText):
+class TTextI(TInstantSet, TText):
     """
     Class for representing temporal strings of instant set duration.
 
@@ -97,12 +97,12 @@ class TTextI(TemporalI, TText):
     """
 
     def __init__(self,  *argv):
-        TemporalI.BaseClass = str
-        TemporalI.ComponentClass = TTextInst
+        TInstantSet.BaseClass = str
+        TInstantSet.ComponentClass = TTextInst
         super().__init__(*argv)
 
 
-class TTextSeq(TemporalSeq, TText):
+class TTextSeq(TSequence, TText):
     """
     Class for representing temporal strings of sequence duration.
 
@@ -129,9 +129,9 @@ class TTextSeq(TemporalSeq, TText):
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None):
-        TemporalSeq.BaseClass = str
-        TemporalS.BaseClassDiscrete = True
-        TemporalSeq.ComponentClass = TTextInst
+        TSequence.BaseClass = str
+        TSequenceSet.BaseClassDiscrete = True
+        TSequence.ComponentClass = TTextInst
         super().__init__(instantList, lower_inc, upper_inc)
 
     @classmethod
@@ -143,7 +143,7 @@ class TTextSeq(TemporalSeq, TText):
         return 'Stepwise'
 
 
-class TTextS(TemporalS, TText):
+class TTextS(TSequenceSet, TText):
     """
     Class for representing temporal strings of sequence duration.
 
@@ -161,9 +161,9 @@ class TTextS(TemporalS, TText):
     """
 
     def __init__(self, sequenceList):
-        TemporalS.BaseClass = str
-        TemporalS.BaseClassDiscrete = True
-        TemporalS.ComponentClass = TTextSeq
+        TSequenceSet.BaseClass = str
+        TSequenceSet.BaseClassDiscrete = True
+        TSequenceSet.ComponentClass = TTextSeq
         super().__init__(sequenceList)
 
     @classmethod
