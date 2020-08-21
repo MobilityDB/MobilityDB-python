@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='MobilityDB-python',
-    packages=find_packageSeqSet(),
+    packages=find_packages(),
     version='0.1.1',
     license='MIT',
     description='A database adapter to access MobilityDB from Python',
