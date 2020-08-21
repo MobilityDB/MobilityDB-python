@@ -100,13 +100,13 @@ class TPointInstSet(TInstantSet):
             # Parse without the eventual "srid=xxx;" prefix
             elements = parse_temporalInstSet(instantList, 0)
             for inst in elements[2]:
-                self._instantList.append(TInstantSet.ComponentClasSeqSet(inst[0], inst[1], srid=srid))
+                self._instantList.append(TInstantSet.ComponentClass(inst[0], inst[1], srid=srid))
         # Constructor with a single argument of type list
         elif len(argv) == 1 and isinstance(argv[0], list):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in argv[0]):
                 for arg in argv[0]:
-                    self._instantList.append(TInstantSet.ComponentClasSeqSet(arg, srid=srid))
+                    self._instantList.append(TInstantSet.ComponentClass(arg, srid=srid))
             # List of instant values
             elif all(isinstance(arg, TInstantSet.ComponentClass) for arg in argv[0]):
                 for arg in argv[0]:
@@ -118,7 +118,7 @@ class TPointInstSet(TInstantSet):
             # Arguments are of type string
             if all(isinstance(arg, str) for arg in argv):
                 for arg in argv:
-                    self._instantList.append(TInstantSet.ComponentClasSeqSet(arg, srid=srid))
+                    self._instantList.append(TInstantSet.ComponentClass(arg, srid=srid))
             # Arguments are of type instant
             elif all(isinstance(arg, TInstantSet.ComponentClass) for arg in argv):
                 for arg in argv:
@@ -172,7 +172,7 @@ class TPointSeq(TSequence):
             # Parse without the eventual "srid=xxx;" prefix
             elements = parse_temporalseq(instantList, 0)
             for inst in elements[2][0]:
-                self._instantList.append(TSequence.ComponentClasSeqSet(inst[0], inst[1], srid=srid))
+                self._instantList.append(TSequence.ComponentClass(inst[0], inst[1], srid=srid))
             self._lower_inc = elements[2][1]
             self._upper_inc = elements[2][2]
             # Set interpolation with the argument or the flag from the string if given
@@ -188,7 +188,7 @@ class TPointSeq(TSequence):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in instantList):
                 for arg in instantList:
-                    self._instantList.append(TSequence.ComponentClasSeqSet(arg, srid=srid))
+                    self._instantList.append(TSequence.ComponentClass(arg, srid=srid))
             # List of instant values
             elif all(isinstance(arg, TSequence.ComponentClass) for arg in instantList):
                 for arg in instantList:
@@ -261,11 +261,11 @@ class TPointSeqSet(TSequenceSet):
             for seq in elements[2][0]:
                 instList = []
                 for inst in seq[0]:
-                    instList.append(TSequenceSet.ComponentClass.ComponentClasSeqSet(inst[0], inst[1], srid=srid))
+                    instList.append(TSequenceSet.ComponentClass.ComponentClass(inst[0], inst[1], srid=srid))
                 if self.__class__.BaseClassDiscrete:
-                    seqList.append(TSequenceSet.ComponentClasSeqSet(instList, seq[1], seq[2]))
+                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2]))
                 else:
-                    seqList.append(TSequenceSet.ComponentClasSeqSet(instList, seq[1], seq[2], elements[2][1], srid=srid))
+                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2], elements[2][1], srid=srid))
             self._sequenceList = seqList
             # Set interpolation with the argument or the flag from the string if given
             if interp is not None:
@@ -280,7 +280,7 @@ class TPointSeqSet(TSequenceSet):
             # List of strings representing periods
             if all(isinstance(sequence, str) for sequence in sequenceList):
                 for sequence in sequenceList:
-                    self._sequenceList.append(self.__class__.ComponentClasSeqSet(sequence))
+                    self._sequenceList.append(self.__class__.ComponentClass(sequence))
             # List of periods
             elif all(isinstance(sequence, self.__class__.ComponentClass) for sequence in sequenceList):
                 for sequence in sequenceList:

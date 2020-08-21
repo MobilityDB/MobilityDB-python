@@ -21,11 +21,11 @@ class TSequenceSet(Temporal):
             for seq in elements[2][0]:
                 instList = []
                 for inst in seq[0]:
-                    instList.append(TSequenceSet.ComponentClass.ComponentClasSeqSet(inst[0], inst[1]))
+                    instList.append(TSequenceSet.ComponentClass.ComponentClass(inst[0], inst[1]))
                 if self.__class__.BaseClassDiscrete:
-                    seqList.append(TSequenceSet.ComponentClasSeqSet(instList, seq[1], seq[2]))
+                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2]))
                 else:
-                    seqList.append(TSequenceSet.ComponentClasSeqSet(instList, seq[1], seq[2], elements[2][1]))
+                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2], elements[2][1]))
             self._sequenceList = seqList
             # Set interpolation with the argument or the flag from the string if given
             if interp is not None:
@@ -40,7 +40,7 @@ class TSequenceSet(Temporal):
             # List of strings representing periods
             if all(isinstance(sequence, str) for sequence in sequenceList):
                 for sequence in sequenceList:
-                    self._sequenceList.append(self.__class__.ComponentClasSeqSet(sequence))
+                    self._sequenceList.append(self.__class__.ComponentClass(sequence))
             # List of periods
             elif all(isinstance(sequence, self.__class__.ComponentClass) for sequence in sequenceList):
                 for sequence in sequenceList:
