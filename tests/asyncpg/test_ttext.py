@@ -17,7 +17,7 @@ async def test_ttextinst_constructors(connection, expected_ttextinst):
     result = await connection.fetchval('SELECT temp FROM tbl_ttextinst WHERE temp=$1', params, column=0)
     assert result == TTextInst(expected_ttextinst)
 
-@pytest.mark.parametrize('expected_ttexti', [
+@pytest.mark.parametrize('expected_ttextinstset', [
     '{AA@2019-09-01 00:00:00+01, BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01}',
     ('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'),
     (TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'),

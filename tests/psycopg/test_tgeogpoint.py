@@ -78,7 +78,7 @@ def test_tgeogpointinst_accessors(cursor, expected_tgeogpointinst):
         PeriodSet('{[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')) == False
 
 
-@pytest.mark.parametrize('expected_tgeogpointinstseq', [
+@pytest.mark.parametrize('expected_tgeogpointinstset', [
     '{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
         'Point(10.0 10.0)@2019-09-03 00:00:00+01}',
     'SRID=4326;{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
@@ -104,25 +104,25 @@ def test_tgeogpointinst_accessors(cursor, expected_tgeogpointinst):
         TGeogPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
         TGeogPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')],
 ])
-def test_tgeogpointinstseq_constructor(cursor, expected_tgeogpointinstset):
-    if isinstance(expected_tgeogpointinstseq, tuple):
+def test_tgeogpointinstset_constructor(cursor, expected_tgeogpointinstset):
+    if isinstance(expected_tgeogpointinstset, tuple):
         params = [TGeogPointInstSet(*expected_tgeogpointinstset)]
     else:
         params = [TGeogPointInstSet(expected_tgeogpointinstset)]
-    cursor.execute('INSERT INTO tbl_tgeogpointinstseq (temp) VALUES (%s)', params)
-    cursor.execute('SELECT temp FROM tbl_tgeogpointinstseq WHERE temp=%s', params)
+    cursor.execute('INSERT INTO tbl_tgeogpointinstset (temp) VALUES (%s)', params)
+    cursor.execute('SELECT temp FROM tbl_tgeogpointinstset WHERE temp=%s', params)
     result = cursor.fetchone()[0]
-    if isinstance(expected_tgeogpointinstseq, tuple):
+    if isinstance(expected_tgeogpointinstset, tuple):
         assert result == TGeogPointInstSet(*expected_tgeogpointinstset)
     else:
         assert result == TGeogPointInstSet(expected_tgeogpointinstset)
 
 
-@pytest.mark.parametrize('expected_tgeogpointinstseq', [
+@pytest.mark.parametrize('expected_tgeogpointinstset', [
     'SRID=4326;{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
         'Point(30.0 30.0)@2019-09-03 00:00:00+01}',
 ])
-def test_tgeogpointinstseq_accessors(cursor, expected_tgeogpointinstset):
+def test_tgeogpointinstset_accessors(cursor, expected_tgeogpointinstset):
     assert TGeogPointInstSet(expected_tgeogpointinstset).srid == 4326
     assert TGeogPointInstSet(expected_tgeogpointinstset).duration() == 'InstantSet'
     assert TGeogPointInstSet(expected_tgeogpointinstset).getValues == \

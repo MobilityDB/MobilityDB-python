@@ -23,7 +23,7 @@ async def test_tgeogpointinst_constructors(connection, expected_tgeogpointinst):
     result = await connection.fetchval('SELECT temp FROM tbl_tgeogpointinst WHERE temp=$1', params, column=0)
     assert result == TGeogPointInst(expected_tgeogpointinst)
 
-@pytest.mark.parametrize('expected_tgeogpointi', [
+@pytest.mark.parametrize('expected_tgeogpointinstset', [
     '{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
         'Point(10.0 10.0)@2019-09-03 00:00:00+01}',
     'SRID=4326;{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '

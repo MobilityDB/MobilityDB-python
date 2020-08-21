@@ -17,7 +17,7 @@ async def test_tfloatinst_constructors(connection, expected_tfloatinst):
     result = await connection.fetchval('SELECT temp FROM tbl_tfloatinst WHERE temp=$1', params, column=0)
     assert result == TFloatInst(expected_tfloatinst)
 
-@pytest.mark.parametrize('expected_tfloatinstseq', [
+@pytest.mark.parametrize('expected_tfloatinstset', [
     '{10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01}',
     ('10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'),
     (TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
@@ -27,13 +27,13 @@ async def test_tfloatinst_constructors(connection, expected_tfloatinst):
      TFloatInst('10.0@2019-09-03 00:00:00+01')],
 ])
 async def test_tfloatinstseq_constructor(connection, expected_tfloatinstset):
-    if isinstance(expected_tfloatinstseq, tuple):
+    if isinstance(expected_tfloatinstset, tuple):
         params = TFloatInstSet(*expected_tfloatinstset)
     else:
         params = TFloatInstSet(expected_tfloatinstset)
     await connection.execute('INSERT INTO tbl_tfloatinstset (temp) VALUES ($1)', params)
     result = await connection.fetchval('SELECT temp FROM tbl_tfloatinstset WHERE temp=$1', params)
-    if isinstance(expected_tfloatinstseq, tuple):
+    if isinstance(expected_tfloatinstset, tuple):
         assert result == TFloatInstSet(*expected_tfloatinstset)
     else:
         assert result == TFloatInstSet(expected_tfloatinstset)
