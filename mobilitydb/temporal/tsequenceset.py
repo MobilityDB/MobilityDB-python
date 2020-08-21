@@ -1,9 +1,9 @@
 from mobilitydb.time import Period, PeriodSet
 from mobilitydb.temporal.temporal import Temporal
-from mobilitydb.temporal.temporal_parser import parse_temporals
+from mobilitydb.temporal.temporal_parser import parse_temporalseqset
 
 
-class TemporalS(Temporal):
+class TSequenceSet(Temporal):
     """
     Abstract class for representing temporal values of sequence set duration.
     """
@@ -16,16 +16,16 @@ class TemporalS(Temporal):
         self._sequenceList = []
         # Constructor with a single argument of type string
         if isinstance(sequenceList, str):
-            elements = parse_temporals(sequenceList, 0)
+            elements = parse_temporalseqset(sequenceList, 0)
             seqList = []
             for seq in elements[2][0]:
                 instList = []
                 for inst in seq[0]:
-                    instList.append(TemporalS.ComponentClass.ComponentClass(inst[0], inst[1]))
+                    instList.append(TSequenceSet.ComponentClass.ComponentClass(inst[0], inst[1]))
                 if self.__class__.BaseClassDiscrete:
-                    seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2]))
+                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2]))
                 else:
-                    seqList.append(TemporalS.ComponentClass(instList, seq[1], seq[2], elements[2][1]))
+                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2], elements[2][1]))
             self._sequenceList = seqList
             # Set interpolation with the argument or the flag from the string if given
             if interp is not None:

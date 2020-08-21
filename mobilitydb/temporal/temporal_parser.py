@@ -19,7 +19,7 @@ def parse_temporalinst():
     return [value, time]
 
 @generate
-def parse_temporali():
+def parse_temporalinstset():
     yield spaces >> lbrace << spaces
     instants = yield sepEndBy1(parse_temporalinst, string(','))
     yield spaces >> rbrace << spaces
@@ -40,7 +40,7 @@ def parse_temporalseq():
     return (instants, lower, upper, interp)
 
 @generate
-def parse_temporals():
+def parse_temporalseqset():
     ip = yield spaces >> string('Interp=Stepwise;') | string('') << spaces
     if ip == '':
         interp = None

@@ -1,7 +1,7 @@
 from parsec import *
 from datetime import datetime
 from dateutil.parser import parse
-from mobilitydb.temporal import Temporal, TemporalInst, TemporalI, TemporalSeq, TemporalS
+from mobilitydb.temporal import Temporal, TInstant, TInstantSet, TSequence, TSequenceSet
 from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
 
@@ -20,9 +20,9 @@ class TBool(Temporal):
             return TBoolSeq(value)
         elif value[0] == '{':
             if value[1] == '[' or value[1] == '(':
-                return TBoolS(value)
+                return TBoolSeqSet(value)
             else:
-                return TBoolI(value)
+                return TBoolInstSet(value)
         raise Exception("ERROR: Could not parse temporal boolean value")
 
     @staticmethod
@@ -32,7 +32,7 @@ class TBool(Temporal):
         return value.__str__().strip("'")
 
 
-class TBoolInst(TemporalInst, TBool):
+class TBoolInst(TInstant, TBool):
     """
     Class for representing temporal Booleans of instant duration.
 
@@ -56,7 +56,7 @@ class TBoolInst(TemporalInst, TBool):
     and eval('False') == False. Furthermore eval('false') gives an error
     """
     def __init__(self, value, time=None):
-        TemporalInst.BaseClass = bool
+        TInstant.BaseClass = bool
         if time is None:
             # Constructor with a single argument of type string
             if isinstance(value, str):
@@ -83,32 +83,32 @@ class TBoolInst(TemporalInst, TBool):
         self._time = parse(time) if isinstance(time, str) else time
 
 
-class TBoolI(TemporalI, TBool):
+class TBoolInstSet(TInstantSet, TBool):
     """
     Class for representing temporal Booleans of instant set duration.
 
-    ``TBoolI`` objects can be created with a single argument of type string
+    ``TBoolInstSet`` objects can be created with a single argument of type string
     as in MobilityDB.
 
-        >>> TBoolI('AA@2019-09-01')
+        >>> TBoolInstSet('AA@2019-09-01')
 
     Another possibility is to give a tuple or list of arguments,
     which can be instances of ``str`` or ``TBoolInst``.
 
-        >>> TBoolI('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01')
-        >>> TBoolI(TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01'))
-        >>> TBoolI(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
-        >>> TBoolI([TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01')])
+        >>> TBoolInstSet('AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01')
+        >>> TBoolInstSet(TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01'))
+        >>> TBoolInstSet(['AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'])
+        >>> TBoolInstSet([TBoolInst('AA@2019-09-01 00:00:00+01'), TBoolInst('BB@2019-09-02 00:00:00+01'), TBoolInst('AA@2019-09-03 00:00:00+01')])
 
     """
 
     def __init__(self,  *argv):
-        TemporalI.BaseClass = bool
-        TemporalI.ComponentClass = TBoolInst
+        TInstantSet.BaseClass = bool
+        TInstantSet.ComponentClass = TBoolInst
         super().__init__(*argv)
 
 
-class TBoolSeq(TemporalSeq, TBool):
+class TBoolSeq(TSequence, TBool):
     """
     Class for representing temporal Booleans of sequence duration.
 
@@ -135,9 +135,9 @@ class TBoolSeq(TemporalSeq, TBool):
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None):
-        TemporalSeq.BaseClass = bool
-        TemporalSeq.BaseClassDiscrete = True
-        TemporalSeq.ComponentClass = TBoolInst
+        TSequence.BaseClass = bool
+        TSequence.BaseClassDiscrete = True
+        TSequence.ComponentClass = TBoolInst
         self._interp = 'Stepwise'
         super().__init__(instantList, lower_inc, upper_inc)
 
@@ -150,28 +150,28 @@ class TBoolSeq(TemporalSeq, TBool):
         return 'Stepwise'
 
 
-class TBoolS(TemporalS, TBool):
+class TBoolSeqSet(TSequenceSet, TBool):
     """
     Class for representing temporal Booleans of sequence set duration.
 
-    ``TBoolS`` objects can be created with a single argument of type string
+    ``TBoolSeqSet`` objects can be created with a single argument of type string
     as in MobilityDB.
 
-        >>> TBoolS('{[true@2019-09-01 00:00:00+01], [false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]}')
+        >>> TBoolSeqSet('{[true@2019-09-01 00:00:00+01], [false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]}')
 
     Another possibility is to give the list of composing sequences, which
     can be instances of ``str`` or ``TBoolSeq``.
 
-        >>> TBoolS(['[true@2019-09-01 00:00:00+01]', '[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]'])
-        >>> TBoolS([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
-        >>> TBoolS([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
+        >>> TBoolSeqSet(['[true@2019-09-01 00:00:00+01]', '[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]'])
+        >>> TBoolSeqSet([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
+        >>> TBoolSeqSet([TBoolSeq('[true@2019-09-01 00:00:00+01]'), TBoolSeq('[false@2019-09-02 00:00:00+01, true@2019-09-03 00:00:00+01]')])
 
     """
 
     def __init__(self, sequenceList):
-        TemporalS.BaseClass = bool
-        TemporalS.BaseClassDiscrete = True
-        TemporalS.ComponentClass = TBoolSeq
+        TSequenceSet.BaseClass = bool
+        TSequenceSet.BaseClassDiscrete = True
+        TSequenceSet.ComponentClass = TBoolSeq
         self._interp = 'Stepwise'
         super().__init__(sequenceList)
 

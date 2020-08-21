@@ -3,7 +3,7 @@ from mobilitydb.temporal import TemporalInstants
 from mobilitydb.temporal.temporal_parser import parse_temporalseq
 
 
-class TemporalSeq(TemporalInstants):
+class TSequence(TemporalInstants):
     """
     Abstract class for representing temporal values of sequence duration.
     """
@@ -20,7 +20,7 @@ class TemporalSeq(TemporalInstants):
         if isinstance(instantList, str):
             elements = parse_temporalseq(instantList, 0)
             for inst in elements[2][0]:
-                self._instantList.append(TemporalSeq.ComponentClass(inst[0], inst[1]))
+                self._instantList.append(TSequence.ComponentClass(inst[0], inst[1]))
             self._lower_inc = elements[2][1]
             self._upper_inc = elements[2][2]
             # Set interpolation with the argument or the flag from the string if given
@@ -36,9 +36,9 @@ class TemporalSeq(TemporalInstants):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in instantList):
                 for arg in instantList:
-                    self._instantList.append(TemporalSeq.ComponentClass(arg))
+                    self._instantList.append(TSequence.ComponentClass(arg))
             # List of instant values
-            elif all(isinstance(arg, TemporalSeq.ComponentClass) for arg in instantList):
+            elif all(isinstance(arg, TSequence.ComponentClass) for arg in instantList):
                 for arg in instantList:
                     self._instantList.append(arg)
             else:

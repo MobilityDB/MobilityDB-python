@@ -1,10 +1,10 @@
 from datetime import timedelta
 from mobilitydb.time import Period, PeriodSet
 from mobilitydb.temporal import TemporalInstants
-from mobilitydb.temporal.temporal_parser import parse_temporali
+from mobilitydb.temporal.temporal_parser import parse_temporalinstset
 
 
-class TemporalI(TemporalInstants):
+class TInstantSet(TemporalInstants):
     """
     Abstract class for representing temporal values of instant set duration.
     """
@@ -13,17 +13,17 @@ class TemporalI(TemporalInstants):
         self._instantList = []
         # Constructor with a single argument of type string
         if len(argv) == 1 and isinstance(argv[0], str):
-            elements = parse_temporali(argv[0], 0)
+            elements = parse_temporalinstset(argv[0], 0)
             for inst in elements[2]:
-                self._instantList.append(TemporalI.ComponentClass(inst[0], inst[1]))
+                self._instantList.append(TInstantSet.ComponentClass(inst[0], inst[1]))
         # Constructor with a single argument of type list
         elif len(argv) == 1 and isinstance(argv[0], list):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in argv[0]):
                 for arg in argv[0]:
-                    self._instantList.append(TemporalI.ComponentClass(arg))
+                    self._instantList.append(TInstantSet.ComponentClass(arg))
             # List of instant values
-            elif all(isinstance(arg, TemporalI.ComponentClass) for arg in argv[0]):
+            elif all(isinstance(arg, TInstantSet.ComponentClass) for arg in argv[0]):
                 for arg in argv[0]:
                     self._instantList.append(arg)
             else:
@@ -33,9 +33,9 @@ class TemporalI(TemporalInstants):
             # Arguments are of type string
             if all(isinstance(arg, str) for arg in argv):
                 for arg in argv:
-                    self._instantList.append(TemporalI.ComponentClass(arg))
+                    self._instantList.append(TInstantSet.ComponentClass(arg))
             # Arguments are of type instant
-            elif all(isinstance(arg, TemporalI.ComponentClass) for arg in argv):
+            elif all(isinstance(arg, TInstantSet.ComponentClass) for arg in argv):
                 for arg in argv:
                     self._instantList.append(arg)
             else:

@@ -197,7 +197,7 @@ class Temporal:
         """
         pass
 
-    def intersectsTimestampset(self, timestampset):
+    def intersectsTimestampSet(self, timestampset):
         """
         Does the temporal value intersect the timestamp set?
         """
@@ -210,7 +210,7 @@ class Temporal:
         """
         pass
 
-    def intersectsPeriodset(self, periodset):
+    def intersectsPeriodSet(self, periodset):
         """
         Does the temporal value intersect the period set?
         """

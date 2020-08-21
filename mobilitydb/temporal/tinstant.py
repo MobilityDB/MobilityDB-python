@@ -6,7 +6,7 @@ from mobilitydb.temporal import Temporal
 from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
 
-class TemporalInst(Temporal):
+class TInstant(Temporal):
     """
     Abstract class for representing temporal values of instant duration.
     """

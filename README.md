@@ -98,11 +98,11 @@ loop.run_until_complete(run())
 Manual
 ------
 
-HTML: https://docs.mobilitydb.com/python-mobilitydb/master/
+HTML: https://docs.mobilitydb.com/MobilityDB-python/master/
 
-PDF: https://docs.mobilitydb.com/python-mobilitydb/master/python-mobilitydb.pdf
+PDF: https://docs.mobilitydb.com/MobilityDB-python/master/python-mobilitydb.pdf
 
-EPUB: https://docs.mobilitydb.com/python-mobilitydb/master/python-mobilitydb.epub
+EPUB: https://docs.mobilitydb.com/MobilityDB-python/master/python-mobilitydb.epub
 
 Contributing
 ------------

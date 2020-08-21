@@ -10,7 +10,7 @@ setup(
     version='0.1.1',
     license='MIT',
     description='A database adapter to access MobilityDB from Python',
-    author='MobilityDB Team',
+    author='MobilityDB Project',
     platforms=["linux"],
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -44,6 +44,6 @@ setup(
     ],
     project_urls={
         'Source': 'https://github.com/MobilityDB/MobilityDB-python',
-        'Documentation': 'https://docs.mobilitydb.com/nightly/mobilitydb.pdf',
+        'Documentation': 'https://docs.mobilitydb.com/MobilityDB-python/master/python-mobilitydb.pdf',
     },
 )
