@@ -54,8 +54,8 @@ async def test_tfloatseq_constructor(connection, expected_tfloatseq):
         params = TFloatSeq(*expected_tfloatseq)
     else:
         params = TFloatSeq(expected_tfloatseq)
-    await connection.execute('INSERT INTO tbl_tfloatseqseteq (temp) VALUES ($1)', params)
-    result = await connection.fetchval('SELECT temp FROM tbl_tfloatseqseteq WHERE temp=$1', params)
+    await connection.execute('INSERT INTO tbl_tfloatseq (temp) VALUES ($1)', params)
+    result = await connection.fetchval('SELECT temp FROM tbl_tfloatseq WHERE temp=$1', params)
     if isinstance(expected_tfloatseq, tuple):
         assert result == TFloatSeq(*expected_tfloatseq)
     else:
