@@ -48,10 +48,10 @@ async def run():
         print(len(rows), "record(s) inserted successfully into tbl_tboolinst table")
 
         ######################
-        # TBoolI
+        # TBoolInstSet
         ######################
 
-        select_query = "select * from tbl_tbooli order by k limit 10"
+        select_query = "select * from tbl_tboolinstset order by k limit 10"
 
         print("\n****************************************************************")
         print("Selecting rows from tbl_tbooli table\n")
@@ -59,17 +59,17 @@ async def run():
 
         for row in rows:
             print("key =", row[0])
-            print("tbooli =", row[1])
+            print("tboolinstset =", row[1])
             if not row[1]:
                 print("")
             else:
                 print("startTimestamp =", row[1].startTimestamp, "\n")
 
-        drop_table_query = '''DROP TABLE IF EXISTS tbl_tbooli_temp;'''
+        drop_table_query = '''DROP TABLE IF EXISTS tbl_tboolinstset_temp;'''
         await connection.execute(drop_table_query)
         print("Table deleted successfully in PostgreSQL ")
     
-        create_table_query = '''CREATE TABLE tbl_tbooli_temp
+        create_table_query = '''CREATE TABLE tbl_tboolinstset_temp
             (
               k integer PRIMARY KEY,
               temp tbool
@@ -78,10 +78,10 @@ async def run():
         await connection.execute(create_table_query)
         print("Table created successfully in PostgreSQL ")
     
-        postgres_insert_query = ''' INSERT INTO tbl_tbooli_temp (k, temp) VALUES ($1, $2) '''
+        postgres_insert_query = ''' INSERT INTO tbl_tboolinstset_temp (k, temp) VALUES ($1, $2) '''
         await connection.executemany(postgres_insert_query, rows)
         #count = cursor.rowcount
-        print(len(rows), "record(s) inserted successfully into tbl_tbooli_temp table")
+        print(len(rows), "record(s) inserted successfully into tbl_tboolinstset_temp table")
 
         ######################
         # TBoolSeq
@@ -137,11 +137,11 @@ async def run():
             else:
                 print("startTimestamp =", row[1].startTimestamp, "\n")
     
-        drop_table_query = '''DROP TABLE IF EXISTS tbl_tbools_temp;'''
+        drop_table_query = '''DROP TABLE IF EXISTS tbl_tboolseqset_temp;'''
         await connection.execute(drop_table_query)
         print("Table deleted successfully in PostgreSQL ")
     
-        create_table_query = '''CREATE TABLE tbl_tbools_temp
+        create_table_query = '''CREATE TABLE tbl_tboolseqset_temp
             (
               k integer PRIMARY KEY,
               temp tbool
@@ -150,10 +150,10 @@ async def run():
         await connection.execute(create_table_query)
         print("Table created successfully in PostgreSQL ")
     
-        postgres_insert_query = ''' INSERT INTO tbl_tbools_temp (k, temp) VALUES ($1, $2) '''
+        postgres_insert_query = ''' INSERT INTO tbl_tboolseqset_temp (k, temp) VALUES ($1, $2) '''
         await connection.executemany(postgres_insert_query, rows)
         # count = cursor.rowcount
-        print(len(rows), "record(s) inserted successfully into tbl_tbools_temp table")
+        print(len(rows), "record(s) inserted successfully into tbl_tboolseqset_temp table")
     
         print("\n****************************************************************")
 

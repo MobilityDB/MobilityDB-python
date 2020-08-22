@@ -1,14 +1,14 @@
 import pytest
 from datetime import timedelta
 from dateutil.parser import parse
-from postgis import Point, MultiPoint, LineString, MultiLineString, GeometryCollection
-from mobilitydb.main import TGeogPointInst, TGeogPointI, TGeogPointSeq, TGeogPointS
-from mobilitydb.main.tpoint import to_coords
-from mobilitydb.time import TimestampSet, Period, PeriodSet
 
+from postgis import Point, MultiPoint, LineString, MultiLineString, GeometryCollection
 from pymeos import GeomPoint
 from pymeos.temporal import TemporalDuration
 from pymeos.range import RangeGeom
+
+from mobilitydb.main import TGeogPointInst, TGeogPointInstSet, TGeogPointSeq, TGeogPointSeqSet
+from mobilitydb.time import TimestampSet, Period, PeriodSet
 
 
 @pytest.mark.parametrize('expected_tgeogpointinst', [
@@ -84,7 +84,7 @@ def test_tgeogpointinst_accessors(cursor, expected_tgeogpointinst):
         PeriodSet('{[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')) == False
 
 
-@pytest.mark.parametrize('expected_tgeogpointi', [
+@pytest.mark.parametrize('expected_tgeogpointinstset', [
     '{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
         'Point(10.0 10.0)@2019-09-03 00:00:00+01}',
     'SRID=4326;{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
@@ -100,69 +100,69 @@ def test_tgeogpointinst_accessors(cursor, expected_tgeogpointinst):
         TGeogPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
         TGeogPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')},
 ])
-def test_tgeogpointi_constructor(cursor, expected_tgeogpointi):
-    if isinstance(expected_tgeogpointi, tuple):
-        params = [TGeogPointI(*expected_tgeogpointi)]
+def test_tgeogpointinstset_constructor(cursor, expected_tgeogpointinstset):
+    if isinstance(expected_tgeogpointinstset, tuple):
+        params = [TGeogPointInstSet(*expected_tgeogpointinstset)]
     else:
-        params = [TGeogPointI(expected_tgeogpointi)]
-    cursor.execute('INSERT INTO tbl_tgeogpointi (temp) VALUES (%s)', params)
-    cursor.execute('SELECT temp FROM tbl_tgeogpointi WHERE temp=%s', params)
+        params = [TGeogPointInstSet(expected_tgeogpointinstset)]
+    cursor.execute('INSERT INTO tbl_tgeogpointinstset (temp) VALUES (%s)', params)
+    cursor.execute('SELECT temp FROM tbl_tgeogpointinstset WHERE temp=%s', params)
     result = cursor.fetchone()[0]
-    if isinstance(expected_tgeogpointi, tuple):
-        assert result == TGeogPointI(*expected_tgeogpointi)
+    if isinstance(expected_tgeogpointinstset, tuple):
+        assert result == TGeogPointInstSet(*expected_tgeogpointinstset)
     else:
-        assert result == TGeogPointI(expected_tgeogpointi)
+        assert result == TGeogPointInstSet(expected_tgeogpointinstset)
 
 
-@pytest.mark.parametrize('expected_tgeogpointi', [
+@pytest.mark.parametrize('expected_tgeogpointinstset', [
     'SRID=4326;{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
         'Point(30.0 30.0)@2019-09-03 00:00:00+01}',
 ])
-def test_tgeogpointi_accessors(cursor, expected_tgeogpointi):
-    assert TGeogPointI(expected_tgeogpointi).srid == 4326
-    assert TGeogPointI(expected_tgeogpointi).duration == TemporalDuration.InstantSet
-    assert TGeogPointI(expected_tgeogpointi).duration.name == 'InstantSet'
-    assert TGeogPointI(expected_tgeogpointi).getValues == \
+def test_tgeogpointinstset_accessors(cursor, expected_tgeogpointinstset):
+    assert TGeogPointInstSet(expected_tgeogpointinstset).srid == 4326
+    assert TGeogPointInstSet(expected_tgeogpointinstset).duration == TemporalDuration.InstantSet
+    assert TGeogPointInstSet(expected_tgeogpointinstset).duration.name == 'InstantSet'
+    assert TGeogPointInstSet(expected_tgeogpointinstset).getValues == \
            MultiPoint([Point(10.0, 10.0),Point(20.0, 20.0),Point(30.0, 30.0)])
-    assert TGeogPointI(expected_tgeogpointi).startValue == GeomPoint(10.0, 10.0, 4326)
-    assert TGeogPointI(expected_tgeogpointi).endValue == GeomPoint(30.0, 30.0, 4326)
-    assert TGeogPointI(expected_tgeogpointi).getTime == \
+    assert TGeogPointInstSet(expected_tgeogpointinstset).startValue == GeomPoint(10.0, 10.0, 4326)
+    assert TGeogPointInstSet(expected_tgeogpointinstset).endValue == GeomPoint(30.0, 30.0, 4326)
+    assert TGeogPointInstSet(expected_tgeogpointinstset).getTime == \
            PeriodSet(
                '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
                '[2019-09-03 00:00:00+01, 2019-09-03 00:00:00+01]}')
-    assert TGeogPointI(expected_tgeogpointi).timespan == timedelta(0)
-    assert TGeogPointI(expected_tgeogpointi).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
-    assert TGeogPointI(expected_tgeogpointi).numInstants == 3
-    assert TGeogPointI(expected_tgeogpointi).startInstant == TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01')
-    assert TGeogPointI(expected_tgeogpointi).endInstant == TGeogPointInst('Point(30.0 30.0)@2019-09-03 00:00:00+01')
-    assert TGeogPointI(expected_tgeogpointi).instantN(1) == TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01')
-    assert TGeogPointI(expected_tgeogpointi).instants == {TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+    assert TGeogPointInstSet(expected_tgeogpointinstset).timespan == timedelta(0)
+    assert TGeogPointInstSet(expected_tgeogpointinstset).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
+    assert TGeogPointInstSet(expected_tgeogpointinstset).numInstants == 3
+    assert TGeogPointInstSet(expected_tgeogpointinstset).startInstant == TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01')
+    assert TGeogPointInstSet(expected_tgeogpointinstset).endInstant == TGeogPointInst('Point(30.0 30.0)@2019-09-03 00:00:00+01')
+    assert TGeogPointInstSet(expected_tgeogpointinstset).instantN(1) == TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01')
+    assert TGeogPointInstSet(expected_tgeogpointinstset).instants == {TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
                                                             TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
                                                             TGeogPointInst('Point(30.0 30.0)@2019-09-03 00:00:00+01')}
-    assert TGeogPointI(expected_tgeogpointi).numTimestamps == 3
-    assert TGeogPointI(expected_tgeogpointi).startTimestamp == parse('2019-09-01 00:00:00+01')
-    assert TGeogPointI(expected_tgeogpointi).endTimestamp == parse('2019-09-03 00:00:00+01')
-    assert TGeogPointI(expected_tgeogpointi).timestampN(1) == parse('2019-09-02 00:00:00+01')
-    assert TGeogPointI(expected_tgeogpointi).timestamps == {parse('2019-09-01 00:00:00+01'),
+    assert TGeogPointInstSet(expected_tgeogpointinstset).numTimestamps == 3
+    assert TGeogPointInstSet(expected_tgeogpointinstset).startTimestamp == parse('2019-09-01 00:00:00+01')
+    assert TGeogPointInstSet(expected_tgeogpointinstset).endTimestamp == parse('2019-09-03 00:00:00+01')
+    assert TGeogPointInstSet(expected_tgeogpointinstset).timestampN(1) == parse('2019-09-02 00:00:00+01')
+    assert TGeogPointInstSet(expected_tgeogpointinstset).timestamps == {parse('2019-09-01 00:00:00+01'),
                                                               parse('2019-09-02 00:00:00+01'),
                                                               parse('2019-09-03 00:00:00+01')}
-    assert TGeogPointI(expected_tgeogpointi).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
-    assert TGeogPointI(expected_tgeogpointi).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
-    assert TGeogPointI(expected_tgeogpointi).intersectsTimestampSet(
+    assert TGeogPointInstSet(expected_tgeogpointinstset).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
+    assert TGeogPointInstSet(expected_tgeogpointinstset).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
+    assert TGeogPointInstSet(expected_tgeogpointinstset).intersectsTimestampSet(
         TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-    assert TGeogPointI(expected_tgeogpointi).intersectsTimestampSet(
+    assert TGeogPointInstSet(expected_tgeogpointinstset).intersectsTimestampSet(
         TimestampSet('{2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01}')) == False
-    assert TGeogPointI(expected_tgeogpointi).intersectsPeriod(
+    assert TGeogPointInstSet(expected_tgeogpointinstset).intersectsPeriod(
         Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
-    assert TGeogPointI(expected_tgeogpointi).intersectsPeriod(
+    assert TGeogPointInstSet(expected_tgeogpointinstset).intersectsPeriod(
         Period('(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01)')) == False
-    assert TGeogPointI(expected_tgeogpointi).intersectsPeriod(
+    assert TGeogPointInstSet(expected_tgeogpointinstset).intersectsPeriod(
         Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
-    assert TGeogPointI(expected_tgeogpointi).intersectsPeriodSet(
+    assert TGeogPointInstSet(expected_tgeogpointinstset).intersectsPeriodSet(
         PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-    assert TGeogPointI(expected_tgeogpointi).intersectsPeriodSet(
+    assert TGeogPointInstSet(expected_tgeogpointinstset).intersectsPeriodSet(
         PeriodSet('{(2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01)}')) == False
-    assert TGeogPointI(expected_tgeogpointi).intersectsPeriodSet(
+    assert TGeogPointInstSet(expected_tgeogpointinstset).intersectsPeriodSet(
         PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
 
@@ -260,7 +260,7 @@ def test_tgeogpointseq_accessors(cursor, expected_tgeogpointseq):
         PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False
 
 
-@pytest.mark.parametrize('expected_tgeogpoints', [
+@pytest.mark.parametrize('expected_tgeogpointseqset', [
     '{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
         '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}',
     'SRID=4326;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
@@ -299,69 +299,69 @@ def test_tgeogpointseq_accessors(cursor, expected_tgeogpointseq):
             'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')}, None,
      'Stepwise'),
 ])
-def test_tgeogpoints_constructor(cursor, expected_tgeogpoints):
-    if isinstance(expected_tgeogpoints, tuple):
-        params = [TGeogPointS(*expected_tgeogpoints)]
+def test_tgeogpointseqset_constructor(cursor, expected_tgeogpointseqset):
+    if isinstance(expected_tgeogpointseqset, tuple):
+        params = [TGeogPointSeqSet(*expected_tgeogpointseqset)]
     else:
-        params = [TGeogPointS(expected_tgeogpoints)]
-    cursor.execute('INSERT INTO tbl_tgeogpoints (temp) VALUES (%s)', params)
-    cursor.execute('SELECT temp FROM tbl_tgeogpoints WHERE temp=%s', params)
+        params = [TGeogPointSeqSet(expected_tgeogpointseqset)]
+    cursor.execute('INSERT INTO tbl_tgeogpointseqset (temp) VALUES (%s)', params)
+    cursor.execute('SELECT temp FROM tbl_tgeogpointseqset WHERE temp=%s', params)
     result = cursor.fetchone()[0]
-    if isinstance(expected_tgeogpoints, tuple):
-        assert result == TGeogPointS(*expected_tgeogpoints)
+    if isinstance(expected_tgeogpointseqset, tuple):
+        assert result == TGeogPointSeqSet(*expected_tgeogpointseqset)
     else:
-        assert result == TGeogPointS(expected_tgeogpoints)
+        assert result == TGeogPointSeqSet(expected_tgeogpointseqset)
 
-@pytest.mark.parametrize('expected_tgeogpoints', [
+@pytest.mark.parametrize('expected_tgeogpointseqset', [
     'SRID=4326;{[Point(10.0 10.0)@2019-09-01 00:00:00+01],  '
     '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(30.0 30.0)@2019-09-03 00:00:00+01]}',
 ])
-def test_tgeogpoints_accessors(cursor, expected_tgeogpoints):
-    assert TGeogPointS(expected_tgeogpoints).srid == 4326
-    assert TGeogPointS(expected_tgeogpoints).duration == TemporalDuration.SequenceSet
-    assert TGeogPointS(expected_tgeogpoints).duration.name == 'SequenceSet'
-    assert TGeogPointS(expected_tgeogpoints).getValues == \
+def test_tgeogpointseqset_accessors(cursor, expected_tgeogpointseqset):
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).srid == 4326
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).duration == TemporalDuration.SequenceSet
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).duration.name == 'SequenceSet'
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).getValues == \
         GeometryCollection([Point(10.0, 10.0), LineString([Point(20.0, 20.0), Point(30.0, 30.0)])])
-    assert TGeogPointS(expected_tgeogpoints).startValue == GeomPoint(10.0, 10.0, 4326)
-    assert TGeogPointS(expected_tgeogpoints).endValue == GeomPoint(30.0, 30.0, 4326)
-    assert TGeogPointS(expected_tgeogpoints).valueRange == RangeGeom(GeomPoint(10.0, 10.0, 4326), GeomPoint(30.0, 30.0, 4326), upper_inc=True)
-    assert TGeogPointS(expected_tgeogpoints).getTime == PeriodSet(
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).startValue == GeomPoint(10.0, 10.0, 4326)
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).endValue == GeomPoint(30.0, 30.0, 4326)
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).valueRange == RangeGeom(GeomPoint(10.0, 10.0, 4326), GeomPoint(30.0, 30.0, 4326), upper_inc=True)
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).getTime == PeriodSet(
         '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')
-    assert TGeogPointS(expected_tgeogpoints).timespan == timedelta(1)
-    assert TGeogPointS(expected_tgeogpoints).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
-    assert TGeogPointS(expected_tgeogpoints).numInstants == 3
-    assert TGeogPointS(expected_tgeogpoints).startInstant == TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01')
-    assert TGeogPointS(expected_tgeogpoints).endInstant == TGeogPointInst('Point(30.0 30.0)@2019-09-03 00:00:00+01')
-    assert TGeogPointS(expected_tgeogpoints).instantN(1) == TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01')
-    assert TGeogPointS(expected_tgeogpoints).instants == {TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).timespan == timedelta(1)
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).numInstants == 3
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).startInstant == TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01')
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).endInstant == TGeogPointInst('Point(30.0 30.0)@2019-09-03 00:00:00+01')
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).instantN(1) == TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01')
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).instants == {TGeogPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01'),
                                                         TGeogPointInst('Point(20.0 20.0)@2019-09-02 00:00:00+01'),
                                                         TGeogPointInst('Point(30.0 30.0)@2019-09-03 00:00:00+01')}
-    assert TGeogPointS(expected_tgeogpoints).numTimestamps == 3
-    assert TGeogPointS(expected_tgeogpoints).startTimestamp == parse('2019-09-01 00:00:00+01')
-    assert TGeogPointS(expected_tgeogpoints).endTimestamp == parse('2019-09-03 00:00:00+01')
-    assert TGeogPointS(expected_tgeogpoints).timestampN(1) == parse('2019-09-02 00:00:00+01')
-    assert TGeogPointS(expected_tgeogpoints).timestamps == {parse('2019-09-01 00:00:00+01'),
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).numTimestamps == 3
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).startTimestamp == parse('2019-09-01 00:00:00+01')
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).endTimestamp == parse('2019-09-03 00:00:00+01')
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).timestampN(1) == parse('2019-09-02 00:00:00+01')
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).timestamps == {parse('2019-09-01 00:00:00+01'),
                                                           parse('2019-09-02 00:00:00+01'),
                                                           parse('2019-09-03 00:00:00+01')}
-    assert TGeogPointS(expected_tgeogpoints).numSequences == 2
-    assert TGeogPointS(expected_tgeogpoints).startSequence == TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]')
-    assert TGeogPointS(expected_tgeogpoints).endSequence == TGeogPointSeq(
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).numSequences == 2
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).startSequence == TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]')
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).endSequence == TGeogPointSeq(
         '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(30.0 30.0)@2019-09-03 00:00:00+01]')
-    assert TGeogPointS(expected_tgeogpoints).sequenceN(1) == TGeogPointSeq(
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).sequenceN(1) == TGeogPointSeq(
         '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(30.0 30.0)@2019-09-03 00:00:00+01]')
-    assert TGeogPointS(expected_tgeogpoints).sequences == {TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).sequences == {TGeogPointSeq('[Point(10.0 10.0)@2019-09-01 00:00:00+01]'),
         TGeogPointSeq('[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(30.0 30.0)@2019-09-03 00:00:00+01]')}
-    assert TGeogPointS(expected_tgeogpoints).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
-    assert TGeogPointS(expected_tgeogpoints).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
-    assert TGeogPointS(expected_tgeogpoints).intersectsTimestampSet(
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).intersectsTimestamp(parse('2019-09-01 00:00:00+01')) == True
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).intersectsTimestamp(parse('2019-09-04 00:00:00+01')) == False
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).intersectsTimestampSet(
         TimestampSet('{2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01}')) == True
-    assert TGeogPointS(expected_tgeogpoints).intersectsTimestampSet(
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).intersectsTimestampSet(
         TimestampSet('{2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01}')) == False
-    assert TGeogPointS(expected_tgeogpoints).intersectsPeriod(
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).intersectsPeriod(
         Period('[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]')) == True
-    assert TGeogPointS(expected_tgeogpoints).intersectsPeriod(
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).intersectsPeriod(
         Period('[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]')) == False
-    assert TGeogPointS(expected_tgeogpoints).intersectsPeriodSet(
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).intersectsPeriodSet(
         PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-02 00:00:00+01]}')) == True
-    assert TGeogPointS(expected_tgeogpoints).intersectsPeriodSet(
+    assert TGeogPointSeqSet(expected_tgeogpointseqset).intersectsPeriodSet(
         PeriodSet('{[2019-09-04 00:00:00+01, 2019-09-05 00:00:00+01]}')) == False

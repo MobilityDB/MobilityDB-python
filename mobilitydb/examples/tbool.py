@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from dateutil.parser import parse
 from mobilitydb.time import TimestampSet, Period, PeriodSet
-from mobilitydb.main import TBoolInst, TBoolI, TBoolSeq, TBoolS
+from mobilitydb.main import TBoolInst, TBoolInstSet, TBoolSeq, TBoolSeqSet
 
 
 print("\nConstructors for TBoolInst")
@@ -13,20 +13,20 @@ t = parse('2019-09-08')
 inst = TBoolInst('True', t)
 print(inst)
 
-print("\nConstructors for TBoolI")
-ti = TBoolI('{True@2019-09-08, False@2019-09-09, False@2019-09-10}')
-print(ti)
-ti = TBoolI('True@2019-09-08', 'False@2019-09-09', 'False@2019-09-10')
-print(ti)
-ti = TBoolI(['True@2019-09-08', 'False@2019-09-09', 'False@2019-09-10'])
-print(ti)
+print("\nConstructors for TBoolInstSet")
+ti = TBoolInstSet('{True@2019-09-08, False@2019-09-09, False@2019-09-10}')
+print(tinstset)
+ti = TBoolInstSet('True@2019-09-08', 'False@2019-09-09', 'False@2019-09-10')
+print(tinstset)
+ti = TBoolInstSet(['True@2019-09-08', 'False@2019-09-09', 'False@2019-09-10'])
+print(tinstset)
 t1 = TBoolInst('True@2019-09-08')
 t2 = TBoolInst('False@2019-09-09')
 t3 = TBoolInst('False@2019-09-10')
-ti = TBoolI(t1, t2, t3)
-print(ti)
-ti = TBoolI([t1, t2, t3])
-print(ti)
+ti = TBoolInstSet(t1, t2, t3)
+print(tinstset)
+ti = TBoolInstSet([t1, t2, t3])
+print(tinstset)
 
 print("\nConstructors for TBoolSeq")
 seq = TBoolSeq('[True@2019-09-08, False@2019-09-09, False@2019-09-10]')
@@ -38,14 +38,14 @@ print(seq)
 seq = TBoolSeq([t1, t2, t3], False, True)
 print(seq)
 
-print("\nConstructors for TBoolS")
-ts = TBoolS('{[True@2019-09-08, False@2019-09-09, False@2019-09-10],[False@2019-09-11, True@2019-09-12]}')
+print("\nConstructors for TBoolSeqSet")
+ts = TBoolSeqSet('{[True@2019-09-08, False@2019-09-09, False@2019-09-10],[False@2019-09-11, True@2019-09-12]}')
 print(ts)
-ts = TBoolS(['[True@2019-09-08, False@2019-09-09, False@2019-09-10]', '[False@2019-09-11, True@2019-09-12]'])
+ts = TBoolSeqSet(['[True@2019-09-08, False@2019-09-09, False@2019-09-10]', '[False@2019-09-11, True@2019-09-12]'])
 print(ts)
 seq1 = TBoolSeq('[True@2019-09-08, False@2019-09-09, False@2019-09-10]')
 seq2 = TBoolSeq('[False@2019-09-11, True@2019-09-12]')
-ts = TBoolS([seq1, seq2])
+ts = TBoolSeqSet([seq1, seq2])
 print(ts)
 
 
@@ -218,7 +218,7 @@ print(ti.intersectsTimestamp(t))
 print(seq.intersectsTimestamp(t))
 print(ts.intersectsTimestamp(t))
 
-print("\nintersectsTimestampset")
+print("\nintersectsTimestampSet")
 tss = TimestampSet('{2019-09-09, 2019-09-10}')
 print(inst.intersectsTimestampSet(tss))
 print(ti.intersectsTimestampSet(tss))
@@ -232,7 +232,7 @@ print(ti.intersectsPeriod(p))
 print(seq.intersectsPeriod(p))
 print(ts.intersectsPeriod(p))
 
-print("\nintersectsPeriodset")
+print("\nintersectsPeriodSet")
 ps = PeriodSet('{[2019-09-09,2019-09-10], [2019-09-11,2019-09-12]}')
 print(inst.intersectsPeriodSet(ps))
 print(ti.intersectsPeriodSet(ps))

@@ -1,6 +1,6 @@
 import pytest
 from dateutil.parser import parse
-from mobilitydb.main import TTextInst, TTextI, TTextSeq, TTextS
+from mobilitydb.main import TTextInst, TTextInstSet, TTextSeq, TTextSeqSet
 
 pytestmark = pytest.mark.asyncio
 
@@ -15,23 +15,23 @@ async def test_ttextinst_constructors(connection, expected_ttextinst):
     result = await connection.fetchval('SELECT temp FROM tbl_ttextinst WHERE temp=$1', params, column=0)
     assert result == TTextInst(expected_ttextinst)
 
-@pytest.mark.parametrize('expected_ttexti', [
+@pytest.mark.parametrize('expected_ttextinstset', [
     '{AA@2019-09-01 00:00:00+01, BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01}',
     {'AA@2019-09-01 00:00:00+01', 'BB@2019-09-02 00:00:00+01', 'AA@2019-09-03 00:00:00+01'},
     {TTextInst('AA@2019-09-01 00:00:00+01'), TTextInst('BB@2019-09-02 00:00:00+01'),
      TTextInst('AA@2019-09-03 00:00:00+01')},
 ])
-async def test_ttexti_constructor(connection, expected_ttexti):
-    if isinstance(expected_ttexti, tuple):
-        params = TTextI(*expected_ttexti)
+async def test_ttextinstset_constructor(connection, expected_ttextinstset):
+    if isinstance(expected_ttextinstset, tuple):
+        params = TTextInstSet(*expected_ttextinstset)
     else:
-        params = TTextI(expected_ttexti)
-    await connection.execute('INSERT INTO tbl_ttexti (temp) VALUES ($1)', params)
-    result = await connection.fetchval('SELECT temp FROM tbl_ttexti WHERE temp=$1', params)
-    if isinstance(expected_ttexti, tuple):
-        assert result == TTextI(*expected_ttexti)
+        params = TTextInstSet(expected_ttextinstset)
+    await connection.execute('INSERT INTO tbl_ttextinstset (temp) VALUES ($1)', params)
+    result = await connection.fetchval('SELECT temp FROM tbl_ttextinstset WHERE temp=$1', params)
+    if isinstance(expected_ttextinstset, tuple):
+        assert result == TTextInstSet(*expected_ttextinstset)
     else:
-        assert result == TTextI(expected_ttexti)
+        assert result == TTextInstSet(expected_ttextinstset)
 
 @pytest.mark.parametrize('expected_ttextseq', [
     '[AA@2019-09-01 00:00:00+01, BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]',
@@ -51,20 +51,20 @@ async def test_ttextseq_constructor(connection, expected_ttextseq):
     else:
         assert result == TTextSeq(expected_ttextseq)
 
-@pytest.mark.parametrize('expected_ttexts', [
+@pytest.mark.parametrize('expected_ttextseqset', [
     '{[AA@2019-09-01 00:00:00+01], [BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]}',
     {'[AA@2019-09-01 00:00:00+01]', '[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]'},
     {TTextSeq('[AA@2019-09-01 00:00:00+01]'),
      TTextSeq('[BB@2019-09-02 00:00:00+01, AA@2019-09-03 00:00:00+01]')},
 ])
-async def test_ttexts_constructor(connection, expected_ttexts):
-    if isinstance(expected_ttexts, tuple):
-        params = TTextS(*expected_ttexts)
+async def test_ttextseqset_constructor(connection, expected_ttextseqset):
+    if isinstance(expected_ttextseqset, tuple):
+        params = TTextSeqSet(*expected_ttextseqset)
     else:
-        params = TTextS(expected_ttexts)
-    await connection.execute('INSERT INTO tbl_ttexts (temp) VALUES ($1)', params)
-    result = await connection.fetchval('SELECT temp FROM tbl_ttexts WHERE temp=$1', params)
-    if isinstance(expected_ttexts, tuple):
-        assert result == TTextS(*expected_ttexts)
+        params = TTextSeqSet(expected_ttextseqset)
+    await connection.execute('INSERT INTO tbl_ttextseqset (temp) VALUES ($1)', params)
+    result = await connection.fetchval('SELECT temp FROM tbl_ttextseqset WHERE temp=$1', params)
+    if isinstance(expected_ttextseqset, tuple):
+        assert result == TTextSeqSet(*expected_ttextseqset)
     else:
-        assert result == TTextS(expected_ttexts)
+        assert result == TTextSeqSet(expected_ttextseqset)

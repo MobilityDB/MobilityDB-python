@@ -8,15 +8,15 @@ __all__ = [
     # boxes
     'TBox', 'STBox',
     # main
-    'TBool', 'TBoolInst', 'TBoolI', 'TBoolSeq', 'TBoolS',
-    'TInt', 'TIntInst', 'TIntI', 'TIntSeq', 'TIntS',
-    'TFloat', 'TFloatInst', 'TFloatI', 'TFloatSeq', 'TFloatS',
-    'TText', 'TTextInst', 'TTextI', 'TTextSeq', 'TTextS',
-    'TPointInst', 'TPointI', 'TPointSeq', 'TPointS',
-    'TGeomPoint', 'TGeomPointInst', 'TGeomPointI', 'TGeomPointSeq', 'TGeomPointS',
-    'TGeogPoint', 'TGeogPointInst', 'TGeogPointI', 'TGeogPointSeq', 'TGeogPointS',
+    'TBool', 'TBoolInst', 'TBoolInstSet', 'TBoolSeq', 'TBoolSeqSet',
+    'TInt', 'TIntInst', 'TIntInstSet', 'TIntSeq', 'TIntSeqSet',
+    'TFloat', 'TFloatInst', 'TFloatInstSet', 'TFloatSeq', 'TFloatSeqSet',
+    'TText', 'TTextInst', 'TTextInstSet', 'TTextSeq', 'TTextSeqSet',
+    'TPointInst', 'TPointInstSet', 'TPointSeq', 'TPointSeqSet',
+    'TGeomPoint', 'TGeomPointInst', 'TGeomPointInstSet', 'TGeomPointSeq', 'TGeomPointSeqSet',
+    'TGeogPoint', 'TGeogPointInst', 'TGeogPointInstSet', 'TGeogPointSeq', 'TGeogPointSeqSet',
     # temporal
     'Temporal',
     # time
     'Period', 'TimestampSet', 'PeriodSet'
-    ]
+]

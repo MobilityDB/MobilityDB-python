@@ -8,7 +8,7 @@ try:
     # Do not make psycopg2 a requirement.
     from psycopg2.extensions import ISQLQuote
 except ImportError:
-    warnings.warn('psycopg2 not installed', ImportWarning)
+    warnings.warn("psycopg2 not installed", ImportWarning)
 
 
 class Period(MEOSPeriod):
@@ -45,6 +45,7 @@ class Period(MEOSPeriod):
 
     def getquoted(self):
         return "'{}'".format(self.__str__())
+
     # End Psycopg2 interface.
 
     @staticmethod
@@ -56,9 +57,11 @@ class Period(MEOSPeriod):
     @staticmethod
     def write(value):
         if not isinstance(value, Period):
-            raise ValueError('Value must be an instance of Period class')
+            raise ValueError("Value must be an instance of Period class")
         return value.__str__()
 
     def __repr__(self):
-        return (f'{self.__class__.__name__ }'
-                f'({self.lower!r}, {self.upper!r}, {self.lower_inc!r}, {self.upper_inc!r})')
+        return (
+            f"{self.__class__.__name__ }"
+            f"({self.lower!r}, {self.upper!r}, {self.lower_inc!r}, {self.upper_inc!r})"
+        )

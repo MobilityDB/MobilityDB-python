@@ -73,12 +73,12 @@ try:
         else:
             print("startTimestamp =", row[1].startTimestamp, "\n")
 
-    drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloati_temp;'''
+    drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloatinstset_temp;'''
     cursor.execute(drop_table_query)
     connection.commit()
     print("Table deleted successfully in PostgreSQL ")
 
-    create_table_query = '''CREATE TABLE tbl_tfloati_temp
+    create_table_query = '''CREATE TABLE tbl_tfloatinstset_temp
         (
           k integer PRIMARY KEY,
           temp tfloat
@@ -88,11 +88,11 @@ try:
     connection.commit()
     print("Table created successfully in PostgreSQL ")
 
-    postgres_insert_query = ''' INSERT INTO tbl_tfloati_temp (k, temp) VALUES (%s, %s) '''
+    postgres_insert_query = ''' INSERT INTO tbl_tfloatinstset_temp (k, temp) VALUES (%s, %s) '''
     result = cursor.executemany(postgres_insert_query, rows)
     connection.commit()
     count = cursor.rowcount
-    print(count, "record(s) inserted successfully into tbl_tfloati_temp table")
+    print(count, "record(s) inserted successfully into tbl_tfloatinstset_temp table")
 
     ######################
     # TFloatSeq
@@ -153,12 +153,12 @@ try:
         else:
             print("startTimestamp =", row[1].startTimestamp, "\n")
 
-    drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloats_temp;'''
+    drop_table_query = '''DROP TABLE IF EXISTS tbl_tfloatseqset_temp;'''
     cursor.execute(drop_table_query)
     connection.commit()
     print("Table deleted successfully in PostgreSQL ")
 
-    create_table_query = '''CREATE TABLE tbl_tfloats_temp
+    create_table_query = '''CREATE TABLE tbl_tfloatseqset_temp
         (
           k integer PRIMARY KEY,
           temp tfloat
@@ -168,11 +168,11 @@ try:
     connection.commit()
     print("Table created successfully in PostgreSQL ")
 
-    postgres_insert_query = ''' INSERT INTO tbl_tfloats_temp (k, temp) VALUES (%s, %s) '''
+    postgres_insert_query = ''' INSERT INTO tbl_tfloatseqset_temp (k, temp) VALUES (%s, %s) '''
     result = cursor.executemany(postgres_insert_query, rows)
     connection.commit()
     count = cursor.rowcount
-    print(count, "record(s) inserted successfully into tbl_tfloats_temp table")
+    print(count, "record(s) inserted successfully into tbl_tfloatseqset_temp table")
 
     print("\n****************************************************************")
 

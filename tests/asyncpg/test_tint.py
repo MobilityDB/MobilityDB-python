@@ -1,6 +1,6 @@
 import pytest
 from dateutil.parser import parse
-from mobilitydb.main import TIntInst, TIntI, TIntSeq, TIntS
+from mobilitydb.main import TIntInst, TIntInstSet, TIntSeq, TIntSeqSet
 
 pytestmark = pytest.mark.asyncio
 
@@ -17,23 +17,23 @@ async def test_tintinst_constructors(connection, expected_tintinst):
     result = await connection.fetchval('SELECT temp FROM tbl_tintinst WHERE temp=$1', params, column=0)
     assert result == TIntInst(expected_tintinst)
 
-@pytest.mark.parametrize('expected_tinti', [
+@pytest.mark.parametrize('expected_tintinstset', [
     '{10@2019-09-01 00:00:00+01, 20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01}',
     {'10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'},
     {TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'),
      TIntInst('10@2019-09-03 00:00:00+01')},
 ])
-async def test_tinti_constructor(connection, expected_tinti):
-    if isinstance(expected_tinti, tuple):
-        params = TIntI(*expected_tinti)
+async def test_tintinstset_constructor(connection, expected_tintinstset):
+    if isinstance(expected_tintinstset, tuple):
+        params = TIntInstSet(*expected_tintinstset)
     else:
-        params = TIntI(expected_tinti)
-    await connection.execute('INSERT INTO tbl_tinti (temp) VALUES ($1)', params)
-    result = await connection.fetchval('SELECT temp FROM tbl_tinti WHERE temp=$1', params)
-    if isinstance(expected_tinti, tuple):
-        assert result == TIntI(*expected_tinti)
+        params = TIntInstSet(expected_tintinstset)
+    await connection.execute('INSERT INTO tbl_tintinstset (temp) VALUES ($1)', params)
+    result = await connection.fetchval('SELECT temp FROM tbl_tintinstset WHERE temp=$1', params)
+    if isinstance(expected_tintinstset, tuple):
+        assert result == TIntInstSet(*expected_tintinstset)
     else:
-        assert result == TIntI(expected_tinti)
+        assert result == TIntInstSet(expected_tintinstset)
 
 @pytest.mark.parametrize('expected_tintseq', [
     '[10@2019-09-01 00:00:00+01, 20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]',
@@ -53,20 +53,20 @@ async def test_tintseq_constructor(connection, expected_tintseq):
     else:
         assert result == TIntSeq(expected_tintseq)
 
-@pytest.mark.parametrize('expected_tints', [
+@pytest.mark.parametrize('expected_tintseqset', [
     '{[10@2019-09-01 00:00:00+01], [20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]}',
     {'[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'},
     {TIntSeq('[10@2019-09-01 00:00:00+01]'),
      TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')},
 ])
-async def test_tints_constructor(connection, expected_tints):
-    if isinstance(expected_tints, tuple):
-        params = TIntS(*expected_tints)
+async def test_tintseqset_constructor(connection, expected_tintseqset):
+    if isinstance(expected_tintseqset, tuple):
+        params = TIntSeqSet(*expected_tintseqset)
     else:
-        params = TIntS(expected_tints)
-    await connection.execute('INSERT INTO tbl_tints (temp) VALUES ($1)', params)
-    result = await connection.fetchval('SELECT temp FROM tbl_tints WHERE temp=$1', params)
-    if isinstance(expected_tints, tuple):
-        assert result == TIntS(*expected_tints)
+        params = TIntSeqSet(expected_tintseqset)
+    await connection.execute('INSERT INTO tbl_tintseqset (temp) VALUES ($1)', params)
+    result = await connection.fetchval('SELECT temp FROM tbl_tintseqset WHERE temp=$1', params)
+    if isinstance(expected_tintseqset, tuple):
+        assert result == TIntSeqSet(*expected_tintseqset)
     else:
-        assert result == TIntS(expected_tints)
+        assert result == TIntSeqSet(expected_tintseqset)

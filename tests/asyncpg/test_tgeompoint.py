@@ -1,8 +1,10 @@
 import pytest
 from dateutil.parser import parse
-from mobilitydb.main import TGeomPointInst, TGeomPointI, TGeomPointSeq, TGeomPointS
 
 from pymeos import GeomPoint
+
+from mobilitydb.main import TGeomPointInst, TGeomPointInstSet, TGeomPointSeq, TGeomPointSeqSet
+
 
 pytestmark = pytest.mark.asyncio
 
@@ -20,7 +22,7 @@ async def test_tgeompointinst_constructors(connection, expected_tgeompointinst):
     result = await connection.fetchval('SELECT temp FROM tbl_tgeompointinst WHERE temp=$1', params, column=0)
     assert result == TGeomPointInst(expected_tgeompointinst)
 
-@pytest.mark.parametrize('expected_tgeompointi', [
+@pytest.mark.parametrize('expected_tgeompointinstset', [
     '{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
         'Point(10.0 10.0)@2019-09-03 00:00:00+01}',
     'SRID=4326;{Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
@@ -36,18 +38,17 @@ async def test_tgeompointinst_constructors(connection, expected_tgeompointinst):
         TGeomPointInst('SRID=4326;Point(20.0 20.0)@2019-09-02 00:00:00+01'),
         TGeomPointInst('SRID=4326;Point(10.0 10.0)@2019-09-03 00:00:00+01')},
 ])
-async def test_tgeompointi_constructor(connection, expected_tgeompointi):
-    if isinstance(expected_tgeompointi, tuple):
-        params = TGeomPointI(*expected_tgeompointi)
+async def test_tgeompointinstset_constructor(connection, expected_tgeompointinstset):
+    if isinstance(expected_tgeompointinstset, tuple):
+        params = TGeomPointInstSet(*expected_tgeompointinstset)
     else:
-        params = TGeomPointI(expected_tgeompointi)
-    print(params)
-    await connection.execute('INSERT INTO tbl_tgeompointi (temp) VALUES ($1)', params)
-    result = await connection.fetchval('SELECT temp FROM tbl_tgeompointi WHERE temp=$1', params)
-    if isinstance(expected_tgeompointi, tuple):
-        assert result == TGeomPointI(*expected_tgeompointi)
+        params = TGeomPointInstSet(expected_tgeompointinstset)
+    await connection.execute('INSERT INTO tbl_tgeompointinstset (temp) VALUES ($1)', params)
+    result = await connection.fetchval('SELECT temp FROM tbl_tgeompointinstset WHERE temp=$1', params)
+    if isinstance(expected_tgeompointinstset, tuple):
+        assert result == TGeomPointInstSet(*expected_tgeompointinstset)
     else:
-        assert result == TGeomPointI(expected_tgeompointi)
+        assert result == TGeomPointInstSet(expected_tgeompointinstset)
 
 @pytest.mark.parametrize('expected_tgeompointseq', [
     '[Point(10.0 10.0)@2019-09-01 00:00:00+01, Point(20.0 20.0)@2019-09-02 00:00:00+01, '
@@ -93,7 +94,7 @@ async def test_tgeompointseq_constructor(connection, expected_tgeompointseq):
     else:
         assert result == TGeomPointSeq(expected_tgeompointseq)
 
-@pytest.mark.parametrize('expected_tgeompoints', [
+@pytest.mark.parametrize('expected_tgeompointseqset', [
     '{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
         '[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]}',
     'SRID=4326;{[Point(10.0 10.0)@2019-09-01 00:00:00+01], '
@@ -132,14 +133,14 @@ async def test_tgeompointseq_constructor(connection, expected_tgeompointseq):
             'Interp=Stepwise;[Point(20.0 20.0)@2019-09-02 00:00:00+01, Point(10.0 10.0)@2019-09-03 00:00:00+01]')}, None,
      'Stepwise'),
 ])
-async def test_tgeompoints_constructor(connection, expected_tgeompoints):
-    if isinstance(expected_tgeompoints, tuple):
-        params = TGeomPointS(*expected_tgeompoints)
+async def test_tgeompointseqset_constructor(connection, expected_tgeompointseqset):
+    if isinstance(expected_tgeompointseqset, tuple):
+        params = TGeomPointSeqSet(*expected_tgeompointseqset)
     else:
-        params = TGeomPointS(expected_tgeompoints)
-    await connection.execute('INSERT INTO tbl_tgeompoints (temp) VALUES ($1)', params)
-    result = await connection.fetchval('SELECT temp FROM tbl_tgeompoints WHERE temp=$1', params)
-    if isinstance(expected_tgeompoints, tuple):
-        assert result == TGeomPointS(*expected_tgeompoints)
+        params = TGeomPointSeqSet(expected_tgeompointseqset)
+    await connection.execute('INSERT INTO tbl_tgeompointseqset (temp) VALUES ($1)', params)
+    result = await connection.fetchval('SELECT temp FROM tbl_tgeompointseqset WHERE temp=$1', params)
+    if isinstance(expected_tgeompointseqset, tuple):
+        assert result == TGeomPointSeqSet(*expected_tgeompointseqset)
     else:
-        assert result == TGeomPointS(expected_tgeompoints)
+        assert result == TGeomPointSeqSet(expected_tgeompointseqset)

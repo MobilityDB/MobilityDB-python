@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from dateutil.parser import parse
 from postgis import Point, MultiPoint, LineString, MultiLineString, GeometryCollection
 from mobilitydb.time import TimestampSet, Period, PeriodSet
-from mobilitydb.main.tpoint import TGeomPointInst, TGeomPointI, TGeomPointSeq, TGeomPointS
+from mobilitydb.main.tpoint import TGeomPointInst, TGeomPointInstSet, TGeomPointSeq, TGeomPointSeqSet
 
 
 print("\nConstructors for TGeomPointInst")
@@ -15,18 +15,18 @@ t = parse('2019-09-08')
 inst = TGeomPointInst(p, t)
 print(inst)
 
-print("\nConstructors for TGeomPointI")
-ti = TGeomPointI('{Point(10 10)@2019-09-08, Point(20 20)@2019-09-09, Point(20 20)@2019-09-10}')
-print(ti)
-ti = TGeomPointI(['Point(10 10)@2019-09-08', 'Point(20 20)@2019-09-09', 'Point(20 20)@2019-09-10'])
-print(ti)
+print("\nConstructors for TGeomPointInstSet")
+ti = TGeomPointInstSet('{Point(10 10)@2019-09-08, Point(20 20)@2019-09-09, Point(20 20)@2019-09-10}')
+print(tinstset)
+ti = TGeomPointInstSet(['Point(10 10)@2019-09-08', 'Point(20 20)@2019-09-09', 'Point(20 20)@2019-09-10'])
+print(tinstset)
 t1 = TGeomPointInst('Point(10 10)@2019-09-08')
 t2 = TGeomPointInst('Point(20 20)@2019-09-09')
 t3 = TGeomPointInst('Point(20 20)@2019-09-10')
-ti = TGeomPointI([t1, t2, t3])
-print(ti)
-ti = TGeomPointI([t1, t2, t3], srid=4326)
-print(ti)
+ti = TGeomPointInstSet([t1, t2, t3])
+print(tinstset)
+ti = TGeomPointInstSet([t1, t2, t3], srid=4326)
+print(tinstset)
 
 print("\nConstructors for TGeomPointSeq")
 seq = TGeomPointSeq('[Point(10 10)@2019-09-08, Point(20 20)@2019-09-09, Point(20 20)@2019-09-10]')
@@ -38,14 +38,14 @@ print(seq)
 seq = TGeomPointSeq([t1, t2, t3], False, True, srid=4326)
 print(seq)
 
-print("\nConstructors for TGeomPointS")
-ts = TGeomPointS('{[Point(10 10)@2019-09-08, Point(20 20)@2019-09-09, Point(20 20)@2019-09-10],[Point(15 15)@2019-09-11, Point(30 30)@2019-09-12]}')
+print("\nConstructors for TGeomPointSeqSet")
+ts = TGeomPointSeqSet('{[Point(10 10)@2019-09-08, Point(20 20)@2019-09-09, Point(20 20)@2019-09-10],[Point(15 15)@2019-09-11, Point(30 30)@2019-09-12]}')
 print(ts)
-ts = TGeomPointS(['[Point(10 10)@2019-09-08, Point(20 20)@2019-09-09, Point(20 20)@2019-09-10]', '[Point(15 15)@2019-09-11, Point(30 30)@2019-09-12]'])
+ts = TGeomPointSeqSet(['[Point(10 10)@2019-09-08, Point(20 20)@2019-09-09, Point(20 20)@2019-09-10]', '[Point(15 15)@2019-09-11, Point(30 30)@2019-09-12]'])
 print(ts)
 seq1 = TGeomPointSeq('[Point(10 10)@2019-09-08, Point(20 20)@2019-09-09, Point(20 20)@2019-09-10]')
 seq2 = TGeomPointSeq('[Point(15 15)@2019-09-11, Point(30 30)@2019-09-12]')
-ts = TGeomPointS([seq1, seq2])
+ts = TGeomPointSeqSet([seq1, seq2])
 print(ts)
 
 print("\n__class__ ")
@@ -205,7 +205,7 @@ print(ti.intersectsTimestamp(t))
 print(seq.intersectsTimestamp(t))
 print(ts.intersectsTimestamp(t))
 
-print("\nintersectsTimestampset")
+print("\nintersectsTimestampSet")
 tss = TimestampSet('{2019-09-09, 2019-09-10}')
 print(inst.intersectsTimestampSet(tss))
 print(ti.intersectsTimestampSet(tss))
@@ -219,7 +219,7 @@ print(ti.intersectsPeriod(p))
 print(seq.intersectsPeriod(p))
 print(ts.intersectsPeriod(p))
 
-print("\nintersectsPeriodset")
+print("\nintersectsPeriodSet")
 ps = PeriodSet('{[2019-09-09,2019-09-10], [2019-09-11,2019-09-12]}')
 print(inst.intersectsPeriodSet(ps))
 print(ti.intersectsPeriodSet(ps))

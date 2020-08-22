@@ -73,12 +73,12 @@ try:
         else:
             print("startTimestamp =", row[1].startTimestamp, "\n")
 
-    drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpointi_temp;'''
+    drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpointinstset_temp;'''
     cursor.execute(drop_table_query)
     connection.commit()
     print("Table deleted successfully in PostgreSQL ")
 
-    create_table_query = '''CREATE TABLE tbl_tgeogpointi_temp
+    create_table_query = '''CREATE TABLE tbl_tgeogpointinstset_temp
         (
           k integer PRIMARY KEY,
           temp tgeogpoint
@@ -88,11 +88,11 @@ try:
     connection.commit()
     print("Table created successfully in PostgreSQL ")
 
-    postgres_insert_query = ''' INSERT INTO tbl_tgeogpointi_temp (k, temp) VALUES (%s, %s) '''
+    postgres_insert_query = ''' INSERT INTO tbl_tgeogpointinstset_temp (k, temp) VALUES (%s, %s) '''
     result = cursor.executemany(postgres_insert_query, rows)
     connection.commit()
     count = cursor.rowcount
-    print(count, "record(s) inserted successfully into tbl_tgeogpointi_temp table")
+    print(count, "record(s) inserted successfully into tbl_tgeogpointinstset_temp table")
 
     ######################
     # TGeogPointSeq
@@ -153,12 +153,12 @@ try:
         else:
             print("startTimestamp =", row[1].startTimestamp, "\n")
 
-    drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpoints_temp;'''
+    drop_table_query = '''DROP TABLE IF EXISTS tbl_tgeogpointseqset_temp;'''
     cursor.execute(drop_table_query)
     connection.commit()
     print("Table deleted successfully in PostgreSQL ")
 
-    create_table_query = '''CREATE TABLE tbl_tgeogpoints_temp
+    create_table_query = '''CREATE TABLE tbl_tgeogpointseqset_temp
         (
           k integer PRIMARY KEY,
           temp tgeogpoint
@@ -168,11 +168,11 @@ try:
     connection.commit()
     print("Table created successfully in PostgreSQL ")
 
-    postgres_insert_query = ''' INSERT INTO tbl_tgeogpoints_temp (k, temp) VALUES (%s, %s) '''
+    postgres_insert_query = ''' INSERT INTO tbl_tgeogpointseqset_temp (k, temp) VALUES (%s, %s) '''
     result = cursor.executemany(postgres_insert_query, rows)
     connection.commit()
     count = cursor.rowcount
-    print(count, "record(s) inserted successfully into tbl_tgeogpoints_temp table")
+    print(count, "record(s) inserted successfully into tbl_tgeogpointseqset_temp table")
 
     print("\n****************************************************************")
 

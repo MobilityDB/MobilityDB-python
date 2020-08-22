@@ -73,12 +73,12 @@ try:
         else:
             print("startTimestamp =", row[1].startTimestamp, "\n")
 
-        drop_table_query = '''DROP TABLE IF EXISTS tbl_tinti_temp;'''
+        drop_table_query = '''DROP TABLE IF EXISTS tbl_tintinstset_temp;'''
         cursor.execute(drop_table_query)
         connection.commit()
         print("Table deleted successfully in PostgreSQL ")
 
-        create_table_query = '''CREATE TABLE tbl_tinti_temp
+        create_table_query = '''CREATE TABLE tbl_tintinstset_temp
             (
               k integer PRIMARY KEY,
               temp tint
@@ -88,11 +88,11 @@ try:
         connection.commit()
         print("Table created successfully in PostgreSQL ")
 
-        postgres_insert_query = ''' INSERT INTO tbl_tinti_temp (k, temp) VALUES (%s, %s) '''
+        postgres_insert_query = ''' INSERT INTO tbl_tintinstset_temp (k, temp) VALUES (%s, %s) '''
         result = cursor.executemany(postgres_insert_query, rows)
         connection.commit()
         count = cursor.rowcount
-        print(count, "record(s) inserted successfully into tbl_tinti_temp table")
+        print(count, "record(s) inserted successfully into tbl_tintinstset_temp table")
 
     ######################
     # TIntSeq
@@ -153,12 +153,12 @@ try:
         else:
             print("startTimestamp =", row[1].startTimestamp, "\n")
 
-    drop_table_query = '''DROP TABLE IF EXISTS tbl_tints_temp;'''
+    drop_table_query = '''DROP TABLE IF EXISTS tbl_tintseqset_temp;'''
     cursor.execute(drop_table_query)
     connection.commit()
     print("Table deleted successfully in PostgreSQL ")
 
-    create_table_query = '''CREATE TABLE tbl_tints_temp
+    create_table_query = '''CREATE TABLE tbl_tintseqset_temp
         (
           k integer PRIMARY KEY,
           temp tint
@@ -168,11 +168,11 @@ try:
     connection.commit()
     print("Table created successfully in PostgreSQL ")
 
-    postgres_insert_query = ''' INSERT INTO tbl_tints_temp (k, temp) VALUES (%s, %s) '''
+    postgres_insert_query = ''' INSERT INTO tbl_tintseqset_temp (k, temp) VALUES (%s, %s) '''
     result = cursor.executemany(postgres_insert_query, rows)
     connection.commit()
     count = cursor.rowcount
-    print(count, "record(s) inserted successfully into tbl_tints_temp table")
+    print(count, "record(s) inserted successfully into tbl_tintseqset_temp table")
 
     print("\n****************************************************************")
 

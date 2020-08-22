@@ -1,8 +1,8 @@
-from mobilitydb.temporal import Temporal
-
 from pymeos.io import DeserializerInt
 from pymeos.range import RangeInt
 from pymeos.temporal import TIntInst as _TIntInst, TIntInstSet as _TIntInstSet, TIntSeq as _TIntSeq, TIntSeqSet as _TIntSeqSet
+
+from mobilitydb.temporal import Temporal
 
 
 class TInt(Temporal):
@@ -37,25 +37,23 @@ class TIntInst(_TIntInst, TInt):
         >>> TIntInst(['10', '2019-09-08 00:00:00+01'])
         >>> TIntInst(10, parse('2019-09-08 00:00:00+01'))
         >>> TIntInst([10, parse('2019-09-08 00:00:00+01')])
-
     """
 
 
-class TIntI(_TIntInstSet, TInt):
+class TIntInstSet(_TIntInstSet, TInt):
     """
     Class for representing temporal integers of instant set duration.
 
-    ``TIntI`` objects can be created with a single argument of type string
+    ``TIntInstSet`` objects can be created with a single argument of type string
     as in MobilityDB.
 
-        >>> TIntI('10@2019-09-01')
+        >>> TIntInstSet('10@2019-09-01')
 
     Another possibility is to give a tuple or set of composing instants,
     which can be instances of ``str`` or ``TIntInst``.
 
-        >>> TIntI({'10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'})
-        >>> TIntI({TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')})
-
+        >>> TIntInstSet({'10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'})
+        >>> TIntInstSet({TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')})
     """
 
 
@@ -82,7 +80,6 @@ class TIntSeq(_TIntSeq, TInt):
         >>> TIntSeq({TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')})
         >>> TIntSeq({'10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'}, True, True)
         >>> TIntSeq({TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'), TIntInst('10@2019-09-03 00:00:00+01')}, True, True)
-
     """
 
     def __init__(self, instants, lower_inc=None, upper_inc=None):
@@ -92,20 +89,19 @@ class TIntSeq(_TIntSeq, TInt):
             super().__init__(instants, lower_inc, upper_inc)
 
 
-class TIntS(_TIntSeqSet, TInt):
+class TIntSeqSet(_TIntSeqSet, TInt):
     """
     Class for representing temporal integers of sequence duration.
 
-    ``TIntS`` objects can be created with a single argument of type string
+    ``TIntSeqSet`` objects can be created with a single argument of type string
     as in MobilityDB.
 
-        >>> TIntS('{[10@2019-09-01 00:00:00+01], [20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]}')
+        >>> TIntSeqSet('{[10@2019-09-01 00:00:00+01], [20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]}')
 
     Another possibility is to give the set of composing sequences, which
     can be instances of ``str`` or ``TIntSeq``.
 
-        >>> TIntS({'[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'})
-        >>> TIntS({TIntSeq('[10@2019-09-01 00:00:00+01]'), TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')})
-
+        >>> TIntSeqSet({'[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'})
+        >>> TIntSeqSet({TIntSeq('[10@2019-09-01 00:00:00+01]'), TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')})
     """
 

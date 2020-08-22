@@ -66,11 +66,11 @@ async def run():
             else:
                 print("startTimestamp =", row[1].startTimestamp, "\n")
 
-        drop_table_query = '''DROP TABLE IF EXISTS tbl_ttexti_temp;'''
+        drop_table_query = '''DROP TABLE IF EXISTS tbl_ttextinstset_temp;'''
         await connection.execute(drop_table_query)
         print("Table deleted successfully in PostgreSQL ")
     
-        create_table_query = '''CREATE TABLE tbl_ttexti_temp
+        create_table_query = '''CREATE TABLE tbl_ttextinstset_temp
             (
               k integer PRIMARY KEY,
               temp ttext
@@ -79,10 +79,10 @@ async def run():
         await connection.execute(create_table_query)
         print("Table created successfully in PostgreSQL ")
     
-        postgres_insert_query = ''' INSERT INTO tbl_ttexti_temp (k, temp) VALUES ($1, $2) '''
+        postgres_insert_query = ''' INSERT INTO tbl_ttextinstset_temp (k, temp) VALUES ($1, $2) '''
         await connection.executemany(postgres_insert_query, rows)
         #count = cursor.rowcount
-        print(len(rows), "record(s) inserted successfully into tbl_ttexti_temp table")
+        print(len(rows), "record(s) inserted successfully into tbl_ttextinstset_temp table")
 
         ######################
         # TTextSeq
@@ -138,11 +138,11 @@ async def run():
             else:
                 print("startTimestamp =", row[1].startTimestamp, "\n")
     
-        drop_table_query = '''DROP TABLE IF EXISTS tbl_ttexts_temp;'''
+        drop_table_query = '''DROP TABLE IF EXISTS tbl_ttextseqset_temp;'''
         await connection.execute(drop_table_query)
         print("Table deleted successfully in PostgreSQL ")
     
-        create_table_query = '''CREATE TABLE tbl_ttexts_temp
+        create_table_query = '''CREATE TABLE tbl_ttextseqset_temp
             (
               k integer PRIMARY KEY,
               temp ttext
@@ -151,10 +151,10 @@ async def run():
         await connection.execute(create_table_query)
         print("Table created successfully in PostgreSQL ")
     
-        postgres_insert_query = ''' INSERT INTO tbl_ttexts_temp (k, temp) VALUES ($1, $2) '''
+        postgres_insert_query = ''' INSERT INTO tbl_ttextseqset_temp (k, temp) VALUES ($1, $2) '''
         await connection.executemany(postgres_insert_query, rows)
         # count = cursor.rowcount
-        print(len(rows), "record(s) inserted successfully into tbl_ttexts_temp table")
+        print(len(rows), "record(s) inserted successfully into tbl_ttextseqset_temp table")
     
         print("\n****************************************************************")
 

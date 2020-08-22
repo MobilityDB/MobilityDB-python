@@ -25,7 +25,7 @@ Python Package Index
 Source
 ------
 
-The package sources are available at https://github.com/ULB-CoDE-WIT/python-mobilitydb. Building and installing ``python-mobilitydb`` from source can be done with `setuptools <https://setuptools.readthedocs.io/en/latest/>`_:
+The package sources are available at https://github.com/MobilityDB/MobilityDB-python. Building and installing ``python-mobilitydb`` from source can be done with `setuptools <https://setuptools.readthedocs.io/en/latest/>`_:
 
 .. code-block:: console
 
