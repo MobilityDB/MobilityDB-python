@@ -6,18 +6,16 @@ from mobilitydb import TimestampSet, Period, PeriodSet
 
 @pytest.mark.parametrize('expected_timestampset', [
     '{2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01, 2019-09-11 00:00:00+01}',
-    ['2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', '2019-09-11 00:00:00+01'],
-    [parse('2019-09-08 00:00:00+01'), parse('2019-09-10 00:00:00+01'), parse('2019-09-11 00:00:00+01')],
-    ('2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', '2019-09-11 00:00:00+01'),
-    (parse('2019-09-08 00:00:00+01'), parse('2019-09-10 00:00:00+01'), parse('2019-09-11 00:00:00+01')),
+    {'2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', '2019-09-11 00:00:00+01'},
+    {parse('2019-09-08 00:00:00+01'), parse('2019-09-10 00:00:00+01'), parse('2019-09-11 00:00:00+01')},
 ])
 def test_timestampset_constructor(cursor, expected_timestampset):
     if isinstance(expected_timestampset, tuple):
         params = TimestampSet(*expected_timestampset)
     else:
         params = TimestampSet(expected_timestampset)
-    cursor.execute("INSERT INTO tbl_timestampset (timetype) VALUES (%s)" % params)
-    cursor.execute("SELECT timetype FROM tbl_timestampset WHERE timetype=%s" % params)
+    cursor.execute("INSERT INTO tbl_timestampset (timetype) VALUES (%s)", (params, ))
+    cursor.execute("SELECT timetype FROM tbl_timestampset WHERE timetype=%s", (params, ))
     result = cursor.fetchone()[0]
     if isinstance(expected_timestampset, tuple):
         assert result == TimestampSet(*expected_timestampset)
@@ -32,9 +30,9 @@ def test_timestampset_accessors(cursor, expected_timestampset):
     assert TimestampSet(expected_timestampset).numTimestamps == 3
     assert TimestampSet(expected_timestampset).startTimestamp == parse('2019-09-01 00:00:00+01')
     assert TimestampSet(expected_timestampset).endTimestamp == parse('2019-09-03 00:00:00+01')
-    assert TimestampSet(expected_timestampset).timestampN(2) == parse('2019-09-02 00:00:00+01')
+    assert TimestampSet(expected_timestampset).timestampN(1) == parse('2019-09-02 00:00:00+01')
     assert TimestampSet(expected_timestampset).timestamps == \
-           [parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'), parse('2019-09-03 00:00:00+01')]
+           {parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'), parse('2019-09-03 00:00:00+01')}
     assert TimestampSet(expected_timestampset).shift(timedelta(days=1)) == \
            TimestampSet('{2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01, 2019-09-04 00:00:00+01}')
 
@@ -53,13 +51,35 @@ def test_period_constructor(cursor, expected_period):
         params = Period(*expected_period)
     else:
         params = Period(expected_period)
-    cursor.execute("INSERT INTO tbl_period (timetype) VALUES (%s)" % params)
-    cursor.execute("SELECT timetype FROM tbl_period WHERE timetype=%s" % params)
+    cursor.execute("INSERT INTO tbl_period (timetype) VALUES (%s)", (params, ))
+    cursor.execute("SELECT timetype FROM tbl_period WHERE timetype=%s", (params, ))
     result = cursor.fetchone()[0]
     if isinstance(expected_period, tuple):
         assert result == Period(*expected_period)
     else:
         assert result == Period(expected_period)
+
+@pytest.mark.parametrize('expected_period', [
+    # Invalid date format
+    '[2019/09/08 00:00:00+01, 2019-09-10 00:00:00+01]',
+    # Missing comma
+    '[2019-09-08 00:00:00+01 2019-09-10 00:00:00+01)',
+    # Missing lower bound
+    '(2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01',
+    # Missing lower timestamp
+    '(2019-09-08 00:00:00+01, )',
+    # Missing space between date and time
+    ('2019-09-08 00:00:00+01', '2019-09-1000:00:00+01'),
+    # Bounds not boolean
+    ('2019-09-08 00:00:00+01', '2019-09-10 00:00:00+01', False, 'True'),
+    (parse('2019-09-08 00:00:00+01'), parse('2019-09-10 00:00:00+01'), '42', True),
+])
+def test_period_constructor_bad_arguments(cursor, expected_period):
+    with pytest.raises(Exception):
+        if isinstance(expected_period, tuple):
+            params = Period(*expected_period)
+        else:
+            params = Period(expected_period)
 
 @pytest.mark.parametrize('expected_period', [
     '[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]',
@@ -71,24 +91,22 @@ def test_period_accessors(cursor, expected_period):
     assert Period(expected_period).upper_inc == True
     assert Period(expected_period).timespan == timedelta(2)
     assert Period(expected_period).shift(timedelta(days=1)) == Period('[2019-09-02 00:00:00+01, 2019-09-04 00:00:00+01]')
+    assert Period(expected_period).contains_timestamp(parse('2019-09-02 00:00:00+01')) == True
 
 @pytest.mark.parametrize('expected_periodset', [
     '{[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]}',
     '{[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01], [2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]}',
-    ['[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]', '[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]'],
-    [Period('[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]'),
-     Period('[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]')],
-    ('[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]', '[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]'),
-    (Period('[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]'),
-     Period('[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]')),
+    {'[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]', '[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]'},
+    {Period('[2019-09-08 00:00:00+01, 2019-09-10 00:00:00+01]'),
+     Period('[2019-09-11 00:00:00+01, 2019-09-12 00:00:00+01]')},
 ])
 def test_periodset_constructor(cursor, expected_periodset):
     if isinstance(expected_periodset, tuple):
         params = PeriodSet(*expected_periodset)
     else:
         params = PeriodSet(expected_periodset)
-    cursor.execute("INSERT INTO tbl_periodset (timetype) VALUES (%s)" % params)
-    cursor.execute("SELECT timetype FROM tbl_periodset WHERE timetype=%s" % params)
+    cursor.execute("INSERT INTO tbl_periodset (timetype) VALUES (%s)", (params, ))
+    cursor.execute("SELECT timetype FROM tbl_periodset WHERE timetype=%s", (params, ))
     result = cursor.fetchone()[0]
     if isinstance(expected_periodset, tuple):
         assert result == PeriodSet(*expected_periodset)
@@ -104,15 +122,15 @@ def test_periodset_accessors(cursor, expected_periodset):
     assert PeriodSet(expected_periodset).numTimestamps == 3
     assert PeriodSet(expected_periodset).startTimestamp == parse('2019-09-01 00:00:00+01')
     assert PeriodSet(expected_periodset).endTimestamp == parse('2019-09-03 00:00:00+01')
-    assert PeriodSet(expected_periodset).timestampN(2) == parse('2019-09-02 00:00:00+01')
+    assert PeriodSet(expected_periodset).timestampN(1) == parse('2019-09-02 00:00:00+01')
     assert PeriodSet(expected_periodset).timestamps == \
-           [parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'), parse('2019-09-03 00:00:00+01')]
+           {parse('2019-09-01 00:00:00+01'), parse('2019-09-02 00:00:00+01'), parse('2019-09-03 00:00:00+01')}
     assert PeriodSet(expected_periodset).numPeriods == 2
     assert PeriodSet(expected_periodset).startPeriod == Period('[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]')
     assert PeriodSet(expected_periodset).endPeriod == Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')
-    assert PeriodSet(expected_periodset).periodN(2) == Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')
-    assert PeriodSet(expected_periodset).periods == [Period('[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]'),
-                                                       Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')]
+    assert PeriodSet(expected_periodset).periodN(1) == Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')
+    assert PeriodSet(expected_periodset).periods == {Period('[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]'),
+                                                       Period('[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]')}
     assert PeriodSet(expected_periodset).shift(timedelta(days=1)) == \
            PeriodSet('{[2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01],  '
                      '[2019-09-03 00:00:00+01, 2019-09-04 00:00:00+01]}')

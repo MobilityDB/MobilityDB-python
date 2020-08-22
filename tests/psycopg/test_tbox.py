@@ -19,8 +19,8 @@ def test_tbox_constructor(cursor, expected_tbox):
         params = TBox(*expected_tbox)
     else:
         params = TBox(expected_tbox)
-    cursor.execute("INSERT INTO tbl_tbox (box) VALUES (%s)" % params)
-    cursor.execute("SELECT box FROM tbl_tbox WHERE box=%s" % params)
+    cursor.execute("INSERT INTO tbl_tbox (box) VALUES (%s)", (params, ))
+    cursor.execute("SELECT box FROM tbl_tbox WHERE box=%s", (params, ))
     result = cursor.fetchone()[0]
     if isinstance(expected_tbox, tuple):
         assert result == TBox(*expected_tbox)

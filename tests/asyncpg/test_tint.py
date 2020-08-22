@@ -19,12 +19,9 @@ async def test_tintinst_constructors(connection, expected_tintinst):
 
 @pytest.mark.parametrize('expected_tintinstset', [
     '{10@2019-09-01 00:00:00+01, 20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01}',
-    ('10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'),
-    (TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'),
-     TIntInst('10@2019-09-03 00:00:00+01')),
-    ['10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'],
-    [TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'),
-     TIntInst('10@2019-09-03 00:00:00+01')],
+    {'10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '10@2019-09-03 00:00:00+01'},
+    {TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'),
+     TIntInst('10@2019-09-03 00:00:00+01')},
 ])
 async def test_tintinstset_constructor(connection, expected_tintinstset):
     if isinstance(expected_tintinstset, tuple):
@@ -40,9 +37,9 @@ async def test_tintinstset_constructor(connection, expected_tintinstset):
 
 @pytest.mark.parametrize('expected_tintseq', [
     '[10@2019-09-01 00:00:00+01, 20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]',
-    ['10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '20@2019-09-03 00:00:00+01'],
-    [TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'),
-     TIntInst('20@2019-09-03 00:00:00+01')],
+    {'10@2019-09-01 00:00:00+01', '20@2019-09-02 00:00:00+01', '20@2019-09-03 00:00:00+01'},
+    {TIntInst('10@2019-09-01 00:00:00+01'), TIntInst('20@2019-09-02 00:00:00+01'),
+     TIntInst('20@2019-09-03 00:00:00+01')},
 ])
 async def test_tintseq_constructor(connection, expected_tintseq):
     if isinstance(expected_tintseq, tuple):
@@ -58,9 +55,9 @@ async def test_tintseq_constructor(connection, expected_tintseq):
 
 @pytest.mark.parametrize('expected_tintseqset', [
     '{[10@2019-09-01 00:00:00+01], [20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]}',
-    ['[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'],
-    [TIntSeq('[10@2019-09-01 00:00:00+01]'),
-     TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')],
+    {'[10@2019-09-01 00:00:00+01]', '[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]'},
+    {TIntSeq('[10@2019-09-01 00:00:00+01]'),
+     TIntSeq('[20@2019-09-02 00:00:00+01, 10@2019-09-03 00:00:00+01]')},
 ])
 async def test_tintseqset_constructor(connection, expected_tintseqset):
     if isinstance(expected_tintseqset, tuple):

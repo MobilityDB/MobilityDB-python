@@ -19,12 +19,9 @@ async def test_tfloatinst_constructors(connection, expected_tfloatinst):
 
 @pytest.mark.parametrize('expected_tfloatinstset', [
     '{10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01}',
-    ('10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'),
-    (TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
-     TFloatInst('10.0@2019-09-03 00:00:00+01')),
-    ['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'],
-    [TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
-     TFloatInst('10.0@2019-09-03 00:00:00+01')],
+    {'10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'},
+    {TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
+     TFloatInst('10.0@2019-09-03 00:00:00+01')},
 ])
 async def test_tfloatinstseq_constructor(connection, expected_tfloatinstset):
     if isinstance(expected_tfloatinstset, tuple):
@@ -41,13 +38,13 @@ async def test_tfloatinstseq_constructor(connection, expected_tfloatinstset):
 @pytest.mark.parametrize('expected_tfloatseq', [
     '[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]',
     'Interp=Stepwise;[10.0@2019-09-01 00:00:00+01, 20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]',
-    ['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'],
-    [TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
-     TFloatInst('10.0@2019-09-03 00:00:00+01')],
-    (['10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'], True, True,
+    {'10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'},
+    {TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
+     TFloatInst('10.0@2019-09-03 00:00:00+01')},
+    ({'10.0@2019-09-01 00:00:00+01', '20.0@2019-09-02 00:00:00+01', '10.0@2019-09-03 00:00:00+01'}, True, True,
      'Stepwise'),
-    ([TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
-      TFloatInst('10.0@2019-09-03 00:00:00+01')], True, True, 'Stepwise'),
+    ({TFloatInst('10.0@2019-09-01 00:00:00+01'), TFloatInst('20.0@2019-09-02 00:00:00+01'),
+      TFloatInst('10.0@2019-09-03 00:00:00+01')}, True, True, 'Stepwise'),
 ])
 async def test_tfloatseq_constructor(connection, expected_tfloatseq):
     if isinstance(expected_tfloatseq, tuple):
@@ -55,7 +52,10 @@ async def test_tfloatseq_constructor(connection, expected_tfloatseq):
     else:
         params = TFloatSeq(expected_tfloatseq)
     await connection.execute('INSERT INTO tbl_tfloatseq (temp) VALUES ($1)', params)
+    print(params)
     result = await connection.fetchval('SELECT temp FROM tbl_tfloatseq WHERE temp=$1', params)
+    print(result)
+    print(result.__class__)
     if isinstance(expected_tfloatseq, tuple):
         assert result == TFloatSeq(*expected_tfloatseq)
     else:
@@ -64,16 +64,16 @@ async def test_tfloatseq_constructor(connection, expected_tfloatseq):
 @pytest.mark.parametrize('expected_tfloatseqset', [
     '{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}',
     'Interp=Stepwise;{[10.0@2019-09-01 00:00:00+01], [20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]}',
-    ['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'],
-    (['[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Linear'),
-    (['Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]',
-      'Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'], 'Stepwise'),
-    [TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),
-     TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')],
-    ([TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),
-      TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Linear'),
-    ([TFloatSeq('Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]'),
-      TFloatSeq('Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')], 'Stepwise'),
+    {'[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'},
+    ({'[10.0@2019-09-01 00:00:00+01]', '[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'}, 'Linear'),
+    ({'Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]',
+      'Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]'}, 'Stepwise'),
+    {TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),
+     TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')},
+    ({TFloatSeq('[10.0@2019-09-01 00:00:00+01]'),
+      TFloatSeq('[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')}, 'Linear'),
+    ({TFloatSeq('Interp=Stepwise;[10.0@2019-09-01 00:00:00+01]'),
+      TFloatSeq('Interp=Stepwise;[20.0@2019-09-02 00:00:00+01, 10.0@2019-09-03 00:00:00+01]')}, 'Stepwise'),
 ])
 async def test_tfloatseqset_constructor(connection, expected_tfloatseqset):
     if isinstance(expected_tfloatseqset, tuple):

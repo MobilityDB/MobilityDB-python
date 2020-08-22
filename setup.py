@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 setup(
     name='MobilityDB-python',
     packages=find_packages(),
-    version='0.1.1',
+    version='0.2',
     license='MIT',
     description='A database adapter to access MobilityDB from Python',
     author='MobilityDB Project',
@@ -19,7 +19,7 @@ setup(
     install_requires=[
         'asyncpg',
         'psycopg2-binary',
-        'Spans',
+        'pymeos',
         'postgis',
         'pytest',
         'python-dateutil',

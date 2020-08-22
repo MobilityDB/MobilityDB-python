@@ -16,7 +16,7 @@ __all__ = [
     'TGeomPoint', 'TGeomPointInst', 'TGeomPointInstSet', 'TGeomPointSeq', 'TGeomPointSeqSet',
     'TGeogPoint', 'TGeogPointInst', 'TGeogPointInstSet', 'TGeogPointSeq', 'TGeogPointSeqSet',
     # temporal
-    'Temporal', 'TInstant', 'TemporalInstants', 'TInstantSet', 'TSequence', 'TSequenceSet',
+    'Temporal',
     # time
     'Period', 'TimestampSet', 'PeriodSet'
-    ]
+]
