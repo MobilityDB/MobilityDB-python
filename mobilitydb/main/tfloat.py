@@ -94,7 +94,7 @@ class TFloatSeq(_TFloatSeq, TFloat):
         elif interp is None:
             super().__init__(instants, lower_inc, upper_inc)
         else:
-            super().__init__(instants, lower_inc, upper_inc, Interpolation.__members__.get(interp, None))
+            super().__init__(instants, lower_inc, upper_inc, Interpolation.__members__.get(interp))
 
 
 class TFloatS(_TFloatSeqSet, TFloat):
