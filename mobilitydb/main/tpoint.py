@@ -16,8 +16,6 @@ def __hash__(self):
 
 setattr(Point, '__hash__', __hash__)
 
-setattr(GeomPoint, '__hash__', lambda self: hash(str(self)))
-
 def to_coords(geom):
     """
     Converts a MEOS Geometry object to a tuple of (x, y) values

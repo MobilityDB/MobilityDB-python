@@ -106,13 +106,13 @@ In both cases, the value of the point can be specified using a `Well-Known Text 
 .. code-block:: python
 
     >>> from dateutil.parser import parse
-    >>> from postgis import Point
+    >>> from pymeos import GeomPoint
     >>> from mobilitydb import TGeomPointInst
     >>> TGeomPointInst("POINT(1 1)@2020-01-01 00:00:00+01")
     >>> TGeomPointInst("SRID=4326;POINT(1 1)@2020-01-01 00:00:00+01")
     >>> TGeomPointInst("01010000000000000000004AC00000000000000000@2020-01-01")
     >>> TGeomPointInst("POINT(1 1)", "2020-01-01 00:00:00+01", srid=4326)
-    >>> TGeomPointInst(Point(1, 1), parse("2020-01-01 00:00:00+01"), srid=4326)
+    >>> TGeomPointInst(GeomPoint(1, 1), parse("2020-01-01 00:00:00+01"), srid=4326)
 
 New :class:`TGeomPointI <mobilitydb.main.TGeomPointI>` instances can be created either with a single string argument as in MobilityDB or with two arguments: the list of composing instants and the SRID, the latter being optional.
 
