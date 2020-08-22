@@ -80,9 +80,20 @@ async def test_tfloats_constructor(connection, expected_tfloats):
         params = TFloatS(*expected_tfloats)
     else:
         params = TFloatS(expected_tfloats)
+    print(params)
     await connection.execute('INSERT INTO tbl_tfloats (temp) VALUES ($1)', params)
     result = await connection.fetchval('SELECT temp FROM tbl_tfloats WHERE temp=$1', params)
     if isinstance(expected_tfloats, tuple):
         assert result == TFloatS(*expected_tfloats)
     else:
-        assert result == TFloatS(expected_tfloats)
+        print(result.__class__)
+        rhs = TFloatS(expected_tfloats)
+        print(rhs.__class__)
+        print(result.sequences == rhs.sequences)
+        print(result)
+        print(result.interpolation)
+        print(result.sequences)
+        print([s.interpolation for s in result.sequences])
+        print(rhs.sequences)
+        print(str(result) == str(rhs))
+        assert result == rhs

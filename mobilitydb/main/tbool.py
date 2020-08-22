@@ -6,7 +6,7 @@ from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
 from pymeos.io import DeserializerBool
 from pymeos.range import RangeBool
-from pymeos.temporal import Interpolation, TInstantBool, TInstantSetBool, TSequenceBool, TSequenceSetBool
+from pymeos.temporal import Interpolation, TBoolInst as _TBoolInst, TBoolInstSet as _TBoolInstSet, TBoolSeq as _TBoolSeq, TBoolSeqSet as _TBoolSeqSet
 
 
 class TBool(Temporal):
@@ -18,7 +18,7 @@ class TBool(Temporal):
     pymeos_range_type = RangeBool
 
 
-class TBoolInst(TInstantBool, TBool):
+class TBoolInst(_TBoolInst, TBool):
     """
     Class for representing temporal Booleans of instant duration.
 
@@ -38,7 +38,7 @@ class TBoolInst(TInstantBool, TBool):
     """
 
 
-class TBoolI(TInstantSetBool, TBool):
+class TBoolI(_TBoolInstSet, TBool):
     """
     Class for representing temporal Booleans of instant set duration.
 
@@ -56,7 +56,7 @@ class TBoolI(TInstantSetBool, TBool):
     """
 
 
-class TBoolSeq(TSequenceBool, TBool):
+class TBoolSeq(_TBoolSeq, TBool):
     """
     Class for representing temporal Booleans of sequence duration.
 
@@ -89,7 +89,7 @@ class TBoolSeq(TSequenceBool, TBool):
             super().__init__(instants, lower_inc, upper_inc)
 
 
-class TBoolS(TSequenceSetBool, TBool):
+class TBoolS(_TBoolSeqSet, TBool):
     """
     Class for representing temporal Booleans of sequence set duration.
 

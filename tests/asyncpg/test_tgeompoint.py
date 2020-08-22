@@ -2,8 +2,7 @@ import pytest
 from dateutil.parser import parse
 from mobilitydb.main import TGeomPointInst, TGeomPointI, TGeomPointSeq, TGeomPointS
 
-# TODO right now in PyMEOS, Geometry means Point - but does it need to be?
-from pymeos import Geometry as Point
+from pymeos import GeomPoint as Point
 
 pytestmark = pytest.mark.asyncio
 

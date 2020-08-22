@@ -5,8 +5,8 @@ from postgis import Geometry, Point, MultiPoint, LineString, GeometryCollection,
 from mobilitydb.temporal import Temporal
 from mobilitydb.temporal.temporal_parser import parse_temporalinst, parse_temporali, parse_temporalseq, parse_temporals
 
-from pymeos import Geometry as MEOSGeometry
-from pymeos.temporal import TInstantGeom, TInstantSetGeom, TSequenceGeom, TSequenceSetGeom
+from pymeos import GeomPoint
+from pymeos.temporal import TGeomPointInst as _TGeomPointInst, TGeomPointInstSet as _TGeomPointInstSet, TGeomPointSeq as _TGeomPointSeq, TGeomPointSeqSet as _TGeomPointSeqSet
 
 
 # Add method to Point to make the class hashable
@@ -15,8 +15,7 @@ def __hash__(self):
 
 setattr(Point, '__hash__', __hash__)
 
-# TODO do this at PyMEOS level
-setattr(MEOSGeometry, '__hash__', lambda self: hash(str(self)))
+setattr(GeomPoint, '__hash__', lambda self: hash(str(self)))
 
 def to_coords(geom):
     """
@@ -25,7 +24,7 @@ def to_coords(geom):
     return (geom.x, geom.y)
 
 
-class TPointInst(TInstantGeom):
+class TPointInst(_TGeomPointInst):
     """
     Abstract class for representing temporal points of instant duration.
     """
@@ -62,7 +61,7 @@ class TPointInst(TInstantGeom):
             srid = 0
 
         # Now value, time, and srid are not None
-        assert(isinstance(value, (str, Point, MEOSGeometry))), "ERROR: Invalid value argument"
+        assert(isinstance(value, (str, Point, GeomPoint))), "ERROR: Invalid value argument"
         assert(isinstance(time, (str, datetime))), "ERROR: Invalid time argument"
         assert(isinstance(srid, (str, int))), "ERROR: Invalid SRID"
 
@@ -72,19 +71,21 @@ class TPointInst(TInstantGeom):
                 idx2 = value.find(')')
                 coords = (value[idx1 + 1:idx2]).split(' ')
                 value = Point(coords)
-                self._srid = srid
             else:
                 value = Geometry.from_ewkb(value)
+                srid = value.srid
                 pass
 
         if isinstance(value, Point):
-            value = MEOSGeometry(value.wkt)
+            value = GeomPoint(value.wkt)
+            srid = value.srid
 
         self._value = value
         self._timestamp = parse(time) if isinstance(time, str) else time
+        self._srid = srid
         # Verify validity of the resulting instance
         self._valid()
-        super().__init__(self._value, self._timestamp)
+        super().__init__(self._value, self._timestamp, srid)
 
     @property
     def getValues(self):
@@ -100,15 +101,15 @@ class TPointInst(TInstantGeom):
         pass
 
 
-class TPointI(TInstantSetGeom):
+class TPointI(_TGeomPointInstSet):
     """
     Abstract class for representing temporal points of instant set duration.
     """
 
-    BaseClass = MEOSGeometry
+    BaseClass = GeomPoint
 
     def __init__(self,  *argv, srid=None):
-        _instants = set()
+        _instants, srid = set(), 0
         # Constructor with a single argument of type string
         if len(argv) == 1 and isinstance(argv[0], str):
             # If srid is given
@@ -153,7 +154,7 @@ class TPointI(TInstantSetGeom):
         # Verify validity of the resulting instance
         self._valid()
 
-        super().__init__(_instants)
+        super().__init__(_instants, srid)
 
     def _valid(self):
         # TODO
@@ -176,12 +177,12 @@ class TPointI(TInstantSetGeom):
         return MultiPoint(values)
 
 
-class TPointSeq(TSequenceGeom):
+class TPointSeq(_TGeomPointSeq):
     """
     Abstract class for representing temporal points of sequence duration.
     """
 
-    BaseClass = MEOSGeometry
+    BaseClass = GeomPoint
     BaseClassDiscrete = False
 
     def __init__(self, instants, lower_inc=None, upper_inc=None, interp=None, srid=None):
@@ -190,7 +191,7 @@ class TPointSeq(TSequenceGeom):
         assert (isinstance(interp, (str, type(None)))), "ERROR: Invalid interpolation"
         if isinstance(interp, str):
             assert (interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
-        _instants = set()
+        _instants, srid = set(), 0
         # Constructor with a first argument of type string and optional arguments for the bounds and interpolation
         if isinstance(instants, str):
             # If srid is given
@@ -238,7 +239,7 @@ class TPointSeq(TSequenceGeom):
             raise Exception("ERROR: Could not parse temporal sequence value")
         # Verify validity of the resulting instance
         self._valid()
-        super().__init__(_instants, self._lower_inc, self._upper_inc)
+        super().__init__(_instants, self._lower_inc, self._upper_inc, srid)
 
     def _valid(self):
         # TODO
@@ -262,19 +263,19 @@ class TPointSeq(TSequenceGeom):
         return result
 
 
-class TPointS(TSequenceSetGeom):
+class TPointS(_TGeomPointSeqSet):
     """
     Abstract class for representing temporal points of sequence set duration.
     """
 
-    BaseClass = MEOSGeometry
+    BaseClass = GeomPoint
     BaseClassDiscrete = False
 
     def __init__(self, sequences, interp=None, srid=None):
         assert (isinstance(interp, (str, type(None)))), "ERROR: Invalid interpolation"
         if isinstance(interp, str) and interp is None:
             assert (interp == 'Linear' or interp == 'Stepwise'), "ERROR: Invalid interpolation"
-        _sequences = set()
+        _sequences, srid = set(), 0
         # Constructor with a single argument of type string
         if isinstance(sequences, str):
             # If srid is given
@@ -326,7 +327,7 @@ class TPointS(TSequenceSetGeom):
             raise Exception("ERROR: Could not parse temporal sequence set value")
         # Verify validity of the resulting instance
         self._valid()
-        super().__init__(_sequences)
+        super().__init__(_sequences, srid)
 
     def _valid(self):
         # TODO

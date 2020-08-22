@@ -6,9 +6,9 @@ from mobilitydb.main import TGeomPointInst, TGeomPointI, TGeomPointSeq, TGeomPoi
 from mobilitydb.main.tpoint import to_coords
 from mobilitydb.time import TimestampSet, Period, PeriodSet
 
-from pymeos import Geometry as MEOSPoint
+from pymeos import GeomPoint
 from pymeos.temporal import TemporalDuration
-from pymeos.temporal import TInstantGeom
+from pymeos.temporal import TGeomPointInst as _TGeomPointInst
 
 
 @pytest.mark.parametrize('expected_tgeompointinst', [
@@ -40,10 +40,10 @@ def test_tgeompointinst_accessors(cursor, expected_tgeompointinst):
     # assert TGeomPointInst(expected_tgeompointinst).srid == 4326
     assert TGeomPointInst(expected_tgeompointinst).duration == TemporalDuration.Instant
     assert TGeomPointInst(expected_tgeompointinst).duration.name == 'Instant'
-    assert TGeomPointInst(expected_tgeompointinst).getValue == MEOSPoint(10.0, 10.0)
-    assert TGeomPointInst(expected_tgeompointinst).getValues == MEOSPoint(10.0, 10.0)
-    assert TGeomPointInst(expected_tgeompointinst).startValue == MEOSPoint(10.0, 10.0)
-    assert TGeomPointInst(expected_tgeompointinst).endValue == MEOSPoint(10.0, 10.0)
+    assert TGeomPointInst(expected_tgeompointinst).getValue == GeomPoint(10.0, 10.0)
+    assert TGeomPointInst(expected_tgeompointinst).getValues == GeomPoint(10.0, 10.0)
+    assert TGeomPointInst(expected_tgeompointinst).startValue == GeomPoint(10.0, 10.0)
+    assert TGeomPointInst(expected_tgeompointinst).endValue == GeomPoint(10.0, 10.0)
     assert TGeomPointInst(expected_tgeompointinst).getTimestamp == parse('2019-09-01 00:00:00+01')
     assert TGeomPointInst(expected_tgeompointinst).getTime == PeriodSet(
         '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]}')
@@ -51,14 +51,14 @@ def test_tgeompointinst_accessors(cursor, expected_tgeompointinst):
     assert TGeomPointInst(expected_tgeompointinst).period == Period(
         '[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]')
     assert TGeomPointInst(expected_tgeompointinst).numInstants == 1
-    assert TGeomPointInst(expected_tgeompointinst).startInstant == TInstantGeom(
+    assert TGeomPointInst(expected_tgeompointinst).startInstant == _TGeomPointInst(
         'Point(10.0 10.0)@2019-09-01 00:00:00+01')
-    assert TGeomPointInst(expected_tgeompointinst).endInstant == TInstantGeom(
+    assert TGeomPointInst(expected_tgeompointinst).endInstant == _TGeomPointInst(
         'Point(10.0 10.0)@2019-09-01 00:00:00+01')
-    assert TGeomPointInst(expected_tgeompointinst).instantN(0) == TInstantGeom(
+    assert TGeomPointInst(expected_tgeompointinst).instantN(0) == _TGeomPointInst(
         'Point(10.0 10.0)@2019-09-01 00:00:00+01')
     assert TGeomPointInst(expected_tgeompointinst).instants == {
-        TInstantGeom('Point(10.0 10.0)@2019-09-01 00:00:00+01')}
+        _TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01')}
     assert TGeomPointInst(expected_tgeompointinst).numTimestamps == 1
     assert TGeomPointInst(expected_tgeompointinst).startTimestamp == parse('2019-09-01 00:00:00+01')
     assert TGeomPointInst(expected_tgeompointinst).endTimestamp == parse('2019-09-01 00:00:00+01')
@@ -124,8 +124,8 @@ def test_tgeompointi_accessors(cursor, expected_tgeompointi):
     assert TGeomPointI(expected_tgeompointi).duration.name == 'InstantSet'
     assert TGeomPointI(expected_tgeompointi).getValues == \
            MultiPoint([Point(10.0, 10.0),Point(20.0, 20.0),Point(30.0, 30.0)])
-    assert TGeomPointI(expected_tgeompointi).startValue == MEOSPoint(10.0, 10.0)
-    assert TGeomPointI(expected_tgeompointi).endValue == MEOSPoint(30.0, 30.0)
+    assert TGeomPointI(expected_tgeompointi).startValue == GeomPoint(10.0, 10.0)
+    assert TGeomPointI(expected_tgeompointi).endValue == GeomPoint(30.0, 30.0)
     assert TGeomPointI(expected_tgeompointi).getTime == \
            PeriodSet(
                '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
@@ -220,8 +220,8 @@ def test_tgeompointseq_accessors(cursor, expected_tgeompointseq):
     assert TGeomPointSeq(expected_tgeompointseq).duration == TemporalDuration.Sequence
     assert TGeomPointSeq(expected_tgeompointseq).duration.name == 'Sequence'
     assert TGeomPointSeq(expected_tgeompointseq).getValues == LineString([Point(10.0, 10.0),Point(20.0, 20.0),Point(10.0, 10.0)])
-    assert TGeomPointSeq(expected_tgeompointseq).startValue == MEOSPoint(10.0, 10.0)
-    assert TGeomPointSeq(expected_tgeompointseq).endValue == MEOSPoint(10.0, 10.0)
+    assert TGeomPointSeq(expected_tgeompointseq).startValue == GeomPoint(10.0, 10.0)
+    assert TGeomPointSeq(expected_tgeompointseq).endValue == GeomPoint(10.0, 10.0)
     assert TGeomPointSeq(expected_tgeompointseq).getTime == PeriodSet(
         '{[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]}')
     assert TGeomPointSeq(expected_tgeompointseq).timespan == timedelta(2)
@@ -322,8 +322,8 @@ def test_tgeompoints_accessors(cursor, expected_tgeompoints):
     assert TGeomPointS(expected_tgeompoints).duration.name == 'SequenceSet'
     assert TGeomPointS(expected_tgeompoints).getValues == \
         GeometryCollection([Point(10.0, 10.0), LineString([Point(20.0, 20.0), Point(30.0, 30.0)])])
-    assert TGeomPointS(expected_tgeompoints).startValue == MEOSPoint(10.0, 10.0)
-    assert TGeomPointS(expected_tgeompoints).endValue == MEOSPoint(30.0, 30.0)
+    assert TGeomPointS(expected_tgeompoints).startValue == GeomPoint(10.0, 10.0)
+    assert TGeomPointS(expected_tgeompoints).endValue == GeomPoint(30.0, 30.0)
     # assert TGeomPointS(expected_tgeompoints).valueRange == geompointrange(Point(10.0, 10.0), Point(30.0, 30.0), upper_inc=True)
     assert TGeomPointS(expected_tgeompoints).getTime == PeriodSet(
         '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')

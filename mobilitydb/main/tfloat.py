@@ -2,7 +2,7 @@ from mobilitydb.temporal import Temporal
 
 from pymeos.io import DeserializerFloat
 from pymeos.range import RangeFloat
-from pymeos.temporal import Interpolation, TInstantFloat, TInstantSetFloat, TSequenceFloat, TSequenceSetFloat
+from pymeos.temporal import Interpolation, TFloatInst as _TFloatInst, TFloatInstSet as _TFloatInstSet, TFloatSeq as _TFloatSeq, TFloatSeqSet as _TFloatSeqSet
 
 
 class TFloat(Temporal):
@@ -21,7 +21,7 @@ class TFloat(Temporal):
         return RangeFloat(self.minValue, self.maxValue, True, True)
 
 
-class TFloatInst(TInstantFloat, TFloat):
+class TFloatInst(_TFloatInst, TFloat):
     """
     Class for representing temporal floats of instant duration.
 
@@ -41,7 +41,7 @@ class TFloatInst(TInstantFloat, TFloat):
     """
 
 
-class TFloatI(TInstantSetFloat, TFloat):
+class TFloatI(_TFloatInstSet, TFloat):
     """
     Class for representing temporal floats of instant set duration.
 
@@ -59,7 +59,7 @@ class TFloatI(TInstantSetFloat, TFloat):
     """
 
 
-class TFloatSeq(TSequenceFloat, TFloat):
+class TFloatSeq(_TFloatSeq, TFloat):
     """
     Class for representing temporal floats of sequence duration.
 
@@ -97,7 +97,7 @@ class TFloatSeq(TSequenceFloat, TFloat):
             super().__init__(instants, lower_inc, upper_inc, Interpolation.__members__.get(interp, None))
 
 
-class TFloatS(TSequenceSetFloat, TFloat):
+class TFloatS(_TFloatSeqSet, TFloat):
     """
     Class for representing temporal floats of sequence duration.
 

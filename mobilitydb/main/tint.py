@@ -2,7 +2,7 @@ from mobilitydb.temporal import Temporal
 
 from pymeos.io import DeserializerInt
 from pymeos.range import RangeInt
-from pymeos.temporal import TInstantInt, TInstantSetInt, TSequenceInt, TSequenceSetInt
+from pymeos.temporal import TIntInst as _TIntInst, TIntInstSet as _TIntInstSet, TIntSeq as _TIntSeq, TIntSeqSet as _TIntSeqSet
 
 
 class TInt(Temporal):
@@ -21,7 +21,7 @@ class TInt(Temporal):
         return RangeInt(self.minValue, self.maxValue, True, True)
 
 
-class TIntInst(TInstantInt, TInt):
+class TIntInst(_TIntInst, TInt):
     """
     Class for representing temporal integers of instant duration.
 
@@ -41,7 +41,7 @@ class TIntInst(TInstantInt, TInt):
     """
 
 
-class TIntI(TInstantSetInt, TInt):
+class TIntI(_TIntInstSet, TInt):
     """
     Class for representing temporal integers of instant set duration.
 
@@ -59,7 +59,7 @@ class TIntI(TInstantSetInt, TInt):
     """
 
 
-class TIntSeq(TSequenceInt, TInt):
+class TIntSeq(_TIntSeq, TInt):
     """
     Class for representing temporal integers of sequence duration.
 
@@ -92,7 +92,7 @@ class TIntSeq(TSequenceInt, TInt):
             super().__init__(instants, lower_inc, upper_inc)
 
 
-class TIntS(TSequenceSetInt, TInt):
+class TIntS(_TIntSeqSet, TInt):
     """
     Class for representing temporal integers of sequence duration.
 

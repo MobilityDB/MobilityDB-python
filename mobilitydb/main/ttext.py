@@ -5,7 +5,7 @@ from mobilitydb.temporal import Temporal
 
 from pymeos.io import DeserializerText
 from pymeos.range import RangeText
-from pymeos.temporal import TInstantText, TInstantSetText, TSequenceText, TSequenceSetText
+from pymeos.temporal import TTextInst as _TTextInst, TTextInstSet as _TTextInstSet, TTextSeq as _TTextSeq, TTextSeqSet as _TTextSeqSet
 
 
 class TText(Temporal):
@@ -17,7 +17,7 @@ class TText(Temporal):
     pymeos_range_type = RangeText
 
 
-class TTextInst(TInstantText, TText):
+class TTextInst(_TTextInst, TText):
     """
     Class for representing temporal strings of instant duration.
 
@@ -37,7 +37,7 @@ class TTextInst(TInstantText, TText):
     """
 
 
-class TTextI(TInstantSetText, TText):
+class TTextI(_TTextInstSet, TText):
     """
     Class for representing temporal strings of instant set duration.
 
@@ -55,7 +55,7 @@ class TTextI(TInstantSetText, TText):
     """
 
 
-class TTextSeq(TSequenceText, TText):
+class TTextSeq(_TTextSeq, TText):
     """
     Class for representing temporal strings of sequence duration.
 
@@ -88,7 +88,7 @@ class TTextSeq(TSequenceText, TText):
             super().__init__(instants, lower_inc, upper_inc)
 
 
-class TTextS(TSequenceSetText, TText):
+class TTextS(_TTextSeqSet, TText):
     """
     Class for representing temporal strings of sequence duration.
 
