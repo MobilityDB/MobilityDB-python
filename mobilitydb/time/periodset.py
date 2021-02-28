@@ -78,13 +78,13 @@ class PeriodSet:
         return True
 
     @property
-    def timespan(self):
+    def duration(self):
         """
         Time interval on which the period set is defined
         """
-        result = self._periodList[0].timespan
+        result = self._periodList[0].duration
         for period in self._periodList[1:]:
-            result = result + period.timespan
+            result = result + period.duration
         return result
 
     @property

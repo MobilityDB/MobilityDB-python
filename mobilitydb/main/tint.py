@@ -4,7 +4,7 @@ from mobilitydb.temporal import Temporal, TInstant, TInstantSet, TSequence, TSeq
 
 class TInt(Temporal):
     """
-    Abstract class for representing temporal integers of any duration.
+    Abstract class for representing temporal integers of any subtype.
     """
 
     @staticmethod
@@ -38,7 +38,7 @@ class TInt(Temporal):
 
 class TIntInst(TInstant, TInt):
     """
-    Class for representing temporal integers of instant duration.
+    Class for representing temporal integers of instant subtype.
 
     ``TIntInst`` objects can be created with a single argument of type string
     as in MobilityDB.
@@ -62,7 +62,7 @@ class TIntInst(TInstant, TInt):
 
 class TIntInstSet(TInstantSet, TInt):
     """
-    Class for representing temporal integers of instant set duration.
+    Class for representing temporal integers of instant set subtype.
 
     ``TIntInstSet`` objects can be created with a single argument of type string
     as in MobilityDB.
@@ -87,7 +87,7 @@ class TIntInstSet(TInstantSet, TInt):
 
 class TIntSeq(TSequence, TInt):
     """
-    Class for representing temporal integers of sequence duration.
+    Class for representing temporal integers of sequence subtype.
 
     ``TIntSeq`` objects can be created with a single argument of type string
     as in MobilityDB.
@@ -128,7 +128,7 @@ class TIntSeq(TSequence, TInt):
 
 class TIntSeqSet(TSequenceSet, TInt):
     """
-    Class for representing temporal integers of sequence duration.
+    Class for representing temporal integers of sequence subtype.
 
     ``TIntSeqSet`` objects can be created with a single argument of type string
     as in MobilityDB.

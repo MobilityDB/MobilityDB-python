@@ -6,7 +6,7 @@ from mobilitydb.temporal.temporal_parser import parse_temporalinstset
 
 class TInstantSet(TemporalInstants):
     """
-    Abstract class for representing temporal values of instant set duration.
+    Abstract class for representing temporal values of instant set subtype.
     """
 
     def __init__(self, *argv):
@@ -48,9 +48,9 @@ class TInstantSet(TemporalInstants):
             raise Exception("ERROR: The timestamps of a temporal instant must be increasing")
 
     @classmethod
-    def duration(cls):
+    def tempSubtype(cls):
         """
-        Duration of the temporal value, that is, ``'InstantSet'``.
+        Subtype of the temporal value, that is, ``'InstantSet'``.
         """
         return "InstantSet"
 
@@ -62,10 +62,10 @@ class TInstantSet(TemporalInstants):
         return PeriodSet([inst.period for inst in self._instantList])
 
     @property
-    def timespan(self):
+    def duration(self):
         """
         Interval on which the temporal value is defined. It is zero for
-        temporal values of instant set duration.
+        temporal values of instant set subtype.
         """
         return timedelta(0)
 

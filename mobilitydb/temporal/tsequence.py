@@ -5,7 +5,7 @@ from mobilitydb.temporal.temporal_parser import parse_temporalseq
 
 class TSequence(TemporalInstants):
     """
-    Abstract class for representing temporal values of sequence duration.
+    Abstract class for representing temporal values of sequence subtype.
     """
     __slots__ = ['_lower_inc', '_upper_inc', '_interp']
 
@@ -67,9 +67,9 @@ class TSequence(TemporalInstants):
         return True
 
     @classmethod
-    def duration(cls):
+    def tempSubtype(cls):
         """
-        Duration of the temporal value, that is, ``'Sequence'``.
+        Subtype of the temporal value, that is, ``'Sequence'``.
         """
         return "Sequence"
 
@@ -95,7 +95,7 @@ class TSequence(TemporalInstants):
         return PeriodSet([self.period])
 
     @property
-    def timespan(self):
+    def duration(self):
         """
         Interval on which the temporal value is defined.
         """

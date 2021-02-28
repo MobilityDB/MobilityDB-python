@@ -31,7 +31,7 @@ try:
         if not row[1]:
             print("")
         else:
-            print("timespan =", row[1].timespan, "\n")
+            print("duration =", row[1].duration, "\n")
 
     drop_table_query = "DROP TABLE IF EXISTS tbl_timestampset_temp;"
     cursor.execute(drop_table_query)
@@ -70,7 +70,7 @@ try:
         if not row[1]:
             print("")
         else:
-            print("timespan =", row[1].timespan, "\n")
+            print("duration =", row[1].duration, "\n")
 
     drop_table_query = "DROP TABLE IF EXISTS tbl_period_temp;"
     cursor.execute(drop_table_query)
@@ -109,8 +109,7 @@ try:
         if not row[1]:
             print("")
         else:
-            print("timespan =", row[1].timespan, "\n")
-
+            print("duration =", row[1].duration, "\n")
 
     drop_table_query = "DROP TABLE IF EXISTS tbl_periodset_temp;"
     cursor.execute(drop_table_query)

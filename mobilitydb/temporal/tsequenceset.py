@@ -5,7 +5,7 @@ from mobilitydb.temporal.temporal_parser import parse_temporalseqset
 
 class TSequenceSet(Temporal):
     """
-    Abstract class for representing temporal values of sequence set duration.
+    Abstract class for representing temporal values of sequence set subtype.
     """
     __slots__ = ['_sequenceList', '_interp']
 
@@ -68,9 +68,9 @@ class TSequenceSet(Temporal):
         return True
 
     @classmethod
-    def duration(cls):
+    def tempSubtype(cls):
         """
-        Duration of the temporal value, that is, ``'SequenceSet'``.
+        Subtype of the temporal value, that is, ``'SequenceSet'``.
         """
         return "SequenceSet"
 
@@ -118,13 +118,13 @@ class TSequenceSet(Temporal):
         return PeriodSet([seq.period for seq in self._sequenceList])
 
     @property
-    def timespan(self):
+    def duration(self):
         """
         Interval on which the period set is defined.
         """
-        result = self._sequenceList[0].period.timespan
+        result = self._sequenceList[0].period.duration
         for sequence in self._sequenceList[1:]:
-            result = result + sequence.period.timespan
+            result = result + sequence.period.duration
         return result
 
     @property

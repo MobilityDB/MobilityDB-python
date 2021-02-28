@@ -4,7 +4,7 @@ from .temporal import Temporal
 class TemporalInstants(Temporal):
     """
     Abstract class for representing temporal values of instant set or
-    sequence duration.
+    sequence subtype.
     """
     __slots__ = ['_instantList']
 

@@ -8,7 +8,7 @@ from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
 class TInstant(Temporal):
     """
-    Abstract class for representing temporal values of instant duration.
+    Abstract class for representing temporal values of instant subtype.
     """
     __slots__ = ['_value', '_time']
 
@@ -31,9 +31,9 @@ class TInstant(Temporal):
         self._time = parse(time) if isinstance(time, str) else time
 
     @classmethod
-    def duration(cls):
+    def tempSubtype(cls):
         """
-        Duration of the temporal value, that is, ``'Instant'``.
+        Subtype of the temporal value, that is, ``'Instant'``.
         """
         return "Instant"
 
@@ -94,10 +94,10 @@ class TInstant(Temporal):
         return PeriodSet([Period(self._time, self._time, True, True)])
 
     @property
-    def timespan(self):
+    def duration(self):
         """
         Interval on which the temporal value is defined. It is zero for
-        temporal values of instant duration.
+        temporal values of instant subtype.
         """
         return timedelta(0)
 

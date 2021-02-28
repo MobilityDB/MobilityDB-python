@@ -6,7 +6,7 @@ from mobilitydb.temporal import Temporal, TInstant, TInstantSet, TSequence, TSeq
 
 class TText(Temporal):
     """
-    Abstract class for representing temporal strings of any duration.
+    Abstract class for representing temporal strings of any subtype.
     """
 
     @staticmethod
@@ -33,7 +33,7 @@ class TText(Temporal):
 
 class TTextInst(TInstant, TText):
     """
-    Class for representing temporal strings of instant duration.
+    Class for representing temporal strings of instant subtype.
 
     ``TTextInst`` objects can be created 
     with a single argument of type string as in MobilityDB.
@@ -79,7 +79,7 @@ class TTextInst(TInstant, TText):
 
 class TTextInstSet(TInstantSet, TText):
     """
-    Class for representing temporal strings of instant set duration.
+    Class for representing temporal strings of instant set subtype.
 
     ``TTextInstSet`` objects can be created 
     with a single argument of type string as in MobilityDB.
@@ -104,7 +104,7 @@ class TTextInstSet(TInstantSet, TText):
 
 class TTextSeq(TSequence, TText):
     """
-    Class for representing temporal strings of sequence duration.
+    Class for representing temporal strings of sequence subtype.
 
     ``TTextSeq`` objects can be created 
     with a single argument of type string as in MobilityDB.
@@ -145,7 +145,7 @@ class TTextSeq(TSequence, TText):
 
 class TTextSeqSet(TSequenceSet, TText):
     """
-    Class for representing temporal strings of sequence duration.
+    Class for representing temporal strings of sequence subtype.
 
     ``TTextSeqSet`` objects can be created with a single argument of typestring as in MobilityDB.
 

@@ -105,7 +105,7 @@ class Period:
         return self._upper_inc
 
     @property
-    def timespan(self):
+    def duration(self):
         """
         Time interval on which the period is defined
         """

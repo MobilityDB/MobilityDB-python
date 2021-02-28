@@ -10,7 +10,7 @@ except ImportError:
 
 class Temporal:
     """
-    Abstract class for representing temporal values of any duration.
+    Abstract class for representing temporal values of any subtype.
     """
 
     BaseClass = None
@@ -34,9 +34,9 @@ class Temporal:
 
     @classmethod
     @abstractmethod
-    def duration(cls):
+    def tempSubtype(cls):
         """
-        Duration of the temporal value, that is, one of ``'Instant'``,
+        Subtype of the temporal value, that is, one of ``'Instant'``,
         ``'InstantSet'``, ``'Sequence'``, or ``'SequenceSet'``.
         """
         pass
@@ -91,7 +91,7 @@ class Temporal:
 
     @property
     @abstractmethod
-    def timespan(self):
+    def duration(self):
         """
         Interval on which the temporal value is defined.
         """

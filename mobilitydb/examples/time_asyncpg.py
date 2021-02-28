@@ -28,7 +28,7 @@ async def run():
             if not row[1]:
                 print("")
             else:
-                print("timespan =", row[1].timespan, "\n")
+                print("duration =", row[1].duration, "\n")
 
         drop_table_query = "DROP TABLE IF EXISTS tbl_timestampset_temp;"
         await connection.execute(drop_table_query)
@@ -64,7 +64,7 @@ async def run():
             if not row[1]:
                 print("")
             else:
-                print("timespan =", row[1].timespan, "\n")
+                print("duration =", row[1].duration, "\n")
 
         drop_table_query = "DROP TABLE IF EXISTS tbl_period_temp;"
         await connection.execute(drop_table_query)
@@ -100,7 +100,7 @@ async def run():
             if not row[1]:
                 print("")
             else:
-                print("timespan =", row[1].timespan, "\n")
+                print("duration =", row[1].duration, "\n")
 
         drop_table_query = "DROP TABLE IF EXISTS tbl_periodset_temp;"
         await connection.execute(drop_table_query)

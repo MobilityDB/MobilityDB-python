@@ -69,7 +69,7 @@ def test_period_accessors(cursor, expected_period):
     assert Period(expected_period).upper == parse('2019-09-03 00:00:00+01')
     assert Period(expected_period).lower_inc == True
     assert Period(expected_period).upper_inc == True
-    assert Period(expected_period).timespan == timedelta(2)
+    assert Period(expected_period).duration == timedelta(2)
     assert Period(expected_period).shift(timedelta(days=1)) == Period('[2019-09-02 00:00:00+01, 2019-09-04 00:00:00+01]')
 
 @pytest.mark.parametrize('expected_periodset', [
@@ -99,7 +99,7 @@ def test_periodset_constructor(cursor, expected_periodset):
     '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],  [2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}',
 ])
 def test_periodset_accessors(cursor, expected_periodset):
-    assert PeriodSet(expected_periodset).timespan == timedelta(1)
+    assert PeriodSet(expected_periodset).duration == timedelta(1)
     assert PeriodSet(expected_periodset).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
     assert PeriodSet(expected_periodset).numTimestamps == 3
     assert PeriodSet(expected_periodset).startTimestamp == parse('2019-09-01 00:00:00+01')

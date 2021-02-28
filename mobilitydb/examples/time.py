@@ -27,8 +27,8 @@ var1 = var.lower_inc
 print("lower_inc:", var1)
 var1 = var.upper_inc
 print("upper_inc:", var1)
-var1 = var.timespan
-print("timespan:", var1)
+var1 = var.duration
+print("duration:", var1)
 var1 = var.shift(timedelta(days=1))
 print("shift:", var1)
 
@@ -115,8 +115,8 @@ print("Constructor list of periods:", var)
 # var = PeriodSet(p1, p2, p3, p4)
 
 # Accessor functions
-var1 = var.timespan
-print("timespan:", var1)
+var1 = var.duration
+print("duration:", var1)
 var1 = var.period
 print("period:", var1)
 var1 = var.numTimestamps

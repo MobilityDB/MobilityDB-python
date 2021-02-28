@@ -7,7 +7,7 @@ from mobilitydb.temporal.temporal_parser import parse_temporalinst
 
 class TBool(Temporal):
     """
-    Abstract class for representing temporal Booleans of any duration.
+    Abstract class for representing temporal Booleans of any subtype.
     """
 
     @staticmethod
@@ -34,7 +34,7 @@ class TBool(Temporal):
 
 class TBoolInst(TInstant, TBool):
     """
-    Class for representing temporal Booleans of instant duration.
+    Class for representing temporal Booleans of instant subtype.
 
     ``TBoolInst`` objects can be created with a single argument of type string
     as in MobilityDB.
@@ -85,7 +85,7 @@ class TBoolInst(TInstant, TBool):
 
 class TBoolInstSet(TInstantSet, TBool):
     """
-    Class for representing temporal Booleans of instant set duration.
+    Class for representing temporal Booleans of instant set subtype.
 
     ``TBoolInstSet`` objects can be created with a single argument of type string
     as in MobilityDB.
@@ -110,7 +110,7 @@ class TBoolInstSet(TInstantSet, TBool):
 
 class TBoolSeq(TSequence, TBool):
     """
-    Class for representing temporal Booleans of sequence duration.
+    Class for representing temporal Booleans of sequence subtype.
 
     ``TBoolSeq`` objects can be created with a single argument of type string
     as in MobilityDB.
@@ -152,7 +152,7 @@ class TBoolSeq(TSequence, TBool):
 
 class TBoolSeqSet(TSequenceSet, TBool):
     """
-    Class for representing temporal Booleans of sequence set duration.
+    Class for representing temporal Booleans of sequence set subtype.
 
     ``TBoolSeqSet`` objects can be created with a single argument of type string
     as in MobilityDB.

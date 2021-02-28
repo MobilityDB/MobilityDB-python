@@ -24,7 +24,7 @@ def test_ttextinst_constructors(cursor, expected_ttextinst):
     'AA@2019-09-01 00:00:00+01',
 ])
 def test_ttextinst_accessors(cursor, expected_ttextinst):
-    assert TTextInst(expected_ttextinst).duration() == 'Instant'
+    assert TTextInst(expected_ttextinst).tempSubtype() == 'Instant'
     assert TTextInst(expected_ttextinst).getValue == 'AA'
     assert TTextInst(expected_ttextinst).getValues == ['AA']
     assert TTextInst(expected_ttextinst).startValue == 'AA'
@@ -33,7 +33,7 @@ def test_ttextinst_accessors(cursor, expected_ttextinst):
     assert TTextInst(expected_ttextinst).maxValue == 'AA'
     assert TTextInst(expected_ttextinst).getTimestamp == parse('2019-09-01 00:00:00+01')
     assert TTextInst(expected_ttextinst).getTime == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]}')
-    assert TTextInst(expected_ttextinst).timespan == timedelta(0)
+    assert TTextInst(expected_ttextinst).duration == timedelta(0)
     assert TTextInst(expected_ttextinst).period == Period('[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]')
     assert TTextInst(expected_ttextinst).numInstants == 1
     assert TTextInst(expected_ttextinst).startInstant == TTextInst('AA@2019-09-01 00:00:00+01')
@@ -91,7 +91,7 @@ def test_ttextinstset_constructor(cursor, expected_ttextinstset):
     '{AA@2019-09-01 00:00:00+01, BB@2019-09-02 00:00:00+01, CC@2019-09-03 00:00:00+01}',
 ])
 def test_ttextinstset_accessors(cursor, expected_ttextinstset):
-    assert TTextInstSet(expected_ttextinstset).duration() == 'InstantSet'
+    assert TTextInstSet(expected_ttextinstset).tempSubtype() == 'InstantSet'
     assert TTextInstSet(expected_ttextinstset).getValues == ['AA', 'BB', 'CC']
     assert TTextInstSet(expected_ttextinstset).startValue == 'AA'
     assert TTextInstSet(expected_ttextinstset).endValue == 'CC'
@@ -101,7 +101,7 @@ def test_ttextinstset_accessors(cursor, expected_ttextinstset):
            PeriodSet(
                '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
                '[2019-09-03 00:00:00+01, 2019-09-03 00:00:00+01]}')
-    assert TTextInstSet(expected_ttextinstset).timespan == timedelta(0)
+    assert TTextInstSet(expected_ttextinstset).duration == timedelta(0)
     assert TTextInstSet(expected_ttextinstset).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
     assert TTextInstSet(expected_ttextinstset).numInstants == 3
     assert TTextInstSet(expected_ttextinstset).startInstant == TTextInst('AA@2019-09-01 00:00:00+01')
@@ -161,14 +161,14 @@ def test_ttextseq_constructor(cursor, expected_ttextseqseteq):
     '[AA@2019-09-01 00:00:00+01, BB@2019-09-02 00:00:00+01, CC@2019-09-03 00:00:00+01]',
 ])
 def test_ttextseq_accessors(cursor, expected_ttextseqseteq):
-    assert TTextSeq(expected_ttextseqseteq).duration() == 'Sequence'
+    assert TTextSeq(expected_ttextseqseteq).tempSubtype() == 'Sequence'
     assert TTextSeq(expected_ttextseqseteq).getValues == ['AA', 'BB', 'CC']
     assert TTextSeq(expected_ttextseqseteq).startValue == 'AA'
     assert TTextSeq(expected_ttextseqseteq).endValue == 'CC'
     assert TTextSeq(expected_ttextseqseteq).minValue == 'AA'
     assert TTextSeq(expected_ttextseqseteq).maxValue == 'CC'
     assert TTextSeq(expected_ttextseqseteq).getTime == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]}')
-    assert TTextSeq(expected_ttextseqseteq).timespan == timedelta(2)
+    assert TTextSeq(expected_ttextseqseteq).duration == timedelta(2)
     assert TTextSeq(expected_ttextseqseteq).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
     assert TTextSeq(expected_ttextseqseteq).numInstants == 3
     assert TTextSeq(expected_ttextseqseteq).startInstant == TTextInst('AA@2019-09-01 00:00:00+01')
@@ -225,7 +225,7 @@ def test_ttextseqset_constructor(cursor, expected_ttextseqset):
     '{[AA@2019-09-01 00:00:00+01],  [BB@2019-09-02 00:00:00+01, CC@2019-09-03 00:00:00+01]}',
 ])
 def test_ttextseqset_accessors(cursor, expected_ttextseqset):
-    assert TTextSeqSet(expected_ttextseqset).duration() == 'SequenceSet'
+    assert TTextSeqSet(expected_ttextseqset).tempSubtype() == 'SequenceSet'
     assert TTextSeqSet(expected_ttextseqset).getValues == ['AA', 'BB', 'CC']
     assert TTextSeqSet(expected_ttextseqset).startValue == 'AA'
     assert TTextSeqSet(expected_ttextseqset).endValue == 'CC'
@@ -233,7 +233,7 @@ def test_ttextseqset_accessors(cursor, expected_ttextseqset):
     assert TTextSeqSet(expected_ttextseqset).maxValue == 'CC'
     assert TTextSeqSet(expected_ttextseqset).getTime == PeriodSet(
         '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')
-    assert TTextSeqSet(expected_ttextseqset).timespan == timedelta(1)
+    assert TTextSeqSet(expected_ttextseqset).duration == timedelta(1)
     assert TTextSeqSet(expected_ttextseqset).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
     assert TTextSeqSet(expected_ttextseqset).numInstants == 3
     assert TTextSeqSet(expected_ttextseqset).startInstant == TTextInst('AA@2019-09-01 00:00:00+01')

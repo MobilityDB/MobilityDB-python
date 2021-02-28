@@ -4,7 +4,7 @@ from mobilitydb.temporal import Temporal, TInstant, TInstantSet, TSequence, TSeq
 
 class TFloat(Temporal):
     """
-    Abstract class for representing temporal floats of any duration.
+    Abstract class for representing temporal floats of any subtype.
     """
 
     @property
@@ -44,7 +44,7 @@ class TFloat(Temporal):
 
 class TFloatInst(TInstant, TFloat):
     """
-    Class for representing temporal floats of instant duration.
+    Class for representing temporal floats of instant subtype.
 
     ``TFloatInst`` objects can be created with a single argument of type string
     as in MobilityDB.
@@ -75,7 +75,7 @@ class TFloatInst(TInstant, TFloat):
 
 class TFloatInstSet(TInstantSet, TFloat):
     """
-    Class for representing temporal floats of instant set duration.
+    Class for representing temporal floats of instant set subtype.
 
     ``TFloatInstSet`` objects can be created with a single argument of type string
     as in MobilityDB.
@@ -108,7 +108,7 @@ class TFloatInstSet(TInstantSet, TFloat):
 
 class TFloatSeq(TSequence, TFloat):
     """
-    Class for representing temporal floats of sequence duration.
+    Class for representing temporal floats of sequence subtype.
 
     ``TFloatSeq`` objects can be created with a single argument of type string
     as in MobilityDB.
@@ -168,7 +168,7 @@ class TFloatSeq(TSequence, TFloat):
 
 class TFloatSeqSet(TSequenceSet, TFloat):
     """
-    Class for representing temporal floats of sequence duration.
+    Class for representing temporal floats of sequence subtype.
 
     ``TFloatSeqSet`` objects can be created with a single argument of type string
     as in MobilityDB.

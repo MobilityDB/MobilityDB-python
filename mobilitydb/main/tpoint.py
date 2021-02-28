@@ -15,7 +15,7 @@ setattr(Point, '__hash__', __hash__)
 
 class TPointInst(TInstant):
     """
-    Abstract class for representing temporal points of instant duration.
+    Abstract class for representing temporal points of instant subtype.
     """
 
     def __init__(self, value, time=None, srid=None):
@@ -80,7 +80,7 @@ class TPointInst(TInstant):
 
 class TPointInstSet(TInstantSet):
     """
-    Abstract class for representing temporal points of instant set duration.
+    Abstract class for representing temporal points of instant set subtype.
     """
 
     def __init__(self,  *argv, srid=None):
@@ -149,7 +149,7 @@ class TPointInstSet(TInstantSet):
 
 class TPointSeq(TSequence):
     """
-    Abstract class for representing temporal points of sequence duration.
+    Abstract class for representing temporal points of sequence subtype.
     """
 
     def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None, srid=None):
@@ -237,7 +237,7 @@ class TPointSeq(TSequence):
 
 class TPointSeqSet(TSequenceSet):
     """
-    Abstract class for representing temporal points of sequence set duration.
+    Abstract class for representing temporal points of sequence set subtype.
     """
 
     def __init__(self, sequenceList, interp=None, srid=None):
@@ -330,7 +330,7 @@ class TPointSeqSet(TSequenceSet):
 
 class TGeomPoint(Temporal):
     """
-    Abstract class for representing temporal geometric or geographic points of any duration.
+    Abstract class for representing temporal geometric or geographic points of any subtype.
     """
 
     @staticmethod
@@ -378,7 +378,7 @@ class TGeomPoint(Temporal):
 
 class TGeogPoint(Temporal):
     """
-    Abstract class for representing temporal geographic points of any duration.
+    Abstract class for representing temporal geographic points of any subtype.
     """
 
     @staticmethod
@@ -426,7 +426,7 @@ class TGeogPoint(Temporal):
 
 class TGeomPointInst(TPointInst, TGeomPoint):
     """
-    Class for representing temporal geometric points of instant duration.
+    Class for representing temporal geometric points of instant subtype.
 
     ``TGeomPointInst`` objects can be created with a single argument of type
     string as in MobilityDB.
@@ -453,7 +453,7 @@ class TGeomPointInst(TPointInst, TGeomPoint):
 
 class TGeogPointInst(TPointInst, TGeogPoint):
     """
-    Class for representing temporal geographic points of instant duration.
+    Class for representing temporal geographic points of instant subtype.
 
     ``TGeogPointInst`` objects can be created with a single argument of type
     string as in MobilityDB.
@@ -479,7 +479,7 @@ class TGeogPointInst(TPointInst, TGeogPoint):
 
 class TGeomPointInstSet(TPointInstSet, TGeomPoint):
     """
-    Class for representing temporal geometric points of instant set duration.
+    Class for representing temporal geometric points of instant set subtype.
 
     ``TGeomPointInstSet`` objects can be created with a single argument of type
     string as in MobilityDB.
@@ -505,7 +505,7 @@ class TGeomPointInstSet(TPointInstSet, TGeomPoint):
 
 class TGeogPointInstSet(TPointInstSet, TGeogPoint):
     """
-    Class for representing temporal geometric points of instant set duration.
+    Class for representing temporal geometric points of instant set subtype.
 
     ``TGeogPointInstSet`` objects can be created with a single argument of type
     string as in MobilityDB.
@@ -531,7 +531,7 @@ class TGeogPointInstSet(TPointInstSet, TGeogPoint):
 
 class TGeomPointSeq(TPointSeq, TGeomPoint):
     """
-    Class for representing temporal geometric points of sequence duration.
+    Class for representing temporal geometric points of sequence subtype.
 
     ``TGeomPointSeq`` objects can be created with a single argument of type
     string as in MobilityDB.
@@ -568,7 +568,7 @@ class TGeomPointSeq(TPointSeq, TGeomPoint):
 
 class TGeogPointSeq(TPointSeq, TGeogPoint):
     """
-    Class for representing temporal geographic points of sequence duration.
+    Class for representing temporal geographic points of sequence subtype.
 
     ``TGeogPointSeq`` objects can be created with a single argument of type
     string as in MobilityDB.
@@ -605,7 +605,7 @@ class TGeogPointSeq(TPointSeq, TGeogPoint):
 
 class TGeomPointSeqSet(TPointSeqSet, TGeomPoint):
     """
-    Class for representing temporal geometric points of sequence duration.
+    Class for representing temporal geometric points of sequence subtype.
 
     ``TGeomPointSeqSet`` objects can be created with a single argument of type
     string as in MobilityDB.
@@ -642,7 +642,7 @@ class TGeomPointSeqSet(TPointSeqSet, TGeomPoint):
 
 class TGeogPointSeqSet(TPointSeqSet, TGeogPoint):
     """
-    Class for representing temporal geographic points of sequence duration.
+    Class for representing temporal geographic points of sequence subtype.
 
     ``TGeogPointSeqSet`` objects can be created with a single argument of type string
     as in MobilityDB.

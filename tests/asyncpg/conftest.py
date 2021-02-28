@@ -7,12 +7,12 @@ from mobilitydb.asyncpg import register
 
 time_types = [TimestampSet, Period, PeriodSet]
 box_types = [TBox, STBox]
-duration_suffixes = ['Inst', 'InstSet', 'Seq', 'SeqSet']
-duration_types = ['INSTANT', 'INSTANTSET', 'SEQUENCE', 'SEQUENCESET']
+subtype_suffixes = ['Inst', 'InstSet', 'Seq', 'SeqSet']
+subtype_names = ['INSTANT', 'INSTANTSET', 'SEQUENCE', 'SEQUENCESET']
 temporal_types = [TBool, TInt, TFloat, TText, TGeomPoint, TGeogPoint]
 
 
-@pytest.yield_fixture
+@pytest.fixture
 async def connection():
     conn = await asyncpg.connect(database=os.getenv('PGDATABASE', 'test'))
     await register(conn)
@@ -25,10 +25,10 @@ async def connection():
             'CREATE TABLE IF NOT EXISTS tbl_' + box.__name__.lower() +
             '(box ' + box.__name__.lower() + ' NOT NULL);')
     for ttype in temporal_types:
-        for suffix, duration in zip(duration_suffixes, duration_types):
+        for suffix, name in zip(subtype_suffixes, subtype_names):
             await conn.execute(
                 'CREATE TABLE IF NOT EXISTS tbl_' + ttype.__name__.lower() + suffix +
-                '(temp ' + ttype.__name__.lower() + '(' + duration + ') NOT NULL);')
+                '(temp ' + ttype.__name__.lower() + '(' + name + ') NOT NULL);')
     yield conn
     await conn.close()
 
@@ -40,7 +40,7 @@ def pytest_unconfigure():
     for box in box_types:
         cur.execute(
             'DROP TABLE tbl_' + box.__name__.lower() + ';')
-    for ttype, suffix in zip(temporal_types, duration_suffixes):
+    for ttype, suffix in zip(temporal_types, subtype_suffixes):
         cur.execute('DROP TABLE tbl_' + ttype.__name__.lower() + suffix + ';')
 
 
@@ -52,7 +52,7 @@ def cursor():
     for box in box_types:
         cur.execute('TRUNCATE TABLE tbl_' + box.__name__.lower() + ';')
     for ttype in temporal_types:
-        for suffix in duration_suffixes:
+        for suffix in subtype_suffixes:
             cur.execute('TRUNCATE TABLE tbl_' + ttype.__name__.lower() + suffix + ';')
     return cur
 """
