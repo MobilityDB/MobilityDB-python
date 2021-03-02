@@ -24,8 +24,8 @@ before_install:
   - pip install -U pip
   - pip install -U pytest
   - pip install codecov
-  - docker pull mobilitydb/mobilitydb
-  - docker run -d -p 5432:5432 mobilitydb/mobilitydb
+  - docker pull codewit/mobilitydb
+  - docker run -d -p 5432:5432 codewit/mobilitydb
 
 install:
   - pip install ".[test]" . # install package + test dependencies
