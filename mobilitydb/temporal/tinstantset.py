@@ -70,9 +70,18 @@ class TInstantSet(TemporalInstants):
         return timedelta(0)
 
     @property
+    def timespan(self):
+        """
+        Interval on which the temporal value is defined ignoring the potential
+        time gaps.
+        """
+        return self.endTimestamp - self.startTimestamp
+
+    @property
     def period(self):
         """
-        Period on which the temporal value is defined ignoring the potential time gaps.
+        Period on which the temporal value is defined ignoring the potential
+        time gaps.
         """
         return Period(self.startTimestamp, self.endTimestamp, True, True)
 

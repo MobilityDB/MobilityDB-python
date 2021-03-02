@@ -117,6 +117,12 @@ print(ti.duration)
 print(seq.duration)
 print(ts.duration)
 
+print("\ntimespan")
+print(inst.timespan)
+print(ti.timespan)
+print(seq.timespan)
+print(ts.timespan)
+
 print("\nperiod")
 print(inst.period)
 print(ti.period)

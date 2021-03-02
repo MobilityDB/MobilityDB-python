@@ -99,9 +99,19 @@ class Temporal:
 
     @property
     @abstractmethod
+    def timespan(self):
+        """
+        Interval on which the temporal value is defined ignoring potential
+        time gaps.
+        """
+        pass
+
+    @property
+    @abstractmethod
     def period(self):
         """
-        Period on which the temporal value is defined ignoring potential time gaps.
+        Period on which the temporal value is defined ignoring potential
+        time gaps.
         """
         pass
 

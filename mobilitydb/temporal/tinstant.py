@@ -102,9 +102,18 @@ class TInstant(Temporal):
         return timedelta(0)
 
     @property
+    def timespan(self):
+        """
+        Interval on which the temporal value is defined ignoring the potential
+        time gaps. It is zero for temporal values of instant subtype.
+        """
+        return timedelta(0)
+
+    @property
     def period(self):
         """
-        Period on which the temporal value is defined ignoring the potential time gaps.
+        Period on which the temporal value is defined ignoring the potential
+        time gaps.
         """
         return Period(self._time, self._time, True, True)
 

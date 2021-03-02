@@ -46,6 +46,7 @@ def test_tgeompointinst_accessors(cursor, expected_tgeompointinst):
     assert TGeomPointInst(expected_tgeompointinst).getTime == PeriodSet(
         '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]}')
     assert TGeomPointInst(expected_tgeompointinst).duration == timedelta(0)
+    assert TGeomPointInst(expected_tgeompointinst).timespan == timedelta(0)
     assert TGeomPointInst(expected_tgeompointinst).period == Period(
         '[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]')
     assert TGeomPointInst(expected_tgeompointinst).numInstants == 1
@@ -138,6 +139,7 @@ def test_tgeompointi_accessors(cursor, expected_tgeompointinstset):
                '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
                '[2019-09-03 00:00:00+01, 2019-09-03 00:00:00+01]}')
     assert TGeomPointInstSet(expected_tgeompointinstset).duration == timedelta(0)
+    assert TGeomPointInstSet(expected_tgeompointinstset).timespan == timedelta(2)
     assert TGeomPointInstSet(expected_tgeompointinstset).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
     assert TGeomPointInstSet(expected_tgeompointinstset).numInstants == 3
     assert TGeomPointInstSet(expected_tgeompointinstset).startInstant == TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01')
@@ -231,6 +233,7 @@ def test_tgeompointseq_accessors(cursor, expected_tgeompointseq):
     assert TGeomPointSeq(expected_tgeompointseq).getTime == PeriodSet(
         '{[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]}')
     assert TGeomPointSeq(expected_tgeompointseq).duration == timedelta(2)
+    assert TGeomPointSeq(expected_tgeompointseq).timespan == timedelta(2)
     assert TGeomPointSeq(expected_tgeompointseq).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
     assert TGeomPointSeq(expected_tgeompointseq).numInstants == 3
     assert TGeomPointSeq(expected_tgeompointseq).startInstant == TGeomPointInst(
@@ -333,6 +336,7 @@ def test_tgeompointseqset_accessors(cursor, expected_tgeompointseqset):
     assert TGeomPointSeqSet(expected_tgeompointseqset).getTime == PeriodSet(
         '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')
     assert TGeomPointSeqSet(expected_tgeompointseqset).duration == timedelta(1)
+    assert TGeomPointSeqSet(expected_tgeompointseqset).timespan == timedelta(2)
     assert TGeomPointSeqSet(expected_tgeompointseqset).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
     assert TGeomPointSeqSet(expected_tgeompointseqset).numInstants == 3
     assert TGeomPointSeqSet(expected_tgeompointseqset).startInstant == TGeomPointInst('Point(10.0 10.0)@2019-09-01 00:00:00+01')

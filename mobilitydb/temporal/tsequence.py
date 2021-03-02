@@ -102,6 +102,13 @@ class TSequence(TemporalInstants):
         return self.period.upper - self.period.lower
 
     @property
+    def timespan(self):
+        """
+        Interval on which the temporal value is defined.
+        """
+        return self.period.upper - self.period.lower
+
+    @property
     def period(self):
         """
         Period on which the temporal value is defined.

@@ -68,6 +68,8 @@ print("Constructor list of datetimes:", var)
 # var = TimestampSet(t1, t2, t3, t4)
 
 # Accessor functions
+var1 = var.timespan
+print("timespan:", var1)
 var1 = var.period
 print("period:", var1)
 var1 = var.numTimestamps
@@ -117,6 +119,8 @@ print("Constructor list of periods:", var)
 # Accessor functions
 var1 = var.duration
 print("duration:", var1)
+var1 = var.timespan
+print("timespan:", var1)
 var1 = var.period
 print("period:", var1)
 var1 = var.numTimestamps

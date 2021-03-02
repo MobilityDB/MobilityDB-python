@@ -36,6 +36,7 @@ def test_tintinst_accessors(cursor, expected_tintinst):
     assert TIntInst(expected_tintinst).getTimestamp == parse('2019-09-01 00:00:00+01')
     assert TIntInst(expected_tintinst).getTime == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]}')
     assert TIntInst(expected_tintinst).duration == timedelta(0)
+    assert TIntInst(expected_tintinst).timespan == timedelta(0)
     assert TIntInst(expected_tintinst).period == Period('[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01]')
     assert TIntInst(expected_tintinst).numInstants == 1
     assert TIntInst(expected_tintinst).startInstant == TIntInst('10@2019-09-01 00:00:00+01')
@@ -106,6 +107,7 @@ def test_tintinstset_accessors(cursor, expected_tintinstset):
                '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01], [2019-09-02 00:00:00+01, 2019-09-02 00:00:00+01], '
                '[2019-09-03 00:00:00+01, 2019-09-03 00:00:00+01]}')
     assert TIntInstSet(expected_tintinstset).duration == timedelta(0)
+    assert TIntInstSet(expected_tintinstset).timespan == timedelta(2)
     assert TIntInstSet(expected_tintinstset).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
     assert TIntInstSet(expected_tintinstset).numInstants == 3
     assert TIntInstSet(expected_tintinstset).startInstant == TIntInst('10@2019-09-01 00:00:00+01')
@@ -174,6 +176,7 @@ def test_tintseq_accessors(cursor, expected_tintseq):
     assert TIntSeq(expected_tintseq).valueRange == intrange(10, 30, upper_inc=True)
     assert TIntSeq(expected_tintseq).getTime == PeriodSet('{[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]}')
     assert TIntSeq(expected_tintseq).duration == timedelta(2)
+    assert TIntSeq(expected_tintseq).timespan == timedelta(2)
     assert TIntSeq(expected_tintseq).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
     assert TIntSeq(expected_tintseq).numInstants == 3
     assert TIntSeq(expected_tintseq).startInstant == TIntInst('10@2019-09-01 00:00:00+01')
@@ -240,6 +243,7 @@ def test_tintseqset_accessors(cursor, expected_tintseqset):
     assert TIntSeqSet(expected_tintseqset).getTime == PeriodSet(
         '{[2019-09-01 00:00:00+01, 2019-09-01 00:00:00+01],[2019-09-02 00:00:00+01, 2019-09-03 00:00:00+01]}')
     assert TIntSeqSet(expected_tintseqset).duration == timedelta(1)
+    assert TIntSeqSet(expected_tintseqset).timespan == timedelta(2)
     assert TIntSeqSet(expected_tintseqset).period == Period('[2019-09-01 00:00:00+01, 2019-09-03 00:00:00+01]')
     assert TIntSeqSet(expected_tintseqset).numInstants == 3
     assert TIntSeqSet(expected_tintseqset).startInstant == TIntInst('10@2019-09-01 00:00:00+01')

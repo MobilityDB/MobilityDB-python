@@ -76,6 +76,13 @@ class TimestampSet:
             raise Exception("ERROR: The timestamps of a timestamp set must be increasing")
 
     @property
+    def timespan(self):
+        """
+        Interval on which the timestamp set is defined ignoring the potential time gaps
+        """
+        return self._datetimeList[-1] - self._datetimeList[0]
+
+    @property
     def period(self):
         """
         Period on which the timestamp set is defined ignoring the potential time gaps

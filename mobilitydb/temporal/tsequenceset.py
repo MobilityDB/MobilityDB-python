@@ -128,9 +128,18 @@ class TSequenceSet(Temporal):
         return result
 
     @property
+    def timespan(self):
+        """
+        Interval on which the period set is defined ignoring the potential
+        time gaps.
+        """
+        return self.endTimestamp - self.startTimestamp
+
+    @property
     def period(self):
         """
-        Period on which the temporal value is defined ignoring the potential time gaps.
+        Period on which the temporal value is defined ignoring the potential
+        time gaps.
         """
         return Period(self.startTimestamp, self.endTimestamp,
                       self._sequenceList[0]._lower_inc, self._sequenceList[-1]._upper_inc)

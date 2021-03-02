@@ -88,6 +88,14 @@ class PeriodSet:
         return result
 
     @property
+    def timespan(self):
+        """
+        Time interval on which the period set is defined
+        """
+        return self.endTimestamp - self.startTimestamp
+
+
+    @property
     def period(self):
         """
         Period on which the period set is defined ignoring the potential time gaps
