@@ -87,6 +87,36 @@ class TSequence(TemporalInstants):
         """
         return self._upper_inc
 
+    def valueAtTimestamp(self, timestamp):
+        """
+        Value at timestamp.
+        """
+        for i in range(len(self._instantList)):
+            inst1 = self._instantList[i]
+            if i < len(self._instantList) - 1:
+                inst2 = self._instantList[i+1]
+            else:
+                inst2 = None
+            if inst1._time > timestamp:
+                return None
+            else:
+                if inst1._time == timestamp:
+                    if inst2 is not None or self._upper_inc:
+                        return inst1._value
+                    else:
+                        return None
+                # We know that inst1._time < timestamp
+                # if inst1 is the last instant
+                if inst2 is None:
+                    return None
+                else:
+                    if timestamp < inst2._time:
+                        if self._interp == 'Stepwise':
+                            return inst1._value
+                        else:
+                            return self._interpolate(inst1, inst2, timestamp)
+        return None
+
     @property
     def getTime(self):
         """

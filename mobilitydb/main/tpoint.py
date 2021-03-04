@@ -565,6 +565,26 @@ class TGeomPointSeq(TPointSeq, TGeomPoint):
         TSequence.ComponentClass = TGeomPointInst
         super().__init__(instantList, lower_inc, upper_inc, interp, srid)
 
+    def _interpolate(self, inst1, inst2, timestamp):
+        """
+        Interpolate the temporal value at a timestamp between inst1 and inst2.
+        """
+        # preconditions
+        if not (isinstance(inst1, TGeomPointInst) and isinstance(inst2, TGeomPointInst) and
+            isinstance(timestamp, datetime) and inst1._time < timestamp and timestamp < inst2._time):
+            Exception("Erroneous arguments for function TGeogPointSeq._interpolate")
+
+        duration1 = timestamp - inst1._time
+        duration2 = inst2._time - inst1._time
+        ratio = duration1.total_seconds() / duration2.total_seconds();
+        x = inst1._value.x + (inst2._value.x - inst1._value.x) * ratio;
+        y = inst1._value.y + (inst2._value.y - inst1._value.y) * ratio;
+        if inst1._value.z is not None and inst2._value.z is not None:
+            z = inst1._value.z + (inst2._value.z - inst1._value.z) * ratio;
+            return Point(x,y,z);
+        else:
+            return Point(x,y);
+
 
 class TGeogPointSeq(TPointSeq, TGeogPoint):
     """

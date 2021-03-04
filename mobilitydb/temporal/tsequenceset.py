@@ -17,6 +17,8 @@ class TSequenceSet(Temporal):
         # Constructor with a single argument of type string
         if isinstance(sequenceList, str):
             elements = parse_temporalseqset(sequenceList, 0)
+            print("elements")
+            print(elements)
             seqList = []
             for seq in elements[2][0]:
                 instList = []
@@ -109,6 +111,18 @@ class TSequenceSet(Temporal):
         Maximum value.
         """
         return max(seq.maxValue for seq in self._sequenceList)
+
+    def valueAtTimestamp(self, timestamp):
+        """
+        Value at timestamp.
+        """
+        for seq in self._sequenceList:
+            per = seq.period
+            if per.lower > timestamp:
+                return None
+            if per.contains_timestamp(timestamp):
+                return seq.valueAtTimestamp(timestamp)
+        return None
 
     @property
     def getTime(self):

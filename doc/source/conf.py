@@ -52,7 +52,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'python-mobilitydb'
-copyright = u'2020, Esteban Zimányi'
+copyright = u'2021, Esteban Zimányi'
 author = u'Esteban Zimányi'
 
 # The version info for the project you're documenting, acts as replacement for

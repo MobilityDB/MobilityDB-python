@@ -81,6 +81,13 @@ class Temporal:
         """
         pass
 
+    @abstractmethod
+    def valueAtTimestamp(self, timestamp):
+        """
+        Value at timestamp.
+        """
+        pass
+
     @property
     @abstractmethod
     def getTime(self):

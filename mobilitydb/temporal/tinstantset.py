@@ -54,6 +54,21 @@ class TInstantSet(TemporalInstants):
         """
         return "InstantSet"
 
+    def valueAtTimestamp(self, timestamp):
+        """
+        Value at timestamp.
+        """
+    def valueAtTimestamp(self, timestamp):
+        """
+        Value at timestamp.
+        """
+        for inst in self._instantList:
+            if inst._time > timestamp:
+                return None
+            if inst._time == timestamp:
+                return inst._value
+        return None
+
     @property
     def getTime(self):
         """

@@ -79,6 +79,15 @@ class TInstant(Temporal):
         """
         return self._value
 
+    def valueAtTimestamp(self, timestamp):
+        """
+        Value at timestamp.
+        """
+        if timestamp == self._time:
+            return self._value
+        else:
+            return None
+
     @property
     def getTimestamp(self):
         """

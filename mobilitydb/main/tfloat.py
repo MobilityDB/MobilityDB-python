@@ -1,3 +1,4 @@
+from datetime import datetime
 from spans.types import floatrange
 from mobilitydb.temporal import Temporal, TInstant, TInstantSet, TSequence, TSequenceSet
 
@@ -147,6 +148,21 @@ class TFloatSeq(TSequence, TFloat):
         Interpolation of the temporal value, which is either ``'Linear'`` or ``'Stepwise'``.
         """
         return self._interp
+
+    def _interpolate(self, inst1, inst2, timestamp):
+        """
+        Interpolate the temporal value at a timestamp between inst1 and inst2.
+        """
+        # preconditions
+        if not (isinstance(inst1, TFloatInst) and
+            isinstance(inst2, TFloatInst) and isinstance(timestamp, datetime) and
+            inst1._time < timestamp and timestamp < inst2._time):
+            Exception("Erroneous arguments for function TFloatSeq._interpolate")
+
+        duration1 = timestamp - inst1._time
+        duration2 = inst2._time - inst1._time
+        ratio = duration1.total_seconds() / duration2.total_seconds();
+        return inst1._value + (inst2._value - inst1._value) * ratio;
 
     @property
     def getValues(self):
