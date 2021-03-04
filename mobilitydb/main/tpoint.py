@@ -572,7 +572,7 @@ class TGeomPointSeq(TPointSeq, TGeomPoint):
         # preconditions
         if not (isinstance(inst1, TGeomPointInst) and isinstance(inst2, TGeomPointInst) and
             isinstance(timestamp, datetime) and inst1._time < timestamp and timestamp < inst2._time):
-            Exception("Erroneous arguments for function TGeogPointSeq._interpolate")
+            Exception("Erroneous arguments for function TGeomPointSeq._interpolate")
 
         duration1 = timestamp - inst1._time
         duration2 = inst2._time - inst1._time
