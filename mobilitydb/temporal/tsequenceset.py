@@ -31,9 +31,9 @@ class TSequenceSet(Temporal):
                     print(TSequenceSet.ComponentClass.ComponentClass)
                     instList.append(TSequenceSet.ComponentClass.ComponentClass(inst[0], inst[1]))
                 if self.__class__.BaseClassDiscrete:
-                    seqList.append(TSequenceSet.ComponentClass(seqList, seq[1], seq[2]))
+                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2]))
                 else:
-                    seqList.append(TSequenceSet.ComponentClass(seqList, seq[1], seq[2], elements[2][1]))
+                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2], elements[2][1]))
             self._sequenceList = seqList
             # Set interpolation with the argument or the flag from the string if given
             if interp is not None:
