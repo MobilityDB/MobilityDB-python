@@ -41,15 +41,15 @@ class TInstantSet(TemporalInstants):
         if len(argv) == 1 and isinstance(argv[0], str):
             elements = parse_temporalinstset(argv[0], 0)
             for inst in elements[2]:
-                self._instantList.append(TInstantSet.ComponentClass(inst[0], inst[1]))
+                self._instantList.append(self.ComponentClass(inst[0], inst[1]))
         # Constructor with a single argument of type list
         elif len(argv) == 1 and isinstance(argv[0], list):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in argv[0]):
                 for arg in argv[0]:
-                    self._instantList.append(TInstantSet.ComponentClass(arg))
+                    self._instantList.append(self.ComponentClass(arg))
             # List of instant values
-            elif all(isinstance(arg, TInstantSet.ComponentClass) for arg in argv[0]):
+            elif all(isinstance(arg, self.ComponentClass) for arg in argv[0]):
                 for arg in argv[0]:
                     self._instantList.append(arg)
             else:
@@ -59,9 +59,9 @@ class TInstantSet(TemporalInstants):
             # Arguments are of type string
             if all(isinstance(arg, str) for arg in argv):
                 for arg in argv:
-                    self._instantList.append(TInstantSet.ComponentClass(arg))
+                    self._instantList.append(self.ComponentClass(arg))
             # Arguments are of type instant
-            elif all(isinstance(arg, TInstantSet.ComponentClass) for arg in argv):
+            elif all(isinstance(arg, self.ComponentClass) for arg in argv):
                 for arg in argv:
                     self._instantList.append(arg)
             else:

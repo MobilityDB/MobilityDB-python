@@ -46,14 +46,14 @@ class TSequence(TemporalInstants):
         if isinstance(instantList, str):
             elements = parse_temporalseq(instantList, 0)
             for inst in elements[2][0]:
-                self._instantList.append(TSequence.ComponentClass(inst[0], inst[1]))
+                self._instantList.append(self.ComponentClass(inst[0], inst[1]))
             self._lower_inc = elements[2][1]
             self._upper_inc = elements[2][2]
             # Set interpolation with the argument or the flag from the string if given
             if interp is not None:
                 self._interp = interp
             else:
-                if self.__class__.BaseClassDiscrete:
+                if self.BaseClassDiscrete:
                     self._interp = 'Stepwise'
                 else:
                     self._interp = elements[2][3] if elements[2][3] is not None else 'Linear'
@@ -62,9 +62,9 @@ class TSequence(TemporalInstants):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in instantList):
                 for arg in instantList:
-                    self._instantList.append(TSequence.ComponentClass(arg))
+                    self._instantList.append(self.ComponentClass(arg))
             # List of instant values
-            elif all(isinstance(arg, TSequence.ComponentClass) for arg in instantList):
+            elif all(isinstance(arg, self.ComponentClass) for arg in instantList):
                 for arg in instantList:
                     self._instantList.append(arg)
             else:
@@ -75,7 +75,7 @@ class TSequence(TemporalInstants):
             if interp is not None:
                 self._interp = interp
             else:
-                self._interp = 'Stepwise' if self.__class__.BaseClassDiscrete else 'Linear'
+                self._interp = 'Stepwise' if self.BaseClassDiscrete else 'Linear'
         else:
             raise Exception("ERROR: Could not parse temporal sequence value")
         # Verify validity of the resulting instance

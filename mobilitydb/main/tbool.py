@@ -36,6 +36,9 @@ class TBool(Temporal):
     Abstract class for representing temporal Booleans of any subtype.
     """
 
+    BaseClass = bool
+    BaseClassDiscrete = True
+
     @staticmethod
     def read_from_cursor(value, cursor=None):
         if not value:
@@ -82,7 +85,6 @@ class TBoolInst(TInstant, TBool):
     and eval('False') == False. Furthermore eval('false') gives an error
     """
     def __init__(self, value, time=None):
-        TInstant.BaseClass = bool
         if time is None:
             # Constructor with a single argument of type string
             if isinstance(value, str):
@@ -128,9 +130,9 @@ class TBoolInstSet(TInstantSet, TBool):
 
     """
 
+    ComponentClass = TBoolInst
+
     def __init__(self,  *argv):
-        TInstantSet.BaseClass = bool
-        TInstantSet.ComponentClass = TBoolInst
         super().__init__(*argv)
 
 
@@ -160,11 +162,9 @@ class TBoolSeq(TSequence, TBool):
 
     """
 
+    ComponentClass = TBoolInst
+
     def __init__(self, instantList, lower_inc=None, upper_inc=None):
-        TSequence.BaseClass = bool
-        TSequence.BaseClassDiscrete = True
-        TSequence.ComponentClass = TBoolInst
-        self._interp = 'Stepwise'
         super().__init__(instantList, lower_inc, upper_inc)
 
     @classmethod
@@ -194,11 +194,9 @@ class TBoolSeqSet(TSequenceSet, TBool):
 
     """
 
+    ComponentClass = TBoolSeq
+
     def __init__(self, sequenceList):
-        TSequenceSet.BaseClass = bool
-        TSequenceSet.BaseClassDiscrete = True
-        TSequenceSet.ComponentClass = TBoolSeq
-        self._interp = 'Stepwise'
         super().__init__(sequenceList)
 
     @classmethod
