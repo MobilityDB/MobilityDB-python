@@ -35,6 +35,9 @@ class TText(Temporal):
     Abstract class for representing temporal strings of any subtype.
     """
 
+    BaseClass = str
+    BaseClassDiscrete = True
+
     @staticmethod
     def read_from_cursor(value, cursor=None):
         if not value:
@@ -81,7 +84,6 @@ class TTextInst(TInstant, TText):
     """
 
     def __init__(self, value, time=None):
-        TInstant.BaseClass = str
         if(time is None):
             # Constructor with a single argument of type string
             if (isinstance(value, str)):
@@ -122,9 +124,9 @@ class TTextInstSet(TInstantSet, TText):
 
     """
 
+    ComponentClass = TTextInst
+
     def __init__(self,  *argv):
-        TInstantSet.BaseClass = str
-        TInstantSet.ComponentClass = TTextInst
         super().__init__(*argv)
 
 
@@ -154,10 +156,9 @@ class TTextSeq(TSequence, TText):
 
     """
 
+    ComponentClass = TTextInst
+
     def __init__(self, instantList, lower_inc=None, upper_inc=None):
-        TSequence.BaseClass = str
-        TSequenceSet.BaseClassDiscrete = True
-        TSequence.ComponentClass = TTextInst
         super().__init__(instantList, lower_inc, upper_inc)
 
     @classmethod
@@ -186,10 +187,9 @@ class TTextSeqSet(TSequenceSet, TText):
 
     """
 
+    ComponentClass = TTextSeq
+
     def __init__(self, sequenceList):
-        TSequenceSet.BaseClass = str
-        TSequenceSet.BaseClassDiscrete = True
-        TSequenceSet.ComponentClass = TTextSeq
         super().__init__(sequenceList)
 
     @classmethod

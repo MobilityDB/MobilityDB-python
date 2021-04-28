@@ -45,27 +45,19 @@ class TSequenceSet(Temporal):
             elements = parse_temporalseqset(sequenceList, 0)
             seqList = []
             for seq in elements[2][0]:
-                print("seq")
-                print(seq)
                 instList = []
                 for inst in seq[0]:
-                    print("inst")
-                    print(inst)
-                    print("TSequenceSet.ComponentClass =")
-                    print(TSequenceSet.ComponentClass)
-                    print("TSequenceSet.ComponentClass.ComponentClass =")
-                    print(TSequenceSet.ComponentClass.ComponentClass)
-                    instList.append(TSequenceSet.ComponentClass.ComponentClass(inst[0], inst[1]))
-                if self.__class__.BaseClassDiscrete:
-                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2]))
+                    instList.append(self.ComponentClass.ComponentClass(inst[0], inst[1]))
+                if self.BaseClassDiscrete:
+                    seqList.append(self.ComponentClass(instList, seq[1], seq[2]))
                 else:
-                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2], elements[2][1]))
+                    seqList.append(self.ComponentClass(instList, seq[1], seq[2], elements[2][1]))
             self._sequenceList = seqList
             # Set interpolation with the argument or the flag from the string if given
             if interp is not None:
                 self._interp = interp
             else:
-                if self.__class__.BaseClassDiscrete:
+                if self.BaseClassDiscrete:
                     self._interp = 'Stepwise'
                 else:
                     self._interp = elements[2][1] if elements[2][1] is not None else 'Linear'
@@ -74,9 +66,9 @@ class TSequenceSet(Temporal):
             # List of strings representing periods
             if all(isinstance(sequence, str) for sequence in sequenceList):
                 for sequence in sequenceList:
-                    self._sequenceList.append(self.__class__.ComponentClass(sequence))
+                    self._sequenceList.append(self.ComponentClass(sequence))
             # List of periods
-            elif all(isinstance(sequence, self.__class__.ComponentClass) for sequence in sequenceList):
+            elif all(isinstance(sequence, self.ComponentClass) for sequence in sequenceList):
                 for sequence in sequenceList:
                     self._sequenceList.append(sequence)
             else:
@@ -85,7 +77,7 @@ class TSequenceSet(Temporal):
             if interp is not None:
                 self._interp = interp
             else:
-                self._interp = 'Stepwise' if self.__class__.BaseClassDiscrete else 'Linear'
+                self._interp = 'Stepwise' if self.BaseClassDiscrete else 'Linear'
         else:
             raise Exception("ERROR: Could not parse temporal sequence set value")
         # Verify validity of the resulting instance

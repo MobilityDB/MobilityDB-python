@@ -34,6 +34,9 @@ class TFloat(Temporal):
     Abstract class for representing temporal floats of any subtype.
     """
 
+    BaseClass = float
+    BaseClassDiscrete = False
+
     @property
     def valueRange(self):
         """
@@ -89,7 +92,6 @@ class TFloatInst(TInstant, TFloat):
     """
 
     def __init__(self, value, time=None):
-        TInstant.BaseClass = float
         super().__init__(value, time)
 
     @property
@@ -119,9 +121,9 @@ class TFloatInstSet(TInstantSet, TFloat):
 
     """
 
+    ComponentClass = TFloatInst
+
     def __init__(self,  *argv):
-        TInstantSet.BaseClass = float
-        TInstantSet.ComponentClass = TFloatInst
         super().__init__(*argv)
 
     @property
@@ -162,10 +164,9 @@ class TFloatSeq(TSequence, TFloat):
 
     """
 
+    ComponentClass = TFloatInst
+
     def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None):
-        TSequence.BaseClass = float
-        TSequence.BaseClassDiscrete = False
-        TSequence.ComponentClass = TFloatInst
         super().__init__(instantList, lower_inc, upper_inc, interp)
 
     @property
@@ -236,10 +237,9 @@ class TFloatSeqSet(TSequenceSet, TFloat):
 
     """
 
+    ComponentClass = TFloatSeq
+
     def __init__(self, sequenceList, interp=None):
-        TSequenceSet.BaseClass = float
-        TSequenceSet.BaseClassDiscrete = False
-        TSequenceSet.ComponentClass = TFloatSeq
         super().__init__(sequenceList, interp)
 
     @property

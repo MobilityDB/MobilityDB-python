@@ -126,15 +126,15 @@ class TPointInstSet(TInstantSet):
             # Parse without the eventual "srid=xxx;" prefix
             elements = parse_temporalinstset(instantList, 0)
             for inst in elements[2]:
-                self._instantList.append(TInstantSet.ComponentClass(inst[0], inst[1], srid=srid))
+                self._instantList.append(self.ComponentClass(inst[0], inst[1], srid=srid))
         # Constructor with a single argument of type list
         elif len(argv) == 1 and isinstance(argv[0], list):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in argv[0]):
                 for arg in argv[0]:
-                    self._instantList.append(TInstantSet.ComponentClass(arg, srid=srid))
+                    self._instantList.append(self.ComponentClass(arg, srid=srid))
             # List of instant values
-            elif all(isinstance(arg, TInstantSet.ComponentClass) for arg in argv[0]):
+            elif all(isinstance(arg, self.ComponentClass) for arg in argv[0]):
                 for arg in argv[0]:
                     self._instantList.append(arg)
             else:
@@ -144,9 +144,9 @@ class TPointInstSet(TInstantSet):
             # Arguments are of type string
             if all(isinstance(arg, str) for arg in argv):
                 for arg in argv:
-                    self._instantList.append(TInstantSet.ComponentClass(arg, srid=srid))
+                    self._instantList.append(self.ComponentClass(arg, srid=srid))
             # Arguments are of type instant
-            elif all(isinstance(arg, TInstantSet.ComponentClass) for arg in argv):
+            elif all(isinstance(arg, self.ComponentClass) for arg in argv):
                 for arg in argv:
                     self._instantList.append(arg)
             else:
@@ -198,14 +198,14 @@ class TPointSeq(TSequence):
             # Parse without the eventual "srid=xxx;" prefix
             elements = parse_temporalseq(instantList, 0)
             for inst in elements[2][0]:
-                self._instantList.append(TSequence.ComponentClass(inst[0], inst[1], srid=srid))
+                self._instantList.append(self.ComponentClass(inst[0], inst[1], srid=srid))
             self._lower_inc = elements[2][1]
             self._upper_inc = elements[2][2]
             # Set interpolation with the argument or the flag from the string if given
             if interp is not None:
                 self._interp = interp
             else:
-                if self.__class__.BaseClassDiscrete:
+                if self.BaseClassDiscrete:
                     self._interp = 'Stepwise'
                 else:
                     self._interp = elements[2][3] if elements[2][3] is not None else 'Linear'
@@ -214,9 +214,9 @@ class TPointSeq(TSequence):
             # List of strings representing instant values
             if all(isinstance(arg, str) for arg in instantList):
                 for arg in instantList:
-                    self._instantList.append(TSequence.ComponentClass(arg, srid=srid))
+                    self._instantList.append(self.ComponentClass(arg, srid=srid))
             # List of instant values
-            elif all(isinstance(arg, TSequence.ComponentClass) for arg in instantList):
+            elif all(isinstance(arg, self.ComponentClass) for arg in instantList):
                 for arg in instantList:
                     self._instantList.append(arg)
             else:
@@ -227,7 +227,7 @@ class TPointSeq(TSequence):
             if interp is not None:
                 self._interp = interp
             else:
-                self._interp = 'Stepwise' if self.__class__.BaseClassDiscrete else 'Linear'
+                self._interp = 'Stepwise' if self.BaseClassDiscrete else 'Linear'
         else:
             raise Exception("ERROR: Could not parse temporal sequence value")
         # Verify validity of the resulting instance
@@ -287,17 +287,17 @@ class TPointSeqSet(TSequenceSet):
             for seq in elements[2][0]:
                 instList = []
                 for inst in seq[0]:
-                    instList.append(TSequenceSet.ComponentClass.ComponentClass(inst[0], inst[1], srid=srid))
-                if self.__class__.BaseClassDiscrete:
-                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2]))
+                    instList.append(self.ComponentClass.ComponentClass(inst[0], inst[1], srid=srid))
+                if self.BaseClassDiscrete:
+                    seqList.append(self.ComponentClass(instList, seq[1], seq[2]))
                 else:
-                    seqList.append(TSequenceSet.ComponentClass(instList, seq[1], seq[2], elements[2][1], srid=srid))
+                    seqList.append(self.ComponentClass(instList, seq[1], seq[2], elements[2][1], srid=srid))
             self._sequenceList = seqList
             # Set interpolation with the argument or the flag from the string if given
             if interp is not None:
                 self._interp = interp
             else:
-                if self.__class__.BaseClassDiscrete:
+                if self.BaseClassDiscrete:
                     self._interp = 'Stepwise'
                 else:
                     self._interp = elements[2][1] if elements[2][1] is not None else 'Linear'
@@ -306,9 +306,9 @@ class TPointSeqSet(TSequenceSet):
             # List of strings representing periods
             if all(isinstance(sequence, str) for sequence in sequenceList):
                 for sequence in sequenceList:
-                    self._sequenceList.append(self.__class__.ComponentClass(sequence))
+                    self._sequenceList.append(self.ComponentClass(sequence))
             # List of periods
-            elif all(isinstance(sequence, self.__class__.ComponentClass) for sequence in sequenceList):
+            elif all(isinstance(sequence, self.ComponentClass) for sequence in sequenceList):
                 for sequence in sequenceList:
                     self._sequenceList.append(sequence)
             else:
@@ -317,7 +317,7 @@ class TPointSeqSet(TSequenceSet):
             if interp is not None:
                 self._interp = interp
             else:
-                self._interp = 'Stepwise' if self.__class__.BaseClassDiscrete else 'Linear'
+                self._interp = 'Stepwise' if self.BaseClassDiscrete else 'Linear'
         else:
             raise Exception("ERROR: Could not parse temporal sequence set value")
         # Verify validity of the resulting instance
@@ -358,6 +358,9 @@ class TGeomPoint(Temporal):
     """
     Abstract class for representing temporal geometric or geographic points of any subtype.
     """
+
+    BaseClass = Point
+    BaseClassDiscrete = False
 
     @staticmethod
     def read_from_cursor(value, cursor=None):
@@ -406,6 +409,9 @@ class TGeogPoint(Temporal):
     """
     Abstract class for representing temporal geographic points of any subtype.
     """
+
+    BaseClass = Point
+    BaseClassDiscrete = False
 
     @staticmethod
     def read_from_cursor(value, cursor=None):
@@ -473,7 +479,6 @@ class TGeomPointInst(TPointInst, TGeomPoint):
     """
 
     def __init__(self, value, time=None, srid=None):
-        TInstant.BaseClass = Point
         super().__init__(value, time, srid)
 
 
@@ -499,7 +504,6 @@ class TGeogPointInst(TPointInst, TGeogPoint):
     """
 
     def __init__(self, value, time=None, srid=None):
-        TInstant.BaseClass = Point
         super().__init__(value, time, srid)
 
 
@@ -523,9 +527,9 @@ class TGeomPointInstSet(TPointInstSet, TGeomPoint):
 
     """
 
+    ComponentClass = TGeomPointInst
+
     def __init__(self,  *argv, **kwargs):
-        TInstantSet.BaseClass = Point
-        TInstantSet.ComponentClass = TGeomPointInst
         super().__init__(*argv, **kwargs)
 
 
@@ -549,9 +553,9 @@ class TGeogPointInstSet(TPointInstSet, TGeogPoint):
 
     """
 
+    ComponentClass = TGeogPointInst
+
     def __init__(self,  *argv, **kwargs):
-        TInstantSet.BaseClass = Point
-        TInstantSet.ComponentClass = TGeogPointInst
         super().__init__(*argv, **kwargs)
 
 
@@ -585,10 +589,9 @@ class TGeomPointSeq(TPointSeq, TGeomPoint):
 
     """
 
+    ComponentClass = TGeomPointInst
+
     def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None, srid=None):
-        TSequence.BaseClass = Point
-        TSequence.BaseClassDiscrete = False
-        TSequence.ComponentClass = TGeomPointInst
         super().__init__(instantList, lower_inc, upper_inc, interp, srid)
 
     def _interpolate(self, inst1, inst2, timestamp):
@@ -642,10 +645,9 @@ class TGeogPointSeq(TPointSeq, TGeogPoint):
 
     """
 
+    ComponentClass = TGeogPointInst
+
     def __init__(self, instantList, lower_inc=None, upper_inc=None, interp=None, srid=None):
-        TSequence.BaseClass = Point
-        TSequence.BaseClassDiscrete = False
-        TSequence.ComponentClass = TGeogPointInst
         super().__init__(instantList, lower_inc, upper_inc, interp, srid)
 
 
@@ -679,10 +681,9 @@ class TGeomPointSeqSet(TPointSeqSet, TGeomPoint):
 
     """
 
+    ComponentClass = TGeomPointSeq
+
     def __init__(self, sequenceList, interp=None, srid=None):
-        TSequenceSet.BaseClass = Point
-        TSequenceSet.BaseClassDiscrete = False
-        TSequenceSet.ComponentClass = TGeomPointSeq
         super().__init__(sequenceList, interp, srid)
 
 
@@ -716,8 +717,7 @@ class TGeogPointSeqSet(TPointSeqSet, TGeogPoint):
 
     """
 
+    ComponentClass = TGeogPointSeq
+
     def __init__(self, sequenceList, interp=None, srid=None):
-        TSequenceSet.BaseClass = Point
-        TSequenceSet.BaseClassDiscrete = False
-        TSequenceSet.ComponentClass = TGeogPointSeq
         super().__init__(sequenceList, interp, srid)

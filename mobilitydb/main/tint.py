@@ -33,6 +33,9 @@ class TInt(Temporal):
     Abstract class for representing temporal integers of any subtype.
     """
 
+    BaseClass = int
+    BaseClassDiscrete = True
+
     @staticmethod
     def read_from_cursor(value, cursor=None):
         if not value:
@@ -82,7 +85,6 @@ class TIntInst(TInstant, TInt):
     """
 
     def __init__(self, value, time=None):
-        TInstant.BaseClass = int
         super().__init__(value, time)
 
 
@@ -105,9 +107,9 @@ class TIntInstSet(TInstantSet, TInt):
 
     """
 
+    ComponentClass = TIntInst
+
     def __init__(self,  *argv):
-        TInstantSet.BaseClass = int
-        TInstantSet.ComponentClass = TIntInst
         super().__init__(*argv)
 
 
@@ -137,10 +139,9 @@ class TIntSeq(TSequence, TInt):
 
     """
 
+    ComponentClass = TIntInst
+
     def __init__(self, instantList, lower_inc=None, upper_inc=None):
-        TSequence.BaseClass = int
-        TSequence.BaseClassDiscrete = True
-        TSequence.ComponentClass = TIntInst
         super().__init__(instantList, lower_inc, upper_inc)
 
     @classmethod
@@ -170,10 +171,9 @@ class TIntSeqSet(TSequenceSet, TInt):
 
     """
 
+    ComponentClass = TIntSeq
+
     def __init__(self, sequenceList):
-        TSequenceSet.BaseClass = int
-        TSequenceSet.BaseClassDiscrete = True
-        TSequenceSet.ComponentClass = TIntSeq
         super().__init__(sequenceList)
 
     @classmethod
