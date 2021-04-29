@@ -1,4 +1,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
+dist/
+MobilityDB_python.egg-info/
 
