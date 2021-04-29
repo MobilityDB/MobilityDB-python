@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='MobilityDB-python',
+    name='python-mobilitydb',
     packages=find_packages(),
     version='0.1.2',
     license='MIT',
