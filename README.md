@@ -47,7 +47,7 @@ try:
         if not row[1]:
             print("")
         else:
-            print("startTimestamp =", row[1].startTimestamp(), "\n")
+            print("startTimestamp =", row[1].startTimestamp.isoformat(), "\n")
 
 except (Exception, psycopg2.Error) as error:
     print("Error while connecting to PostgreSQL", error)
@@ -85,7 +85,7 @@ async def run():
             if not row[1]:
                 print("")
             else:
-                print("startTimestamp =", row[1].startTimestamp(), "\n")
+                print("startTimestamp =", row[1].startTimestamp.isoformat(), "\n")
     finally:
         # Close the connection
         await connection.close()
