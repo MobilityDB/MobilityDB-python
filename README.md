@@ -3,7 +3,7 @@ MobilityDB-python is a database adapter to access [MobilityDB](https://github.co
 
 ## Deprecation Notice :warning:
 This package is no longer maintained. Instead, we recommend using the [PyMEOS package](https://pypi.org/project/pymeos/), 
-which provides a Python interface to the C MEOS library, which is the underlying library of MobilityDB.
+which provides a Python interface to the MEOS C library, which is the underlying library of MobilityDB.
 
 Install
 ------------
