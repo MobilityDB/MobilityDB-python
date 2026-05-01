@@ -1,3 +1,15 @@
+# MobilityDB-python — DEPRECATED
+
+> **⚠️ This repository is archived and no longer maintained.**
+>
+> **Use [PyMEOS](https://github.com/MobilityDB/PyMEOS) instead.**
+>
+> PyMEOS is the actively maintained Python binding for the MEOS C library underneath MobilityDB. It supersedes this driver — it covers the same psycopg2-based PostgreSQL workflow (via `pymeos.db.psycopg2.MobilityDB`) and additionally provides the full MEOS API in idiomatic Python, suitable for use with MobilityDB, MobilityDuck, or standalone MEOS.
+>
+> This repository is preserved in archived form for historical reference and to keep existing links / citations resolvable. The deprecation notice has been in place since 2023.
+
+---
+
 # MobilityDB-python
 MobilityDB-python is a database adapter to access [MobilityDB](https://github.com/MobilityDB/MobilityDB) from Python. It supports both the [psycopg2](https://github.com/psycopg/psycopg2) and the [asyncpg](https://github.com/MagicStack/asyncpg) adapters for PostgreSQL and uses the [postgis](https://github.com/tilery/python-postgis) adapter for PostGIS.
 
